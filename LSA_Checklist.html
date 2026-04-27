@@ -282,7 +282,7 @@ html,body{height:100%;background:var(--bg);font-family:'Heebo',sans-serif;color:
     <button class="btn btn-blue" onclick="resumeFlight()">המשך טיסה</button>
     <button class="btn btn-ghost" onclick="openModal()">טיסה חדשה</button>
     <button class="btn btn-ghost" onclick="showScreen('screenImport')" style="font-size:14px;padding:12px;">טעינת רשימה מ-Excel 📊</button>
-    <div class="footer">built by eligrt &middot; v1.63</div>
+    <div class="footer">built by eligrt &middot; v1.64</div>
   </div>
 
   <!-- CHECKLIST -->
@@ -326,7 +326,7 @@ html,body{height:100%;background:var(--bg);font-family:'Heebo',sans-serif;color:
       </div>
     </div>
     <div class="tree-panel" id="treePanel"></div>
-    <div class="footer">built by eligrt &middot; v1.63</div>
+    <div class="footer">built by eligrt &middot; v1.64</div>
   </div>
 
   <!-- REVIEW -->
@@ -341,7 +341,7 @@ html,body{height:100%;background:var(--bg);font-family:'Heebo',sans-serif;color:
       </div>
     </div>
     <div class="tree-panel" id="reviewPanel"></div>
-    <div class="footer">built by eligrt &middot; v1.63</div>
+    <div class="footer">built by eligrt &middot; v1.64</div>
   </div>
 
   <!-- DONE -->
@@ -351,7 +351,7 @@ html,body{height:100%;background:var(--bg);font-family:'Heebo',sans-serif;color:
     <div class="done-sub">כל הבדיקות אושרו.<br>טיסה בטוחה!</div>
     <button class="btn btn-blue" style="width:100%;margin-top:8px" onclick="goBackToChecklist()">חזרה לצ׳קליסט</button>
     <button class="btn btn-ghost" style="width:100%;margin-top:8px" onclick="openModal()">טיסה חדשה</button>
-    <div class="footer">built by eligrt &middot; v1.63</div>
+    <div class="footer">built by eligrt &middot; v1.64</div>
   </div>
 
   <!-- IMPORT -->
@@ -375,7 +375,7 @@ html,body{height:100%;background:var(--bg);font-family:'Heebo',sans-serif;color:
     </label>
     <button class="btn btn-ghost" id="loadAnotherBtn" onclick="resetUploadLabel()" style="display:none">טען קובץ אחר</button>
     <div class="import-error" id="importError"></div>
-    <div class="footer">built by eligrt &middot; v1.63</div>
+    <div class="footer">built by eligrt &middot; v1.64</div>
   </div>
 
   <!-- PHASE COMPLETE OVERLAY -->
@@ -1344,10 +1344,24 @@ document.addEventListener('keydown',e=>{if(e.key==='Enter'&&document.getElementB
 function exportEditorToXLS(){
   if(typeof XLSX==='undefined'){alert('הספרייה עדיין נטענת...');return;}
   const wb=XLSX.utils.book_new();
-  const rows=[['Phase','Group','Item','Sub','Bullets']];
-  edDataToCL(edData).forEach(it=>rows.push([it.phase,it.group,it.main,it.sub||'',(it.bullets||[]).join('|')]));
+  const rows=[['Phase','Group','Item','Sub']];
+  let prevPhase='',prevGroup='';
+  edDataToCL(edData).forEach(it=>{
+    rows.push([
+      it.phase!==prevPhase?it.phase:'',
+      it.group!==prevGroup?it.group:'',
+      it.main,
+      it.sub||''
+    ]);
+    prevPhase=it.phase;prevGroup=it.group;
+  });
   const ws=XLSX.utils.aoa_to_sheet(rows);
-  ws['!cols']=[{wch:24},{wch:20},{wch:30},{wch:24},{wch:30}];
+  ws['!cols']=[{wch:28},{wch:22},{wch:36},{wch:30}];
+
+  // Style header row
+  const headerStyle={font:{bold:true,color:{rgb:'FFFFFF'}},fill:{fgColor:{rgb:'1E3A5F'}},alignment:{horizontal:'center'}};
+  ['A1','B1','C1','D1'].forEach(ref=>{if(ws[ref])ws[ref].s=headerStyle;});
+
   XLSX.utils.book_append_sheet(wb,ws,'Checklist');
   XLSX.writeFile(wb,'LSA_Checklist_Export.xlsx');
 }
