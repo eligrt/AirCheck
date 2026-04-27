@@ -220,18 +220,18 @@ html,body{height:100%;background:var(--bg);font-family:'Heebo',sans-serif;color:
 #screenEditor{background:var(--bg);flex-direction:column;}
 .editor-topbar{display:flex;align-items:center;justify-content:space-between;padding:10px 14px;background:var(--bg2);border-bottom:1px solid var(--border);flex-shrink:0;}
 .editor-list{flex:1;overflow-y:auto;padding:10px 12px 16px;display:flex;flex-direction:column;gap:6px;}
-.ed-phase{background:var(--bg2);border:1px solid var(--border);border-radius:12px;overflow:hidden;}
+.ed-phase{background:var(--bg2);border:1px solid var(--border);border-radius:12px;}
 .ed-phase-hdr{display:flex;align-items:center;padding:10px 12px;gap:8px;cursor:pointer;}
 .ed-phase-name{flex:1;font-size:13px;font-weight:700;color:var(--text);}
 .ed-count{font-size:10px;color:var(--text3);}
 .ed-icon{font-size:13px;color:var(--text3);background:none;border:none;cursor:pointer;padding:3px 6px;font-family:inherit;}
 .ed-icon.del{color:var(--red);}
 .ed-groups{border-top:1px solid var(--border);padding:6px 8px 8px;}
-.ed-group{background:var(--bg3);border-radius:8px;margin-bottom:4px;overflow:hidden;}
+.ed-group{background:var(--bg3);border-radius:8px;margin-bottom:4px;}
 .ed-group-hdr{display:flex;align-items:center;padding:7px 10px;gap:6px;}
 .ed-group-name{flex:1;font-size:12px;font-weight:500;color:var(--text);}
-.ed-items{padding:2px 8px 4px 8px;}
-.ed-item{display:flex;align-items:center;gap:6px;padding:5px 6px;border-radius:6px;cursor:grab;touch-action:none;}
+.ed-items{padding:2px 8px 4px 8px;min-height:8px;}
+.ed-item{display:flex;align-items:center;gap:6px;padding:5px 6px;border-radius:6px;min-height:32px;}
 .ed-item.dragging{opacity:.4;}
 .ed-item.drag-over{border-top:2px solid var(--blue);}
 .ed-drag{font-size:14px;color:var(--text3);cursor:grab;}
@@ -282,7 +282,7 @@ html,body{height:100%;background:var(--bg);font-family:'Heebo',sans-serif;color:
     <button class="btn btn-blue" onclick="resumeFlight()">המשך טיסה</button>
     <button class="btn btn-ghost" onclick="openModal()">טיסה חדשה</button>
     <button class="btn btn-ghost" onclick="showScreen('screenImport')" style="font-size:14px;padding:12px;">טעינת רשימה מ-Excel 📊</button>
-    <div class="footer">built by eligrt &middot; v1.64</div>
+    <div class="footer">built by eligrt &middot; v1.75</div>
   </div>
 
   <!-- CHECKLIST -->
@@ -326,7 +326,7 @@ html,body{height:100%;background:var(--bg);font-family:'Heebo',sans-serif;color:
       </div>
     </div>
     <div class="tree-panel" id="treePanel"></div>
-    <div class="footer">built by eligrt &middot; v1.64</div>
+    <div class="footer">built by eligrt &middot; v1.75</div>
   </div>
 
   <!-- REVIEW -->
@@ -341,7 +341,7 @@ html,body{height:100%;background:var(--bg);font-family:'Heebo',sans-serif;color:
       </div>
     </div>
     <div class="tree-panel" id="reviewPanel"></div>
-    <div class="footer">built by eligrt &middot; v1.64</div>
+    <div class="footer">built by eligrt &middot; v1.75</div>
   </div>
 
   <!-- DONE -->
@@ -351,7 +351,7 @@ html,body{height:100%;background:var(--bg);font-family:'Heebo',sans-serif;color:
     <div class="done-sub">כל הבדיקות אושרו.<br>טיסה בטוחה!</div>
     <button class="btn btn-blue" style="width:100%;margin-top:8px" onclick="goBackToChecklist()">חזרה לצ׳קליסט</button>
     <button class="btn btn-ghost" style="width:100%;margin-top:8px" onclick="openModal()">טיסה חדשה</button>
-    <div class="footer">built by eligrt &middot; v1.64</div>
+    <div class="footer">built by eligrt &middot; v1.75</div>
   </div>
 
   <!-- IMPORT -->
@@ -375,7 +375,7 @@ html,body{height:100%;background:var(--bg);font-family:'Heebo',sans-serif;color:
     </label>
     <button class="btn btn-ghost" id="loadAnotherBtn" onclick="resetUploadLabel()" style="display:none">טען קובץ אחר</button>
     <div class="import-error" id="importError"></div>
-    <div class="footer">built by eligrt &middot; v1.64</div>
+    <div class="footer">built by eligrt &middot; v1.75</div>
   </div>
 
   <!-- PHASE COMPLETE OVERLAY -->
@@ -397,9 +397,10 @@ html,body{height:100%;background:var(--bg);font-family:'Heebo',sans-serif;color:
       <button class="topbar-btn" style="color:var(--blue);border-color:var(--blue-dim)" onclick="saveEditor()">שמור</button>
     </div>
     <div class="editor-list" id="editorList"></div>
+    <div class="footer">built by eligrt &middot; v1.75</div>
   </div>
 
-  <!-- EDITOR POPUP -->
+  <!-- EDITOR POPUP — inside #app for position:absolute to work -->
   <div id="edPopup">
     <div class="ed-popup-box">
       <div class="ed-popup-title" id="edPopupTitle">הוסף פריט</div>
@@ -418,7 +419,7 @@ html,body{height:100%;background:var(--bg);font-family:'Heebo',sans-serif;color:
     </div>
   </div>
 
-  <!-- MODAL -->
+  <!-- PHASE OVERLAY -->
   <div id="modal">
     <div class="modal-box">
       <div class="modal-title">טיסה חדשה?</div>
@@ -444,6 +445,20 @@ html,body{height:100%;background:var(--bg);font-family:'Heebo',sans-serif;color:
 </div>
 
 <script>
+// ═══════════════════════════════════════════════════════════════════
+// ✈  DEFAULT CHECKLIST — EDIT HERE TO CHANGE THE BUILT-IN LIST
+//
+//  Format:  { phase, group, main, sub }
+//    phase  = top-level phase name       (e.g. "יום לפני")
+//    group  = sub-group within phase     (e.g. "בדיקת מז״א")
+//    main   = the checklist item text    (shown large on card)
+//    sub    = optional hint line         (shown small in grey)
+//
+//  Rules:
+//    • Items with the same phase+group are automatically grouped together
+//    • Order here = order in the app
+//    • Use the in-app editor (✎ button) for easier editing on mobile
+// ═══════════════════════════════════════════════════════════════════
 const CL=[
   // ─── יום לפני ─────────────────────────────────────────
   {phase:"יום לפני",group:"כשירות טיס ותעודות",main:"ודא שברשותך רישיון טיס ורישיון רדיו",sub:""},
@@ -490,6 +505,12 @@ const CL=[
   {phase:"סגירת טיסה",group:"זיכוי מטוס",main:"כיסוי פיטו: במקום",sub:""},
   {phase:"סגירת טיסה",group:"עודד",main:"סגירת טיסה במחשב המנחת",sub:""},
 ];
+// ═══════════════════════════════════════════════════════════════════
+//  END OF DEFAULT CHECKLIST
+// ═══════════════════════════════════════════════════════════════════
+
+// Snapshot default list immediately — before any localStorage import can overwrite CL
+const CL_DEFAULT=CL.map(it=>({...it}));
 
 // Build index
 const PHASES=[];
@@ -1275,8 +1296,51 @@ function renderEditor(){
       gdel.onclick=e=>{e.stopPropagation();if(confirm('למחוק "'+g.name+'"?')){ph.groups.splice(gi,1);renderEditor();}};
       ghdr.appendChild(gname);ghdr.appendChild(gedit);ghdr.appendChild(gdel);
       const itemsDiv=document.createElement('div');itemsDiv.className='ed-items';
+      itemsDiv.dataset.pi=pi;itemsDiv.dataset.gi=gi;
+      // Allow dropping into empty group or at end
+      itemsDiv.addEventListener('dragover',e=>{e.preventDefault();});
+      itemsDiv.addEventListener('drop',e=>{
+        e.preventDefault();
+        if(!dragSrc) return;
+        const sp=+dragSrc.dataset.pi,sg=+dragSrc.dataset.gi,si=+dragSrc.dataset.ii;
+        const dp=+itemsDiv.dataset.pi,dg=+itemsDiv.dataset.gi;
+        if(!edData[sp]||!edData[sp].groups[sg]) return;
+        if(!edData[dp]||!edData[dp].groups[dg]) return;
+        const [moved]=edData[sp].groups[sg].items.splice(si,1);
+        edData[dp].groups[dg].items.push(moved);
+        renderEditor();
+      });
       g.items.forEach((it,ii)=>itemsDiv.appendChild(buildItemRow(it,ii,g,gi,ph,pi)));
+      // Invisible drop zone at end of group — covers the full width
+      const dropZone=document.createElement('div');
+      dropZone.style.cssText='height:12px;width:100%;border-radius:4px;border-top:2px solid transparent;transition:border-color .15s;';
+      dropZone.addEventListener('dragover',e=>{e.preventDefault();dropZone.style.borderTopColor='var(--blue)';});
+      dropZone.addEventListener('dragleave',()=>{dropZone.style.borderTopColor='transparent';});
+      dropZone.addEventListener('drop',e=>{
+        e.preventDefault();e.stopPropagation();
+        dropZone.style.background='';
+        if(!dragSrc)return;
+        const sp=+dragSrc.dataset.pi,sg=+dragSrc.dataset.gi,si=+dragSrc.dataset.ii;
+        if(!edData[sp]||!edData[sp].groups[sg])return;
+        if(!edData[pi]||!edData[pi].groups[gi])return;
+        const[moved]=edData[sp].groups[sg].items.splice(si,1);
+        edData[pi].groups[gi].items.push(moved);
+        renderEditor();
+      });
+      itemsDiv.appendChild(dropZone);
+
       const addItem=document.createElement('button');addItem.className='ed-add';addItem.textContent='+ הוסף פריט';
+      addItem.ondragover=e=>e.preventDefault();
+      addItem.ondrop=e=>{
+        e.preventDefault();
+        if(!dragSrc)return;
+        const sp=+dragSrc.dataset.pi,sg=+dragSrc.dataset.gi,si=+dragSrc.dataset.ii;
+        if(!edData[sp]||!edData[sp].groups[sg])return;
+        if(!edData[pi]||!edData[pi].groups[gi])return;
+        const[moved]=edData[sp].groups[sg].items.splice(si,1);
+        edData[pi].groups[gi].items.push(moved);
+        renderEditor();
+      };
       addItem.onclick=()=>openEdPopup('הוסף פריט','','',true,(m,s)=>{g.items.push({main:m,sub:s,bullets:[]});renderEditor();});
       itemsDiv.appendChild(addItem);
       gDiv.appendChild(ghdr);gDiv.appendChild(itemsDiv);groups.appendChild(gDiv);
@@ -1315,9 +1379,14 @@ function buildItemRow(it,ii,g,gi,ph,pi){
   row.addEventListener('drop',e=>{
     e.preventDefault();row.classList.remove('drag-over');
     if(!dragSrc||dragSrc===row)return;
+    e.stopPropagation(); // prevent bubbling to itemsDiv handler
     const sp=+dragSrc.dataset.pi,sg=+dragSrc.dataset.gi,si=+dragSrc.dataset.ii;
     const dp=+row.dataset.pi,dg=+row.dataset.gi,di=+row.dataset.ii;
-    if(sp===dp&&sg===dg){const[moved]=edData[sp].groups[sg].items.splice(si,1);edData[dp].groups[dg].items.splice(di,0,moved);renderEditor();}
+    if(!edData[sp]||!edData[sp].groups[sg])return;
+    const [moved]=edData[sp].groups[sg].items.splice(si,1);
+    if(!edData[dp]||!edData[dp].groups[dg])return;
+    edData[dp].groups[dg].items.splice(di,0,moved);
+    renderEditor();
   });
   row.appendChild(drag);row.appendChild(txt);row.appendChild(editBtn);row.appendChild(delBtn);
   return row;
@@ -1341,31 +1410,22 @@ function confirmEdPopup(){
 }
 document.addEventListener('keydown',e=>{if(e.key==='Enter'&&document.getElementById('edPopup').classList.contains('open'))confirmEdPopup();});
 
+
 function exportEditorToXLS(){
   if(typeof XLSX==='undefined'){alert('הספרייה עדיין נטענת...');return;}
   const wb=XLSX.utils.book_new();
-  const rows=[['Phase','Group','Item','Sub']];
+  const aoa=[['LSA Flight Checklist — Export','','',''],['Phase','Group','Item','Sub']];
   let prevPhase='',prevGroup='';
   edDataToCL(edData).forEach(it=>{
-    rows.push([
-      it.phase!==prevPhase?it.phase:'',
-      it.group!==prevGroup?it.group:'',
-      it.main,
-      it.sub||''
-    ]);
+    aoa.push([it.phase!==prevPhase?it.phase:'',it.group!==prevGroup?it.group:'',it.main,it.sub||'']);
     prevPhase=it.phase;prevGroup=it.group;
   });
-  const ws=XLSX.utils.aoa_to_sheet(rows);
+  const ws=XLSX.utils.aoa_to_sheet(aoa);
+  ws['!merges']=[{s:{r:0,c:0},e:{r:0,c:3}}];
   ws['!cols']=[{wch:28},{wch:22},{wch:36},{wch:30}];
-
-  // Style header row
-  const headerStyle={font:{bold:true,color:{rgb:'FFFFFF'}},fill:{fgColor:{rgb:'1E3A5F'}},alignment:{horizontal:'center'}};
-  ['A1','B1','C1','D1'].forEach(ref=>{if(ws[ref])ws[ref].s=headerStyle;});
-
   XLSX.utils.book_append_sheet(wb,ws,'Checklist');
   XLSX.writeFile(wb,'LSA_Checklist_Export.xlsx');
 }
 
-// Default list snapshot (for reset)
-const CL_DEFAULT=[...CL];
+// end of editor
 </script>
