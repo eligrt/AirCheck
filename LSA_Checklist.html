@@ -5,18 +5,18 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-<meta name="apple-mobile-web-app-title" content="צ׳קליסט טיסה">
+<meta name="apple-mobile-web-app-title" content="AirCheck+">
 <meta name="theme-color" content="#0a0e1a">
-<title>LSA Checklist</title>
+<title>AirCheck+</title>
 <link href="https://fonts.googleapis.com/css2?family=Heebo:wght@300;400;500;700&display=swap" rel="stylesheet">
 <style>
 :root{
-  --bg:#0a0e1a;--bg2:#111827;--bg3:#1a2236;--bg4:#0c1220;
-  --border:#1e2d47;--border2:#263654;
-  --blue:#3b82f6;--blue-dim:#1d3a6b;--blue-bg:#0d1f3c;
-  --green:#22c55e;--green-dim:#14532d;--green-bg:#0a1f0f;
+  --bg:#020f1a;--bg2:#071e2e;--bg3:#0c2a3e;--bg4:#051525;
+  --border:#0e3a54;--border2:#1a5070;
+  --blue:#00b4d8;--blue-dim:#00304a;--blue-bg:#002035;
+  --green:#4ade80;--green-dim:#0f3320;--green-bg:#061a0f;
   --amber:#f59e0b;--red:#ef4444;
-  --text:#e2e8f0;--text2:#94a3b8;--text3:#475569;--text4:#2a3a52;
+  --text:#e0f2fe;--text2:#7ecfea;--text3:#3a7a94;--text4:#1a4a5e;
   --r:14px;
 }
 .light{
@@ -37,7 +37,7 @@
 .toggle-track.on .toggle-thumb{right:calc(100% - 16px);}
 
 *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent;user-select:none;}
-html,body{height:100%;background:var(--bg);font-family:'Heebo',sans-serif;color:var(--text);overflow:hidden;transition:background .2s,color .2s;}
+html,body{height:100%;background:linear-gradient(160deg,#020f1a 0%,#051e30 60%,#020f1a 100%);font-family:'Heebo',sans-serif;color:var(--text);overflow:hidden;transition:background .2s,color .2s;}
 #app{height:100%;display:flex;flex-direction:column;max-width:430px;margin:0 auto;position:relative;}
 
 .screen{display:none;flex-direction:column;flex:1;overflow:hidden;}
@@ -64,7 +64,7 @@ html,body{height:100%;background:var(--bg);font-family:'Heebo',sans-serif;color:
 #screenChecklist{background:var(--bg);}
 
 /* Top card — unified rounded surface */
-.top-card{background:var(--bg2);border:1px solid var(--border);border-radius:16px;margin:10px 12px 8px;overflow:hidden;flex-shrink:0;}
+.top-card{background:var(--bg2);border:1px solid var(--border2);border-radius:16px;margin:10px 12px 8px;overflow:hidden;flex-shrink:0;box-shadow:0 0 20px rgba(0,180,216,.08);}
 
 .topbar{display:flex;align-items:center;justify-content:space-between;padding:10px 14px;gap:10px;}
 .phase-info{flex:1;min-width:0;text-align:right;}
@@ -258,31 +258,41 @@ html,body{height:100%;background:var(--bg);font-family:'Heebo',sans-serif;color:
 <div id="app">
 
   <!-- RESUME -->
-  <div class="screen" id="screenResume">
-    <div style="display:flex;justify-content:flex-start;padding:8px 4px 0;">
+  <div class="screen" id="screenResume" style="padding:0;justify-content:flex-start;">
+    <!-- Theme toggle -->
+    <div style="display:flex;justify-content:flex-start;padding:10px 16px 0;flex-shrink:0;">
       <div class="theme-toggle" onclick="toggleTheme()">
         <span class="theme-icon">🌙</span>
         <div class="toggle-track" id="toggleTrackResume"><div class="toggle-thumb"></div></div>
         <span class="theme-icon">☀️</span>
       </div>
     </div>
-    <div class="logo-wrap">
-      <div class="logo-icon">✈</div>
-      <div class="logo-title">צ׳קליסט טיסה</div>
+    <!-- Logo image -->
+    <div style="flex-shrink:0;padding:10px 16px 0;">
+      <img src="https://raw.githubusercontent.com/eligrt/LSA_Checklist/main/AirCheck_logo.jpg"
+        style="width:100%;border-radius:16px;display:block;" alt="AirCheck+">
+    </div>
+    <!-- Title -->
+    <div style="text-align:center;padding:14px 0 4px;flex-shrink:0;">
+      <div class="logo-title" style="direction:ltr;">AirCheck+</div>
       <div class="logo-sub">טיסה בטוחה מתחילה בהכנה טובה</div>
     </div>
-    <div class="resume-card">
+    <!-- Progress (shown only when resuming) -->
+    <div class="resume-card" id="resumeLastWrap" style="margin:0 16px;flex-shrink:0;">
       <div class="rc-label">פריט אחרון שהושלם</div>
       <div class="rc-val" id="resumeLastText">—</div>
     </div>
-    <div>
+    <div id="resumeProgWrap" style="padding:0 16px;flex-shrink:0;">
       <div class="prog-row"><span id="resumeProgLabel"></span><span id="resumeProgPct"></span></div>
       <div class="prog-track"><div class="prog-fill" id="resumeProgFill" style="width:0%"></div></div>
     </div>
-    <button class="btn btn-blue" onclick="resumeFlight()">המשך טיסה</button>
-    <button class="btn btn-ghost" onclick="openModal()">טיסה חדשה</button>
-    <button class="btn btn-ghost" onclick="showScreen('screenImport')" style="font-size:14px;padding:12px;">טעינת רשימה מ-Excel 📊</button>
-    <div class="footer">built by eligrt &middot; v1.75</div>
+    <!-- Buttons -->
+    <div style="padding:12px 16px 0;display:flex;flex-direction:column;gap:10px;flex-shrink:0;">
+      <button class="btn btn-blue" id="resumeBtn" onclick="resumeFlight()">המשך טיסה</button>
+      <button class="btn btn-ghost" id="newFlightBtn" onclick="startNewFlight()">התחל טיסה ✈</button>
+      <button class="btn btn-ghost" onclick="showScreen('screenImport')" style="font-size:14px;">טעינת רשימה מ-Excel 📊</button>
+    </div>
+    <div class="footer" style="margin-top:auto;">built by eligrt &middot; v1.84</div>
   </div>
 
   <!-- CHECKLIST -->
@@ -326,7 +336,7 @@ html,body{height:100%;background:var(--bg);font-family:'Heebo',sans-serif;color:
       </div>
     </div>
     <div class="tree-panel" id="treePanel"></div>
-    <div class="footer">built by eligrt &middot; v1.75</div>
+    <div class="footer">built by eligrt &middot; v1.84</div>
   </div>
 
   <!-- REVIEW -->
@@ -341,7 +351,7 @@ html,body{height:100%;background:var(--bg);font-family:'Heebo',sans-serif;color:
       </div>
     </div>
     <div class="tree-panel" id="reviewPanel"></div>
-    <div class="footer">built by eligrt &middot; v1.75</div>
+    <div class="footer">built by eligrt &middot; v1.84</div>
   </div>
 
   <!-- DONE -->
@@ -351,7 +361,7 @@ html,body{height:100%;background:var(--bg);font-family:'Heebo',sans-serif;color:
     <div class="done-sub">כל הבדיקות אושרו.<br>טיסה בטוחה!</div>
     <button class="btn btn-blue" style="width:100%;margin-top:8px" onclick="goBackToChecklist()">חזרה לצ׳קליסט</button>
     <button class="btn btn-ghost" style="width:100%;margin-top:8px" onclick="openModal()">טיסה חדשה</button>
-    <div class="footer">built by eligrt &middot; v1.75</div>
+    <div class="footer">built by eligrt &middot; v1.84</div>
   </div>
 
   <!-- IMPORT -->
@@ -375,7 +385,7 @@ html,body{height:100%;background:var(--bg);font-family:'Heebo',sans-serif;color:
     </label>
     <button class="btn btn-ghost" id="loadAnotherBtn" onclick="resetUploadLabel()" style="display:none">טען קובץ אחר</button>
     <div class="import-error" id="importError"></div>
-    <div class="footer">built by eligrt &middot; v1.75</div>
+    <div class="footer">built by eligrt &middot; v1.84</div>
   </div>
 
   <!-- PHASE COMPLETE OVERLAY -->
@@ -393,11 +403,11 @@ html,body{height:100%;background:var(--bg);font-family:'Heebo',sans-serif;color:
   <div class="screen" id="screenEditor">
     <div class="editor-topbar">
       <button class="topbar-btn" onclick="closeEditor()">חזרה</button>
-      <div style="font-size:14px;font-weight:700;color:var(--text)">עריכת צ׳קליסט</div>
+      <div style="font-size:14px;font-weight:700;color:var(--text)">AirCheck+ — עריכה</div>
       <button class="topbar-btn" style="color:var(--blue);border-color:var(--blue-dim)" onclick="saveEditor()">שמור</button>
     </div>
     <div class="editor-list" id="editorList"></div>
-    <div class="footer">built by eligrt &middot; v1.75</div>
+    <div class="footer">built by eligrt &middot; v1.84</div>
   </div>
 
   <!-- EDITOR POPUP — inside #app for position:absolute to work -->
@@ -591,7 +601,6 @@ function parseCSVLine(line){
 }
 
 function rebuildWithList(list){
-  // Replace global CL and rebuild PHASES index
   CL.length=0;
   list.forEach(item=>CL.push(item));
   PHASES.length=0;
@@ -606,8 +615,7 @@ function rebuildWithList(list){
     if(!p.gIdx[gk]){const g={name:gk,start:i,end:i,items:[]};p.gIdx[gk]=g;p.groups.push(g);}
     const g=p.gIdx[gk]; g.end=i; g.items.push(i);
   });
-  current=0; status=[]; phOpen={}; grOpen={};
-  renderCurrent();
+  // Don't navigate — caller decides what to show
 }
 let current=0, status=[], holdTimer=null, holdFilling=false, holdCooldown=false;
 let phOpen={}, grOpen={};
@@ -641,19 +649,25 @@ function showScreen(id){
 function init(){
   const s=load();
   if(s&&s.current>0&&s.current<CL.length){
+    // In-progress flight — show resume screen
     current=s.current; status=s.status||[];
     document.getElementById('resumeLastText').textContent=CL[current-1].main;
     const pct=Math.round(current/CL.length*100);
     document.getElementById('resumeProgLabel').textContent=current+' / '+CL.length+' פריטים';
     document.getElementById('resumeProgPct').textContent=pct+'%';
     document.getElementById('resumeProgFill').style.width=pct+'%';
+    document.getElementById('resumeBtn').style.display='block';
+    document.getElementById('newFlightBtn').textContent='טיסה חדשה';
     showScreen('screenResume');
   } else if(s&&s.current>=CL.length){
     showScreen('screenDone');
   } else {
-    current=0; status=[];
-    showScreen('screenChecklist');
-    renderCurrent();
+    // Fresh start — show splash with just "התחל" button
+    document.getElementById('resumeLastWrap').style.display='none';
+    document.getElementById('resumeProgWrap').style.display='none';
+    document.getElementById('resumeBtn').style.display='none';
+    document.getElementById('newFlightBtn').textContent='התחל טיסה ✈';
+    showScreen('screenResume');
   }
 }
 
@@ -738,6 +752,12 @@ function leaveReview(){
     showScreen('screenChecklist');
     renderCurrent();
   }
+}
+
+function startNewFlight(){
+  current=0; status=[]; phOpen={}; grOpen={};
+  showScreen('screenChecklist');
+  renderCurrent();
 }
 
 function resumeFlight(){showScreen('screenChecklist');renderCurrent();}
@@ -1217,6 +1237,7 @@ function processFile(file){
       try{localStorage.setItem(LIST_KEY,JSON.stringify(items));}catch(err){}
       clearSave();
       rebuildWithList(items);
+      current=0;status=[];phOpen={};grOpen={};
 
       // Show success summary, hide upload zone
       label.style.display='none';
@@ -1267,7 +1288,7 @@ function closeEditor(){showScreen('screenChecklist');}
 function saveEditor(){
   const newList=edDataToCL(edData);
   try{localStorage.setItem(LIST_KEY,JSON.stringify(newList));}catch(e){}
-  clearSave();rebuildWithList(newList);showScreen('screenChecklist');
+  clearSave();rebuildWithList(newList);current=0;status=[];phOpen={};grOpen={};showScreen('screenChecklist');renderCurrent();
 }
 
 function renderEditor(){
@@ -1357,7 +1378,7 @@ function renderEditor(){
   const exportBtn=document.createElement('button');exportBtn.className='ed-action-btn';exportBtn.textContent='ייצוא XLS 📊';
   exportBtn.onclick=exportEditorToXLS;
   const resetBtn=document.createElement('button');resetBtn.className='ed-action-btn danger';resetBtn.textContent='איפוס לברירת מחדל';
-  resetBtn.onclick=()=>{if(confirm('לאפס?')){localStorage.removeItem(LIST_KEY);rebuildWithList([...CL_DEFAULT]);edData=clToEdData(CL);renderEditor();}};
+  resetBtn.onclick=()=>{if(confirm('לאפס?')){localStorage.removeItem(LIST_KEY);rebuildWithList([...CL_DEFAULT]);current=0;status=[];phOpen={};grOpen={};edData=clToEdData(CL);renderEditor();}};
   actions.appendChild(exportBtn);actions.appendChild(resetBtn);el.appendChild(actions);
 }
 
@@ -1414,7 +1435,7 @@ document.addEventListener('keydown',e=>{if(e.key==='Enter'&&document.getElementB
 function exportEditorToXLS(){
   if(typeof XLSX==='undefined'){alert('הספרייה עדיין נטענת...');return;}
   const wb=XLSX.utils.book_new();
-  const aoa=[['LSA Flight Checklist — Export','','',''],['Phase','Group','Item','Sub']];
+  const aoa=[['AirCheck+ — Personal Flight Checklist','','',''],['Phase','Group','Item','Sub']];
   let prevPhase='',prevGroup='';
   edDataToCL(edData).forEach(it=>{
     aoa.push([it.phase!==prevPhase?it.phase:'',it.group!==prevGroup?it.group:'',it.main,it.sub||'']);
@@ -1424,7 +1445,7 @@ function exportEditorToXLS(){
   ws['!merges']=[{s:{r:0,c:0},e:{r:0,c:3}}];
   ws['!cols']=[{wch:28},{wch:22},{wch:36},{wch:30}];
   XLSX.utils.book_append_sheet(wb,ws,'Checklist');
-  XLSX.writeFile(wb,'LSA_Checklist_Export.xlsx');
+  XLSX.writeFile(wb,'AirCheck+_Export.xlsx');
 }
 
 // end of editor
