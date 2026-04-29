@@ -286,7 +286,7 @@ html,body{height:100%;background:linear-gradient(160deg,#020f1a 0%,#051e30 60%,#
       <button class="btn btn-blue" id="resumeBtn" onclick="resumeFlight()" style="display:none;">המשך טיסה</button>
       <button class="btn btn-blue" id="newFlightBtn" onclick="startNewFlight()">✈&nbsp;&nbsp;התחל טיסה</button>
       <button class="btn btn-ghost" onclick="showScreen('screenImport')" style="font-size:14px;">טעינת רשימה מ-Excel 📊</button>
-      <div class="footer">built by eligrt &middot; v1.87.21</div>
+      <div class="footer">built by eligrt &middot; v1.87.27</div>
     </div>
   </div>
 
@@ -1279,9 +1279,26 @@ function edDataToCL(data){
 function openEditor(){edData=clToEdData(CL);renderEditor();showScreen('screenEditor');}
 function closeEditor(){showScreen('screenChecklist');}
 function saveEditor(){
+  // Capture status FIRST, before any list changes
+  const statusByKey={};
+  CL.forEach((item,i)=>{if(status[i])statusByKey[item.main]=status[i];});
+
   const newList=edDataToCL(edData);
   try{localStorage.setItem(LIST_KEY,JSON.stringify(newList));}catch(e){}
-  clearSave();rebuildWithList(newList);current=0;status=[];phOpen={};grOpen={};showScreen('screenChecklist');renderCurrent();
+
+  rebuildWithList(newList);
+
+  status=[];
+  CL.forEach((item,i)=>{
+    if(statusByKey[item.main]) status[i]=statusByKey[item.main];
+  });
+
+  current=CL.findIndex((_,i)=>status[i]!=='done'&&status[i]!=='skip');
+  if(current===-1)current=0;
+  phOpen={};grOpen={};
+  save();
+  showScreen('screenChecklist');
+  renderCurrent();
 }
 
 function renderEditor(){
