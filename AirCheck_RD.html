@@ -1,9 +1,9 @@
 <!DOCTYPE html>
 <!-- ═══════════════════════════════════════
-     AirCheck+ · v2.04.069 · built by eligrt
+     AirCheck+ · v2.04.070 · built by eligrt
      ═══════════════════════════════════════ -->
 <!-- ═══════════════════════════════════════
-     AirCheck+ · v2.04.069 · built by eligrt
+     AirCheck+ · v2.04.070 · built by eligrt
      ═══════════════════════════════════════ -->
 <html lang="he" dir="rtl">
 <head>
@@ -493,7 +493,7 @@ html,body{height:100%;background:#1a1a1c;font-family:var(--font-ui);color:var(--
     <div class="splash-footer-wrap">
       <div class="footer-strip" style="display:flex;align-items:center;justify-content:space-between;padding:5px 14px 8px;">
         <span class="footer-refresh" onclick="location.reload()">רענון</span>
-        <span id="versionTap" onclick="handleVersionTap()" style="cursor:default;">AirCheck+ · v2.04.069 · built by eligrt</span>
+        <span id="versionTap" onclick="handleVersionTap()" style="cursor:default;">AirCheck+ · v2.04.070 · built by eligrt</span>
         <span style="width:40px;"></span>
       </div>
     </div>
@@ -600,7 +600,7 @@ html,body{height:100%;background:#1a1a1c;font-family:var(--font-ui);color:var(--
     <div class="tree-panel" id="treePanel"></div>
     <div class="footer-strip" style="display:flex;align-items:center;justify-content:space-between;padding:5px 14px 8px;">
       <span class="footer-refresh" onclick="location.reload()">רענון</span>
-      <span id="versionTap" onclick="handleVersionTap()" style="cursor:default;">AirCheck+ · v2.04.069 · built by eligrt</span>
+      <span id="versionTap" onclick="handleVersionTap()" style="cursor:default;">AirCheck+ · v2.04.070 · built by eligrt</span>
       <span style="width:40px;"></span>
     </div>
   </div>
@@ -659,7 +659,7 @@ html,body{height:100%;background:#1a1a1c;font-family:var(--font-ui);color:var(--
 
     <div class="footer-strip" style="display:flex;align-items:center;justify-content:space-between;padding:5px 14px 8px;">
       <span style="width:40px;"></span>
-      <span id="versionTap" onclick="handleVersionTap()" style="cursor:default;">AirCheck+ · v2.04.069 · built by eligrt</span>
+      <span id="versionTap" onclick="handleVersionTap()" style="cursor:default;">AirCheck+ · v2.04.070 · built by eligrt</span>
       <span style="width:40px;"></span>
     </div>
   </div>
@@ -736,6 +736,10 @@ html,body{height:100%;background:#1a1a1c;font-family:var(--font-ui);color:var(--
       <div class="settings-section">
         <span class="settings-section-label">DATA</span>
         <div class="settings-card">
+          <div class="settings-row">
+            <span class="settings-row-label">סוג רשימה</span>
+            <span id="settingsListType" class="settings-row-value">—</span>
+          </div>
           <div class="settings-row tappable" onclick="closeSettings();openEditor()">
             <span class="settings-row-label">עריכת הצ'קליסט</span>
             <span class="settings-row-arrow">›</span>
@@ -746,7 +750,7 @@ html,body{height:100%;background:#1a1a1c;font-family:var(--font-ui);color:var(--
     </div>
     <div class="footer-strip" style="display:flex;align-items:center;justify-content:space-between;padding:5px 14px 8px;">
       <span class="footer-refresh" onclick="location.reload()">רענון</span>
-      <span id="versionTap" onclick="handleVersionTap()" style="cursor:default;">AirCheck+ · v2.04.069 · built by eligrt</span>
+      <span id="versionTap" onclick="handleVersionTap()" style="cursor:default;">AirCheck+ · v2.04.070 · built by eligrt</span>
       <span style="width:40px;"></span>
     </div>
   </div>
@@ -763,7 +767,7 @@ html,body{height:100%;background:#1a1a1c;font-family:var(--font-ui);color:var(--
     <div class="editor-list" id="editorList"></div>
     <div class="footer-strip" style="display:flex;align-items:center;justify-content:space-between;padding:5px 14px 8px;">
       <span class="footer-refresh" onclick="location.reload()">רענון</span>
-      <span id="versionTap" onclick="handleVersionTap()" style="cursor:default;">AirCheck+ · v2.04.069 · built by eligrt</span>
+      <span id="versionTap" onclick="handleVersionTap()" style="cursor:default;">AirCheck+ · v2.04.070 · built by eligrt</span>
       <span style="width:40px;"></span>
     </div>
   </div>
@@ -1702,6 +1706,9 @@ function openSettings(){
   const hms=settings.holdMs||400;
   const hkey=hms<=200?'short':hms>=700?'long':'normal';
   updateHoldDurationCtrl(hkey);
+  const lt=localStorage.getItem('aircheck_list_type')||'default';
+  const ltEl=document.getElementById('settingsListType');
+  if(ltEl){ltEl.textContent=lt==='modified'?'מותאמת אישית ✎':'ברירת מחדל ✓';ltEl.style.color=lt==='modified'?'var(--amber)':'var(--cleared)';}
   // Show current UTC time in stamp preview
   const now=new Date();
   document.getElementById('settingsStampTime').textContent=String(now.getUTCHours()).padStart(2,'0')+':'+String(now.getUTCMinutes()).padStart(2,'0')+' UTC';
