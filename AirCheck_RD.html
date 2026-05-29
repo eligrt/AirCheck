@@ -1,9 +1,9 @@
 <!DOCTYPE html>
 <!-- ═══════════════════════════════════════
-     AirCheck+ · v2.04.062 · built by eligrt
+     AirCheck+ · v2.04.069 · built by eligrt
      ═══════════════════════════════════════ -->
 <!-- ═══════════════════════════════════════
-     AirCheck+ · v2.04.062 · built by eligrt
+     AirCheck+ · v2.04.069 · built by eligrt
      ═══════════════════════════════════════ -->
 <html lang="he" dir="rtl">
 <head>
@@ -447,6 +447,20 @@ html,body{height:100%;background:#1a1a1c;font-family:var(--font-ui);color:var(--
 .danger-btn{width:100%;padding:12px;background:transparent;border:1px solid rgba(185,74,58,.5);border-radius:4px;color:var(--stamp-red);font-family:var(--font-ui);font-size:14px;font-weight:700;cursor:pointer;transition:background .12s;}
 .danger-btn:active{background:rgba(185,74,58,.1);}
 
+
+/* ── STATS POPUP ── */
+#statsPopup{display:none;position:absolute;inset:0;z-index:600;align-items:center;justify-content:center;background:rgba(26,19,8,.85);backdrop-filter:blur(3px);padding:24px;}
+#statsPopup.open{display:flex;}
+.stats-box{background:var(--paper-hi);border:2px solid var(--gold);border-radius:8px;padding:24px 20px;width:100%;max-width:320px;text-align:center;box-shadow:0 20px 60px rgba(0,0,0,.4);background-image:repeating-linear-gradient(0deg,transparent 0,transparent 27px,var(--paper-line) 27px,var(--paper-line) 28px);}
+.stats-title{font-family:var(--font-mono);font-size:11px;letter-spacing:.2em;color:var(--ink-muted);margin-bottom:16px;text-transform:uppercase;}
+.stats-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:16px;}
+.stats-cell{background:var(--paper);border:1px solid var(--gold-lite);border-radius:4px;padding:10px 8px;}
+.stats-cell-val{font-family:var(--font-mono);font-size:22px;font-weight:700;color:var(--ink);direction:ltr;}
+.stats-cell-lbl{font-size:9px;color:var(--ink-muted);letter-spacing:.08em;margin-top:2px;}
+.stats-os{display:flex;gap:6px;justify-content:center;margin-bottom:16px;flex-wrap:wrap;}
+.stats-os-pill{font-family:var(--font-mono);font-size:10px;background:var(--paper);border:1px solid var(--gold-lite);border-radius:10px;padding:3px 10px;color:var(--ink-muted);}
+.stats-loading{font-size:13px;color:var(--ink-muted);padding:20px 0;font-family:var(--font-mono);}
+
 </style>
 </head>
 <body>
@@ -479,7 +493,7 @@ html,body{height:100%;background:#1a1a1c;font-family:var(--font-ui);color:var(--
     <div class="splash-footer-wrap">
       <div class="footer-strip" style="display:flex;align-items:center;justify-content:space-between;padding:5px 14px 8px;">
         <span class="footer-refresh" onclick="location.reload()">רענון</span>
-        <span>AirCheck+ · v2.04.062 · built by eligrt</span>
+        <span id="versionTap" onclick="handleVersionTap()" style="cursor:default;">AirCheck+ · v2.04.069 · built by eligrt</span>
         <span style="width:40px;"></span>
       </div>
     </div>
@@ -492,12 +506,6 @@ html,body{height:100%;background:#1a1a1c;font-family:var(--font-ui);color:var(--
         <div class="strip-data-col">
           <span class="strip-label">UTC</span>
           <span class="strip-time" id="utcClock">--:--</span>
-        </div>
-        <div class="strip-data-col">
-          <span class="strip-label">FLT</span>
-          <div class="strip-route-fields">
-            <input class="strip-icao-input" id="stripFrom" type="text" placeholder="LLRS" maxlength="4" autocomplete="off" autocorrect="off" spellcheck="false" oninput="this.value=this.value.toUpperCase().replace(/[^A-Z0-9]/g,'');saveRoute()" onclick="this.select()"><span class="strip-route-space"> </span><span class="strip-route-arrow">→</span><span class="strip-route-space"> </span><input class="strip-icao-input" id="stripTo" type="text" placeholder="LLRS" maxlength="4" autocomplete="off" autocorrect="off" spellcheck="false" oninput="this.value=this.value.toUpperCase().replace(/[^A-Z0-9]/g,'');saveRoute()" onclick="this.select()">
-          </div>
         </div>
       </div>
       <div class="strip-actions" style="margin-left:auto;align-self:center;">
@@ -592,7 +600,7 @@ html,body{height:100%;background:#1a1a1c;font-family:var(--font-ui);color:var(--
     <div class="tree-panel" id="treePanel"></div>
     <div class="footer-strip" style="display:flex;align-items:center;justify-content:space-between;padding:5px 14px 8px;">
       <span class="footer-refresh" onclick="location.reload()">רענון</span>
-      <span>AirCheck+ · v2.04.062 · built by eligrt</span>
+      <span id="versionTap" onclick="handleVersionTap()" style="cursor:default;">AirCheck+ · v2.04.069 · built by eligrt</span>
       <span style="width:40px;"></span>
     </div>
   </div>
@@ -651,7 +659,7 @@ html,body{height:100%;background:#1a1a1c;font-family:var(--font-ui);color:var(--
 
     <div class="footer-strip" style="display:flex;align-items:center;justify-content:space-between;padding:5px 14px 8px;">
       <span style="width:40px;"></span>
-      <span>AirCheck+ · v2.04.062 · built by eligrt</span>
+      <span id="versionTap" onclick="handleVersionTap()" style="cursor:default;">AirCheck+ · v2.04.069 · built by eligrt</span>
       <span style="width:40px;"></span>
     </div>
   </div>
@@ -702,20 +710,6 @@ html,body{height:100%;background:#1a1a1c;font-family:var(--font-ui);color:var(--
                 oninput="this.value=this.value.toUpperCase().replace(/[^A-Z0-9]/g,'');saveSettingsTail(this.value)">
             </div>
           </div>
-          <div class="settings-row">
-            <span class="settings-row-label">מסלול ברירת מחדל</span>
-            <div style="display:inline-flex;align-items:center;gap:4px;direction:ltr;">
-              <input class="tail-setting-input" id="settingsFrom" type="text" placeholder="LLRS" maxlength="4"
-                style="width:4ch;text-align:center;border-bottom:1.5px dashed rgba(28,61,110,.4);"
-                autocomplete="off" autocorrect="off" spellcheck="false"
-                oninput="this.value=this.value.toUpperCase().replace(/[^A-Z0-9]/g,'');saveSettingsRoute()">
-              <span style="font-family:var(--font-mono);font-size:11px;color:var(--ink-muted);opacity:.6;">→</span>
-              <input class="tail-setting-input" id="settingsTo" type="text" placeholder="LLRS" maxlength="4"
-                style="width:4ch;text-align:center;border-bottom:1.5px dashed rgba(28,61,110,.4);"
-                autocomplete="off" autocorrect="off" spellcheck="false"
-                oninput="this.value=this.value.toUpperCase().replace(/[^A-Z0-9]/g,'');saveSettingsRoute()">
-            </div>
-          </div>
         </div>
       </div>
 
@@ -726,6 +720,14 @@ html,body{height:100%;background:#1a1a1c;font-family:var(--font-ui);color:var(--
           <div class="settings-row">
             <span class="settings-row-label">צליל בעת אישור</span>
             <button class="tog off" id="togSounds" onclick="toggleSetting('sounds')"><div class="tog-knob"></div></button>
+          </div>
+          <div class="settings-row">
+            <span class="settings-row-label">זמן החזקת המסלול לאישור</span>
+            <div class="seg-ctrl" id="holdDurationCtrl">
+              <button class="seg-btn inactive" onclick="setHoldDuration(200,'short')">קצר</button>
+              <button class="seg-btn active" onclick="setHoldDuration(400,'normal')">רגיל</button>
+              <button class="seg-btn inactive" onclick="setHoldDuration(700,'long')">ארוך</button>
+            </div>
           </div>
         </div>
       </div>
@@ -744,7 +746,7 @@ html,body{height:100%;background:#1a1a1c;font-family:var(--font-ui);color:var(--
     </div>
     <div class="footer-strip" style="display:flex;align-items:center;justify-content:space-between;padding:5px 14px 8px;">
       <span class="footer-refresh" onclick="location.reload()">רענון</span>
-      <span>AirCheck+ · v2.04.062 · built by eligrt</span>
+      <span id="versionTap" onclick="handleVersionTap()" style="cursor:default;">AirCheck+ · v2.04.069 · built by eligrt</span>
       <span style="width:40px;"></span>
     </div>
   </div>
@@ -761,7 +763,7 @@ html,body{height:100%;background:#1a1a1c;font-family:var(--font-ui);color:var(--
     <div class="editor-list" id="editorList"></div>
     <div class="footer-strip" style="display:flex;align-items:center;justify-content:space-between;padding:5px 14px 8px;">
       <span class="footer-refresh" onclick="location.reload()">רענון</span>
-      <span>AirCheck+ · v2.04.062 · built by eligrt</span>
+      <span id="versionTap" onclick="handleVersionTap()" style="cursor:default;">AirCheck+ · v2.04.069 · built by eligrt</span>
       <span style="width:40px;"></span>
     </div>
   </div>
@@ -867,13 +869,11 @@ function loadState(){try{const raw=localStorage.getItem(KEY);if(raw){const d=JSO
 function clearState(){
   current=0;status={};saveState();
   localStorage.removeItem('aircheck_rd_route');
-  document.getElementById('stripFrom').value='';
-  document.getElementById('stripTo').value='';
 }
 function saveReg(val){try{localStorage.setItem(REG_KEY,val);}catch(e){}document.getElementById('stampInit').textContent='PIC · 4X-'+(val||'HHH');}
 function loadReg(){try{const v=localStorage.getItem(REG_KEY)||'';document.getElementById('stampInit').textContent='PIC · 4X-'+(v||'HHH');}catch(e){}}
-function saveRoute(){try{const f=document.getElementById('stripFrom').value;const t=document.getElementById('stripTo').value;localStorage.setItem(ROUTE_KEY,JSON.stringify({from:f,to:t}));}catch(e){}}
-function loadRoute(){try{const raw=localStorage.getItem(ROUTE_KEY);if(raw){const d=JSON.parse(raw);document.getElementById('stripFrom').value=d.from||'';document.getElementById('stripTo').value=d.to||'';}}catch(e){}}
+function saveRoute(){}
+function loadRoute(){}
 function updateClock(){const now=new Date();const h=String(now.getUTCHours()).padStart(2,'0');const m=String(now.getUTCMinutes()).padStart(2,'0');document.getElementById('utcClock').textContent=h+':'+m;document.getElementById('stampTime').textContent=h+':'+m+' UTC';}
 setInterval(updateClock,10000);updateClock();
 function drawRings(){const g=document.getElementById('ringCoils');g.innerHTML='';const n=8;for(let k=0;k<n;k++){const x=8+k*((352-8)/7);const ns='http://www.w3.org/2000/svg';const back=document.createElementNS(ns,'path');back.setAttribute('d',`M ${x-3} 30 Q ${x-5} 18 ${x+2} 8 Q ${x+5} 4 ${x+8} 6`);back.setAttribute('fill','none');back.setAttribute('stroke','url(#wireDark)');back.setAttribute('stroke-width','1.6');back.setAttribute('stroke-linecap','round');back.setAttribute('opacity','.9');g.appendChild(back);const hole=document.createElementNS(ns,'ellipse');hole.setAttribute('cx',x);hole.setAttribute('cy','30');hole.setAttribute('rx','5');hole.setAttribute('ry','2.2');hole.setAttribute('fill','url(#paperHole)');g.appendChild(hole);const hole2=document.createElementNS(ns,'ellipse');hole2.setAttribute('cx',x);hole2.setAttribute('cy','30.5');hole2.setAttribute('rx','4');hole2.setAttribute('ry','1.2');hole2.setAttribute('fill','#000');hole2.setAttribute('opacity','.55');g.appendChild(hole2);const front=document.createElementNS(ns,'path');front.setAttribute('d',`M ${x+8} 6 Q ${x+13} 9 ${x+12} 16 Q ${x+10} 24 ${x+5} 30`);front.setAttribute('fill','none');front.setAttribute('stroke','url(#wireGrad)');front.setAttribute('stroke-width','2.1');front.setAttribute('stroke-linecap','round');g.appendChild(front);const hl=document.createElementNS(ns,'circle');hl.setAttribute('cx',x+10);hl.setAttribute('cy','8');hl.setAttribute('r','.9');hl.setAttribute('fill','#fff');hl.setAttribute('opacity','.95');g.appendChild(hl);}}
@@ -959,13 +959,46 @@ function togglePhase(phaseName){expandedPhases[phaseName]=!expandedPhases[phaseN
 function renderTree(){const panel=document.getElementById('treePanel');panel.innerHTML='';PHASES.forEach((p)=>{const pAllItems=p.groups.reduce((a,g)=>a.concat(g.items),[]);const pDone=pAllItems.filter(j=>status[j]==='done').length;const pTot=pAllItems.length;const isCurPhase=current>=p.start&&current<=p.end;const isDone=pAllItems.every(j=>status[j]==='done'||status[j]==='skipped');let isOpen;if(expandedPhases[p.name]===undefined){isOpen=isCurPhase;}else{isOpen=expandedPhases[p.name];}const phDiv=document.createElement('div');phDiv.className='tree-phase';const hdr=document.createElement('div');hdr.className='tree-phase-hdr';hdr.style.cursor='pointer';hdr.onclick=()=>togglePhase(p.name);const nm=document.createElement('span');nm.className='tree-ph-name '+(isDone?'done':isCurPhase?'cur':'upcoming');nm.textContent=p.name;const right=document.createElement('span');right.style.cssText='display:flex;align-items:center;gap:8px;direction:ltr;';const stat=document.createElement('span');stat.className='tree-ph-stat';stat.textContent=pDone+'/'+pTot;const chevron=document.createElement('span');chevron.style.cssText='font-size:10px;color:var(--ink-muted);font-family:var(--font-mono);display:inline-block;';chevron.textContent=isOpen?'▼':'►';right.appendChild(stat);right.appendChild(chevron);hdr.appendChild(nm);hdr.appendChild(right);phDiv.appendChild(hdr);if(isOpen){p.groups.forEach((g)=>{const gDiv=document.createElement('div');gDiv.className='tree-group';const gnm=document.createElement('div');gnm.className='tree-gr-name';gnm.textContent=g.name;gDiv.appendChild(gnm);g.items.forEach(ii=>{const s=status[ii]||'upcoming';const isCurItem=ii===current;const row=document.createElement('div');row.className='tree-item';row.onclick=(e)=>{e.stopPropagation();current=ii;holdState='idle';resetRunwayBtn();render();};const mark=document.createElement('span');mark.className='tree-mark '+(s==='done'?'done':isCurItem?'cur':s==='skipped'?'skipped':'upcoming');mark.textContent=s==='done'?'✓':isCurItem?'●':s==='skipped'?'~':'○';const txt=document.createElement('span');txt.className='tree-item-text '+(s==='done'?'done':isCurItem?'cur':s==='skipped'?'skipped':'upcoming');txt.textContent=CL[ii].main;row.appendChild(mark);row.appendChild(txt);gDiv.appendChild(row);});phDiv.appendChild(gDiv);});}panel.appendChild(phDiv);});}
 const HOLD_MS=300;const FLIP_MS=520;
 let holdState='idle';let holdTimer=null;
-function startHold(){if(holdState==='flipping'||holdState==='confirmed')return;if(status[current]==='done')return;holdState='holding';document.getElementById('confirmHint').textContent='מחזיק…';const fill=document.getElementById('runwayFill');fill.classList.remove('releasing');fill.classList.add('holding');const plane=document.getElementById('runwayPlane');plane.classList.add('holding');plane.classList.remove('confirmed');const btn=document.getElementById('runwayBtn');btn.classList.remove('idle');holdTimer=setTimeout(()=>{holdState='confirmed';const now=new Date();document.getElementById('stampTime').textContent=String(now.getUTCHours()).padStart(2,'0')+':'+String(now.getUTCMinutes()).padStart(2,'0')+' UTC';document.getElementById('cardStamp').classList.add('visible');if(navigator.vibrate){navigator.vibrate(40);}if(settings&&settings.sounds){playConfirmSound();}document.getElementById('confirmHint').textContent='אושר — שחרר להמשך';document.getElementById('confirmHint').classList.add('confirmed');fill.classList.add('confirmed');fill.classList.remove('holding');const p=document.getElementById('runwayPlane');p.classList.add('confirmed');p.classList.remove('holding');},(settings&&settings.holdMs?settings.holdMs:HOLD_MS));}
+function startHold(){if(holdState==='flipping'||holdState==='confirmed')return;if(status[current]==='done')return;holdState='holding';document.getElementById('confirmHint').textContent='מחזיק…';const hms=settings&&settings.holdMs?settings.holdMs:HOLD_MS;const fill=document.getElementById('runwayFill');const plane=document.getElementById('runwayPlane');// Set animation speed to match hold duration
+// Drive fill + plane together via rAF — fill tracks plane position
+fill.style.transition='none';fill.style.width='0%';
+plane.style.transition='none';plane.style.right='50px';
+fill.classList.remove('releasing','holding','confirmed');
+plane.classList.remove('holding','confirmed');
+const btn=document.getElementById('runwayBtn');btn.classList.remove('idle');
+const btnW=btn.offsetWidth;
+const startTs=performance.now();
+function animHold(ts){
+  if(holdState!=='holding')return;
+  const prog=Math.min((ts-startTs)/hms,1);
+  // Plane moves from right:50 to right:(btnW-52)
+  const planeRight=50+(btnW-102)*prog;
+  plane.style.right=planeRight+'px';
+  // Fill width = planeRight so fill's left edge tracks plane's right edge
+  fill.style.width=(planeRight/btnW*100)+'%';
+  if(prog<1){requestAnimationFrame(animHold);}
+  else{
+    holdState='confirmed';
+    fill.style.width='100%';
+    const now=new Date();
+    document.getElementById('stampTime').textContent=String(now.getUTCHours()).padStart(2,'0')+':'+String(now.getUTCMinutes()).padStart(2,'0')+' UTC';
+    document.getElementById('cardStamp').classList.add('visible');
+    if(navigator.vibrate){navigator.vibrate(40);}
+    if(settings&&settings.sounds){playConfirmSound();}
+    document.getElementById('confirmHint').textContent='אושר — שחרר להמשך';
+    document.getElementById('confirmHint').classList.add('confirmed');
+    fill.style.transition='';fill.classList.add('confirmed');
+    plane.style.transition='';plane.style.right='';plane.classList.add('confirmed');
+  }
+}
+requestAnimationFrame(animHold);}
 function releaseHold(){clearTimeout(holdTimer);if(holdState==='confirmed'){holdState='flipping';const card=document.getElementById('cardTop');document.getElementById('cardStamp').classList.remove('visible');card.classList.add('flipping');setTimeout(()=>{status[current]='done';const prevPhase=CL[current].phase;advanceToNext();holdState='idle';resetRunwayBtn(true);const newPhase=CL[current]?CL[current].phase:null;const prevPhaseObj=PHASE_IDX[prevPhase];if(prevPhaseObj){const phAllItems=prevPhaseObj.groups.reduce((a,g)=>a.concat(g.items),[]);const pComplete=phAllItems.every(j=>status[j]==='done'||status[j]==='skipped');const pAllGreen=phAllItems.every(j=>status[j]==='done');const allDone=CL.every((_,j)=>status[j]==='done'||status[j]==='skipped');const anySkipped=CL.some((_,j)=>status[j]==='skipped');const anyUpcoming=CL.some((_,j)=>!status[j]||status[j]==='upcoming');if(allDone&&!anySkipped&&!anyUpcoming){card.classList.remove('flipping');showAllDoneOverlay(prevPhase);return;}if(pAllGreen&&newPhase&&newPhase!==prevPhase){card.classList.remove('flipping');showPhaseOverlay(prevPhase,newPhase);return;}}render();card.classList.remove('flipping');},450);}else{cancelHold();}}
 function cancelHold(){if(holdState==='flipping'||holdState==='confirmed')return;clearTimeout(holdTimer);holdState='idle';resetRunwayBtn();document.getElementById('confirmHint').textContent='לחץ והחזק את המסלול לאישור';document.getElementById('confirmHint').classList.remove('confirmed');document.getElementById('cardStamp').classList.remove('visible');}
 function resetRunwayBtn(instant){
   const fill=document.getElementById('runwayFill');
   const plane=document.getElementById('runwayPlane');
   const btn=document.getElementById('runwayBtn');
+  fill.style.transition='none';fill.style.width='0%';plane.style.transition='';plane.style.right='';
   if(instant){
     fill.style.transition='none';
     plane.style.transition='none';
@@ -1167,7 +1200,7 @@ function saveEditor(){
   const statusByKey={};
   CL.forEach((item,i)=>{if(status[i])statusByKey[item.main]=status[i];});
   const newList=edDataToCL(edData);
-  try{localStorage.setItem(LIST_KEY,JSON.stringify(newList));}catch(e){}
+  try{localStorage.setItem(LIST_KEY,JSON.stringify(newList));localStorage.setItem('aircheck_list_type','modified');}catch(e){}
   // Rebuild CL
   CL.length=0;newList.forEach(it=>CL.push(it));
   buildIndex();
@@ -1553,7 +1586,7 @@ function confirmXLSImport(){
   const fname=document.querySelector('.xls-preview-stat')?.closest('[id]')?.dataset?.filename||'import.xlsx';
   CL.length=0;imported.forEach(it=>CL.push(it));
   buildIndex();clearState();
-  try{localStorage.setItem(LIST_KEY,JSON.stringify(imported));}catch(ex){}
+  try{localStorage.setItem(LIST_KEY,JSON.stringify(imported));localStorage.setItem('aircheck_list_type','modified');}catch(ex){}
   // Show success step before closing
   const srcLabel=document.querySelector('[style*="SOURCE:"]');
   const fn=srcLabel?srcLabel.textContent.replace('SOURCE: ','').trim():'import.xlsx';
@@ -1622,7 +1655,7 @@ function showEditorResetConfirm(){
   document.getElementById('modalConfirmBtn').textContent='כן, אפס';
   document.getElementById('modalConfirmBtn').onclick=()=>{
     // Do the reset
-    CL.length=0;CL_DEFAULT.forEach(it=>CL.push({...it}));buildIndex();
+    CL.length=0;CL_DEFAULT.forEach(it=>CL.push({...it}));buildIndex();localStorage.setItem('aircheck_list_type','default');
     edData=clToEdData(CL);
     // Show success — close and reopen
     // Immediate feedback, then show success
@@ -1666,9 +1699,9 @@ function openSettings(){
   document.getElementById('settingsTailInput').value=tail;
   updateStampPreview(tail||'HHH');
   updateTog('togSounds',settings.sounds);
-  // Populate route fields
-  const r=localStorage.getItem(ROUTE_KEY);
-  if(r){try{const d=JSON.parse(r);document.getElementById('settingsFrom').value=d.from||'';document.getElementById('settingsTo').value=d.to||'';}catch(e){}}
+  const hms=settings.holdMs||400;
+  const hkey=hms<=200?'short':hms>=700?'long':'normal';
+  updateHoldDurationCtrl(hkey);
   // Show current UTC time in stamp preview
   const now=new Date();
   document.getElementById('settingsStampTime').textContent=String(now.getUTCHours()).padStart(2,'0')+':'+String(now.getUTCMinutes()).padStart(2,'0')+' UTC';
@@ -1692,6 +1725,16 @@ function updateStampPreview(tail){
 function closeSettings(){
   showScreen('screenChecklist');
 }
+function setHoldDuration(ms, key){
+  settings.holdMs=ms;
+  saveSettings();
+  updateHoldDurationCtrl(key);
+}
+function updateHoldDurationCtrl(key){
+  const btns=document.querySelectorAll('#holdDurationCtrl .seg-btn');
+  const keys=['short','normal','long'];
+  btns.forEach((b,i)=>{b.className='seg-btn '+(keys[i]===key?'active':'inactive');});
+}
 function saveSettingsTail(val){
   settings.tail=val;
   saveSettings();
@@ -1699,14 +1742,7 @@ function saveSettingsTail(val){
   document.getElementById('stampInit').textContent='PIC · 4X-'+(val||'HHH');
   try{localStorage.setItem(REG_KEY,val);}catch(e){}
 }
-function saveSettingsRoute(){
-  const f=document.getElementById('settingsFrom').value;
-  const t=document.getElementById('settingsTo').value;
-  try{localStorage.setItem(ROUTE_KEY,JSON.stringify({from:f,to:t}));}catch(e){}
-  // Update main strip live
-  document.getElementById('stripFrom').value=f;
-  document.getElementById('stripTo').value=t;
-}
+function saveSettingsRoute(){}
 
 function toggleSetting(key){
   settings[key]=!settings[key];
@@ -1746,6 +1782,20 @@ function doSettingsReset(){
 }
 function editRoute(){}
 
+let _vTapCount=0;let _vTapTimer=null;
+function handleVersionTap(){
+  _vTapCount++;
+  clearTimeout(_vTapTimer);
+  if(_vTapCount>=5){
+    _vTapCount=0;
+    document.getElementById('statsPopup').classList.add('open');
+    document.getElementById('statsContent').innerHTML='<div class="stats-loading">טוען נתונים...</div>';
+    if(window.loadStats)window.loadStats();
+  }else{
+    _vTapTimer=setTimeout(()=>{_vTapCount=0;},1500);
+  }
+}
+function closeStats(){document.getElementById('statsPopup').classList.remove('open');}
 function showScreen(id){
   document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
   document.getElementById(id).classList.add('active');
@@ -1842,6 +1892,111 @@ function splashSecondaryAction(){
   }
 }
 </script>
+<script type="module">
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/12.14.0/firebase-app.js";
+  import { getDatabase, ref, set, get } from "https://www.gstatic.com/firebasejs/12.14.0/firebase-database.js";
+
+  const firebaseConfig = {
+    apiKey: "AIzaSyBoW1O9dTanLUZW5Z8jswn3hxpfFSdmzm0",
+    authDomain: "aircheck-80530.firebaseapp.com",
+    databaseURL: "https://aircheck-80530-default-rtdb.europe-west1.firebasedatabase.app",
+    projectId: "aircheck-80530",
+    storageBucket: "aircheck-80530.firebasestorage.app",
+    messagingSenderId: "816746630548",
+    appId: "1:816746630548:web:dac8392deff9b96cc9d381"
+  };
+
+  const app = initializeApp(firebaseConfig);
+  const db = getDatabase(app);
+
+  // Generate or retrieve device ID
+  function getDeviceId(){
+    let id=localStorage.getItem('aircheck_device_id');
+    if(!id){id='d_'+Date.now().toString(36)+Math.random().toString(36).slice(2,7);localStorage.setItem('aircheck_device_id',id);}
+    return id;
+  }
+
+  // Detect OS
+  function getOS(){
+    const ua=navigator.userAgent;
+    if(/iPad|iPhone|iPod/.test(ua))return'iOS';
+    if(/Android/.test(ua))return'Android';
+    return'Desktop';
+  }
+
+  // Detect list type
+  function getListType(){
+    return localStorage.getItem('aircheck_list_type')||'default';
+  }
+
+  // Write device record on app open
+  async function trackAppOpen(){
+    try{
+      const deviceId=getDeviceId();
+      const os=getOS();
+      const listType=getListType();
+      const now=Date.now();
+      const pilotRef=ref(db,'pilots/'+deviceId);
+      const snap=await get(pilotRef);
+      const existing=snap.val()||{};
+      await set(pilotRef,{
+        firstSeen: existing.firstSeen||now,
+        lastSeen: now,
+        os: os,
+        listType: listType
+      });
+    }catch(e){}
+  }
+
+  // Fetch and display stats
+  window.loadStats=async function(){
+    try{
+      const pilotRef=ref(db,'pilots');
+      const snap=await get(pilotRef);
+      const data=snap.val();
+      if(!data){
+        document.getElementById('statsContent').innerHTML='<div class="stats-loading">אין נתונים עדיין</div>';
+        return;
+      }
+      const pilots=Object.values(data);
+      const total=pilots.length;
+      const now=Date.now();
+      const thirtyDays=30*24*60*60*1000;
+      const active=pilots.filter(p=>now-p.lastSeen<thirtyDays).length;
+      const custom=pilots.filter(p=>p.listType==='modified').length;
+      const customPct=total>0?Math.round(custom/total*100):0;
+      const osCounts={iOS:0,Android:0,Desktop:0};
+      pilots.forEach(p=>{if(osCounts[p.os]!==undefined)osCounts[p.os]++;});
+      document.getElementById('statsContent').innerHTML=`
+        <div class="stats-grid">
+          <div class="stats-cell"><div class="stats-cell-val">${total}</div><div class="stats-cell-lbl">טייסים</div></div>
+          <div class="stats-cell"><div class="stats-cell-val">${active}</div><div class="stats-cell-lbl">פעילים 30 יום</div></div>
+          <div class="stats-cell"><div class="stats-cell-val">${customPct}%</div><div class="stats-cell-lbl">רשימה מותאמת</div></div>
+          <div class="stats-cell"><div class="stats-cell-val">${total>0?Math.round(active/total*100):0}%</div><div class="stats-cell-lbl">שיעור פעילות</div></div>
+        </div>
+        <div class="stats-os">
+          <span class="stats-os-pill">iOS ${osCounts.iOS}</span>
+          <span class="stats-os-pill">Android ${osCounts.Android}</span>
+          <span class="stats-os-pill">Desktop ${osCounts.Desktop}</span>
+        </div>`;
+    }catch(e){
+      document.getElementById('statsContent').innerHTML='<div class="stats-loading">שגיאה בטעינת נתונים</div>';
+    }
+  };
+
+  // Track on load
+  trackAppOpen();
+</script>
+
 <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js" defer></script>
+
+  <div id="statsPopup">
+    <div class="stats-box">
+      <div class="stats-title">✦ AirCheck+ · STATS</div>
+      <div id="statsContent"><div class="stats-loading">טוען נתונים...</div></div>
+      <button class="btn btn-ghost" style="margin-top:4px;" onclick="closeStats()">סגור</button>
+    </div>
+  </div>
+
 </body>
 </html>
