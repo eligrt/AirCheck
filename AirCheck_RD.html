@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <!-- ═══════════════════════════════════════
-     AirCheck+ · v2.04.076 · built by eligrt
+     AirCheck+ · v2.04.077 · built by eligrt
      ═══════════════════════════════════════ -->
 <html lang="he" dir="rtl">
 <head>
@@ -491,7 +491,7 @@ html,body{height:100%;background:#1a1a1c;font-family:var(--font-ui);color:var(--
     <div class="splash-footer-wrap">
       <div class="footer-strip" style="display:flex;align-items:center;justify-content:space-between;padding:5px 14px 8px;">
         <span class="footer-refresh" onclick="location.reload()">רענון</span>
-        <span id="versionTap" onclick="handleVersionTap()" style="cursor:default;">AirCheck+ · v2.04.076 · built by eligrt</span>
+        <span id="versionTap" onclick="handleVersionTap()" style="cursor:default;">AirCheck+ · v2.04.077 · built by eligrt</span>
         <span style="width:40px;"></span>
       </div>
     </div>
@@ -598,7 +598,7 @@ html,body{height:100%;background:#1a1a1c;font-family:var(--font-ui);color:var(--
     <div class="tree-panel" id="treePanel"></div>
     <div class="footer-strip" style="display:flex;align-items:center;justify-content:space-between;padding:5px 14px 8px;">
       <span class="footer-refresh" onclick="location.reload()">רענון</span>
-      <span id="versionTap" onclick="handleVersionTap()" style="cursor:default;">AirCheck+ · v2.04.076 · built by eligrt</span>
+      <span id="versionTap" onclick="handleVersionTap()" style="cursor:default;">AirCheck+ · v2.04.077 · built by eligrt</span>
       <span style="width:40px;"></span>
     </div>
   </div>
@@ -657,7 +657,7 @@ html,body{height:100%;background:#1a1a1c;font-family:var(--font-ui);color:var(--
 
     <div class="footer-strip" style="display:flex;align-items:center;justify-content:space-between;padding:5px 14px 8px;">
       <span style="width:40px;"></span>
-      <span id="versionTap" onclick="handleVersionTap()" style="cursor:default;">AirCheck+ · v2.04.076 · built by eligrt</span>
+      <span id="versionTap" onclick="handleVersionTap()" style="cursor:default;">AirCheck+ · v2.04.077 · built by eligrt</span>
       <span style="width:40px;"></span>
     </div>
   </div>
@@ -747,7 +747,7 @@ html,body{height:100%;background:#1a1a1c;font-family:var(--font-ui);color:var(--
     </div>
     <div class="footer-strip" style="display:flex;align-items:center;justify-content:space-between;padding:5px 14px 8px;">
       <span class="footer-refresh" onclick="location.reload()">רענון</span>
-      <span id="versionTap" onclick="handleVersionTap()" style="cursor:default;">AirCheck+ · v2.04.076 · built by eligrt</span>
+      <span id="versionTap" onclick="handleVersionTap()" style="cursor:default;">AirCheck+ · v2.04.077 · built by eligrt</span>
       <span style="width:40px;"></span>
     </div>
   </div>
@@ -764,7 +764,7 @@ html,body{height:100%;background:#1a1a1c;font-family:var(--font-ui);color:var(--
     <div class="editor-list" id="editorList"></div>
     <div class="footer-strip" style="display:flex;align-items:center;justify-content:space-between;padding:5px 14px 8px;">
       <span class="footer-refresh" onclick="location.reload()">רענון</span>
-      <span id="versionTap" onclick="handleVersionTap()" style="cursor:default;">AirCheck+ · v2.04.076 · built by eligrt</span>
+      <span id="versionTap" onclick="handleVersionTap()" style="cursor:default;">AirCheck+ · v2.04.077 · built by eligrt</span>
       <span style="width:40px;"></span>
     </div>
   </div>
@@ -1205,7 +1205,9 @@ function saveEditor(){
   try{
     localStorage.setItem(LIST_KEY,JSON.stringify(newList));
     const isDefault=newList.length===CL_DEFAULT.length&&newList.every((it,i)=>it.main===CL_DEFAULT[i].main&&it.group===CL_DEFAULT[i].group&&it.phase===CL_DEFAULT[i].phase);
-    localStorage.setItem('aircheck_list_type',isDefault?'default':'modified');
+    const newListType=isDefault?'default':'modified';
+    localStorage.setItem('aircheck_list_type',newListType);
+    if(window.updateListTypeInFirebase)window.updateListTypeInFirebase(newListType);
   }catch(e){}
   // Rebuild CL
   CL.length=0;newList.forEach(it=>CL.push(it));
@@ -1961,6 +1963,18 @@ function splashSecondaryAction(){
     }catch(e){}
   }
 
+  // Update just the listType after editor DONE
+  window.updateListTypeInFirebase=async function(listType){
+    try{
+      const deviceId=getDeviceId();
+      const pilotRef=ref(db,'pilots/'+deviceId);
+      const snap=await get(pilotRef);
+      const existing=snap.val()||{};
+      if(Object.keys(existing).length===0)return; // not tracked yet
+      await set(pilotRef,{...existing,listType:listType});
+    }catch(e){}
+  };
+
   // Fetch and display stats
   window.loadStats=async function(){
     try{
@@ -1980,17 +1994,28 @@ function splashSecondaryAction(){
       const customPct=total>0?Math.round(custom/total*100):0;
       const osCounts={iOS:0,Android:0,Desktop:0};
       pilots.forEach(p=>{if(osCounts[p.os]!==undefined)osCounts[p.os]++;});
+      // OS bar chart
+      function osBar(count,total,color){
+        const pct=total>0?Math.round(count/total*100):0;
+        return `<div style="margin-bottom:8px;">
+          <div style="display:flex;justify-content:space-between;font-size:10px;font-family:var(--font-mono);color:var(--ink-muted);margin-bottom:3px;direction:ltr;">
+            <span style="color:var(--ink-body);">${color.label}</span><span>${count} · ${pct}%</span>
+          </div>
+          <div style="height:6px;background:var(--paper-edge);border-radius:3px;overflow:hidden;">
+            <div style="height:100%;width:${pct}%;background:${color.fill};border-radius:3px;transition:width .4s ease;"></div>
+          </div>
+        </div>`;
+      }
       document.getElementById('statsContent').innerHTML=`
-        <div class="stats-grid">
+        <div class="stats-grid" style="grid-template-columns:1fr 1fr 1fr;margin-bottom:14px;">
           <div class="stats-cell"><div class="stats-cell-val">${total}</div><div class="stats-cell-lbl">טייסים</div></div>
-          <div class="stats-cell"><div class="stats-cell-val">${active}</div><div class="stats-cell-lbl">פעילים 30 יום</div></div>
-          <div class="stats-cell"><div class="stats-cell-val">${customPct}%</div><div class="stats-cell-lbl">רשימה מותאמת</div></div>
-          <div class="stats-cell"><div class="stats-cell-val">${total>0?Math.round(active/total*100):0}%</div><div class="stats-cell-lbl">שיעור פעילות</div></div>
+          <div class="stats-cell"><div class="stats-cell-val">${active}</div><div class="stats-cell-lbl">פעילים 30י</div></div>
+          <div class="stats-cell"><div class="stats-cell-val">${customPct}%</div><div class="stats-cell-lbl">מותאמת</div></div>
         </div>
-        <div class="stats-os">
-          <span class="stats-os-pill">iOS ${osCounts.iOS}</span>
-          <span class="stats-os-pill">Android ${osCounts.Android}</span>
-          <span class="stats-os-pill">Desktop ${osCounts.Desktop}</span>
+        <div style="background:var(--paper);border:1px solid var(--gold-lite);border-radius:4px;padding:10px 12px;">
+          ${osBar(osCounts.iOS,total,{label:'iOS',fill:'var(--ink)'})}
+          ${osBar(osCounts.Android,total,{label:'Android',fill:'var(--cleared)'})}
+          ${osBar(osCounts.Desktop,total,{label:'Desktop',fill:'var(--amber)'})}
         </div>`;
     }catch(e){
       document.getElementById('statsContent').innerHTML='<div class="stats-loading">שגיאה בטעינת נתונים</div>';
