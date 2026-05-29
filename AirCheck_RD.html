@@ -1,9 +1,9 @@
 <!DOCTYPE html>
 <!-- ═══════════════════════════════════════
-     AirCheck+ · v2.04.072 · built by eligrt
+     AirCheck+ · v2.04.075 · built by eligrt
      ═══════════════════════════════════════ -->
 <!-- ═══════════════════════════════════════
-     AirCheck+ · v2.04.072 · built by eligrt
+     AirCheck+ · v2.04.075 · built by eligrt
      ═══════════════════════════════════════ -->
 <html lang="he" dir="rtl">
 <head>
@@ -325,6 +325,7 @@ html,body{height:100%;background:#1a1a1c;font-family:var(--font-ui);color:var(--
 .ed-action-btn{flex:1;padding:10px;background:transparent;border:1px solid var(--gold-lite);border-radius:4px;font-family:var(--font-ui);font-size:12px;color:var(--ink);font-weight:600;cursor:pointer;}
 .ed-action-btn.danger{color:var(--stamp-red);border-color:rgba(185,74,58,.4);}
 .ed-action-btn:active{background:rgba(200,160,74,.08);}
+.ed-action-btn:disabled{opacity:.28;cursor:default;}
 /* Editor popup */
 #edPopup{display:none;position:fixed;inset:0;z-index:300;align-items:flex-end;justify-content:center;background:rgba(26,19,8,.75);backdrop-filter:blur(3px);padding:16px;}
 #edPopup.open{display:flex;}
@@ -493,7 +494,7 @@ html,body{height:100%;background:#1a1a1c;font-family:var(--font-ui);color:var(--
     <div class="splash-footer-wrap">
       <div class="footer-strip" style="display:flex;align-items:center;justify-content:space-between;padding:5px 14px 8px;">
         <span class="footer-refresh" onclick="location.reload()">רענון</span>
-        <span id="versionTap" onclick="handleVersionTap()" style="cursor:default;">AirCheck+ · v2.04.072 · built by eligrt</span>
+        <span id="versionTap" onclick="handleVersionTap()" style="cursor:default;">AirCheck+ · v2.04.075 · built by eligrt</span>
         <span style="width:40px;"></span>
       </div>
     </div>
@@ -600,7 +601,7 @@ html,body{height:100%;background:#1a1a1c;font-family:var(--font-ui);color:var(--
     <div class="tree-panel" id="treePanel"></div>
     <div class="footer-strip" style="display:flex;align-items:center;justify-content:space-between;padding:5px 14px 8px;">
       <span class="footer-refresh" onclick="location.reload()">רענון</span>
-      <span id="versionTap" onclick="handleVersionTap()" style="cursor:default;">AirCheck+ · v2.04.072 · built by eligrt</span>
+      <span id="versionTap" onclick="handleVersionTap()" style="cursor:default;">AirCheck+ · v2.04.075 · built by eligrt</span>
       <span style="width:40px;"></span>
     </div>
   </div>
@@ -659,7 +660,7 @@ html,body{height:100%;background:#1a1a1c;font-family:var(--font-ui);color:var(--
 
     <div class="footer-strip" style="display:flex;align-items:center;justify-content:space-between;padding:5px 14px 8px;">
       <span style="width:40px;"></span>
-      <span id="versionTap" onclick="handleVersionTap()" style="cursor:default;">AirCheck+ · v2.04.072 · built by eligrt</span>
+      <span id="versionTap" onclick="handleVersionTap()" style="cursor:default;">AirCheck+ · v2.04.075 · built by eligrt</span>
       <span style="width:40px;"></span>
     </div>
   </div>
@@ -736,7 +737,7 @@ html,body{height:100%;background:#1a1a1c;font-family:var(--font-ui);color:var(--
       <div class="settings-section">
         <span class="settings-section-label">DATA</span>
         <div class="settings-card">
-          <div class="settings-row tappable" onclick="closeSettings();openEditor()">
+          <div class="settings-row tappable" onclick="openEditor(true)">
             <div style="flex:1;">
               <div class="settings-row-label">עריכת הצ'קליסט</div>
               <div id="settingsListType" style="font-size:10px;margin-top:2px;"></div>
@@ -749,7 +750,7 @@ html,body{height:100%;background:#1a1a1c;font-family:var(--font-ui);color:var(--
     </div>
     <div class="footer-strip" style="display:flex;align-items:center;justify-content:space-between;padding:5px 14px 8px;">
       <span class="footer-refresh" onclick="location.reload()">רענון</span>
-      <span id="versionTap" onclick="handleVersionTap()" style="cursor:default;">AirCheck+ · v2.04.072 · built by eligrt</span>
+      <span id="versionTap" onclick="handleVersionTap()" style="cursor:default;">AirCheck+ · v2.04.075 · built by eligrt</span>
       <span style="width:40px;"></span>
     </div>
   </div>
@@ -766,7 +767,7 @@ html,body{height:100%;background:#1a1a1c;font-family:var(--font-ui);color:var(--
     <div class="editor-list" id="editorList"></div>
     <div class="footer-strip" style="display:flex;align-items:center;justify-content:space-between;padding:5px 14px 8px;">
       <span class="footer-refresh" onclick="location.reload()">רענון</span>
-      <span id="versionTap" onclick="handleVersionTap()" style="cursor:default;">AirCheck+ · v2.04.072 · built by eligrt</span>
+      <span id="versionTap" onclick="handleVersionTap()" style="cursor:default;">AirCheck+ · v2.04.075 · built by eligrt</span>
       <span style="width:40px;"></span>
     </div>
   </div>
@@ -1197,13 +1198,18 @@ function edDataToCL(data){
   data.forEach(p=>p.groups.forEach(g=>g.items.forEach(it=>list.push({phase:p.phase,group:g.name,main:it.main,sub:it.sub||''}))));
   return list;
 }
-function openEditor(){edData=clToEdData(CL);renderEditor();showScreen('screenEditor');}
-function closeEditor(){showScreen('screenChecklist');}
+let _editorFromSettings=false;
+function openEditor(fromSettings){_editorFromSettings=!!fromSettings;edData=clToEdData(CL);renderEditor();showScreen('screenEditor');}
+function closeEditor(){if(_editorFromSettings){openSettings();}else{showScreen('screenChecklist');}}
 function saveEditor(){
   const statusByKey={};
   CL.forEach((item,i)=>{if(status[i])statusByKey[item.main]=status[i];});
   const newList=edDataToCL(edData);
-  try{localStorage.setItem(LIST_KEY,JSON.stringify(newList));localStorage.setItem('aircheck_list_type','modified');}catch(e){}
+  try{
+    localStorage.setItem(LIST_KEY,JSON.stringify(newList));
+    const isDefault=newList.length===CL_DEFAULT.length&&newList.every((it,i)=>it.main===CL_DEFAULT[i].main&&it.group===CL_DEFAULT[i].group&&it.phase===CL_DEFAULT[i].phase);
+    localStorage.setItem('aircheck_list_type',isDefault?'default':'modified');
+  }catch(e){}
   // Rebuild CL
   CL.length=0;newList.forEach(it=>CL.push(it));
   buildIndex();
@@ -1213,8 +1219,7 @@ function saveEditor(){
   current=CL.findIndex((_,i)=>!status[i]||status[i]==='skipped');
   if(current===-1)current=0;
   saveState();
-  showScreen('screenChecklist');
-  render();
+  if(_editorFromSettings){openSettings();}else{showScreen('screenChecklist');render();}
 }
 
 function renderEditor(){
@@ -1277,6 +1282,8 @@ function renderEditor(){
   const exportBtn=document.createElement('button');exportBtn.className='ed-action-btn';exportBtn.textContent='ייצוא XLS ↓';
   exportBtn.onclick=exportEditorToXLS;
   const resetBtn=document.createElement('button');resetBtn.className='ed-action-btn danger';resetBtn.textContent='איפוס לברירת מחדל';
+  const isAlreadyDefault=(localStorage.getItem('aircheck_list_type')||'default')==='default';
+  resetBtn.disabled=isAlreadyDefault;
   resetBtn.onclick=()=>showEditorResetConfirm();
   actions.appendChild(importBtn);actions.appendChild(exportBtn);actions.appendChild(resetBtn);el.appendChild(actions);
 }
@@ -1658,7 +1665,7 @@ function showEditorResetConfirm(){
   document.getElementById('modalConfirmBtn').textContent='כן, אפס';
   document.getElementById('modalConfirmBtn').onclick=()=>{
     // Do the reset
-    CL.length=0;CL_DEFAULT.forEach(it=>CL.push({...it}));buildIndex();localStorage.setItem('aircheck_list_type','default');updateListTypeIndicator();
+    CL.length=0;CL_DEFAULT.forEach(it=>CL.push({...it}));buildIndex();localStorage.setItem('aircheck_list_type','default');
     edData=clToEdData(CL);
     // Show success — close and reopen
     // Immediate feedback, then show success
@@ -1681,7 +1688,7 @@ function showEditorResetConfirm(){
     document.querySelector('.modal-box').className='modal-box success';
     document.getElementById('modalConfirmBtn').disabled=false;
     document.getElementById('modalConfirmBtn').textContent='חזור לעריכה';
-    document.getElementById('modalConfirmBtn').onclick=()=>{closeModal();renderEditor();};
+    document.getElementById('modalConfirmBtn').onclick=()=>{closeModal();renderEditor();if(_editorFromSettings)updateListTypeIndicator();};
     document.getElementById('modalCancelBtn').style.display='none';
     },600);
   };
