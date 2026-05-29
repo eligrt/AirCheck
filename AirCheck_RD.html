@@ -1,4 +1,10 @@
 <!DOCTYPE html>
+<!-- ═══════════════════════════════════════
+     AirCheck+ · v2.04.062 · built by eligrt
+     ═══════════════════════════════════════ -->
+<!-- ═══════════════════════════════════════
+     AirCheck+ · v2.04.062 · built by eligrt
+     ═══════════════════════════════════════ -->
 <html lang="he" dir="rtl">
 <head>
 <meta charset="UTF-8">
@@ -473,7 +479,7 @@ html,body{height:100%;background:#1a1a1c;font-family:var(--font-ui);color:var(--
     <div class="splash-footer-wrap">
       <div class="footer-strip" style="display:flex;align-items:center;justify-content:space-between;padding:5px 14px 8px;">
         <span class="footer-refresh" onclick="location.reload()">רענון</span>
-        <span>AirCheck+ · v2.04.061 · built by eligrt</span>
+        <span>AirCheck+ · v2.04.062 · built by eligrt</span>
         <span style="width:40px;"></span>
       </div>
     </div>
@@ -586,7 +592,7 @@ html,body{height:100%;background:#1a1a1c;font-family:var(--font-ui);color:var(--
     <div class="tree-panel" id="treePanel"></div>
     <div class="footer-strip" style="display:flex;align-items:center;justify-content:space-between;padding:5px 14px 8px;">
       <span class="footer-refresh" onclick="location.reload()">רענון</span>
-      <span>AirCheck+ · v2.04.061 · built by eligrt</span>
+      <span>AirCheck+ · v2.04.062 · built by eligrt</span>
       <span style="width:40px;"></span>
     </div>
   </div>
@@ -645,7 +651,7 @@ html,body{height:100%;background:#1a1a1c;font-family:var(--font-ui);color:var(--
 
     <div class="footer-strip" style="display:flex;align-items:center;justify-content:space-between;padding:5px 14px 8px;">
       <span style="width:40px;"></span>
-      <span>AirCheck+ · v2.04.061 · built by eligrt</span>
+      <span>AirCheck+ · v2.04.062 · built by eligrt</span>
       <span style="width:40px;"></span>
     </div>
   </div>
@@ -738,7 +744,7 @@ html,body{height:100%;background:#1a1a1c;font-family:var(--font-ui);color:var(--
     </div>
     <div class="footer-strip" style="display:flex;align-items:center;justify-content:space-between;padding:5px 14px 8px;">
       <span class="footer-refresh" onclick="location.reload()">רענון</span>
-      <span>AirCheck+ · v2.04.061 · built by eligrt</span>
+      <span>AirCheck+ · v2.04.062 · built by eligrt</span>
       <span style="width:40px;"></span>
     </div>
   </div>
@@ -755,7 +761,7 @@ html,body{height:100%;background:#1a1a1c;font-family:var(--font-ui);color:var(--
     <div class="editor-list" id="editorList"></div>
     <div class="footer-strip" style="display:flex;align-items:center;justify-content:space-between;padding:5px 14px 8px;">
       <span class="footer-refresh" onclick="location.reload()">רענון</span>
-      <span>AirCheck+ · v2.04.061 · built by eligrt</span>
+      <span>AirCheck+ · v2.04.062 · built by eligrt</span>
       <span style="width:40px;"></span>
     </div>
   </div>
@@ -980,7 +986,7 @@ function advanceToNext(){let n=current+1;while(n<CL.length&&status[n]==='done')n
 function goBack(){if(current>0){current--;holdState='idle';resetRunwayBtn();render();}}
 function skipItem(){status[current]='skipped';let n=current+1;while(n<CL.length&&status[n]==='done')n++;if(n<CL.length)current=n;holdState='idle';resetRunwayBtn();render();}
 function uncheckCurrent(){status[current]='skipped';holdState='idle';resetRunwayBtn();render();}
-function goNext(){if(current<CL.length-1){current++;holdState='idle';resetRunwayBtn();render();}}
+function goNext(){if(current<CL.length-1){if(status[current]!=='done')status[current]='skipped';current++;holdState='idle';resetRunwayBtn();render();}}
 function jumpToUnchecked(){const idx=CL.findIndex((_,i)=>status[i]==='skipped');if(idx!==-1){current=idx;holdState='idle';resetRunwayBtn();render();}}
 function updateNavBtns(){
   const isFirst=current===0;
