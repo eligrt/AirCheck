@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <!-- ═══════════════════════════════════════
-     AirCheck+ · v2.06.015T · built by eligrt
+     AirCheck+ · v2.06.017T · built by eligrt
      ═══════════════════════════════════════ -->
 <html lang="he" dir="rtl">
 <head>
@@ -599,8 +599,8 @@ html,body{height:100%;background:#1a1a1c;font-family:var(--font-ui);color:var(--
     </div>
     <div class="splash-footer-wrap">
       <div class="footer-strip" style="display:flex;align-items:center;justify-content:space-between;padding:5px 14px 8px;">
-        <span class="footer-refresh" onclick="location.reload()">רענון</span>
-        <span id="versionTap" onclick="handleVersionTap()" style="cursor:default;">AirCheck+ · v2.06.015T · built by eligrt</span>
+        <span class="footer-refresh" onclick="reloadApp()">רענון</span>
+        <span id="versionTap" onclick="handleVersionTap()" style="cursor:default;">AirCheck+ · v2.06.017T · built by eligrt</span>
         <span style="width:40px;"></span>
       </div>
     </div>
@@ -614,7 +614,7 @@ html,body{height:100%;background:#1a1a1c;font-family:var(--font-ui);color:var(--
           <span class="strip-label">UTC</span>
           <span class="strip-time" id="utcClock">--:--</span>
         </div>
-        <button class="strip-pill strip-pill-metar" onclick="openMetar()" style="align-self:center;">METAR</button>
+        <button class="strip-pill strip-pill-metar" onclick="openMetar()" style="align-self:center;">METAR/TAF</button>
       </div>
       <div class="strip-actions" style="margin-left:auto;align-self:center;">
         <button class="strip-pill" onclick="openSettings()">⚙ הגדרות</button>
@@ -715,8 +715,8 @@ html,body{height:100%;background:#1a1a1c;font-family:var(--font-ui);color:var(--
 
     <div class="tree-panel" id="treePanel"></div>
     <div class="footer-strip" style="display:flex;align-items:center;justify-content:space-between;padding:5px 14px 8px;">
-      <span class="footer-refresh" onclick="location.reload()">רענון</span>
-      <span id="versionTap" onclick="handleVersionTap()" style="cursor:default;">AirCheck+ · v2.06.015T · built by eligrt</span>
+      <span class="footer-refresh" onclick="reloadApp()">רענון</span>
+      <span id="versionTap" onclick="handleVersionTap()" style="cursor:default;">AirCheck+ · v2.06.017T · built by eligrt</span>
       <span style="width:40px;"></span>
     </div>
   </div>
@@ -775,7 +775,7 @@ html,body{height:100%;background:#1a1a1c;font-family:var(--font-ui);color:var(--
 
     <div class="footer-strip" style="display:flex;align-items:center;justify-content:space-between;padding:5px 14px 8px;">
       <span style="width:40px;"></span>
-      <span id="versionTap" onclick="handleVersionTap()" style="cursor:default;">AirCheck+ · v2.06.015T · built by eligrt</span>
+      <span id="versionTap" onclick="handleVersionTap()" style="cursor:default;">AirCheck+ · v2.06.017T · built by eligrt</span>
       <span style="width:40px;"></span>
     </div>
   </div>
@@ -864,8 +864,8 @@ html,body{height:100%;background:#1a1a1c;font-family:var(--font-ui);color:var(--
 
     </div>
     <div class="footer-strip" style="display:flex;align-items:center;justify-content:space-between;padding:5px 14px 8px;">
-      <span class="footer-refresh" onclick="location.reload()">רענון</span>
-      <span id="versionTap" onclick="handleVersionTap()" style="cursor:default;">AirCheck+ · v2.06.015T · built by eligrt</span>
+      <span class="footer-refresh" onclick="reloadApp()">רענון</span>
+      <span id="versionTap" onclick="handleVersionTap()" style="cursor:default;">AirCheck+ · v2.06.017T · built by eligrt</span>
       <span style="width:40px;"></span>
     </div>
   </div>
@@ -885,8 +885,8 @@ html,body{height:100%;background:#1a1a1c;font-family:var(--font-ui);color:var(--
     <div class="profile-tab-actions" id="profileTabActions"></div>
     <div class="editor-list" id="editorList"></div>
     <div class="footer-strip" style="display:flex;align-items:center;justify-content:space-between;padding:5px 14px 8px;">
-      <span class="footer-refresh" onclick="location.reload()">רענון</span>
-      <span id="versionTap" onclick="handleVersionTap()" style="cursor:default;">AirCheck+ · v2.06.015T · built by eligrt</span>
+      <span class="footer-refresh" onclick="reloadApp()">רענון</span>
+      <span id="versionTap" onclick="handleVersionTap()" style="cursor:default;">AirCheck+ · v2.06.017T · built by eligrt</span>
       <span style="width:40px;"></span>
     </div>
   </div>
@@ -1362,7 +1362,8 @@ function renderProfileTabStrip(){
   p.profiles.forEach(prof=>{
     const tab=document.createElement('div');
     tab.className='profile-tab'+(prof.id===_editorActiveProfileId?' active':'');
-    tab.textContent=prof.name;
+    const itemCount=(prof.list||[]).length;
+    tab.textContent=prof.name+' ('+itemCount+')';
     tab.onclick=()=>{_editorActiveProfileId=prof.id;loadEditorForProfile(prof.id);};
     strip.appendChild(tab);
   });
@@ -2043,7 +2044,28 @@ function exportEditorToXLS(){
   }
 }
 
-// ── TOAST ──
+// ── RELOAD ──
+function reloadApp(){
+  localStorage.removeItem('aircheck_whats_new_seen');
+  location.reload();
+}
+
+// ── WHAT'S NEW ──
+const WHATS_NEW_KEY='aircheck_whats_new_seen';
+const WHATS_NEW_VER='2.06';
+function checkWhatsNew(){
+  const seen=localStorage.getItem(WHATS_NEW_KEY);
+  if(seen===WHATS_NEW_VER)return;
+  const el=document.getElementById('whatsNewOverlay');
+  const verEl=document.getElementById('whatsNewVer');
+  if(verEl)verEl.textContent='AirCheck+ · v'+WHATS_NEW_VER;
+  if(el)el.style.display='flex';
+}
+function closeWhatsNew(){
+  localStorage.setItem(WHATS_NEW_KEY,WHATS_NEW_VER);
+  const el=document.getElementById('whatsNewOverlay');
+  if(el)el.style.display='none';
+}
 let toastTimer=null;
 function showToast(msg,duration=2800){
   let t=document.getElementById('appToast');
@@ -2558,7 +2580,7 @@ function showScreen(id){
   document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
   document.getElementById(id).classList.add('active');
 }
-document.addEventListener('DOMContentLoaded',()=>{loadSettings();loadList();loadState();loadReg();loadRoute();drawRings();initSplash();});
+document.addEventListener('DOMContentLoaded',()=>{loadSettings();loadList();loadState();loadReg();loadRoute();drawRings();initSplash();checkWhatsNew();});
 
 function startSplashTypewriter(){
   const sloganEl=document.getElementById('splashSlogan');
@@ -2895,6 +2917,49 @@ function splashSecondaryAction(){
       </div>
       <button class="btn btn-ink" id="renameProfileConfirmBtn" onclick="renameProfileConfirm()" style="margin-bottom:8px;">אישור</button>
       <button class="btn btn-ghost" onclick="renameProfileClose()">ביטול</button>
+    </div>
+  </div>
+
+  <!-- ══ WHAT'S NEW POPUP ══ -->
+  <div id="whatsNewOverlay" style="display:none;position:absolute;inset:0;background:rgba(26,19,8,.82);z-index:700;align-items:center;justify-content:center;padding:24px;backdrop-filter:blur(3px);">
+    <div style="background:var(--paper-hi);background-image:repeating-linear-gradient(0deg,transparent 0,transparent 27px,var(--paper-line) 27px,var(--paper-line) 28px);border:2px solid var(--gold);border-radius:8px;width:100%;max-width:340px;overflow:hidden;box-shadow:0 20px 60px rgba(0,0,0,.4);animation:metarFadeIn .25s cubic-bezier(.34,1.2,.64,1);">
+      <div style="background:var(--ink);padding:16px 18px 14px;text-align:center;">
+        <div style="font-family:var(--font-mono);font-size:9px;color:rgba(244,236,220,.5);letter-spacing:.2em;text-transform:uppercase;margin-bottom:6px;" id="whatsNewVer">AirCheck+ · v2.06</div>
+        <div style="font-size:19px;font-weight:700;color:var(--paper);line-height:1.2;">גרסה חדשה יצאה מהתנור!</div>
+        <div style="font-size:12px;color:rgba(244,236,220,.65);margin-top:4px;font-style:italic;">מה חדש?</div>
+      </div>
+      <div style="padding:14px 16px 6px;display:flex;flex-direction:column;gap:10px;">
+        <div style="display:flex;align-items:flex-start;gap:12px;padding:10px 12px;background:var(--paper);border:1px solid var(--paper-edge);border-radius:6px;direction:rtl;">
+          <div style="flex:1;">
+            <div style="font-size:13px;font-weight:700;color:var(--ink-body);margin-bottom:2px;">תחזית METAR/TAF בקליק אחד</div>
+            <div style="font-size:11px;color:var(--ink-muted);line-height:1.5;">חפש את לחצן ה־METAR בסרגל הטיסה</div>
+          </div>
+          <div style="flex-shrink:0;width:32px;height:32px;background:var(--ink);border-radius:4px;display:flex;align-items:center;justify-content:center;line-height:1.1;text-align:center;">
+            <span style="font-family:var(--font-mono);font-size:7px;font-weight:700;color:rgba(100,210,160,.9);letter-spacing:.04em;">METAR<br>TAF</span>
+          </div>
+        </div>
+        <div style="display:flex;align-items:flex-start;gap:12px;padding:10px 12px;background:var(--paper);border:1px solid var(--paper-edge);border-radius:6px;direction:rtl;">
+          <div style="flex:1;">
+            <div style="font-size:13px;font-weight:700;color:var(--ink-body);margin-bottom:2px;">עד 5 רשימות טיסה אישיות</div>
+            <div style="font-size:11px;color:var(--ink-muted);line-height:1.5;">יוצא לטיסת סופ"ש רגילה? מבחן רמה? טס על מטוסים שונים? — הכן רשימה נפרדת לכל תרחיש</div>
+          </div>
+          <div style="flex-shrink:0;width:32px;height:32px;background:var(--ink);border-radius:4px;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:2px;">
+            <div style="width:18px;height:3px;background:var(--gold);border-radius:1px;"></div>
+            <div style="width:18px;height:3px;background:rgba(200,160,74,.6);border-radius:1px;"></div>
+            <div style="width:18px;height:3px;background:rgba(200,160,74,.3);border-radius:1px;"></div>
+          </div>
+        </div>
+        <div style="display:flex;align-items:center;gap:12px;padding:10px 12px;background:var(--paper);border:1px solid var(--paper-edge);border-radius:6px;direction:rtl;">
+          <div style="flex:1;">
+            <div style="font-size:13px;font-weight:700;color:var(--ink-body);">שיפורי ביצועים, יציבות וממשק</div>
+          </div>
+          <div style="flex-shrink:0;width:32px;height:32px;background:var(--ink);border-radius:4px;display:flex;align-items:center;justify-content:center;font-size:16px;">⚡</div>
+        </div>
+      </div>
+      <div style="padding:12px 16px 16px;text-align:center;">
+        <div style="font-size:11px;color:var(--ink-faint);font-style:italic;margin-bottom:12px;">טוסו בבטחה! ושלא תשכחו שום דבר</div>
+        <button onclick="closeWhatsNew()" style="width:100%;padding:13px;background:var(--ink);border:none;border-radius:6px;color:var(--paper);font-size:15px;font-weight:700;cursor:pointer;font-family:var(--font-ui);">יאללה, בוא נטוס ✈</button>
+      </div>
     </div>
   </div>
 
