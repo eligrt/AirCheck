@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <!-- ═══════════════════════════════════════
-     AirCheck+ · v2.05.010T · built by eligrt
+     AirCheck+ · v2.06.015T · built by eligrt
      ═══════════════════════════════════════ -->
 <html lang="he" dir="rtl">
 <head>
@@ -81,8 +81,44 @@ html,body{height:100%;background:#1a1a1c;font-family:var(--font-ui);color:var(--
 
 /* ── RUNWAY SECTION ── */
 .runway-section{flex-shrink:0;padding:10px 14px 8px;background:var(--paper-hi);border-bottom:1px solid var(--gold-lite);}
-.runway-meta{display:flex;justify-content:space-between;font-family:var(--font-mono);font-size:9px;color:var(--ink-muted);letter-spacing:.1em;text-transform:uppercase;margin-bottom:6px;direction:ltr;}
+.runway-meta{display:flex;justify-content:space-between;align-items:center;font-family:var(--font-mono);font-size:9px;color:var(--ink-muted);letter-spacing:.1em;text-transform:uppercase;margin-bottom:6px;direction:ltr;}
+.runway-meta-left{display:flex;align-items:center;gap:5px;font-family:var(--font-ui);font-size:10px;letter-spacing:.02em;text-transform:none;}
+.runway-meta-profile-name{font-weight:700;color:var(--ink);}
+.runway-meta-profile-badge{font-size:8px;font-family:var(--font-mono);padding:1px 4px;border-radius:2px;letter-spacing:.05em;text-transform:uppercase;}
+.runway-meta-profile-badge.default{background:rgba(31,111,63,.12);color:var(--cleared);}
+.runway-meta-profile-badge.custom{background:rgba(200,160,74,.15);color:var(--gold-deep);}
+.runway-meta-right{display:flex;align-items:center;gap:5px;}
 .runway-meta-pct{color:var(--ink);font-weight:700;}
+
+/* ── PROFILES ── */
+.profile-tab-strip{display:flex;align-items:flex-end;gap:3px;padding:10px 14px 0;background:var(--ink);overflow-x:auto;scrollbar-width:none;flex-shrink:0;}
+.profile-tab-strip::-webkit-scrollbar{display:none;}
+.profile-tab{flex-shrink:0;padding:7px 14px;border-radius:4px 4px 0 0;font-family:var(--font-ui);font-size:12px;font-weight:600;cursor:pointer;position:relative;border:1px solid transparent;border-bottom:none;background:rgba(255,255,255,.06);color:rgba(244,236,220,.5);transition:all .15s;white-space:nowrap;}
+.profile-tab.active{background:var(--paper-hi);color:var(--ink-body);border-color:var(--gold-lite);}
+.profile-tab-dot{position:absolute;top:5px;right:5px;width:5px;height:5px;border-radius:50%;background:var(--amber);}
+.profile-tab-add{flex-shrink:0;padding:7px 14px;border-radius:4px 4px 0 0;background:transparent;border:1px dashed rgba(244,236,220,.25);border-bottom:none;color:rgba(244,236,220,.4);font-size:18px;line-height:1;cursor:pointer;display:flex;align-items:center;justify-content:center;}
+.profile-tab-add:active{background:rgba(255,255,255,.06);}
+.profile-tab-actions{background:var(--paper-hi);border-bottom:2px dashed var(--gold-lite);padding:7px 14px;display:flex;align-items:center;gap:7px;direction:rtl;flex-shrink:0;}
+.profile-tab-btn{padding:5px 10px;border-radius:3px;border:1px solid var(--gold-lite);background:transparent;font-family:var(--font-ui);font-size:11px;font-weight:600;color:var(--ink-muted);cursor:pointer;white-space:nowrap;}
+.profile-tab-btn:active{background:rgba(200,160,74,.08);}
+.profile-tab-btn.danger{border-color:rgba(185,74,58,.3);color:var(--stamp-red);}
+.profile-tab-btn.disabled{opacity:.3;cursor:default;pointer-events:none;}
+.editor-xls-bar{display:flex;gap:8px;padding:10px 14px 14px;border-top:2px dashed var(--gold-lite);margin-top:4px;}
+.editor-xls-btn{flex:1;padding:10px;border-radius:var(--r);border:1px solid var(--gold-lite);background:var(--paper);font-family:var(--font-ui);font-size:12px;font-weight:700;color:var(--ink-muted);cursor:pointer;text-align:center;}
+.editor-xls-btn:active{background:rgba(200,160,74,.08);}
+.profile-select-list{display:flex;flex-direction:column;gap:7px;margin-bottom:14px;}
+.profile-select-row{width:100%;padding:11px 14px;border-radius:var(--r);border:1.5px solid var(--gold-lite);background:var(--paper);cursor:pointer;display:flex;align-items:center;direction:rtl;transition:background .12s,border-color .12s;gap:6px;}
+.profile-select-row:active{background:rgba(200,160,74,.08);}
+.profile-select-row.selected{background:rgba(200,160,74,.14);border-color:var(--gold);border-width:2px;}
+.profile-select-row.selected .profile-select-check{opacity:1;}
+.profile-select-name{font-size:14px;font-weight:600;color:var(--ink-body);flex:1;text-align:right;}
+.profile-select-check{font-family:var(--font-mono);font-size:12px;font-weight:700;color:var(--gold-deep);opacity:0;transition:opacity .12s;margin-left:8px;}
+.start-from-btn{width:100%;padding:12px 14px;border-radius:var(--r);border:1.5px solid var(--gold-lite);background:var(--paper);cursor:pointer;margin-bottom:8px;text-align:right;direction:rtl;}
+.start-from-btn.selected{background:rgba(200,160,74,.12);border-color:var(--gold);border-width:2px;}
+.start-from-btn-title{font-size:13px;font-weight:700;color:var(--ink-body);}
+.start-from-btn-sub{font-size:10px;color:var(--ink-muted);margin-top:2px;}
+
+/* ── RUNWAY ── */
 .runway-phases{display:flex;gap:5px;}
 .runway-seg{flex:1;display:flex;flex-direction:column;gap:3px;min-width:0;}
 .runway-seg-name{font-size:9px;color:var(--ink-muted);text-align:center;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;letter-spacing:.02em;font-weight:500;}
@@ -205,6 +241,7 @@ html,body{height:100%;background:#1a1a1c;font-family:var(--font-ui);color:var(--
 .btn{width:100%;padding:14px;border-radius:var(--r);border:none;font-family:var(--font-ui);font-size:16px;font-weight:700;cursor:pointer;transition:opacity .15s;}
 .btn:active{opacity:.8;}
 .btn-ink{background:var(--ink);color:var(--paper);}
+.btn-ink:disabled{opacity:.3;cursor:default;}
 .btn-ghost{background:transparent;color:var(--ink-muted);border:1px solid var(--gold-lite);font-size:14px;}
 #phaseOverlay{display:none;position:absolute;inset:0;z-index:200;align-items:center;justify-content:center;background:rgba(26,19,8,.8);backdrop-filter:blur(3px);}
 #phaseOverlay.open{display:flex;}
@@ -563,7 +600,7 @@ html,body{height:100%;background:#1a1a1c;font-family:var(--font-ui);color:var(--
     <div class="splash-footer-wrap">
       <div class="footer-strip" style="display:flex;align-items:center;justify-content:space-between;padding:5px 14px 8px;">
         <span class="footer-refresh" onclick="location.reload()">רענון</span>
-        <span id="versionTap" onclick="handleVersionTap()" style="cursor:default;">AirCheck+ · v2.05.010T · built by eligrt</span>
+        <span id="versionTap" onclick="handleVersionTap()" style="cursor:default;">AirCheck+ · v2.06.015T · built by eligrt</span>
         <span style="width:40px;"></span>
       </div>
     </div>
@@ -587,8 +624,16 @@ html,body{height:100%;background:#1a1a1c;font-family:var(--font-ui);color:var(--
 
     <div class="runway-section">
       <div class="runway-meta">
-        <span id="runwayCountLabel">00 / 00</span>
-        <span class="runway-meta-pct" id="runwayPctLabel">0%</span>
+        <div class="runway-meta-right">
+          <span id="runwayCountLabel">00 / 00</span>
+          <span style="opacity:.4;">·</span>
+          <span class="runway-meta-pct" id="runwayPctLabel">0%</span>
+        </div>
+        <div class="runway-meta-left">
+          <span class="runway-meta-profile-badge" id="runwayProfileBadge"></span>
+          <span class="runway-meta-profile-name" id="runwayProfileName">—</span>
+          <span style="color:var(--ink-faint);font-size:9px;letter-spacing:.04em;font-family:var(--font-ui);">:מציג צ׳קליסט</span>
+        </div>
       </div>
       <div class="runway-phases" id="runwayPhases"></div>
     </div>
@@ -671,7 +716,7 @@ html,body{height:100%;background:#1a1a1c;font-family:var(--font-ui);color:var(--
     <div class="tree-panel" id="treePanel"></div>
     <div class="footer-strip" style="display:flex;align-items:center;justify-content:space-between;padding:5px 14px 8px;">
       <span class="footer-refresh" onclick="location.reload()">רענון</span>
-      <span id="versionTap" onclick="handleVersionTap()" style="cursor:default;">AirCheck+ · v2.05.010T · built by eligrt</span>
+      <span id="versionTap" onclick="handleVersionTap()" style="cursor:default;">AirCheck+ · v2.06.015T · built by eligrt</span>
       <span style="width:40px;"></span>
     </div>
   </div>
@@ -730,7 +775,7 @@ html,body{height:100%;background:#1a1a1c;font-family:var(--font-ui);color:var(--
 
     <div class="footer-strip" style="display:flex;align-items:center;justify-content:space-between;padding:5px 14px 8px;">
       <span style="width:40px;"></span>
-      <span id="versionTap" onclick="handleVersionTap()" style="cursor:default;">AirCheck+ · v2.05.010T · built by eligrt</span>
+      <span id="versionTap" onclick="handleVersionTap()" style="cursor:default;">AirCheck+ · v2.06.015T · built by eligrt</span>
       <span style="width:40px;"></span>
     </div>
   </div>
@@ -820,7 +865,7 @@ html,body{height:100%;background:#1a1a1c;font-family:var(--font-ui);color:var(--
     </div>
     <div class="footer-strip" style="display:flex;align-items:center;justify-content:space-between;padding:5px 14px 8px;">
       <span class="footer-refresh" onclick="location.reload()">רענון</span>
-      <span id="versionTap" onclick="handleVersionTap()" style="cursor:default;">AirCheck+ · v2.05.010T · built by eligrt</span>
+      <span id="versionTap" onclick="handleVersionTap()" style="cursor:default;">AirCheck+ · v2.06.015T · built by eligrt</span>
       <span style="width:40px;"></span>
     </div>
   </div>
@@ -834,10 +879,14 @@ html,body{height:100%;background:#1a1a1c;font-family:var(--font-ui);color:var(--
       </div>
       <button class="editor-save-btn" onclick="saveEditor()">DONE ✓</button>
     </div>
+    <!-- Profile tab strip -->
+    <div class="profile-tab-strip" id="profileTabStrip"></div>
+    <!-- Active tab action bar -->
+    <div class="profile-tab-actions" id="profileTabActions"></div>
     <div class="editor-list" id="editorList"></div>
     <div class="footer-strip" style="display:flex;align-items:center;justify-content:space-between;padding:5px 14px 8px;">
       <span class="footer-refresh" onclick="location.reload()">רענון</span>
-      <span id="versionTap" onclick="handleVersionTap()" style="cursor:default;">AirCheck+ · v2.05.010T · built by eligrt</span>
+      <span id="versionTap" onclick="handleVersionTap()" style="cursor:default;">AirCheck+ · v2.06.015T · built by eligrt</span>
       <span style="width:40px;"></span>
     </div>
   </div>
@@ -1233,7 +1282,252 @@ function saveSettings(){
 }
 // ── EDITOR ──
 const LIST_KEY='checklist_list_v1';
-function loadList(){try{const raw=localStorage.getItem(LIST_KEY);if(raw){const saved=JSON.parse(raw);if(Array.isArray(saved)&&saved.length){CL.length=0;saved.forEach(it=>CL.push(it));buildIndex();}}}catch(e){}}
+const PROFILES_KEY='aircheck_profiles_v1';
+
+// ── PROFILES DATA STRUCTURE ──
+// {profiles:[{id,name,type,list}], activeProfile:id}
+let _profiles=null;
+
+function generateProfileId(){return'p_'+Date.now().toString(36)+Math.random().toString(36).slice(2,5);}
+
+function getProfiles(){
+  if(_profiles)return _profiles;
+  try{
+    const raw=localStorage.getItem(PROFILES_KEY);
+    if(raw){_profiles=JSON.parse(raw);return _profiles;}
+  }catch(e){}
+  // Migration: check for old single list
+  _profiles={profiles:[],activeProfile:null};
+  try{
+    const oldRaw=localStorage.getItem(LIST_KEY);
+    const oldType=localStorage.getItem('aircheck_list_type')||'default';
+    const id=generateProfileId();
+    let list=CL_DEFAULT.map(it=>({...it}));
+    if(oldRaw){const saved=JSON.parse(oldRaw);if(Array.isArray(saved)&&saved.length)list=saved;}
+    _profiles.profiles.push({id,name:'רגיל',type:oldType,list});
+    _profiles.activeProfile=id;
+  }catch(e){
+    const id=generateProfileId();
+    _profiles.profiles.push({id,name:'רגיל',type:'default',list:CL_DEFAULT.map(it=>({...it}))});
+    _profiles.activeProfile=id;
+  }
+  saveProfiles();
+  return _profiles;
+}
+
+function saveProfiles(){
+  try{localStorage.setItem(PROFILES_KEY,JSON.stringify(_profiles));}catch(e){}
+}
+
+function getActiveProfile(){
+  const p=getProfiles();
+  return p.profiles.find(pr=>pr.id===p.activeProfile)||p.profiles[0];
+}
+
+function setActiveProfile(id){
+  const p=getProfiles();
+  if(p.profiles.find(pr=>pr.id===id)){p.activeProfile=id;saveProfiles();}
+}
+
+function loadList(){
+  const prof=getActiveProfile();
+  if(prof&&prof.list&&prof.list.length){
+    CL.length=0;prof.list.forEach(it=>CL.push(it));buildIndex();
+  }
+  updateRunwayProfileLabel();
+}
+
+function updateRunwayProfileLabel(){
+  const prof=getActiveProfile();
+  if(!prof)return;
+  const nameEl=document.getElementById('runwayProfileName');
+  const badgeEl=document.getElementById('runwayProfileBadge');
+  if(nameEl)nameEl.textContent=prof.name;
+  if(badgeEl){
+    badgeEl.textContent=prof.type==='default'?'צ׳קליסט סטנדרטי':'צ׳קליסט מותאם אישית';
+    badgeEl.className='runway-meta-profile-badge '+(prof.type==='default'?'default':'custom');
+  }
+}
+
+// ── PROFILE TAB STRIP ──
+let _editorActiveProfileId=null;
+
+function renderProfileTabStrip(){
+  const p=getProfiles();
+  _editorActiveProfileId=_editorActiveProfileId||p.activeProfile;
+  const strip=document.getElementById('profileTabStrip');
+  const actions=document.getElementById('profileTabActions');
+  if(!strip||!actions)return;
+  strip.innerHTML='';
+  p.profiles.forEach(prof=>{
+    const tab=document.createElement('div');
+    tab.className='profile-tab'+(prof.id===_editorActiveProfileId?' active':'');
+    tab.textContent=prof.name;
+    tab.onclick=()=>{_editorActiveProfileId=prof.id;loadEditorForProfile(prof.id);};
+    strip.appendChild(tab);
+  });
+  if(p.profiles.length<5){
+    const add=document.createElement('div');add.className='profile-tab-add';add.textContent='+';
+    add.onclick=()=>openNewProfileModal();
+    strip.appendChild(add);
+  }
+  // Action bar
+  const activeProf=p.profiles.find(pr=>pr.id===_editorActiveProfileId);
+  const isDefault=activeProf&&activeProf.type==='default';
+  const canDelete=p.profiles.length>1;
+  actions.innerHTML='';
+  const renameBtn=document.createElement('button');renameBtn.className='profile-tab-btn';renameBtn.textContent='✎ שנה שם';
+  renameBtn.onclick=()=>openRenameProfileModal();
+  const resetBtn=document.createElement('button');resetBtn.className='profile-tab-btn'+(isDefault?' disabled':'');
+  resetBtn.textContent='↺ אפס';resetBtn.disabled=!!isDefault;
+  resetBtn.onclick=()=>showConfirm('איפוס רשימה','לאפס את הרשימה "'+activeProf.name+'" לברירת המחדל?',()=>{
+    const prof=getProfiles().profiles.find(pr=>pr.id===_editorActiveProfileId);
+    if(prof){prof.list=CL_DEFAULT.map(it=>({...it}));prof.type='default';saveProfiles();}
+    loadEditorForProfile(_editorActiveProfileId);
+  });
+  const delBtn=document.createElement('button');delBtn.className='profile-tab-btn danger'+(canDelete?'':' disabled');
+  delBtn.textContent='🗑 מחק';delBtn.disabled=!canDelete;
+  delBtn.onclick=()=>showConfirm('מחיקת רשימה','למחוק את הרשימה "'+activeProf.name+'"? פעולה זו אינה ניתנת לביטול.',()=>{
+    const p2=getProfiles();
+    const idx=p2.profiles.findIndex(pr=>pr.id===_editorActiveProfileId);
+    if(idx>-1){p2.profiles.splice(idx,1);saveProfiles();}
+    _editorActiveProfileId=p2.profiles[0]?.id||null;
+    loadEditorForProfile(_editorActiveProfileId);
+  });
+  actions.appendChild(renameBtn);actions.appendChild(resetBtn);actions.appendChild(delBtn);
+}
+
+function loadEditorForProfile(id){
+  const p=getProfiles();
+  const prof=p.profiles.find(pr=>pr.id===id);
+  if(!prof)return;
+  CL.length=0;prof.list.forEach(it=>CL.push(it));buildIndex();
+  edData=clToEdData(CL);
+  renderProfileTabStrip();
+  renderEditor();
+}
+
+// ── NEW PROFILE MODAL ──
+let _npFromType='default';
+function openNewProfileModal(){
+  _npFromType='default';
+  document.getElementById('startFromDefault').classList.add('selected');
+  document.getElementById('startFromScratch').classList.remove('selected');
+  document.getElementById('newProfileNameInput').value='';
+  document.getElementById('newProfileConfirmBtn').disabled=true;
+  document.getElementById('newProfileModal').style.display='flex';
+  setTimeout(()=>document.getElementById('newProfileNameInput').focus(),100);
+}
+function npClose(){document.getElementById('newProfileModal').style.display='none';}
+function handleNewProfileClick(e){if(e.target===document.getElementById('newProfileModal'))npClose();}
+function npSelectFrom(type){
+  _npFromType=type;
+  document.getElementById('startFromDefault').classList.toggle('selected',type==='default');
+  document.getElementById('startFromScratch').classList.toggle('selected',type==='scratch');
+}
+function npUpdateConfirm(){
+  const val=document.getElementById('newProfileNameInput').value.trim();
+  document.getElementById('newProfileConfirmBtn').disabled=val.length<1;
+}
+function npConfirm(){
+  const name=document.getElementById('newProfileNameInput').value.trim();
+  if(!name)return;
+  const id=generateProfileId();
+  const list=_npFromType==='default'?CL_DEFAULT.map(it=>({...it})):[];
+  const type=_npFromType==='default'?'default':'modified';
+  const p=getProfiles();
+  p.profiles.push({id,name,type,list});
+  saveProfiles();
+  _editorActiveProfileId=id;
+  npClose();
+  loadEditorForProfile(id);
+}
+
+// ── RENAME PROFILE MODAL ──
+function openRenameProfileModal(){
+  const prof=getProfiles().profiles.find(pr=>pr.id===_editorActiveProfileId);
+  if(!prof)return;
+  document.getElementById('renameProfileInput').value=prof.name;
+  document.getElementById('renameProfileConfirmBtn').disabled=false;
+  document.getElementById('renameProfileModal').style.display='flex';
+  setTimeout(()=>document.getElementById('renameProfileInput').focus(),100);
+}
+function renameProfileClose(){document.getElementById('renameProfileModal').style.display='none';}
+function handleRenameProfileClick(e){if(e.target===document.getElementById('renameProfileModal'))renameProfileClose();}
+function renameUpdateConfirm(){
+  document.getElementById('renameProfileConfirmBtn').disabled=document.getElementById('renameProfileInput').value.trim().length<1;
+}
+function renameProfileConfirm(){
+  const name=document.getElementById('renameProfileInput').value.trim();
+  if(!name)return;
+  const prof=getProfiles().profiles.find(pr=>pr.id===_editorActiveProfileId);
+  if(prof){prof.name=name;saveProfiles();}
+  renameProfileClose();
+  renderProfileTabStrip();
+}
+
+// ── PROFILE SELECTOR (new flight) ──
+let _selectedProfileForFlight=null;
+function openNewFlightModal(){
+  const p=getProfiles();
+  if(p.profiles.length<=1){
+    // Single profile — confirm and start directly
+    document.querySelector('.modal-box').className='modal-box amber';
+    document.getElementById('modalTitle').textContent='טיסה חדשה?';
+    document.getElementById('modalSub').textContent='פעולה זו תאפס את כל ההתקדמות הנוכחית.';
+    document.getElementById('modalConfirmBtn').textContent='כן, אפס והתחל מחדש';
+    document.getElementById('modalConfirmBtn').onclick=()=>{closeModal();startNew();};
+    openModal();
+  } else {
+    // Multiple profiles — show selector
+    _selectedProfileForFlight=p.activeProfile;
+    const list=document.getElementById('profileSelectList');
+    list.innerHTML='';
+    p.profiles.forEach(prof=>{
+      const row=document.createElement('div');
+      row.className='profile-select-row'+(prof.id===_selectedProfileForFlight?' selected':'');
+      const name=document.createElement('span');
+      name.className='profile-select-name';
+      name.textContent=prof.name;
+      const badge=document.createElement('span');
+      badge.className='runway-meta-profile-badge '+(prof.type==='default'?'default':'custom');
+      badge.textContent=prof.type==='default'?'צ׳קליסט סטנדרטי':'צ׳קליסט מותאם אישית';
+      badge.style.cssText='flex-shrink:0;min-width:130px;text-align:center;';
+      const check=document.createElement('span');
+      check.className='profile-select-check';check.textContent='✓';
+      row.appendChild(name);row.appendChild(badge);row.appendChild(check);
+      row.onclick=()=>{
+        _selectedProfileForFlight=prof.id;
+        document.querySelectorAll('.profile-select-row').forEach(r=>r.classList.remove('selected'));
+        row.classList.add('selected');
+      };
+      list.appendChild(row);
+    });
+    document.getElementById('profileSelectorModal').style.display='flex';
+  }
+}
+function profileSelectClose(){document.getElementById('profileSelectorModal').style.display='none';}
+function handleProfileSelectorClick(e){if(e.target===document.getElementById('profileSelectorModal'))profileSelectClose();}
+function profileSelectConfirm(){
+  if(_selectedProfileForFlight){
+    setActiveProfile(_selectedProfileForFlight);
+    loadList();
+    clearState();
+  }
+  profileSelectClose();
+  holdState='idle';resetRunwayBtn();showScreen('screenChecklist');render();
+}
+
+function profileSelectConfirm(){
+  if(_selectedProfileForFlight){
+    setActiveProfile(_selectedProfileForFlight);
+    loadList();
+    clearState();
+  }
+  profileSelectClose();
+  holdState='idle';resetRunwayBtn();showScreen('screenChecklist');render();
+}
+
 let edData=[];
 let edPopupCallback=null;
 let dragSrc=null;
@@ -1269,28 +1563,40 @@ function edDataToCL(data){
   return list;
 }
 let _editorFromSettings=false;
-function openEditor(fromSettings){_editorFromSettings=!!fromSettings;edData=clToEdData(CL);renderEditor();showScreen('screenEditor');}
+function openEditor(fromSettings){
+  _editorFromSettings=!!fromSettings;
+  const p=getProfiles();
+  _editorActiveProfileId=p.activeProfile;
+  edData=clToEdData(CL);
+  renderProfileTabStrip();
+  renderEditor();
+  showScreen('screenEditor');
+}
 function closeEditor(){if(_editorFromSettings){openSettings();}else{showScreen('screenChecklist');}}
 function saveEditor(){
   const statusByKey={};
   CL.forEach((item,i)=>{if(status[i])statusByKey[item.main]=status[i];});
   const newList=edDataToCL(edData);
-  try{
-    localStorage.setItem(LIST_KEY,JSON.stringify(newList));
+  // Save to active editor profile
+  const p=getProfiles();
+  const prof=p.profiles.find(pr=>pr.id===_editorActiveProfileId);
+  if(prof){
+    prof.list=newList;
     const isDefault=newList.length===CL_DEFAULT.length&&newList.every((it,i)=>it.main===CL_DEFAULT[i].main&&it.group===CL_DEFAULT[i].group&&it.phase===CL_DEFAULT[i].phase);
-    const newListType=isDefault?'default':'modified';
-    localStorage.setItem('aircheck_list_type',newListType);
-    if(window.updateListTypeInFirebase)window.updateListTypeInFirebase(newListType);
-  }catch(e){}
-  // Rebuild CL
-  CL.length=0;newList.forEach(it=>CL.push(it));
-  buildIndex();
-  // Restore status by item name
-  Object.keys(status).forEach(k=>delete status[k]);
-  CL.forEach((item,i)=>{if(statusByKey[item.main])status[i]=statusByKey[item.main];});
-  current=CL.findIndex((_,i)=>!status[i]||status[i]==='skipped');
-  if(current===-1)current=0;
-  saveState();
+    prof.type=isDefault?'default':'modified';
+    saveProfiles();
+    // If editing the active flight profile, update CL
+    if(_editorActiveProfileId===p.activeProfile){
+      CL.length=0;newList.forEach(it=>CL.push(it));buildIndex();
+      Object.keys(status).forEach(k=>delete status[k]);
+      CL.forEach((item,i)=>{if(statusByKey[item.main])status[i]=statusByKey[item.main];});
+      current=CL.findIndex((_,i)=>!status[i]||status[i]==='skipped');
+      if(current===-1)current=0;
+      saveState();
+    }
+    if(window.updateListTypeInFirebase)window.updateListTypeInFirebase(prof.type);
+  }
+  updateRunwayProfileLabel();
   if(_editorFromSettings){openSettings();}else{showScreen('screenChecklist');render();}
 }
 
@@ -1348,16 +1654,14 @@ function renderEditor(){
   const addPhase=document.createElement('button');addPhase.className='ed-add-phase';addPhase.textContent='+ הוסף שלב';
   addPhase.onclick=()=>openEdPopup('הוסף שלב','','',false,val=>{edData.push({phase:val,groups:[]});renderEditor();});
   el.appendChild(addPhase);
-  const actions=document.createElement('div');actions.className='ed-actions';
-  const importBtn=document.createElement('button');importBtn.className='ed-action-btn';importBtn.textContent='ייבוא XLS ↑';
+  // XLS global bar
+  const xlsBar=document.createElement('div');xlsBar.className='editor-xls-bar';
+  const importBtn=document.createElement('button');importBtn.className='editor-xls-btn';importBtn.textContent='📥 ייבא XLS';
   importBtn.onclick=triggerXLSImport;
-  const exportBtn=document.createElement('button');exportBtn.className='ed-action-btn';exportBtn.textContent='ייצוא XLS ↓';
+  const exportBtn=document.createElement('button');exportBtn.className='editor-xls-btn';exportBtn.textContent='📤 ייצא XLS';
   exportBtn.onclick=exportEditorToXLS;
-  const resetBtn=document.createElement('button');resetBtn.className='ed-action-btn danger';resetBtn.textContent='איפוס לברירת מחדל';
-  const isAlreadyDefault=(localStorage.getItem('aircheck_list_type')||'default')==='default';
-  resetBtn.disabled=isAlreadyDefault;
-  resetBtn.onclick=()=>showEditorResetConfirm();
-  actions.appendChild(importBtn);actions.appendChild(exportBtn);actions.appendChild(resetBtn);el.appendChild(actions);
+  xlsBar.appendChild(importBtn);xlsBar.appendChild(exportBtn);
+  el.appendChild(xlsBar);
 }
 
 function buildItemRow(it,ii,g,gi,ph,pi){
@@ -1543,30 +1847,43 @@ function processXLSFile(file){
   reader.onload=e=>{
     try{
       const wb=XLSX.read(e.target.result,{type:'array'});
-      const ws=wb.Sheets[wb.SheetNames[0]];
-      const rows=XLSX.utils.sheet_to_json(ws,{header:1,defval:''});
-      const newList=[];let ph='',gr='';
-      const warnings=[];
-      rows.forEach((r,i)=>{
-        const c0=String(r[0]).trim(),c1=String(r[1]).trim(),c2=String(r[2]).trim();
-        if(c0.toLowerCase().includes('phase')&&c1.toLowerCase().includes('group'))return;
-        if(c0.toLowerCase().includes('aircheck'))return;
-        if(!r[0]&&!r[1]&&!r[2])return; // skip empty
-        if(r[0])ph=String(r[0]).trim();
-        if(r[1])gr=String(r[1]).trim();
-        const main=String(r[2]||'').trim();
-        const sub=String(r[3]||'').trim();
-        if(main&&ph&&gr)newList.push({phase:ph,group:gr,main,sub});
-        else if(r[2]&&(!ph||!gr))warnings.push('שורה '+(i+1)+': חסר שלב או קבוצה');
+      const importedProfiles=[];
+      const allWarnings=[];
+
+      wb.SheetNames.forEach(sheetName=>{
+        const ws=wb.Sheets[sheetName];
+        const rows=XLSX.utils.sheet_to_json(ws,{header:1,defval:''});
+        const newList=[];let ph='',gr='';
+        const warnings=[];
+        rows.forEach((r,i)=>{
+          const c0=String(r[0]).trim(),c1=String(r[1]).trim(),c2=String(r[2]).trim();
+          // Skip metadata row (A1 — contains AirCheck+ version stamp)
+          if(c0.toLowerCase().includes('aircheck'))return;
+          // Skip header row
+          if(c0.toLowerCase().includes('phase')&&c1.toLowerCase().includes('group'))return;
+          if(!r[0]&&!r[1]&&!r[2])return;
+          if(r[0])ph=String(r[0]).trim();
+          if(r[1])gr=String(r[1]).trim();
+          const main=String(r[2]||'').trim();
+          const sub=String(r[3]||'').trim();
+          if(main&&ph&&gr)newList.push({phase:ph,group:gr,main,sub});
+          else if(r[2]&&(!ph||!gr))warnings.push('שורה '+(i+1)+': חסר שלב או קבוצה');
+        });
+        if(newList.length>0){
+          importedProfiles.push({name:sheetName,list:newList,warnings});
+          allWarnings.push(...warnings.map(w=>sheetName+': '+w));
+        }
       });
-      if(!newList.length){
+
+      if(!importedProfiles.length){
         document.getElementById('xlsImportBody').innerHTML='<div class="xls-warning">⚠ לא נמצאו פריטים תקינים בקובץ. ודא שהעמודות: Phase, Group, Item, Sub</div>';
         return;
       }
-      xlsParsedList=newList;
-      showXLSStep2(newList,warnings,file.name);
+      xlsParsedList=importedProfiles;
+      showXLSStep2Multi(importedProfiles,allWarnings,file.name);
     }catch(ex){
       document.getElementById('xlsImportBody').innerHTML='<div class="xls-warning">⚠ שגיאה בקריאת הקובץ. ודא שהקובץ תקין.</div>';
+      console.error(ex);
     }
   };
   reader.readAsArrayBuffer(file);
@@ -1588,54 +1905,39 @@ function setStepRibbon(active){
   ribbon.innerHTML=html;
 }
 
-function showXLSStep2(list,warnings,filename){
+function showXLSStep2Multi(profiles,warnings,filename){
   setStepRibbon(2);
-  // Build phase/group/item tree
-  const phaseMap={};const phaseOrder=[];
-  list.forEach(it=>{
-    if(!phaseMap[it.phase]){phaseMap[it.phase]={groups:{},groupOrder:[]};phaseOrder.push(it.phase);}
-    const p=phaseMap[it.phase];
-    if(!p.groups[it.group]){p.groups[it.group]=[];p.groupOrder.push(it.group);}
-    p.groups[it.group].push(it);
-  });
-  const groupSet=new Set(list.map(it=>it.phase+'||'+it.group));
-  let warnHTML=warnings.length?`<div class="xls-warning">⚠ ${warnings.length} שורות דולגו — חסר שלב או קבוצה</div>`:'';
-  let phasesHTML=phaseOrder.map((pname,pi)=>{
-    const p=phaseMap[pname];
-    const cnt=list.filter(it=>it.phase===pname).length;
-    let groupsHTML=p.groupOrder.map(gname=>{
-      const items=p.groups[gname];
-      let itemsHTML=items.map(it=>`<div class="xls-item-row">${it.main}${it.sub?`<div class="xls-item-sub">${it.sub}</div>`:''}</div>`).join('');
-      return `<div class="xls-group-name">${gname}</div>${itemsHTML}`;
-    }).join('');
-    return `<div class="xls-phase-row">
-      <div class="xls-phase-hdr" onclick="toggleXLSPhase(this)">
-        <div class="xls-phase-hdr-left">
-          <span class="xls-phase-chev">◄</span>
-          <span class="xls-phase-title">${pname}</span>
-        </div>
-        <span class="xls-phase-cnt">${cnt} פריטים</span>
-      </div>
-      <div class="xls-phase-items">${groupsHTML}</div>
+  const totalItems=profiles.reduce((s,p)=>s+p.list.length,0);
+  let warnHTML=warnings.length?`<div class="xls-warning">⚠ ${warnings.length} שורות דולגו</div>`:'';
+  let profilesHTML=profiles.map(prof=>{
+    const phaseSet=new Set(prof.list.map(it=>it.phase));
+    return `<div style="padding:8px 0;border-bottom:1px dashed var(--gold-lite);">
+      <div style="font-weight:700;font-size:13px;color:var(--ink-body);margin-bottom:2px;">${prof.name}</div>
+      <div style="font-family:var(--font-mono);font-size:10px;color:var(--ink-muted);">${prof.list.length} פריטים · ${phaseSet.size} שלבים</div>
     </div>`;
   }).join('');
 
   document.getElementById('xlsImportBody').innerHTML=`
     <div style="padding:10px 0 6px;">
       <div class="xls-preview-stat">
-        <span class="xls-preview-num">${list.length}</span>
-        <span class="xls-preview-label">פריטים · ${phaseOrder.length} שלבים · ${groupSet.size} קבוצות</span>
+        <span class="xls-preview-num">${totalItems}</span>
+        <span class="xls-preview-label">פריטים · ${profiles.length} רשימות</span>
       </div>
       <div style="font-family:var(--font-mono);font-size:9px;color:var(--ink-faint);letter-spacing:.1em;margin:6px 0 10px;direction:ltr;">SOURCE: ${filename}</div>
-      <div>${phasesHTML}</div>
+      <div style="margin-bottom:8px;">${profilesHTML}</div>
+      <div style="font-size:10px;color:var(--stamp-red);font-family:var(--font-mono);letter-spacing:.04em;padding:6px 0;">⚠ ייבוא יחליף את כל הרשימות הקיימות</div>
       ${warnHTML}
     </div>`;
 
   document.getElementById('xlsImportFooter').innerHTML=`
     <button class="btn btn-ghost" style="flex:1" onclick="showXLSStep1()">‹ חזור</button>
-    <button class="btn btn-ink" style="flex:1" onclick="confirmXLSImport()">טען רשימה ✓</button>`;
+    <button class="btn btn-ink" style="flex:1" onclick="confirmXLSImport()">טען רשימות ✓</button>`;
 }
 
+function showXLSStep2(list,warnings,filename){
+  // Legacy single-sheet preview — wrap as single profile
+  showXLSStep2Multi([{name:'רגיל',list,warnings:[]}],warnings,filename);
+}
 function toggleXLSPhase(hdr){
   const items=hdr.nextElementSibling;
   const chev=hdr.querySelector('.xls-phase-chev');
@@ -1645,18 +1947,21 @@ function toggleXLSPhase(hdr){
 
 function showXLSStep3(list,filename){
   setStepRibbon(3);
-  const phaseSet=new Set(list.map(it=>it.phase));
+  // list can be array of items OR summary string from multi-profile import
+  const isMulti=typeof filename==='string'&&filename.includes('רשימות');
+  const itemCount=Array.isArray(list)?list.length:list;
+  const phaseSet=Array.isArray(list)?new Set(list.map(it=>it.phase)):new Set();
   document.getElementById('xlsImportBody').innerHTML=`
     <div style="padding:0 0 8px;display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:220px;">
       <div class="xls-success-stamp">
         <div class="xls-success-stamp-box">
           <div class="xls-success-stamp-loaded">LOADED</div>
-          <div class="xls-success-stamp-count" style="direction:ltr;">${list.length} ITEMS</div>
-          <div class="xls-success-stamp-file">${filename}</div>
+          <div class="xls-success-stamp-count" style="direction:ltr;">${isMulti?filename.split('·')[1]?.trim()||filename:itemCount+' ITEMS'}</div>
+          <div class="xls-success-stamp-file">${isMulti?filename.split('·')[0]?.trim():filename}</div>
         </div>
       </div>
-      <div class="xls-success-title">הרשימה נטענה ✓</div>
-      <div class="xls-success-sub">${list.length} פריטים · ${phaseSet.size} שלבים<br/>מוכן לטיסה</div>
+      <div class="xls-success-title">הרשימות נטענו ✓</div>
+      <div class="xls-success-sub">${isMulti?filename:''+itemCount+' פריטים · '+phaseSet.size+' שלבים'}<br/>מוכן לטיסה</div>
     </div>`;
   document.getElementById('xlsImportFooter').innerHTML=`
     <button class="btn btn-ink" style="flex:1" onclick="closeXLSImport()">התחל טיסה <span style="display:inline-block;transform:scaleX(-1)">✈</span></button>`;
@@ -1665,18 +1970,30 @@ function showXLSStep3(list,filename){
 function confirmXLSImport(){
   if(!xlsParsedList)return;
   const imported=xlsParsedList;
-  const fname=document.querySelector('.xls-preview-stat')?.closest('[id]')?.dataset?.filename||'import.xlsx';
-  CL.length=0;imported.forEach(it=>CL.push(it));
+  // Build new profiles from imported data
+  const p=getProfiles();
+  // Replace all profiles with imported ones
+  p.profiles=imported.map(prof=>({
+    id:generateProfileId(),
+    name:prof.name,
+    type:'modified',
+    list:prof.list
+  }));
+  // Limit to 5
+  if(p.profiles.length>5)p.profiles=p.profiles.slice(0,5);
+  p.activeProfile=p.profiles[0].id;
+  saveProfiles();
+  // Load first profile into CL
+  const firstProf=p.profiles[0];
+  CL.length=0;firstProf.list.forEach(it=>CL.push(it));
   buildIndex();clearState();
-  try{localStorage.setItem(LIST_KEY,JSON.stringify(imported));localStorage.setItem('aircheck_list_type','modified');}catch(ex){}
-  // Show success step before closing
-  const srcLabel=document.querySelector('[style*="SOURCE:"]');
-  const fn=srcLabel?srcLabel.textContent.replace('SOURCE: ','').trim():'import.xlsx';
+  updateRunwayProfileLabel();
   xlsParsedList=null;
-  showXLSStep3(imported,fn);
-  // Refresh editor/checklist in background
+  const totalItems=imported.reduce((s,pr)=>s+pr.list.length,0);
+  showXLSStep3(imported.length+' רשימות',imported.length+' רשימות · '+totalItems+' פריטים');
   if(document.getElementById('screenEditor').classList.contains('active')){
-    edData=clToEdData(CL);renderEditor();
+    _editorActiveProfileId=p.activeProfile;
+    edData=clToEdData(CL);renderProfileTabStrip();renderEditor();
   } else {render();}
 }
 function exportChecklist(){
@@ -1695,19 +2012,35 @@ function exportChecklist(){
   showToast('✓ הקובץ יוצא בהצלחה — בדוק את ההורדות');
 }
 function exportEditorToXLS(){
-  if(typeof XLSX==='undefined'){alert('טוען...');return;}
-  const wb=XLSX.utils.book_new();
-  const aoa=[['AirCheck+ — Personal Flight Checklist','','',''],['Phase','Group','Item','Sub']];
-  let prevPhase='',prevGroup='';
-  edDataToCL(edData).forEach(it=>{
-    aoa.push([it.phase!==prevPhase?it.phase:'',it.group!==prevGroup?it.group:'',it.main,it.sub||'']);
-    prevPhase=it.phase;prevGroup=it.group;
-  });
-  const ws=XLSX.utils.aoa_to_sheet(aoa);
-  ws['!cols']=[{wch:28},{wch:22},{wch:36},{wch:30}];
-  XLSX.utils.book_append_sheet(wb,ws,'Checklist');
-  XLSX.writeFile(wb,'AirCheck+_Export.xlsx');
-  showToast('✓ הקובץ יוצא בהצלחה — בדוק את ההורדות');
+  if(typeof XLSX==='undefined'){showToast('טוען ספריה...');return;}
+  try{
+    const p=getProfiles();
+    const wb=XLSX.utils.book_new();
+    const today=new Date();
+    const exportDate=String(today.getDate()).padStart(2,'0')+'/'+String(today.getMonth()+1).padStart(2,'0')+'/'+today.getFullYear();
+    const ver=document.querySelector('#versionTap')?.textContent?.replace('AirCheck+ · ','').replace(' · built by eligrt','')||'';
+    const a1stamp='AirCheck+ · Personal Flight Checklist · '+ver+' · built by eligrt · Exported: '+exportDate;
+    p.profiles.forEach(prof=>{
+      const list=prof.list||[];
+      const aoa=[[a1stamp],['Phase','Group','Item','Sub']];
+      let prevPhase='',prevGroup='';
+      list.forEach(it=>{
+        aoa.push([it.phase!==prevPhase?it.phase:'',it.group!==prevGroup?it.group:'',it.main,it.sub||'']);
+        prevPhase=it.phase;prevGroup=it.group;
+      });
+      const ws=XLSX.utils.aoa_to_sheet(aoa);
+      // Delete B1/C1/D1 so A1 content spreads visually across columns
+      delete ws['B1'];delete ws['C1'];delete ws['D1'];
+      ws['!cols']=[{wch:28},{wch:22},{wch:36},{wch:30}];
+      const sheetName=prof.name.replace(/[\\\/\?\*\[\]\:]/g,'').substring(0,31)||'רשימה';
+      XLSX.utils.book_append_sheet(wb,ws,sheetName);
+    });
+    XLSX.writeFile(wb,'AirCheck+_Export.xlsx');
+    showToast('✓ הקובץ יוצא בהצלחה — '+p.profiles.length+' רשימות');
+  }catch(e){
+    showToast('שגיאה בייצוא: '+e.message);
+    console.error('Export error:',e);
+  }
 }
 
 // ── TOAST ──
@@ -1737,7 +2070,9 @@ function showEditorResetConfirm(){
   document.getElementById('modalConfirmBtn').textContent='כן, אפס';
   document.getElementById('modalConfirmBtn').onclick=()=>{
     // Do the reset
-    CL.length=0;CL_DEFAULT.forEach(it=>CL.push({...it}));buildIndex();localStorage.setItem('aircheck_list_type','default');
+    CL.length=0;CL_DEFAULT.forEach(it=>CL.push({...it}));buildIndex();
+    const profR=getActiveProfile();if(profR){profR.list=CL_DEFAULT.map(it=>({...it}));profR.type='default';saveProfiles();}
+    updateRunwayProfileLabel();
     edData=clToEdData(CL);
     // Show success — close and reopen
     // Immediate feedback, then show success
@@ -1807,9 +2142,14 @@ function updateStampPreview(tail){
   document.getElementById('settingsStampPreview').textContent='PIC · 4X-'+(tail||'HHH');
 }
 function updateListTypeIndicator(){
-  const lt=localStorage.getItem('aircheck_list_type')||'default';
+  const prof=getActiveProfile();
+  const lt=prof?prof.type:'default';
+  const name=prof?prof.name:'רגיל';
   const ltEl=document.getElementById('settingsListType');
-  if(ltEl){ltEl.textContent=lt==='modified'?'מותאמת אישית ✎':'ברירת מחדל ✓';ltEl.style.color=lt==='modified'?'var(--amber)':'var(--cleared)';}
+  if(ltEl){
+    ltEl.textContent=name+' · '+(lt==='modified'?'צ׳קליסט מותאם אישית ✎':'צ׳קליסט סטנדרטי ✓');
+    ltEl.style.color=lt==='modified'?'var(--amber)':'var(--cleared)';
+  }
 }
 function closeSettings(){
   showScreen('screenChecklist');
@@ -2280,33 +2620,35 @@ function initSplash(){
 }
 
 function splashMainAction(){
+  const p=getProfiles();
   const done=Object.values(status).filter(s=>s==='done').length;
   if(done>0){
-    // Resume
-    showScreen('screenChecklist');
-    render();
+    // Resume current flight
+    showScreen('screenChecklist');render();
+  } else if(p.profiles.length>1){
+    // Multiple profiles — show selector
+    openNewFlightModal();
   } else {
-    // Fresh start
-    clearState();
-    showScreen('screenChecklist');
-    render();
+    clearState();showScreen('screenChecklist');render();
   }
 }
 
 function splashSecondaryAction(){
-  // If progress exists — confirm before resetting
   const done=Object.values(status).filter(s=>s==='done').length;
+  const p=getProfiles();
+  const doStart=()=>{
+    if(p.profiles.length>1){openNewFlightModal();}
+    else{clearState();showScreen('screenChecklist');render();}
+  };
   if(done>0){
     document.querySelector('.modal-box').className='modal-box danger';
     document.getElementById('modalTitle').innerHTML='<span style="color:var(--stamp-red);margin-left:6px;">⚠</span> התחלת טיסה חדשה?';
     document.getElementById('modalSub').textContent='הטיסה הנוכחית תאבד — '+done+' פריטים מסומנים יימחקו. לא ניתן לשחזר.';
     document.getElementById('modalConfirmBtn').textContent='כן, אפס והתחל';
-    document.getElementById('modalConfirmBtn').onclick=()=>{closeModal();clearState();showScreen('screenChecklist');render();};
+    document.getElementById('modalConfirmBtn').onclick=()=>{closeModal();clearState();doStart();};
     openModal();
   } else {
-    clearState();
-    showScreen('screenChecklist');
-    render();
+    doStart();
   }
 }
 </script>
@@ -2344,7 +2686,8 @@ function splashSecondaryAction(){
 
   // Detect list type
   function getListType(){
-    return localStorage.getItem('aircheck_list_type')||'default';
+    const prof=typeof getActiveProfile==='function'?getActiveProfile():null;
+    return prof?prof.type:(localStorage.getItem('aircheck_list_type')||'default');
   }
 
   // Write device record on app open
@@ -2498,6 +2841,60 @@ function splashSecondaryAction(){
         <button class="metar-refresh-btn" onclick="fetchMetar(true)">↻ רענן</button>
         <div class="metar-fetched" id="metarAgeLabel" style="font-family:var(--font-mono);font-size:9px;color:var(--ink-faint);letter-spacing:.08em;direction:ltr;">—</div>
       </div>
+    </div>
+  </div>
+
+  <!-- ══ PROFILE SELECTOR MODAL (new flight) ══ -->
+  <div id="profileSelectorModal" onclick="handleProfileSelectorClick(event)" style="display:none;position:absolute;inset:0;background:rgba(26,19,8,.8);z-index:520;align-items:center;justify-content:center;padding:24px;backdrop-filter:blur(3px);">
+    <div class="modal-box" style="text-align:center;">
+      <div class="modal-title">טיסה חדשה</div>
+      <div class="modal-sub" style="margin-bottom:16px;">בחר רשימת טיסה</div>
+      <div class="profile-select-list" id="profileSelectList"></div>
+      <div style="height:1px;background:var(--gold-lite);margin:0 0 14px;opacity:.7;"></div>
+      <button class="btn btn-ink" id="profileSelectConfirmBtn" onclick="profileSelectConfirm()" style="margin-bottom:8px;">התחל טיסה ›</button>
+      <button class="btn btn-ghost" onclick="profileSelectClose()">ביטול</button>
+    </div>
+  </div>
+
+  <!-- ══ NEW PROFILE MODAL ══ -->
+  <div id="newProfileModal" onclick="handleNewProfileClick(event)" style="display:none;position:absolute;inset:0;background:rgba(26,19,8,.8);z-index:520;align-items:center;justify-content:center;padding:24px;backdrop-filter:blur(3px);">
+    <div class="modal-box" style="text-align:center;">
+      <div class="modal-title">רשימה חדשה</div>
+      <div class="modal-sub" style="margin-bottom:16px;">במה להתחיל?</div>
+      <button class="start-from-btn selected" id="startFromDefault" onclick="npSelectFrom('default')">
+        <div class="start-from-btn-title">התחל מרשימת ברירת המחדל</div>
+      </button>
+      <button class="start-from-btn" id="startFromScratch" onclick="npSelectFrom('scratch')">
+        <div class="start-from-btn-title">התחל מרשימה ריקה</div>
+      </button>
+      <div style="height:1px;background:var(--gold-lite);margin:4px 0 14px;opacity:.7;"></div>
+      <div style="text-align:right;direction:rtl;margin-bottom:14px;">
+        <div style="font-size:11px;color:var(--ink-muted);margin-bottom:8px;font-family:var(--font-mono);letter-spacing:.08em;">שם הרשימה</div>
+        <div style="border-bottom:1.5px dashed rgba(28,61,110,.4);padding-bottom:3px;">
+          <input id="newProfileNameInput" type="text" placeholder="לדוגמה: בדיקת כשירות"
+            style="background:transparent;border:none;outline:none;font-family:var(--font-ui);font-size:15px;font-weight:600;color:var(--ink-body);width:100%;caret-color:var(--gold);direction:rtl;"
+            oninput="npUpdateConfirm()">
+        </div>
+      </div>
+      <button class="btn btn-ink" id="newProfileConfirmBtn" onclick="npConfirm()" style="margin-bottom:8px;" disabled>צור רשימה ›</button>
+      <button class="btn btn-ghost" onclick="npClose()">ביטול</button>
+    </div>
+  </div>
+
+  <!-- ══ RENAME PROFILE MODAL ══ -->
+  <div id="renameProfileModal" onclick="handleRenameProfileClick(event)" style="display:none;position:absolute;inset:0;background:rgba(26,19,8,.8);z-index:520;align-items:center;justify-content:center;padding:24px;backdrop-filter:blur(3px);">
+    <div class="modal-box" style="text-align:center;">
+      <div class="modal-title">שנה שם רשימה</div>
+      <div style="text-align:right;direction:rtl;margin:16px 0;">
+        <div style="font-size:11px;color:var(--ink-muted);margin-bottom:8px;font-family:var(--font-mono);letter-spacing:.08em;">שם הרשימה</div>
+        <div style="border-bottom:1.5px dashed rgba(28,61,110,.4);padding-bottom:3px;">
+          <input id="renameProfileInput" type="text"
+            style="background:transparent;border:none;outline:none;font-family:var(--font-ui);font-size:15px;font-weight:600;color:var(--ink-body);width:100%;caret-color:var(--gold);direction:rtl;"
+            oninput="renameUpdateConfirm()">
+        </div>
+      </div>
+      <button class="btn btn-ink" id="renameProfileConfirmBtn" onclick="renameProfileConfirm()" style="margin-bottom:8px;">אישור</button>
+      <button class="btn btn-ghost" onclick="renameProfileClose()">ביטול</button>
     </div>
   </div>
 
