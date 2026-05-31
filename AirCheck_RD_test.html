@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <!-- ═══════════════════════════════════════
-     AirCheck+ · v2.06.029T · built by eligrt
+     AirCheck+ · v2.06.053T · built by eligrt
      ═══════════════════════════════════════ -->
 <html lang="he" dir="rtl">
 <head>
@@ -512,16 +512,20 @@ html,body{height:100%;background:#1a1a1c;font-family:var(--font-ui);color:var(--
 #metarOverlay.open{display:flex;}
 .metar-sheet{background:var(--paper-hi);border:2px solid var(--gold);border-radius:8px;width:100%;max-width:390px;box-shadow:0 20px 60px rgba(0,0,0,.5);overflow:hidden;animation:metarFadeIn .2s cubic-bezier(.34,1.2,.64,1);}
 @keyframes metarFadeIn{from{opacity:0;transform:scale(.95);}to{opacity:1;transform:scale(1);}}
-.metar-header{background:var(--ink);padding:10px 16px;display:flex;align-items:center;justify-content:space-between;direction:ltr;gap:10px;}
-.metar-header-clickable{display:flex;align-items:center;gap:8px;cursor:pointer;flex:1;transition:opacity .12s;}
-.metar-header-clickable:active{opacity:.75;}
-.metar-header-top{display:flex;align-items:center;gap:8px;}
-.metar-icao{font-family:var(--font-mono);font-size:20px;font-weight:700;color:var(--paper);letter-spacing:.08em;direction:ltr;}
-.metar-change-hint{font-size:11px;color:var(--gold-lite);font-family:var(--font-ui);letter-spacing:.04em;opacity:.8;}
+.metar-header{background:var(--ink);padding:10px 16px;direction:rtl;}
+.metar-pill-strip{display:flex;gap:5px;direction:rtl;overflow-x:auto;scrollbar-width:none;padding-bottom:1px;}
+.metar-pill-strip::-webkit-scrollbar{display:none;}
+.metar-pill-btn{flex-shrink:0;padding:5px 10px;border-radius:20px;border:1.5px solid rgba(244,236,220,.25);background:transparent;color:rgba(244,236,220,.65);font-family:var(--font-mono);font-size:11px;font-weight:700;cursor:pointer;letter-spacing:.04em;transition:all .15s;}
+.metar-pill-btn:active{opacity:.7;}
+.metar-pill-btn.active{border:none;background:var(--paper);color:var(--ink);}
+.metar-pill-other{font-family:var(--font-ui);border-style:dashed;color:rgba(244,236,220,.4);}
+.metar-pill-other.active{background:rgba(200,160,74,.2);border:1.5px solid var(--gold);color:var(--gold-lite);border-style:solid;}
+.metar-pill-input-row{display:flex;align-items:center;gap:10px;background:rgba(244,236,220,.08);border:1px solid rgba(200,160,74,.3);border-radius:4px;padding:7px 12px;margin-top:8px;direction:ltr;}
+.metar-pill-input{background:transparent;border:none;border-bottom:1.5px dashed rgba(200,160,74,.5);outline:none;font-family:var(--font-mono);font-size:14px;font-weight:700;color:var(--paper);flex:1;padding:0 0 1px;text-transform:uppercase;caret-color:var(--gold);letter-spacing:.1em;direction:ltr;-webkit-appearance:none;}
+.metar-pill-input::placeholder{color:rgba(244,236,220,.2);}
 .metar-station-name{font-size:11px;color:rgba(244,236,220,.65);font-family:var(--font-ui);letter-spacing:.02em;}
 .metar-age{font-family:var(--font-mono);font-size:9px;color:rgba(100,210,160,.85);letter-spacing:.1em;border:1px solid rgba(100,210,160,.35);border-radius:3px;padding:2px 7px;direction:ltr;flex-shrink:0;}
 .metar-age.stale{color:var(--amber);border-color:rgba(245,158,11,.35);}
-.metar-header-right{display:flex;flex-direction:column;align-items:flex-end;gap:6px;flex-shrink:0;}
 .metar-close{background:transparent;border:none;color:rgba(244,236,220,.55);font-size:20px;cursor:pointer;line-height:1;padding:0;font-family:var(--font-mono);}
 .metar-close:active{color:var(--paper);}
 .metar-tabs{display:flex;border-bottom:1px solid var(--paper-edge);background:var(--paper);}
@@ -555,7 +559,7 @@ html,body{height:100%;background:#1a1a1c;font-family:var(--font-ui);color:var(--
 .metar-field.wx .metar-field-label,.metar-field.wx .metar-field-value{color:var(--ink-muted);}
 .metar-field-value.good{color:var(--cleared)!important;}
 .metar-field-value.warn{color:var(--amber)!important;}
-.metar-footer{padding:10px 14px 14px;display:flex;align-items:center;justify-content:space-between;border-top:1px dashed var(--gold-lite);}
+.metar-footer{padding:10px 14px 14px;display:flex;align-items:center;justify-content:space-between;border-top:1px dashed var(--gold-lite);direction:rtl;}
 .metar-refresh-btn{background:transparent;border:1px solid var(--gold-lite);border-radius:3px;padding:6px 12px;font-family:var(--font-ui);font-size:12px;font-weight:600;color:var(--ink-muted);cursor:pointer;direction:rtl;}
 .metar-refresh-btn:active{background:rgba(200,160,74,.1);}
 .metar-fetched{font-family:var(--font-mono);font-size:9px;color:var(--ink-faint);letter-spacing:.06em;direction:ltr;}
@@ -607,7 +611,7 @@ html,body{height:100%;background:#1a1a1c;font-family:var(--font-ui);color:var(--
     <div class="splash-footer-wrap">
       <div class="footer-strip" style="display:flex;align-items:center;justify-content:space-between;padding:5px 14px 8px;">
         <span class="footer-refresh" onclick="reloadApp()">רענון</span>
-        <span id="versionTap" onclick="handleVersionTap()" style="cursor:default;">AirCheck+ · v2.06.029T · built by eligrt</span>
+        <span id="versionTap" onclick="handleVersionTap()" style="cursor:default;">AirCheck+ · v2.06.053T · built by eligrt</span>
         <span style="width:40px;"></span>
       </div>
     </div>
@@ -723,7 +727,7 @@ html,body{height:100%;background:#1a1a1c;font-family:var(--font-ui);color:var(--
     <div class="tree-panel" id="treePanel"></div>
     <div class="footer-strip" style="display:flex;align-items:center;justify-content:space-between;padding:5px 14px 8px;">
       <span class="footer-refresh" onclick="reloadApp()">רענון</span>
-      <span id="versionTap" onclick="handleVersionTap()" style="cursor:default;">AirCheck+ · v2.06.029T · built by eligrt</span>
+      <span id="versionTap" onclick="handleVersionTap()" style="cursor:default;">AirCheck+ · v2.06.053T · built by eligrt</span>
       <span style="width:40px;"></span>
     </div>
   </div>
@@ -782,7 +786,7 @@ html,body{height:100%;background:#1a1a1c;font-family:var(--font-ui);color:var(--
 
     <div class="footer-strip" style="display:flex;align-items:center;justify-content:space-between;padding:5px 14px 8px;">
       <span style="width:40px;"></span>
-      <span id="versionTap" onclick="handleVersionTap()" style="cursor:default;">AirCheck+ · v2.06.029T · built by eligrt</span>
+      <span id="versionTap" onclick="handleVersionTap()" style="cursor:default;">AirCheck+ · v2.06.053T · built by eligrt</span>
       <span style="width:40px;"></span>
     </div>
   </div>
@@ -872,7 +876,7 @@ html,body{height:100%;background:#1a1a1c;font-family:var(--font-ui);color:var(--
     </div>
     <div class="footer-strip" style="display:flex;align-items:center;justify-content:space-between;padding:5px 14px 8px;">
       <span class="footer-refresh" onclick="reloadApp()">רענון</span>
-      <span id="versionTap" onclick="handleVersionTap()" style="cursor:default;">AirCheck+ · v2.06.029T · built by eligrt</span>
+      <span id="versionTap" onclick="handleVersionTap()" style="cursor:default;">AirCheck+ · v2.06.053T · built by eligrt</span>
       <span style="width:40px;"></span>
     </div>
   </div>
@@ -893,7 +897,7 @@ html,body{height:100%;background:#1a1a1c;font-family:var(--font-ui);color:var(--
     <div class="editor-list" id="editorList"></div>
     <div class="footer-strip" style="display:flex;align-items:center;justify-content:space-between;padding:5px 14px 8px;">
       <span class="footer-refresh" onclick="reloadApp()">רענון</span>
-      <span id="versionTap" onclick="handleVersionTap()" style="cursor:default;">AirCheck+ · v2.06.029T · built by eligrt</span>
+      <span id="versionTap" onclick="handleVersionTap()" style="cursor:default;">AirCheck+ · v2.06.053T · built by eligrt</span>
       <span style="width:40px;"></span>
     </div>
   </div>
@@ -1277,6 +1281,10 @@ function showAllDoneOverlay(lastPhase){
       });
     });
   });
+  // Increment completed counter
+  const cc=parseInt(localStorage.getItem('aircheck_completed_count')||'0')+1;
+  localStorage.setItem('aircheck_completed_count',cc);
+  if(window.syncToFirebase)window.syncToFirebase();
   showScreen('screenSummary');
 }
 function dismissAllDone(){showScreen('screenChecklist');render();}
@@ -1299,7 +1307,12 @@ function closeModal(){
   if(cb)cb.style.display='';
   document.querySelector('.modal-box').className='modal-box';
 }
-function startNew(){clearState();holdState='idle';resetRunwayBtn();showScreen('screenChecklist');render();}
+function startNew(){
+  const fc=parseInt(localStorage.getItem('aircheck_flight_count')||'0')+1;
+  localStorage.setItem('aircheck_flight_count',fc);
+  if(window.syncToFirebase)window.syncToFirebase();
+  clearState();holdState='idle';resetRunwayBtn();showScreen('screenChecklist');render();
+}
 // ── SETTINGS ──
 const SETTINGS_KEY='aircheck_rd_settings';
 let settings={tail:'',holdMs:300,sounds:false,theme:'day'};
@@ -1554,16 +1567,8 @@ function profileSelectConfirm(){
     setActiveProfile(_selectedProfileForFlight);
     loadList();
     clearState();
-  }
-  profileSelectClose();
-  holdState='idle';resetRunwayBtn();showScreen('screenChecklist');render();
-}
-
-function profileSelectConfirm(){
-  if(_selectedProfileForFlight){
-    setActiveProfile(_selectedProfileForFlight);
-    loadList();
-    clearState();
+    const fc=parseInt(localStorage.getItem('aircheck_flight_count')||'0')+1;
+    localStorage.setItem('aircheck_flight_count',fc);
   }
   profileSelectClose();
   holdState='idle';resetRunwayBtn();showScreen('screenChecklist');render();
@@ -2089,7 +2094,47 @@ function exportEditorToXLS(){
   }
 }
 
-// ── END OF LIST POPUP ──
+// ── TOWER FIELD UPDATES ──
+async function renderTowerContent(){
+  const icao=getMetarIcao();
+  const el=document.getElementById('metarTabContent');
+  el.innerHTML='<div class="metar-loading">טוען עדכון שדה...</div>';
+  try{
+    if(!window._towerRead){
+      el.innerHTML='<div class="metar-error">שירות עדכוני שדה לא זמין</div>';return;
+    }
+    const data=await window._towerRead(icao);
+    if(!data){
+      el.innerHTML=`<div style="padding:20px 16px;text-align:center;direction:rtl;">
+        <div style="font-size:14px;color:var(--ink-muted);margin-bottom:8px;">אין עדכון שדה זמין</div>
+        <div style="font-size:11px;color:var(--ink-faint);">עדכון אחרון טרם התקבל</div>
+      </div>`;
+      return;
+    }
+    const d=new Date(data.timestamp);
+    const h=String(d.getHours()).padStart(2,'0');
+    const m=String(d.getMinutes()).padStart(2,'0');
+    const day=String(d.getDate()).padStart(2,'0');
+    const mo=String(d.getMonth()+1).padStart(2,'0');
+    const localTime=day+'/'+mo+' '+h+':'+m;
+    const zh=String(d.getUTCHours()).padStart(2,'0');
+    const zm=String(d.getUTCMinutes()).padStart(2,'0');
+    const zuluTime=zh+':'+zm+'Z';
+    const diffMin=Math.round((Date.now()-data.timestamp)/60000);
+    const age=diffMin<60?diffMin+' דק׳':Math.round(diffMin/60)+' שעות';
+    el.innerHTML=`
+      <div style="padding:10px 14px 8px;">
+        <div style="font-family:var(--font-mono);font-size:8px;color:var(--ink-faint);letter-spacing:.15em;text-transform:uppercase;direction:ltr;margin-bottom:6px;">FIELD UPDATE · ${icao}</div>
+        <div style="background:var(--paper);border:1px solid var(--paper-edge);border-radius:3px;padding:10px 12px;font-size:13px;line-height:1.7;color:var(--ink-body);direction:rtl;white-space:pre-wrap;">${data.text}</div>
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-top:8px;">
+          <div style="font-family:var(--font-mono);font-size:9px;color:var(--ink-faint);direction:ltr;">${localTime} (${zuluTime})</div>
+          <div style="font-family:var(--font-mono);font-size:9px;color:var(--ink-faint);">לפני ${age}</div>
+        </div>
+      </div>`;
+  }catch(e){
+    el.innerHTML='<div class="metar-error">שגיאה בטעינת עדכון שדה</div>';
+  }
+}
 function showEndOfListPopup(skippedCount){
   document.getElementById('endOfListCount').textContent=skippedCount;
   document.getElementById('endOfListModal').style.display='flex';
@@ -2296,7 +2341,97 @@ function syncMetarSettingsUI(){
   }
 }
 
-// ── STATION PICKER MODAL ──
+// ── METAR PILL STRIP ──
+const STATION_NAMES={
+  LLBG:'נתב״ג · Ben Gurion',LLHA:'חיפה · Haifa',
+  LLIB:'ראש פינה · Rosh Pina',LLER:'רמון · Ramon',
+  LLHZ:'הרצליה · Herzliya'
+};
+function syncMetarPills(){
+  const sel=localStorage.getItem(METAR_STATION_KEY)||'LLBG';
+  const customIcao=localStorage.getItem(METAR_CUSTOM_KEY)||'';
+  ['LLBG','LLHA','LLIB','LLER','LLHZ'].forEach(s=>{
+    const btn=document.getElementById('mpill-'+s);
+    if(btn)btn.classList.toggle('active',sel===s);
+  });
+  const otherBtn=document.getElementById('mpill-custom');
+  if(otherBtn)otherBtn.classList.toggle('active',sel==='custom');
+  const inputRow=document.getElementById('metarPillInputRow');
+  if(inputRow)inputRow.style.display=sel==='custom'?'flex':'none';
+  if(sel==='custom'&&customIcao){
+    const inp=document.getElementById('metarPillInput');
+    if(inp)inp.value=customIcao;
+  }
+  // Update station name label — show human name
+  const nameEl=document.getElementById('metarStationLabel');
+  if(nameEl){
+    if(sel==='custom'){
+      // For custom, try to use fetched name from cache
+      const cachedName=_metarCache&&_metarCache.icao===customIcao&&_metarCache.metar&&_metarCache.metar.name;
+      nameEl.textContent=cachedName?cachedName:(customIcao||'הזן קוד ICAO');
+    } else {
+      nameEl.textContent=STATION_NAMES[sel]||sel;
+    }
+  }
+}
+function metarPillSelect(icao){
+  localStorage.setItem(METAR_STATION_KEY,icao);
+  // Don't remove custom ICAO — preserve it so switching back to אחר restores it
+  syncMetarPills();
+  _metarCache={metar:null,taf:null,fetchedAt:null,icao:null};
+  // Update tower tab visibility
+  const towerBtn=document.getElementById('towerTabBtn');
+  const TOWER_STATIONS=['LLHZ'];
+  if(towerBtn){
+    towerBtn.style.display=TOWER_STATIONS.includes(icao)?'':'none';
+    if(!TOWER_STATIONS.includes(icao)&&_metarCurrentTab==='tower'){
+      _metarCurrentTab='metar';
+      document.getElementById('metarTabBtn').classList.add('active');
+      document.getElementById('tafTabBtn').classList.remove('active');
+      towerBtn.classList.remove('active');
+    }
+  }
+  fetchMetar(false);
+  if(window.syncToFirebase)window.syncToFirebase();
+}
+function metarPillOther(){
+  localStorage.setItem(METAR_STATION_KEY,'custom');
+  syncMetarPills();
+  // Hide tower tab for custom stations
+  const towerBtn=document.getElementById('towerTabBtn');
+  if(towerBtn){
+    towerBtn.style.display='none';
+    if(_metarCurrentTab==='tower'){
+      _metarCurrentTab='metar';
+      document.getElementById('metarTabBtn').classList.add('active');
+      document.getElementById('tafTabBtn').classList.remove('active');
+    }
+  }
+  setTimeout(()=>{
+    const inp=document.getElementById('metarPillInput');
+    if(inp){
+      const last=localStorage.getItem(METAR_CUSTOM_KEY)||'';
+      inp.value=last;
+      inp.select();
+      inp.focus();
+      // If we have a saved custom ICAO, fetch it immediately
+      if(last.length===4){
+        _metarCache={metar:null,taf:null,fetchedAt:null,icao:null};
+        syncMetarPills();
+        fetchMetar(false);
+      }
+    }
+  },50);
+}
+function onMetarPillInput(val){
+  if(val.length===4){
+    localStorage.setItem(METAR_CUSTOM_KEY,val);
+    syncMetarPills();
+    _metarCache={metar:null,taf:null,fetchedAt:null,icao:null};
+    fetchMetar(false);
+    if(window.syncToFirebase)window.syncToFirebase();
+  }
+}
 let _msPending='LLBG';
 function openMetarStationPicker(){
   const sel=localStorage.getItem(METAR_STATION_KEY)||'LLBG';
@@ -2343,17 +2478,39 @@ function msConfirm(){
   syncMetarSettingsUI();
   _metarCache={metar:null,taf:null,fetchedAt:null,icao:null};
   msClose();
-  // If METAR popup is open, refresh immediately with new station
   if(document.getElementById('metarOverlay').classList.contains('open')){
+    // Update tower tab visibility for new station
+    const newIcao=getMetarIcao();
+    const towerBtn=document.getElementById('towerTabBtn');
+    const TOWER_STATIONS=['LLHZ'];
+    if(towerBtn){
+      towerBtn.style.display=TOWER_STATIONS.includes(newIcao)?'':'none';
+      if(!TOWER_STATIONS.includes(newIcao)&&_metarCurrentTab==='tower'){
+        _metarCurrentTab='metar';
+        document.getElementById('metarTabBtn').classList.add('active');
+        document.getElementById('tafTabBtn').classList.remove('active');
+        towerBtn.classList.remove('active');
+      }
+    }
     fetchMetar(false);
   }
 }
 
 function openMetar(){
+  localStorage.setItem('aircheck_metar_used','1');
   document.getElementById('metarOverlay').classList.add('open');
-  syncMetarSettingsUI();
+  syncMetarPills();
   const icao=getMetarIcao();
-  // Use cache if same station and fresh (< 10 min)
+  const TOWER_STATIONS=['LLHZ'];
+  const towerBtn=document.getElementById('towerTabBtn');
+  const showTower=TOWER_STATIONS.includes(icao);
+  if(towerBtn)towerBtn.style.display=showTower?'':'none';
+  if(!showTower&&_metarCurrentTab==='tower'){
+    _metarCurrentTab='metar';
+    document.getElementById('metarTabBtn').classList.add('active');
+    document.getElementById('tafTabBtn').classList.remove('active');
+    if(towerBtn)towerBtn.classList.remove('active');
+  }
   if(_metarCache.icao===icao&&_metarCache.fetchedAt&&(Date.now()-_metarCache.fetchedAt)<600000){
     renderMetarContent();
   } else {
@@ -2367,7 +2524,13 @@ function switchMetarTab(tab){
   _metarCurrentTab=tab;
   document.getElementById('metarTabBtn').classList.toggle('active',tab==='metar');
   document.getElementById('tafTabBtn').classList.toggle('active',tab==='taf');
-  if(_metarCache.fetchedAt)renderMetarContent();
+  const towerBtn=document.getElementById('towerTabBtn');
+  if(towerBtn)towerBtn.classList.toggle('active',tab==='tower');
+  if(tab==='tower'){
+    renderTowerContent();
+  } else if(_metarCache.fetchedAt){
+    renderMetarContent();
+  }
 }
 
 async function fetchMetar(force){
@@ -2383,7 +2546,7 @@ async function fetchMetar(force){
     const isIsraeli=icao.startsWith('LL');
     if(isIsraeli){
       // IMS format — find the right aid by matching ICAO in content
-      const aidMap={'LLBG':'aid-1','LLHA':'aid-2','LLIB':'aid-3','LLER':'aid-4'};
+      const aidMap={'LLBG':'aid-1','LLHA':'aid-2','LLIB':'aid-3','LLER':'aid-4','LLHZ':'aid-5'};
       const aid=aidMap[icao];
       const metarArr=data.data&&data.data.metars&&data.data.metars[aid];
       const tafArr=data.data&&data.data.tafors&&data.data.tafors[aid];
@@ -2393,7 +2556,22 @@ async function fetchMetar(force){
         const obsTime=metarArr[0].valid_from.replace(' ','T')+':00Z';
         _metarCache.metar=parseMetarRaw(raw,obsTime,icao);
       } else {
-        _metarCache.metar=null;
+        // No METAR for this station — for LLHZ fetch LLBG as QNH reference
+        if(icao==='LLHZ'){
+          const llbgAid='aid-1';
+          const llbgArr=data.data&&data.data.metars&&data.data.metars[llbgAid];
+          if(llbgArr&&llbgArr.length){
+            const raw=llbgArr[0].content.replace(/=$/,'').trim();
+            const obsTime=llbgArr[0].valid_from.replace(' ','T')+':00Z';
+            const ref=parseMetarRaw(raw,obsTime,'LLBG');
+            ref.noMetar=true; // flag — display as reference only
+            _metarCache.metar=ref;
+          } else {
+            _metarCache.metar=null;
+          }
+        } else {
+          _metarCache.metar=null;
+        }
       }
 
       if(tafArr&&tafArr.length){
@@ -2435,7 +2613,18 @@ async function fetchMetar(force){
     }
 
     renderMetarContent();
+    syncMetarPills();
+    // If on tower tab, re-render tower content instead
+    if(_metarCurrentTab==='tower'){renderTowerContent();return;}
+    try{
+      localStorage.setItem('aircheck_metar_used','1');
+      const counts=JSON.parse(localStorage.getItem('aircheck_metar_station_counts')||'{}');
+      counts[icao]=(counts[icao]||0)+1;
+      localStorage.setItem('aircheck_metar_station_counts',JSON.stringify(counts));
+    }catch(ex){}
+    if(window.syncToFirebase)window.syncToFirebase();
   }catch(e){
+    console.error('fetchMetar error:',e,icao);
     document.getElementById('metarTabContent').innerHTML='<div class="metar-error">שגיאה בטעינת נתונים<br>בדוק חיבור לאינטרנט</div>';
   }
 }
@@ -2463,8 +2652,6 @@ function parseMetarRaw(raw,obsTimeStr,icao){
 
 function showMetarLoading(){
   document.getElementById('metarTabContent').innerHTML='<div class="metar-loading">FETCHING ...</div>';
-  document.getElementById('metarIcaoLabel').textContent=getMetarIcao();
-  document.getElementById('metarStationLabel').textContent='';
   document.getElementById('metarAgeLabel').textContent='—';
 }
 
@@ -2493,12 +2680,13 @@ function zuluToLocal(zuluStr){
 
 function renderMetarContent(){
   const icao=_metarCache.icao||getMetarIcao();
-  document.getElementById('metarIcaoLabel').textContent=icao;
+  // Station label already set by syncMetarPills
 
   if(_metarCurrentTab==='metar'){
     const m=_metarCache.metar;
     if(!m){document.getElementById('metarTabContent').innerHTML='<div class="metar-error">אין METAR זמין עבור '+icao+'</div>';return;}
-    document.getElementById('metarStationLabel').textContent=m.name||icao;
+    // Show reference note for stations without METAR (e.g. LLHZ)
+    const noMetarNote=m.noMetar?`<div style="background:rgba(245,158,11,.1);border:1px solid rgba(245,158,11,.3);border-radius:4px;padding:8px 12px;margin:8px 14px 0;font-size:11px;color:var(--amber);direction:rtl;font-family:var(--font-ui);">אין תחנת מדידה בהרצליה · QNH לפי LLBG</div>`:'';
     const ageEl=document.getElementById('metarAgeLabel');
     const ageStr=metarAgeStr(m.obsTime);
     ageEl.textContent=ageStr;
@@ -2541,8 +2729,9 @@ function renderMetarContent(){
     }
 
     document.getElementById('metarTabContent').innerHTML=`
+      ${noMetarNote}
       <div class="metar-raw-wrap">
-        <div class="metar-raw-label">RAW METAR</div>
+        <div class="metar-raw-label">RAW METAR${m.noMetar?' · ref: LLBG':''}</div>
         <div class="metar-raw">${colorRaw(raw)}</div>
       </div>
       <div class="metar-qnh-banner">
@@ -2581,7 +2770,6 @@ function renderMetarContent(){
   } else {
     // TAF tab
     const t=_metarCache.taf;
-    document.getElementById('metarStationLabel').textContent=t?(t.name||icao):'—';
     document.getElementById('metarAgeLabel').textContent=t?metarAgeStr(t.issueTime):'—';
     if(!t){document.getElementById('metarTabContent').innerHTML='<div class="metar-error">אין TAF זמין עבור '+icao+'</div>';return;}
     const rawTaf=t.rawTAF||t.rawTaf||'';
@@ -2794,36 +2982,62 @@ function splashSecondaryAction(){
     return prof?prof.type:(localStorage.getItem('aircheck_list_type')||'default');
   }
 
-  // Write device record on app open
-  async function trackAppOpen(){
+  // ── SINGLE SYNC FUNCTION ──
+  // Called from: app open, openMetar, station change, new flight, flight complete, editor save
+  async function syncToFirebase(){
     try{
       const deviceId=getDeviceId();
-      const os=getOS();
-      const listType=getListType();
       const now=Date.now();
       const pilotRef=ref(db,'pilots/'+deviceId);
+
+      // Read existing to preserve firstSeen and recover counters if localStorage was cleared
       const snap=await get(pilotRef);
       const existing=snap.val()||{};
+
+      // Snapshot all current state
+      const os=getOS();
+      const profiles=typeof getProfiles==='function'?getProfiles().profiles:[];
+      const profileCount=profiles.length||1;
+      const listType=getListType();
+
+      // METAR
+      const metarUsed=localStorage.getItem('aircheck_metar_used')==='1';
+      const rawStation=localStorage.getItem('aircheck_metar_station')||'LLBG';
+      const knownStations=['LLBG','LLHA','LLIB','LLER','LLHZ'];
+      // If stored as 'custom' but customIcao is a known station, normalize it
+      const metarCustomIcao=rawStation==='custom'?(localStorage.getItem('aircheck_metar_custom')||'').toUpperCase():'';
+      const metarStation=(rawStation==='custom'&&knownStations.includes(metarCustomIcao))?metarCustomIcao:rawStation;
+      // If it was a known station stored as custom, fix localStorage too
+      if(rawStation==='custom'&&knownStations.includes(metarCustomIcao)){
+        localStorage.setItem('aircheck_metar_station',metarCustomIcao);
+      }
+      let metarStationCounts={};
+      try{metarStationCounts=JSON.parse(localStorage.getItem('aircheck_metar_station_counts')||'{}');}catch(e){}
+
+      // Flight counters — use max(local, firebase) to survive browser clears
+      const localFlights=parseInt(localStorage.getItem('aircheck_flight_count')||'0');
+      const localCompleted=parseInt(localStorage.getItem('aircheck_completed_count')||'0');
+      const flightCount=Math.max(localFlights,existing.flightCount||0);
+      const completedFlights=Math.max(localCompleted,existing.completedFlights||0);
+      // Sync back if firebase had higher values
+      if((existing.flightCount||0)>localFlights)localStorage.setItem('aircheck_flight_count',existing.flightCount);
+      if((existing.completedFlights||0)>localCompleted)localStorage.setItem('aircheck_completed_count',existing.completedFlights);
+
       await set(pilotRef,{
         firstSeen: existing.firstSeen||now,
         lastSeen: now,
-        os: os,
-        listType: listType
+        os, listType, profileCount,
+        metarUsed, metarStation, metarCustomIcao, metarStationCounts,
+        flightCount, completedFlights
       });
     }catch(e){}
   }
 
-  // Update just the listType after editor DONE
-  window.updateListTypeInFirebase=async function(listType){
-    try{
-      const deviceId=getDeviceId();
-      const pilotRef=ref(db,'pilots/'+deviceId);
-      const snap=await get(pilotRef);
-      const existing=snap.val()||{};
-      if(Object.keys(existing).length===0)return; // not tracked yet
-      await set(pilotRef,{...existing,listType:listType});
-    }catch(e){}
-  };
+  // Expose for calls from main script
+  window.syncToFirebase=syncToFirebase;
+
+  // Update listType after editor DONE (lightweight wrapper)
+  window.updateListTypeInFirebase=function(){syncToFirebase();};
 
   // Fetch and display stats
   window.loadStats=async function(){
@@ -2838,42 +3052,118 @@ function splashSecondaryAction(){
       const pilots=Object.values(data);
       const total=pilots.length;
       const now=Date.now();
+      const sevenDays=7*24*60*60*1000;
       const thirtyDays=30*24*60*60*1000;
-      const active=pilots.filter(p=>now-p.lastSeen<thirtyDays).length;
+
+      const active7=pilots.filter(p=>now-p.lastSeen<sevenDays).length;
+      const active30=pilots.filter(p=>now-p.lastSeen<thirtyDays).length;
+
       const custom=pilots.filter(p=>p.listType==='modified').length;
-      const customPct=total>0?Math.round(custom/total*100):0;
+      const multiProfile=pilots.filter(p=>p.profileCount&&p.profileCount>1).length;
+      const profileDist={1:0,2:0,3:0,4:0,'5+':0};
+      pilots.forEach(p=>{
+        const c=p.profileCount||1;
+        if(c>=5)profileDist['5+']++;
+        else profileDist[c]=(profileDist[c]||0)+1;
+      });
+
+      const metarUsers=pilots.filter(p=>p.metarUsed).length;
+      const stationTotals={LLBG:0,LLHA:0,LLIB:0,LLER:0,LLHZ:0,custom:0};
+      const knownStations=new Set(['LLBG','LLHA','LLIB','LLER','LLHZ']);
+      let totalMetarOpens=0;
+      pilots.forEach(p=>{
+        if(!p.metarStationCounts)return;
+        Object.entries(p.metarStationCounts).forEach(([station,count])=>{
+          totalMetarOpens+=count;
+          // Normalize: if station key is known, use it; otherwise custom
+          const key=knownStations.has(station)?station:'custom';
+          stationTotals[key]=(stationTotals[key]||0)+count;
+        });
+      });
+
+      const totalFlights=pilots.reduce((s,p)=>s+(p.flightCount||0),0);
+      const totalCompleted=pilots.reduce((s,p)=>s+(p.completedFlights||0),0);
+
       const osCounts={iOS:0,Android:0,Desktop:0};
       pilots.forEach(p=>{if(osCounts[p.os]!==undefined)osCounts[p.os]++;});
-      // OS bar chart
-      function osBar(count,total,color){
-        const pct=total>0?Math.round(count/total*100):0;
-        return `<div style="margin-bottom:8px;">
+
+      function row(label,count,tot){
+        const p=tot>0?Math.round(count/tot*100):0;
+        return `<div style="display:flex;justify-content:space-between;align-items:baseline;padding:3px 0;border-bottom:1px dashed rgba(200,160,74,.15);">
+          <span style="font-size:11px;color:var(--ink-muted);direction:rtl;">${label}</span>
+          <span style="font-family:var(--font-mono);font-size:11px;color:var(--ink-body);direction:ltr;">${count} <span style="color:var(--ink-faint);font-size:10px;">(${p}%)</span></span>
+        </div>`;
+      }
+      function osBar(label,count,fill){
+        const p=total>0?Math.round(count/total*100):0;
+        return `<div style="margin-bottom:7px;">
           <div style="display:flex;justify-content:space-between;font-size:10px;font-family:var(--font-mono);color:var(--ink-muted);margin-bottom:3px;direction:ltr;">
-            <span style="color:var(--ink-body);">${color.label}</span><span>${count} · ${pct}%</span>
+            <span style="color:var(--ink-body);">${label}</span><span>${count} · ${p}%</span>
           </div>
-          <div style="height:6px;background:var(--paper-edge);border-radius:3px;overflow:hidden;">
-            <div style="height:100%;width:${pct}%;background:${color.fill};border-radius:3px;transition:width .4s ease;"></div>
+          <div style="height:5px;background:var(--paper-edge);border-radius:3px;overflow:hidden;">
+            <div style="height:100%;width:${p}%;background:${fill};border-radius:3px;"></div>
           </div>
         </div>`;
       }
+      function stationBar(label,count,fill){
+        const p=totalMetarOpens>0?Math.round(count/totalMetarOpens*100):0;
+        return `<div style="margin-bottom:7px;">
+          <div style="display:flex;justify-content:space-between;font-size:10px;font-family:var(--font-mono);color:var(--ink-muted);margin-bottom:3px;direction:ltr;">
+            <span style="color:var(--ink-body);">${label}</span><span>${count} · ${p}%</span>
+          </div>
+          <div style="height:5px;background:var(--paper-edge);border-radius:3px;overflow:hidden;">
+            <div style="height:100%;width:${p}%;background:${fill};border-radius:3px;"></div>
+          </div>
+        </div>`;
+      }
+      function section(title){
+        return `<div style="font-family:var(--font-mono);font-size:8px;color:var(--ink-faint);letter-spacing:.2em;text-transform:uppercase;margin:12px 0 6px;direction:ltr;">${title}</div>`;
+      }
+
       document.getElementById('statsContent').innerHTML=`
-        <div class="stats-grid" style="grid-template-columns:1fr 1fr 1fr;margin-bottom:14px;">
+        <div class="stats-grid" style="grid-template-columns:1fr 1fr 1fr;margin-bottom:4px;">
           <div class="stats-cell"><div class="stats-cell-val">${total}</div><div class="stats-cell-lbl">טייסים</div></div>
-          <div class="stats-cell"><div class="stats-cell-val">${active}</div><div class="stats-cell-lbl">פעילים 30י</div></div>
-          <div class="stats-cell"><div class="stats-cell-val">${customPct}%</div><div class="stats-cell-lbl">מותאמת</div></div>
+          <div class="stats-cell"><div class="stats-cell-val">${active7}</div><div class="stats-cell-lbl">פעילים 7 ימים</div></div>
+          <div class="stats-cell"><div class="stats-cell-val">${active30}</div><div class="stats-cell-lbl">פעילים 30 יום</div></div>
         </div>
         <div style="background:var(--paper);border:1px solid var(--gold-lite);border-radius:4px;padding:10px 12px;">
-          ${osBar(osCounts.iOS,total,{label:'iOS',fill:'var(--ink)'})}
-          ${osBar(osCounts.Android,total,{label:'Android',fill:'var(--cleared)'})}
-          ${osBar(osCounts.Desktop,total,{label:'Desktop',fill:'var(--amber)'})}
+          ${section('CHECKLISTS')}
+          ${row('צ׳קליסט מותאם אישית',custom,total)}
+          ${row('עם רשימות מרובות',multiProfile,total)}
+          ${section('PROFILE DISTRIBUTION')}
+          ${Object.entries(profileDist).map(([k,v])=>row(k+' רשימות',v,total)).join('')}
+          ${section('METAR')}
+          ${row('משתמשים ב־METAR',metarUsers,total)}
+          ${row('סה״כ פתיחות',totalMetarOpens,totalMetarOpens)}
+          ${stationBar('LLBG',stationTotals.LLBG,'var(--ink)')}
+          ${stationBar('LLHZ',stationTotals.LLHZ,'var(--stamp-red)')}
+          ${stationBar('LLHA',stationTotals.LLHA,'var(--amber)')}
+          ${stationBar('LLIB',stationTotals.LLIB,'var(--cleared)')}
+          ${stationBar('LLER',stationTotals.LLER,'#8a5a9a')}
+          ${stationBar('Custom',stationTotals.custom,'#5a7a9a')}
+          ${section('FLIGHTS')}
+          ${row('טיסות שהתחילו',totalFlights,totalFlights)}
+          ${row('טיסות שהושלמו',totalCompleted,totalFlights||1)}
+          ${section('OS')}
+          ${osBar('iOS',osCounts.iOS,'var(--ink)')}
+          ${osBar('Android',osCounts.Android,'var(--cleared)')}
+          ${osBar('Desktop',osCounts.Desktop,'var(--amber)')}
         </div>`;
     }catch(e){
       document.getElementById('statsContent').innerHTML='<div class="stats-loading">שגיאה בטעינת נתונים</div>';
     }
   };
 
-  // Track on load
-  trackAppOpen();
+  // Expose tower read for main script
+  window._towerRead=async function(icao){
+    try{
+      const snap=await get(ref(db,'tower/'+icao+'/latest'));
+      return snap.val();
+    }catch(e){return null;}
+  };
+
+  // Sync on load
+  syncToFirebase();
 </script>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js" defer></script>
@@ -2904,6 +3194,11 @@ function splashSecondaryAction(){
           <span class="ms-icao">LLER</span>
           <span class="ms-check">✓</span>
         </button>
+        <button class="ms-btn" id="msbtn-LLHZ" onclick="msSelect('LLHZ')">
+          <span class="ms-name">הרצליה · Herzliya</span>
+          <span class="ms-icao">LLHZ</span>
+          <span class="ms-check">✓</span>
+        </button>
         <div class="ms-btn ms-custom" id="msbtn-custom" onclick="msSelect('custom')">
           <span class="ms-name">אחר</span>
           <input class="ms-custom-input" id="msCustomInput"
@@ -2924,19 +3219,30 @@ function splashSecondaryAction(){
   <div id="metarOverlay" onclick="handleMetarOverlayClick(event)">
     <div class="metar-sheet" id="metarSheet">
       <div class="metar-header">
-        <div class="metar-header-clickable" onclick="openMetarStationPicker()">
-          <div class="metar-icao" id="metarIcaoLabel">—</div>
-          <span style="color:var(--gold);font-size:20px;line-height:1;">▾</span>
-          <div class="metar-change-hint">שנה תחנה</div>
-          <div class="metar-station-name" id="metarStationLabel" style="display:none;"></div>
-        </div>
-        <div class="metar-header-right">
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px;direction:rtl;">
+          <div class="metar-station-name" id="metarStationLabel">טוען...</div>
           <button class="metar-close" onclick="closeMetar()">✕</button>
+        </div>
+        <div class="metar-pill-strip" id="metarPillStrip">
+          <button class="metar-pill-btn" id="mpill-LLBG" onclick="metarPillSelect('LLBG')">LLBG</button>
+          <button class="metar-pill-btn" id="mpill-LLHZ" onclick="metarPillSelect('LLHZ')">LLHZ</button>
+          <button class="metar-pill-btn" id="mpill-LLHA" onclick="metarPillSelect('LLHA')">LLHA</button>
+          <button class="metar-pill-btn" id="mpill-LLIB" onclick="metarPillSelect('LLIB')">LLIB</button>
+          <button class="metar-pill-btn" id="mpill-LLER" onclick="metarPillSelect('LLER')">LLER</button>
+          <button class="metar-pill-btn metar-pill-other" id="mpill-custom" onclick="metarPillOther()">אחר</button>
+        </div>
+        <div class="metar-pill-input-row" id="metarPillInputRow" style="display:none;">
+          <span style="font-family:var(--font-mono);font-size:10px;color:rgba(244,236,220,.4);letter-spacing:.1em;flex-shrink:0;direction:ltr;">ICAO:</span>
+          <input id="metarPillInput" class="metar-pill-input" type="text" placeholder="LLXX" maxlength="4"
+            autocomplete="off" autocorrect="off" spellcheck="false"
+            style="width:5ch;flex:none;"
+            oninput="this.value=this.value.toUpperCase().replace(/[^A-Z0-9]/g,'');onMetarPillInput(this.value)">
         </div>
       </div>
       <div class="metar-tabs">
         <button class="metar-tab active" id="metarTabBtn" onclick="switchMetarTab('metar')">METAR</button>
         <button class="metar-tab" id="tafTabBtn" onclick="switchMetarTab('taf')">TAF</button>
+        <button class="metar-tab" id="towerTabBtn" onclick="switchMetarTab('tower')" style="display:none;">עדכוני שדה</button>
       </div>
       <div class="metar-tab-content" id="metarTabContent">
         <div class="metar-loading" id="metarLoading">FETCHING ...</div>
@@ -3088,7 +3394,11 @@ function splashSecondaryAction(){
 
   <div id="statsPopup">
     <div class="stats-box">
-      <div class="stats-title">✦ AirCheck+ · STATS</div>
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:4px;">
+        <div class="stats-title" style="margin-bottom:0;">✦ AirCheck+ · STATS</div>
+        <button onclick="document.getElementById('statsContent').innerHTML='<div class=\'stats-loading\'>טוען...</div>';if(window.loadStats)window.loadStats();"
+          style="background:transparent;border:1px solid var(--gold-lite);border-radius:3px;padding:3px 8px;font-family:var(--font-mono);font-size:11px;color:var(--ink-muted);cursor:pointer;">↻ רענן</button>
+      </div>
       <div id="statsContent"><div class="stats-loading">טוען נתונים...</div></div>
       <button class="btn btn-ghost" style="margin-top:4px;" onclick="closeStats()">סגור</button>
     </div>
