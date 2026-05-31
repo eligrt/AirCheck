@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <!-- ═══════════════════════════════════════
-     AirCheck+ · v2.06.017T · built by eligrt
+     AirCheck+ · v2.06.029T · built by eligrt
      ═══════════════════════════════════════ -->
 <html lang="he" dir="rtl">
 <head>
@@ -106,13 +106,20 @@ html,body{height:100%;background:#1a1a1c;font-family:var(--font-ui);color:var(--
 .editor-xls-bar{display:flex;gap:8px;padding:10px 14px 14px;border-top:2px dashed var(--gold-lite);margin-top:4px;}
 .editor-xls-btn{flex:1;padding:10px;border-radius:var(--r);border:1px solid var(--gold-lite);background:var(--paper);font-family:var(--font-ui);font-size:12px;font-weight:700;color:var(--ink-muted);cursor:pointer;text-align:center;}
 .editor-xls-btn:active{background:rgba(200,160,74,.08);}
-.profile-select-list{display:flex;flex-direction:column;gap:7px;margin-bottom:14px;}
-.profile-select-row{width:100%;padding:11px 14px;border-radius:var(--r);border:1.5px solid var(--gold-lite);background:var(--paper);cursor:pointer;display:flex;align-items:center;direction:rtl;transition:background .12s,border-color .12s;gap:6px;}
+.profile-select-list{display:flex;flex-direction:column;gap:6px;margin-bottom:14px;max-height:244px;overflow-y:auto;-webkit-overflow-scrolling:touch;}
+.profile-select-list::-webkit-scrollbar{display:none;}
+.profile-select-list{scrollbar-width:none;-ms-overflow-style:none;}
+.profile-select-wrap{position:relative;margin-bottom:14px;}
+.profile-select-wrap::after{content:'';position:absolute;bottom:0;left:0;right:0;height:44px;background:linear-gradient(transparent,var(--paper-hi) 80%);pointer-events:none;border-radius:0 0 var(--r) var(--r);}
+.profile-select-row{width:100%;padding:12px 14px;border-radius:var(--r);border:1.5px solid var(--paper-edge);background:var(--paper);cursor:pointer;display:flex;align-items:center;justify-content:space-between;direction:rtl;transition:background .12s,border-color .12s;gap:10px;}
 .profile-select-row:active{background:rgba(200,160,74,.08);}
-.profile-select-row.selected{background:rgba(200,160,74,.14);border-color:var(--gold);border-width:2px;}
+.profile-select-row.selected{background:rgba(200,160,74,.12);border-color:var(--gold);border-width:2px;}
 .profile-select-row.selected .profile-select-check{opacity:1;}
 .profile-select-name{font-size:14px;font-weight:600;color:var(--ink-body);flex:1;text-align:right;}
-.profile-select-check{font-family:var(--font-mono);font-size:12px;font-weight:700;color:var(--gold-deep);opacity:0;transition:opacity .12s;margin-left:8px;}
+.profile-select-badge{font-family:var(--font-mono);font-size:9px;font-weight:700;padding:2px 7px;border-radius:10px;letter-spacing:.04em;flex-shrink:0;width:80px;text-align:center;}
+.profile-select-badge.default{background:rgba(31,111,63,.1);color:var(--cleared);}
+.profile-select-badge.custom{background:rgba(200,160,74,.15);color:var(--gold-deep);}
+.profile-select-check{font-family:var(--font-mono);font-size:11px;font-weight:700;color:var(--gold-deep);opacity:0;transition:opacity .12s;flex-shrink:0;width:16px;text-align:center;}
 .start-from-btn{width:100%;padding:12px 14px;border-radius:var(--r);border:1.5px solid var(--gold-lite);background:var(--paper);cursor:pointer;margin-bottom:8px;text-align:right;direction:rtl;}
 .start-from-btn.selected{background:rgba(200,160,74,.12);border-color:var(--gold);border-width:2px;}
 .start-from-btn-title{font-size:13px;font-weight:700;color:var(--ink-body);}
@@ -600,7 +607,7 @@ html,body{height:100%;background:#1a1a1c;font-family:var(--font-ui);color:var(--
     <div class="splash-footer-wrap">
       <div class="footer-strip" style="display:flex;align-items:center;justify-content:space-between;padding:5px 14px 8px;">
         <span class="footer-refresh" onclick="reloadApp()">רענון</span>
-        <span id="versionTap" onclick="handleVersionTap()" style="cursor:default;">AirCheck+ · v2.06.017T · built by eligrt</span>
+        <span id="versionTap" onclick="handleVersionTap()" style="cursor:default;">AirCheck+ · v2.06.029T · built by eligrt</span>
         <span style="width:40px;"></span>
       </div>
     </div>
@@ -716,7 +723,7 @@ html,body{height:100%;background:#1a1a1c;font-family:var(--font-ui);color:var(--
     <div class="tree-panel" id="treePanel"></div>
     <div class="footer-strip" style="display:flex;align-items:center;justify-content:space-between;padding:5px 14px 8px;">
       <span class="footer-refresh" onclick="reloadApp()">רענון</span>
-      <span id="versionTap" onclick="handleVersionTap()" style="cursor:default;">AirCheck+ · v2.06.017T · built by eligrt</span>
+      <span id="versionTap" onclick="handleVersionTap()" style="cursor:default;">AirCheck+ · v2.06.029T · built by eligrt</span>
       <span style="width:40px;"></span>
     </div>
   </div>
@@ -775,7 +782,7 @@ html,body{height:100%;background:#1a1a1c;font-family:var(--font-ui);color:var(--
 
     <div class="footer-strip" style="display:flex;align-items:center;justify-content:space-between;padding:5px 14px 8px;">
       <span style="width:40px;"></span>
-      <span id="versionTap" onclick="handleVersionTap()" style="cursor:default;">AirCheck+ · v2.06.017T · built by eligrt</span>
+      <span id="versionTap" onclick="handleVersionTap()" style="cursor:default;">AirCheck+ · v2.06.029T · built by eligrt</span>
       <span style="width:40px;"></span>
     </div>
   </div>
@@ -865,7 +872,7 @@ html,body{height:100%;background:#1a1a1c;font-family:var(--font-ui);color:var(--
     </div>
     <div class="footer-strip" style="display:flex;align-items:center;justify-content:space-between;padding:5px 14px 8px;">
       <span class="footer-refresh" onclick="reloadApp()">רענון</span>
-      <span id="versionTap" onclick="handleVersionTap()" style="cursor:default;">AirCheck+ · v2.06.017T · built by eligrt</span>
+      <span id="versionTap" onclick="handleVersionTap()" style="cursor:default;">AirCheck+ · v2.06.029T · built by eligrt</span>
       <span style="width:40px;"></span>
     </div>
   </div>
@@ -886,7 +893,7 @@ html,body{height:100%;background:#1a1a1c;font-family:var(--font-ui);color:var(--
     <div class="editor-list" id="editorList"></div>
     <div class="footer-strip" style="display:flex;align-items:center;justify-content:space-between;padding:5px 14px 8px;">
       <span class="footer-refresh" onclick="reloadApp()">רענון</span>
-      <span id="versionTap" onclick="handleVersionTap()" style="cursor:default;">AirCheck+ · v2.06.017T · built by eligrt</span>
+      <span id="versionTap" onclick="handleVersionTap()" style="cursor:default;">AirCheck+ · v2.06.029T · built by eligrt</span>
       <span style="width:40px;"></span>
     </div>
   </div>
@@ -950,7 +957,7 @@ const CL=[
   {phase:"יום לפני",group:"תכנון (ניווט ודלק)",main:"הכנת מפות וציר ניווט",sub:""},
   {phase:"יום לפני",group:"תכנון (ניווט ודלק)",main:"רישום כל תדרי הרדיו הנדרשים לנתיב",sub:""},
   {phase:"יום לפני",group:"תכנון (ניווט ודלק)",main:"ודא כמות דלק נדרשת בהתאם למשך הטיסה",sub:""},
-  {phase:"יום לפני",group:"מנהלות",main:"ודא מטוס מושריין / מוזמן לטיסה",sub:""},
+  {phase:"יום לפני",group:"מנהלות",main:"ודא מטוס משוריין / מוזמן לטיסה",sub:""},
   {phase:"יום לפני",group:"מנהלות",main:"תאום נחיתה בשדה יעד / עצירה",sub:""},
   {phase:"יום לפני",group:"בדיקת מז״א",main:"בדוק TAF בשדה המראה ושדה נחיתה",sub:""},
   {phase:"יום לפני",group:"בדיקת מז״א",main:"בדוק מפות רוח בנתיב",sub:""},
@@ -1058,6 +1065,19 @@ function renderRunway(){
         track.appendChild(pip);
       }
     });
+    // Current item position marker (small plane on active phase)
+    if(isCur){
+      const curIdx=allItems.indexOf(current);
+      if(curIdx>=0){
+        const pct=100/pTot;
+        const marker=document.createElement('div');
+        marker.style.cssText='position:absolute;top:50%;transform:translateY(-50%) scaleX(-1);z-index:4;pointer-events:none;transition:right .3s ease;font-size:10px;line-height:1;';
+        marker.style.right=(curIdx*pct + pct/2 - 1)+'%';
+        marker.textContent='✈';
+        marker.style.color='#fff';
+        track.appendChild(marker);
+      }
+    }
     // long-press on track
     let lpTimer=null;
     const startLp=(e)=>{lpTimer=setTimeout(()=>{lpTimer=null;window._bulkJustOpened=true;openBulkPopup(p,allItems,isComplete,seg);},500);};
@@ -1142,15 +1162,30 @@ function advanceToNext(){let n=current+1;while(n<CL.length&&status[n]==='done')n
 function goBack(){if(current>0){current--;holdState='idle';resetRunwayBtn();render();}}
 function skipItem(){status[current]='skipped';let n=current+1;while(n<CL.length&&status[n]==='done')n++;if(n<CL.length)current=n;holdState='idle';resetRunwayBtn();render();}
 function uncheckCurrent(){status[current]='skipped';holdState='idle';resetRunwayBtn();render();}
-function goNext(){if(current<CL.length-1){if(status[current]!=='done')status[current]='skipped';current++;holdState='idle';resetRunwayBtn();render();}}
+function goNext(){
+  if(current<CL.length-1){
+    if(status[current]!=='done')status[current]='skipped';
+    current++;holdState='idle';resetRunwayBtn();render();
+  } else {
+    // Last item — mark as skipped if not done
+    if(status[current]!=='done')status[current]='skipped';
+    const skippedCount=CL.filter((_,j)=>status[j]==='skipped').length;
+    if(skippedCount>0){
+      render(); // update runway bar first
+      showEndOfListPopup(skippedCount);
+    }
+  }
+}
 function jumpToUnchecked(){const idx=CL.findIndex((_,i)=>status[i]==='skipped');if(idx!==-1){current=idx;holdState='idle';resetRunwayBtn();render();}}
 function updateNavBtns(){
   const isFirst=current===0;
   const isLast=current===CL.length-1;
   const isDone=status[current]==='done';
   const hasUnchecked=CL.some((_,i)=>status[i]==='skipped'&&i!==current);
+  const hasSkippedAnywhere=CL.some((_,i)=>status[i]==='skipped');
+  const lastItemNotDone=isLast&&status[current]!=='done';
   document.getElementById('navBack').disabled=isFirst;
-  document.getElementById('navNext').disabled=isLast;
+  document.getElementById('navNext').disabled=isLast&&!hasSkippedAnywhere&&!lastItemNotDone;
   document.getElementById('navUncheck').disabled=!isDone;
   document.getElementById('navSkipJump').disabled=!hasUnchecked;
 }
@@ -1195,7 +1230,7 @@ function bulkConfirm(){
   holdState='idle';resetRunwayBtn();render();
 }
 function showPhaseOverlay(donePhaseName,nextPhaseName){document.getElementById('phaseOverlayTitle').textContent=donePhaseName;document.getElementById('phaseOverlayNext').textContent=nextPhaseName?'השלב הבא: '+nextPhaseName:'כל השלבים הושלמו!';document.getElementById('phaseOverlay').classList.add('open');}
-function dismissPhaseOverlay(){document.getElementById('phaseOverlay').classList.remove('open');render();}
+function dismissPhaseOverlay(){document.getElementById('phaseOverlay').classList.remove('open');saveState();showScreen('screenSplash');initSplash();}
 function showAllDoneOverlay(lastPhase){
   const done=Object.values(status).filter(s=>s==='done').length;
   const skipped=Object.values(status).filter(s=>s==='skipped').length;
@@ -1367,9 +1402,12 @@ function renderProfileTabStrip(){
     tab.onclick=()=>{_editorActiveProfileId=prof.id;loadEditorForProfile(prof.id);};
     strip.appendChild(tab);
   });
-  if(p.profiles.length<5){
+  if(p.profiles.length<15){
     const add=document.createElement('div');add.className='profile-tab-add';add.textContent='+';
-    add.onclick=()=>openNewProfileModal();
+    add.onclick=()=>{
+      if(p.profiles.length>=7){openManyListsNudge();}
+      else{openNewProfileModal();}
+    };
     strip.appendChild(add);
   }
   // Action bar
@@ -1491,12 +1529,14 @@ function openNewFlightModal(){
       name.className='profile-select-name';
       name.textContent=prof.name;
       const badge=document.createElement('span');
-      badge.className='runway-meta-profile-badge '+(prof.type==='default'?'default':'custom');
-      badge.textContent=prof.type==='default'?'צ׳קליסט סטנדרטי':'צ׳קליסט מותאם אישית';
-      badge.style.cssText='flex-shrink:0;min-width:130px;text-align:center;';
+      badge.className='profile-select-badge '+(prof.type==='default'?'default':'custom');
+      badge.textContent=prof.type==='default'?'סטנדרטי':'מותאם אישית';
+      const count=document.createElement('span');
+      count.style.cssText='font-family:var(--font-mono);font-size:10px;color:var(--ink-faint);flex-shrink:0;';
+      count.textContent=(prof.list||[]).length+' פריטים';
       const check=document.createElement('span');
       check.className='profile-select-check';check.textContent='✓';
-      row.appendChild(name);row.appendChild(badge);row.appendChild(check);
+      row.appendChild(name);row.appendChild(count);row.appendChild(badge);row.appendChild(check);
       row.onclick=()=>{
         _selectedProfileForFlight=prof.id;
         document.querySelectorAll('.profile-select-row').forEach(r=>r.classList.remove('selected'));
@@ -1602,6 +1642,11 @@ function saveEditor(){
 }
 
 function renderEditor(){
+  // Keep active profile's list in sync with edData for live count
+  const p=getProfiles();
+  const prof=p.profiles.find(pr=>pr.id===_editorActiveProfileId);
+  if(prof)prof.list=edDataToCL(edData);
+  renderProfileTabStrip();
   const el=document.getElementById('editorList');el.innerHTML='';
   edData.forEach((ph,pi)=>{
     const card=document.createElement('div');card.className='ed-phase';
@@ -1981,7 +2026,7 @@ function confirmXLSImport(){
     list:prof.list
   }));
   // Limit to 5
-  if(p.profiles.length>5)p.profiles=p.profiles.slice(0,5);
+  if(p.profiles.length>15)p.profiles=p.profiles.slice(0,15);
   p.activeProfile=p.profiles[0].id;
   saveProfiles();
   // Load first profile into CL
@@ -2042,6 +2087,43 @@ function exportEditorToXLS(){
     showToast('שגיאה בייצוא: '+e.message);
     console.error('Export error:',e);
   }
+}
+
+// ── END OF LIST POPUP ──
+function showEndOfListPopup(skippedCount){
+  document.getElementById('endOfListCount').textContent=skippedCount;
+  document.getElementById('endOfListModal').style.display='flex';
+}
+function handleEndOfListClick(e){if(e.target===document.getElementById('endOfListModal'))closeEndOfList();}
+function closeEndOfList(){document.getElementById('endOfListModal').style.display='none';}
+function endOfListGoBack(){
+  closeEndOfList();
+  // Jump to first skipped item
+  const idx=CL.findIndex((_,i)=>status[i]==='skipped');
+  if(idx!==-1){current=idx;holdState='idle';resetRunwayBtn();render();}
+}
+function endOfListPark(){
+  closeEndOfList();
+  saveState();
+  showScreen('screenSplash');
+  initSplash();
+}
+
+// ── MANY LISTS NUDGE ──
+function openManyListsNudge(){
+  const count=getProfiles().profiles.length+1;
+  const numStr=String(count).padStart(2,'0');
+  document.getElementById('manyListsTitle').textContent='רשימה מספר '+count+', כבוד!';
+  document.getElementById('manyListsNum').textContent='LIST #'+numStr;
+  document.getElementById('manyListsModal').style.display='flex';
+}
+function handleManyListsClick(e){if(e.target===document.getElementById('manyListsModal'))manyListsDecline();}
+function manyListsConfirm(){
+  document.getElementById('manyListsModal').style.display='none';
+  openNewProfileModal();
+}
+function manyListsDecline(){
+  document.getElementById('manyListsModal').style.display='none';
 }
 
 // ── RELOAD ──
@@ -2871,7 +2953,9 @@ function splashSecondaryAction(){
     <div class="modal-box" style="text-align:center;">
       <div class="modal-title">טיסה חדשה</div>
       <div class="modal-sub" style="margin-bottom:16px;">בחר רשימת טיסה</div>
-      <div class="profile-select-list" id="profileSelectList"></div>
+      <div class="profile-select-wrap">
+        <div class="profile-select-list" id="profileSelectList"></div>
+      </div>
       <div style="height:1px;background:var(--gold-lite);margin:0 0 14px;opacity:.7;"></div>
       <button class="btn btn-ink" id="profileSelectConfirmBtn" onclick="profileSelectConfirm()" style="margin-bottom:8px;">התחל טיסה ›</button>
       <button class="btn btn-ghost" onclick="profileSelectClose()">ביטול</button>
@@ -2921,6 +3005,45 @@ function splashSecondaryAction(){
   </div>
 
   <!-- ══ WHAT'S NEW POPUP ══ -->
+  <!-- ══ END OF LIST POPUP ══ -->
+  <div id="endOfListModal" onclick="handleEndOfListClick(event)" style="display:none;position:absolute;inset:0;background:rgba(26,19,8,.8);z-index:520;align-items:center;justify-content:center;padding:24px;backdrop-filter:blur(3px);">
+    <div class="modal-box" style="text-align:center;padding-top:0;overflow:hidden;">
+      <div style="background:var(--ink);margin:0 -20px 16px;padding:14px 18px;text-align:center;">
+        <div style="font-size:20px;margin-bottom:4px;">📋</div>
+        <div style="font-size:16px;font-weight:700;color:var(--paper);direction:rtl;">סוף הרשימה</div>
+        <div style="font-family:var(--font-mono);font-size:10px;color:rgba(244,236,220,.5);letter-spacing:.1em;margin-top:3px;">END OF LIST</div>
+      </div>
+      <div style="font-size:13px;color:var(--ink-body);line-height:1.7;margin-bottom:14px;direction:rtl;text-align:right;">
+        הגעת לסוף הרשימה.<br>
+        נשארו <strong id="endOfListCount">0</strong> פריטים לא מסומנים.<br>
+        תוכל לחזור אליהם בכל עת.
+      </div>
+      <div style="height:1px;background:var(--gold-lite);margin:0 0 14px;opacity:.7;"></div>
+      <button class="btn btn-ink" onclick="endOfListGoBack()" style="margin-bottom:8px;">חזור לפריטים הפתוחים</button>
+      <button class="btn btn-ghost" onclick="endOfListPark()">סיים לעכשיו, אמשיך מאוחר יותר</button>
+    </div>
+  </div>
+
+  <!-- ══ MANY LISTS NUDGE MODAL ══ -->
+  <div id="manyListsModal" onclick="handleManyListsClick(event)" style="display:none;position:absolute;inset:0;background:rgba(26,19,8,.8);z-index:520;align-items:center;justify-content:center;padding:24px;backdrop-filter:blur(3px);">
+    <div class="modal-box" style="text-align:center;padding-top:0;overflow:hidden;">
+      <div style="background:var(--ink);margin:0 -20px 16px;padding:14px 18px;text-align:center;">
+        <div style="font-size:20px;margin-bottom:4px;">🗂️</div>
+        <div style="font-size:16px;font-weight:700;color:var(--paper);direction:rtl;" id="manyListsTitle">רשימה מספר 8, כבוד!</div>
+        <div style="font-family:var(--font-mono);font-size:10px;color:rgba(244,236,220,.5);letter-spacing:.1em;margin-top:3px;" id="manyListsNum">LIST #08</div>
+      </div>
+      <div style="font-size:13px;color:var(--ink-body);line-height:1.7;margin-bottom:14px;direction:rtl;text-align:right;">
+        כל כך הרבה רשימות, אתה בטח טייס רציני 😄<br>
+        ממליץ לך לעשות דאבל צ׳ק ולראות שכולן באמת בשימוש.<br>
+        רשימות שלא בשימוש ניתן למחוק או לערוך בדף העריכה.
+      </div>
+      <div style="height:1px;background:var(--gold-lite);margin:0 0 14px;opacity:.7;"></div>
+      <div style="font-size:13px;font-weight:700;color:var(--ink);text-align:center;margin-bottom:14px;">האם להוסיף את הרשימה החדשה?</div>
+      <button class="btn btn-ink" onclick="manyListsConfirm()" style="margin-bottom:8px;">כן, הוסף רשימה חדשה ›</button>
+      <button class="btn btn-ghost" onclick="manyListsDecline()">במחשבה שניה אין צורך.</button>
+    </div>
+  </div>
+
   <div id="whatsNewOverlay" style="display:none;position:absolute;inset:0;background:rgba(26,19,8,.82);z-index:700;align-items:center;justify-content:center;padding:24px;backdrop-filter:blur(3px);">
     <div style="background:var(--paper-hi);background-image:repeating-linear-gradient(0deg,transparent 0,transparent 27px,var(--paper-line) 27px,var(--paper-line) 28px);border:2px solid var(--gold);border-radius:8px;width:100%;max-width:340px;overflow:hidden;box-shadow:0 20px 60px rgba(0,0,0,.4);animation:metarFadeIn .25s cubic-bezier(.34,1.2,.64,1);">
       <div style="background:var(--ink);padding:16px 18px 14px;text-align:center;">
@@ -2940,8 +3063,8 @@ function splashSecondaryAction(){
         </div>
         <div style="display:flex;align-items:flex-start;gap:12px;padding:10px 12px;background:var(--paper);border:1px solid var(--paper-edge);border-radius:6px;direction:rtl;">
           <div style="flex:1;">
-            <div style="font-size:13px;font-weight:700;color:var(--ink-body);margin-bottom:2px;">עד 5 רשימות טיסה אישיות</div>
-            <div style="font-size:11px;color:var(--ink-muted);line-height:1.5;">יוצא לטיסת סופ"ש רגילה? מבחן רמה? טס על מטוסים שונים? — הכן רשימה נפרדת לכל תרחיש</div>
+            <div style="font-size:13px;font-weight:700;color:var(--ink-body);margin-bottom:2px;">רשימות טיסה מרובות</div>
+            <div style="font-size:11px;color:var(--ink-muted);line-height:1.5;">יוצא לטיסת סופ"ש רגילה? מבחן רמה? טס על מטוסים שונים? הכן רשימה נפרדת לכל תרחיש</div>
           </div>
           <div style="flex-shrink:0;width:32px;height:32px;background:var(--ink);border-radius:4px;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:2px;">
             <div style="width:18px;height:3px;background:var(--gold);border-radius:1px;"></div>
