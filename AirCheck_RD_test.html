@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <!-- ═══════════════════════════════════════
-     AirCheck+ · v2.06.053T · built by eligrt
+     AirCheck+ · v2.07.007T · built by eligrt
      ═══════════════════════════════════════ -->
 <html lang="he" dir="rtl">
 <head>
@@ -569,7 +569,9 @@ html,body{height:100%;background:#1a1a1c;font-family:var(--font-ui);color:var(--
 /* ── STATS POPUP ── */
 #statsPopup{display:none;position:absolute;inset:0;z-index:600;align-items:center;justify-content:center;background:rgba(26,19,8,.85);backdrop-filter:blur(3px);padding:24px;}
 #statsPopup.open{display:flex;}
-.stats-box{background:var(--paper-hi);border:2px solid var(--gold);border-radius:8px;padding:24px 20px;width:100%;max-width:320px;text-align:center;box-shadow:0 20px 60px rgba(0,0,0,.4);background-image:repeating-linear-gradient(0deg,transparent 0,transparent 27px,var(--paper-line) 27px,var(--paper-line) 28px);}
+.stats-box{background:var(--paper-hi);border:2px solid var(--gold);border-radius:8px;padding:20px;width:100%;max-width:320px;max-height:85vh;display:flex;flex-direction:column;text-align:center;box-shadow:0 20px 60px rgba(0,0,0,.4);background-image:repeating-linear-gradient(0deg,transparent 0,transparent 27px,var(--paper-line) 27px,var(--paper-line) 28px);}
+#statsContent{overflow-y:auto;-webkit-overflow-scrolling:touch;flex:1;scrollbar-width:none;}
+#statsContent::-webkit-scrollbar{display:none;}
 .stats-title{font-family:var(--font-mono);font-size:11px;letter-spacing:.2em;color:var(--ink-muted);margin-bottom:16px;text-transform:uppercase;}
 .stats-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:16px;}
 .stats-cell{background:var(--paper);border:1px solid var(--gold-lite);border-radius:4px;padding:10px 8px;}
@@ -611,7 +613,7 @@ html,body{height:100%;background:#1a1a1c;font-family:var(--font-ui);color:var(--
     <div class="splash-footer-wrap">
       <div class="footer-strip" style="display:flex;align-items:center;justify-content:space-between;padding:5px 14px 8px;">
         <span class="footer-refresh" onclick="reloadApp()">רענון</span>
-        <span id="versionTap" onclick="handleVersionTap()" style="cursor:default;">AirCheck+ · v2.06.053T · built by eligrt</span>
+        <span id="versionTap" onclick="handleVersionTap()" style="cursor:default;">AirCheck+ · v2.07.007T · built by eligrt</span>
         <span style="width:40px;"></span>
       </div>
     </div>
@@ -625,7 +627,7 @@ html,body{height:100%;background:#1a1a1c;font-family:var(--font-ui);color:var(--
           <span class="strip-label">UTC</span>
           <span class="strip-time" id="utcClock">--:--</span>
         </div>
-        <button class="strip-pill strip-pill-metar" onclick="openMetar()" style="align-self:center;">METAR/TAF</button>
+        <button class="strip-pill strip-pill-metar" onclick="openMetar()" style="align-self:center;display:none;" id="metarBtn">METAR/TAF</button>
       </div>
       <div class="strip-actions" style="margin-left:auto;align-self:center;">
         <button class="strip-pill" onclick="openSettings()">⚙ הגדרות</button>
@@ -727,7 +729,7 @@ html,body{height:100%;background:#1a1a1c;font-family:var(--font-ui);color:var(--
     <div class="tree-panel" id="treePanel"></div>
     <div class="footer-strip" style="display:flex;align-items:center;justify-content:space-between;padding:5px 14px 8px;">
       <span class="footer-refresh" onclick="reloadApp()">רענון</span>
-      <span id="versionTap" onclick="handleVersionTap()" style="cursor:default;">AirCheck+ · v2.06.053T · built by eligrt</span>
+      <span id="versionTap" onclick="handleVersionTap()" style="cursor:default;">AirCheck+ · v2.07.007T · built by eligrt</span>
       <span style="width:40px;"></span>
     </div>
   </div>
@@ -786,7 +788,7 @@ html,body{height:100%;background:#1a1a1c;font-family:var(--font-ui);color:var(--
 
     <div class="footer-strip" style="display:flex;align-items:center;justify-content:space-between;padding:5px 14px 8px;">
       <span style="width:40px;"></span>
-      <span id="versionTap" onclick="handleVersionTap()" style="cursor:default;">AirCheck+ · v2.06.053T · built by eligrt</span>
+      <span id="versionTap" onclick="handleVersionTap()" style="cursor:default;">AirCheck+ · v2.07.007T · built by eligrt</span>
       <span style="width:40px;"></span>
     </div>
   </div>
@@ -876,7 +878,7 @@ html,body{height:100%;background:#1a1a1c;font-family:var(--font-ui);color:var(--
     </div>
     <div class="footer-strip" style="display:flex;align-items:center;justify-content:space-between;padding:5px 14px 8px;">
       <span class="footer-refresh" onclick="reloadApp()">רענון</span>
-      <span id="versionTap" onclick="handleVersionTap()" style="cursor:default;">AirCheck+ · v2.06.053T · built by eligrt</span>
+      <span id="versionTap" onclick="handleVersionTap()" style="cursor:default;">AirCheck+ · v2.07.007T · built by eligrt</span>
       <span style="width:40px;"></span>
     </div>
   </div>
@@ -891,13 +893,13 @@ html,body{height:100%;background:#1a1a1c;font-family:var(--font-ui);color:var(--
       <button class="editor-save-btn" onclick="saveEditor()">DONE ✓</button>
     </div>
     <!-- Profile tab strip -->
-    <div class="profile-tab-strip" id="profileTabStrip"></div>
+    <div class="profile-tab-strip" id="profileTabStrip" style="display:none;"></div>
     <!-- Active tab action bar -->
-    <div class="profile-tab-actions" id="profileTabActions"></div>
+    <div class="profile-tab-actions" id="profileTabActions" style="display:none;"></div>
     <div class="editor-list" id="editorList"></div>
     <div class="footer-strip" style="display:flex;align-items:center;justify-content:space-between;padding:5px 14px 8px;">
       <span class="footer-refresh" onclick="reloadApp()">רענון</span>
-      <span id="versionTap" onclick="handleVersionTap()" style="cursor:default;">AirCheck+ · v2.06.053T · built by eligrt</span>
+      <span id="versionTap" onclick="handleVersionTap()" style="cursor:default;">AirCheck+ · v2.07.007T · built by eligrt</span>
       <span style="width:40px;"></span>
     </div>
   </div>
@@ -951,6 +953,13 @@ html,body{height:100%;background:#1a1a1c;font-family:var(--font-ui);color:var(--
   <input type="file" id="xlsImportInput"  accept=".xlsx,.xls" style="display:none" onchange="handleXLSImport(this)">
 
 <script>
+// ── FEATURE FLAGS ──
+const FEATURES={
+  METAR: true,
+  MULTI_PROFILE: true,
+  WHATS_NEW: true
+};
+
 const CL=[
   {phase:"יום לפני",group:"כשירות טיס ותעודות",main:"ודא שברשותך רישיון טיס ורישיון רדיו",sub:""},
   {phase:"יום לפני",group:"כשירות טיס ותעודות",main:"ודא מבחן רמה",sub:"בתוקף עד (dd.mm.yyyy)"},
@@ -1401,11 +1410,33 @@ function updateRunwayProfileLabel(){
 let _editorActiveProfileId=null;
 
 function renderProfileTabStrip(){
-  const p=getProfiles();
-  _editorActiveProfileId=_editorActiveProfileId||p.activeProfile;
   const strip=document.getElementById('profileTabStrip');
   const actions=document.getElementById('profileTabActions');
   if(!strip||!actions)return;
+  const p=getProfiles();
+  _editorActiveProfileId=_editorActiveProfileId||p.activeProfile;
+  const activeProf=p.profiles.find(pr=>pr.id===_editorActiveProfileId);
+  // Check if current edData matches default — compare live content, not just type flag
+  const currentList=edDataToCL(edData);
+  const isDefault=currentList.length===CL_DEFAULT.length&&currentList.every((it,i)=>it.main===CL_DEFAULT[i].main&&it.group===CL_DEFAULT[i].group&&it.phase===CL_DEFAULT[i].phase);
+
+  if(!FEATURES.MULTI_PROFILE){
+    strip.style.display='none';
+    // Show actions bar with reset button only
+    actions.style.display='';
+    actions.innerHTML='';
+    const resetBtn=document.createElement('button');resetBtn.className='profile-tab-btn'+(isDefault?' disabled':'');
+    resetBtn.textContent='↺ איפוס לברירת מחדל';resetBtn.disabled=isDefault;
+    resetBtn.onclick=()=>showConfirm('איפוס רשימה','לאפס את הרשימה לברירת המחדל?',()=>{
+      const prof=getProfiles().profiles.find(pr=>pr.id===_editorActiveProfileId);
+      if(prof){prof.list=CL_DEFAULT.map(it=>({...it}));prof.type='default';saveProfiles();}
+      loadEditorForProfile(_editorActiveProfileId);
+    });
+    actions.appendChild(resetBtn);
+    return;
+  }
+
+  strip.style.display='';actions.style.display='';
   strip.innerHTML='';
   p.profiles.forEach(prof=>{
     const tab=document.createElement('div');
@@ -1424,8 +1455,6 @@ function renderProfileTabStrip(){
     strip.appendChild(add);
   }
   // Action bar
-  const activeProf=p.profiles.find(pr=>pr.id===_editorActiveProfileId);
-  const isDefault=activeProf&&activeProf.type==='default';
   const canDelete=p.profiles.length>1;
   actions.innerHTML='';
   const renameBtn=document.createElement('button');renameBtn.className='profile-tab-btn';renameBtn.textContent='✎ שנה שם';
@@ -1522,7 +1551,7 @@ function renameProfileConfirm(){
 let _selectedProfileForFlight=null;
 function openNewFlightModal(){
   const p=getProfiles();
-  if(p.profiles.length<=1){
+  if(!FEATURES.MULTI_PROFILE||p.profiles.length<=1){
     // Single profile — confirm and start directly
     document.querySelector('.modal-box').className='modal-box amber';
     document.getElementById('modalTitle').textContent='טיסה חדשה?';
@@ -2850,7 +2879,11 @@ function showScreen(id){
   document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
   document.getElementById(id).classList.add('active');
 }
-document.addEventListener('DOMContentLoaded',()=>{loadSettings();loadList();loadState();loadReg();loadRoute();drawRings();initSplash();checkWhatsNew();});
+document.addEventListener('DOMContentLoaded',()=>{
+  loadSettings();loadList();loadState();loadReg();loadRoute();drawRings();initSplash();
+  if(FEATURES.WHATS_NEW)checkWhatsNew();
+  if(FEATURES.METAR){const mb=document.getElementById('metarBtn');if(mb)mb.style.display='';}
+});
 
 function startSplashTypewriter(){
   const sloganEl=document.getElementById('splashSlogan');
@@ -2917,7 +2950,7 @@ function splashMainAction(){
   if(done>0){
     // Resume current flight
     showScreen('screenChecklist');render();
-  } else if(p.profiles.length>1){
+  } else if(FEATURES.MULTI_PROFILE&&p.profiles.length>1){
     // Multiple profiles — show selector
     openNewFlightModal();
   } else {
@@ -2929,7 +2962,7 @@ function splashSecondaryAction(){
   const done=Object.values(status).filter(s=>s==='done').length;
   const p=getProfiles();
   const doStart=()=>{
-    if(p.profiles.length>1){openNewFlightModal();}
+    if(FEATURES.MULTI_PROFILE&&p.profiles.length>1){openNewFlightModal();}
     else{clearState();showScreen('screenChecklist');render();}
   };
   if(done>0){
@@ -3127,6 +3160,9 @@ function splashSecondaryAction(){
           <div class="stats-cell"><div class="stats-cell-val">${active30}</div><div class="stats-cell-lbl">פעילים 30 יום</div></div>
         </div>
         <div style="background:var(--paper);border:1px solid var(--gold-lite);border-radius:4px;padding:10px 12px;">
+          ${section('FLIGHTS')}
+          ${row('טיסות שהתחילו',totalFlights,totalFlights)}
+          ${row('טיסות שהושלמו',totalCompleted,totalFlights||1)}
           ${section('CHECKLISTS')}
           ${row('צ׳קליסט מותאם אישית',custom,total)}
           ${row('עם רשימות מרובות',multiProfile,total)}
@@ -3141,9 +3177,6 @@ function splashSecondaryAction(){
           ${stationBar('LLIB',stationTotals.LLIB,'var(--cleared)')}
           ${stationBar('LLER',stationTotals.LLER,'#8a5a9a')}
           ${stationBar('Custom',stationTotals.custom,'#5a7a9a')}
-          ${section('FLIGHTS')}
-          ${row('טיסות שהתחילו',totalFlights,totalFlights)}
-          ${row('טיסות שהושלמו',totalCompleted,totalFlights||1)}
           ${section('OS')}
           ${osBar('iOS',osCounts.iOS,'var(--ink)')}
           ${osBar('Android',osCounts.Android,'var(--cleared)')}
