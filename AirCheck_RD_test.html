@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <!-- ═══════════════════════════════════════
-     AirCheck+ · v2.07.010T · built by eligrt
+     AirCheck+ · v2.07.011T · built by eligrt
      ═══════════════════════════════════════ -->
 <html lang="he" dir="rtl">
 <head>
@@ -613,7 +613,7 @@ html,body{height:100%;background:#1a1a1c;font-family:var(--font-ui);color:var(--
     <div class="splash-footer-wrap">
       <div class="footer-strip" style="display:flex;align-items:center;justify-content:space-between;padding:5px 14px 8px;">
         <span class="footer-refresh" onclick="reloadApp()">רענון</span>
-        <span id="versionTap" onclick="handleVersionTap()" style="cursor:default;">AirCheck+ · v2.07.010T · built by eligrt</span>
+        <span id="versionTap" onclick="handleVersionTap()" style="cursor:default;">AirCheck+ · v2.07.011T · built by eligrt</span>
         <span style="width:40px;"></span>
       </div>
     </div>
@@ -729,7 +729,7 @@ html,body{height:100%;background:#1a1a1c;font-family:var(--font-ui);color:var(--
     <div class="tree-panel" id="treePanel"></div>
     <div class="footer-strip" style="display:flex;align-items:center;justify-content:space-between;padding:5px 14px 8px;">
       <span class="footer-refresh" onclick="reloadApp()">רענון</span>
-      <span id="versionTap" onclick="handleVersionTap()" style="cursor:default;">AirCheck+ · v2.07.010T · built by eligrt</span>
+      <span id="versionTap" onclick="handleVersionTap()" style="cursor:default;">AirCheck+ · v2.07.011T · built by eligrt</span>
       <span style="width:40px;"></span>
     </div>
   </div>
@@ -788,7 +788,7 @@ html,body{height:100%;background:#1a1a1c;font-family:var(--font-ui);color:var(--
 
     <div class="footer-strip" style="display:flex;align-items:center;justify-content:space-between;padding:5px 14px 8px;">
       <span style="width:40px;"></span>
-      <span id="versionTap" onclick="handleVersionTap()" style="cursor:default;">AirCheck+ · v2.07.010T · built by eligrt</span>
+      <span id="versionTap" onclick="handleVersionTap()" style="cursor:default;">AirCheck+ · v2.07.011T · built by eligrt</span>
       <span style="width:40px;"></span>
     </div>
   </div>
@@ -878,7 +878,7 @@ html,body{height:100%;background:#1a1a1c;font-family:var(--font-ui);color:var(--
     </div>
     <div class="footer-strip" style="display:flex;align-items:center;justify-content:space-between;padding:5px 14px 8px;">
       <span class="footer-refresh" onclick="reloadApp()">רענון</span>
-      <span id="versionTap" onclick="handleVersionTap()" style="cursor:default;">AirCheck+ · v2.07.010T · built by eligrt</span>
+      <span id="versionTap" onclick="handleVersionTap()" style="cursor:default;">AirCheck+ · v2.07.011T · built by eligrt</span>
       <span style="width:40px;"></span>
     </div>
   </div>
@@ -899,7 +899,7 @@ html,body{height:100%;background:#1a1a1c;font-family:var(--font-ui);color:var(--
     <div class="editor-list" id="editorList"></div>
     <div class="footer-strip" style="display:flex;align-items:center;justify-content:space-between;padding:5px 14px 8px;">
       <span class="footer-refresh" onclick="reloadApp()">רענון</span>
-      <span id="versionTap" onclick="handleVersionTap()" style="cursor:default;">AirCheck+ · v2.07.010T · built by eligrt</span>
+      <span id="versionTap" onclick="handleVersionTap()" style="cursor:default;">AirCheck+ · v2.07.011T · built by eligrt</span>
       <span style="width:40px;"></span>
     </div>
   </div>
@@ -2229,18 +2229,14 @@ function closeWhatsNew(){
 let _whatsNewShownThisSession=false;
 
 function checkPwaPopup(){
-  if(!FEATURES.PWA_POPUP)return;
-  // Skip on desktop — mobile only
-  if(getPwaPlatform()==='desktop')return;
-  // Skip if already running as PWA
-  if(window.matchMedia('(display-mode: standalone)').matches)return;
-  // Skip if user said never
-  if(localStorage.getItem('aircheck_pwa_never')==='1')return;
-  // Skip if dismissed recently (within 7 days)
+  if(!FEATURES.PWA_POPUP){alert('blocked: feature off');return;}
+  if(getPwaPlatform()==='desktop'){alert('blocked: desktop');return;}
+  if(window.matchMedia('(display-mode: standalone)').matches){alert('blocked: standalone');return;}
+  if(localStorage.getItem('aircheck_pwa_never')==='1'){alert('blocked: never');return;}
   const later=parseInt(localStorage.getItem('aircheck_pwa_later')||'0');
-  if(later&&Date.now()-later<7*24*60*60*1000)return;
-  // Skip if What's New shown this session
-  if(_whatsNewShownThisSession)return;
+  if(later&&Date.now()-later<7*24*60*60*1000){alert('blocked: later');return;}
+  if(_whatsNewShownThisSession){alert('blocked: whatsNew this session');return;}
+  alert('showing PWA popup in 2.5s · platform: '+getPwaPlatform());
   // Show after short delay
   setTimeout(()=>{
     const el=document.getElementById('pwaOverlay');
