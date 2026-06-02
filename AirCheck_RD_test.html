@@ -2223,20 +2223,27 @@ function closeWhatsNew(){
   localStorage.setItem(WHATS_NEW_KEY,WHATS_NEW_VER);
   const el=document.getElementById('whatsNewOverlay');
   if(el)el.style.display='none';
+  // Check PWA popup after What's New is dismissed
+  _whatsNewShownThisSession=false;
+  checkPwaPopup();
 }
 
 // ── PWA POPUP ──
 let _whatsNewShownThisSession=false;
 
 function checkPwaPopup(){
-  if(!FEATURES.PWA_POPUP){alert('blocked: feature off');return;}
-  if(getPwaPlatform()==='desktop'){alert('blocked: desktop');return;}
-  if(window.matchMedia('(display-mode: standalone)').matches){alert('blocked: standalone');return;}
-  if(localStorage.getItem('aircheck_pwa_never')==='1'){alert('blocked: never');return;}
+  if(!FEATURES.PWA_POPUP)return;
+  // Skip on desktop — mobile only
+  if(getPwaPlatform()==='desktop')return;
+  // Skip if already running as PWA
+  if(window.matchMedia('(display-mode: standalone)').matches)return;
+  // Skip if user said never
+  if(localStorage.getItem('aircheck_pwa_never')==='1')return;
+  // Skip if dismissed recently (within 7 days)
   const later=parseInt(localStorage.getItem('aircheck_pwa_later')||'0');
-  if(later&&Date.now()-later<7*24*60*60*1000){alert('blocked: later');return;}
-  if(_whatsNewShownThisSession){alert('blocked: whatsNew this session');return;}
-  alert('showing PWA popup in 2.5s · platform: '+getPwaPlatform());
+  if(later&&Date.now()-later<7*24*60*60*1000)return;
+  // Skip if What's New shown this session
+  if(_whatsNewShownThisSession)return;
   // Show after short delay
   setTimeout(()=>{
     const el=document.getElementById('pwaOverlay');
