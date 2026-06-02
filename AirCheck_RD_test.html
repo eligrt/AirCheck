@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <!-- ═══════════════════════════════════════
-     AirCheck+ · v2.07.009T · built by eligrt
+     AirCheck+ · v2.07.010T · built by eligrt
      ═══════════════════════════════════════ -->
 <html lang="he" dir="rtl">
 <head>
@@ -613,7 +613,7 @@ html,body{height:100%;background:#1a1a1c;font-family:var(--font-ui);color:var(--
     <div class="splash-footer-wrap">
       <div class="footer-strip" style="display:flex;align-items:center;justify-content:space-between;padding:5px 14px 8px;">
         <span class="footer-refresh" onclick="reloadApp()">רענון</span>
-        <span id="versionTap" onclick="handleVersionTap()" style="cursor:default;">AirCheck+ · v2.07.009T · built by eligrt</span>
+        <span id="versionTap" onclick="handleVersionTap()" style="cursor:default;">AirCheck+ · v2.07.010T · built by eligrt</span>
         <span style="width:40px;"></span>
       </div>
     </div>
@@ -729,7 +729,7 @@ html,body{height:100%;background:#1a1a1c;font-family:var(--font-ui);color:var(--
     <div class="tree-panel" id="treePanel"></div>
     <div class="footer-strip" style="display:flex;align-items:center;justify-content:space-between;padding:5px 14px 8px;">
       <span class="footer-refresh" onclick="reloadApp()">רענון</span>
-      <span id="versionTap" onclick="handleVersionTap()" style="cursor:default;">AirCheck+ · v2.07.009T · built by eligrt</span>
+      <span id="versionTap" onclick="handleVersionTap()" style="cursor:default;">AirCheck+ · v2.07.010T · built by eligrt</span>
       <span style="width:40px;"></span>
     </div>
   </div>
@@ -788,7 +788,7 @@ html,body{height:100%;background:#1a1a1c;font-family:var(--font-ui);color:var(--
 
     <div class="footer-strip" style="display:flex;align-items:center;justify-content:space-between;padding:5px 14px 8px;">
       <span style="width:40px;"></span>
-      <span id="versionTap" onclick="handleVersionTap()" style="cursor:default;">AirCheck+ · v2.07.009T · built by eligrt</span>
+      <span id="versionTap" onclick="handleVersionTap()" style="cursor:default;">AirCheck+ · v2.07.010T · built by eligrt</span>
       <span style="width:40px;"></span>
     </div>
   </div>
@@ -878,7 +878,7 @@ html,body{height:100%;background:#1a1a1c;font-family:var(--font-ui);color:var(--
     </div>
     <div class="footer-strip" style="display:flex;align-items:center;justify-content:space-between;padding:5px 14px 8px;">
       <span class="footer-refresh" onclick="reloadApp()">רענון</span>
-      <span id="versionTap" onclick="handleVersionTap()" style="cursor:default;">AirCheck+ · v2.07.009T · built by eligrt</span>
+      <span id="versionTap" onclick="handleVersionTap()" style="cursor:default;">AirCheck+ · v2.07.010T · built by eligrt</span>
       <span style="width:40px;"></span>
     </div>
   </div>
@@ -899,7 +899,7 @@ html,body{height:100%;background:#1a1a1c;font-family:var(--font-ui);color:var(--
     <div class="editor-list" id="editorList"></div>
     <div class="footer-strip" style="display:flex;align-items:center;justify-content:space-between;padding:5px 14px 8px;">
       <span class="footer-refresh" onclick="reloadApp()">רענון</span>
-      <span id="versionTap" onclick="handleVersionTap()" style="cursor:default;">AirCheck+ · v2.07.009T · built by eligrt</span>
+      <span id="versionTap" onclick="handleVersionTap()" style="cursor:default;">AirCheck+ · v2.07.010T · built by eligrt</span>
       <span style="width:40px;"></span>
     </div>
   </div>
@@ -2213,6 +2213,7 @@ const WHATS_NEW_VER='2.06';
 function checkWhatsNew(){
   const seen=localStorage.getItem(WHATS_NEW_KEY);
   if(seen===WHATS_NEW_VER)return;
+  _whatsNewShownThisSession=true;
   const el=document.getElementById('whatsNewOverlay');
   const verEl=document.getElementById('whatsNewVer');
   if(verEl)verEl.textContent='AirCheck+ · v'+WHATS_NEW_VER;
@@ -2226,13 +2227,6 @@ function closeWhatsNew(){
 
 // ── PWA POPUP ──
 let _whatsNewShownThisSession=false;
-const _origCheckWhatsNew=checkWhatsNew;
-// Wrap checkWhatsNew to track if it fired this session
-function checkWhatsNew(){
-  const seen=localStorage.getItem(WHATS_NEW_KEY);
-  if(seen!==WHATS_NEW_VER)_whatsNewShownThisSession=true;
-  _origCheckWhatsNew();
-}
 
 function checkPwaPopup(){
   if(!FEATURES.PWA_POPUP)return;
