@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <!-- ═══════════════════════════════════════
-     AirCheck+ · v2.07.032T · built by eligrt
+     AirCheck+ · v2.07.033T · built by eligrt
      ═══════════════════════════════════════ -->
 <html lang="he" dir="rtl">
 <head>
@@ -613,7 +613,7 @@ html,body{height:100%;background:#1a1a1c;font-family:var(--font-ui);color:var(--
     <div class="splash-footer-wrap">
       <div class="footer-strip" style="display:flex;align-items:center;justify-content:space-between;padding:5px 14px 8px;">
         <span class="footer-refresh" onclick="reloadApp()">רענון</span>
-        <span id="versionTap" onclick="handleVersionTap()" style="cursor:default;">AirCheck+ · v2.07.032T · built by eligrt</span>
+        <span id="versionTap" onclick="handleVersionTap()" style="cursor:default;">AirCheck+ · v2.07.033T · built by eligrt</span>
         <span style="width:40px;"></span>
       </div>
     </div>
@@ -729,7 +729,7 @@ html,body{height:100%;background:#1a1a1c;font-family:var(--font-ui);color:var(--
     <div class="tree-panel" id="treePanel"></div>
     <div class="footer-strip" style="display:flex;align-items:center;justify-content:space-between;padding:5px 14px 8px;">
       <span class="footer-refresh" onclick="reloadApp()">רענון</span>
-      <span id="versionTap" onclick="handleVersionTap()" style="cursor:default;">AirCheck+ · v2.07.032T · built by eligrt</span>
+      <span id="versionTap" onclick="handleVersionTap()" style="cursor:default;">AirCheck+ · v2.07.033T · built by eligrt</span>
       <span style="width:40px;"></span>
     </div>
   </div>
@@ -788,7 +788,7 @@ html,body{height:100%;background:#1a1a1c;font-family:var(--font-ui);color:var(--
 
     <div class="footer-strip" style="display:flex;align-items:center;justify-content:space-between;padding:5px 14px 8px;">
       <span style="width:40px;"></span>
-      <span id="versionTap" onclick="handleVersionTap()" style="cursor:default;">AirCheck+ · v2.07.032T · built by eligrt</span>
+      <span id="versionTap" onclick="handleVersionTap()" style="cursor:default;">AirCheck+ · v2.07.033T · built by eligrt</span>
       <span style="width:40px;"></span>
     </div>
   </div>
@@ -890,8 +890,8 @@ html,body{height:100%;background:#1a1a1c;font-family:var(--font-ui);color:var(--
     </div>
     <div class="footer-strip" style="display:flex;align-items:center;justify-content:space-between;padding:5px 14px 8px;">
       <span class="footer-refresh" onclick="reloadApp()">רענון</span>
-      <span id="versionTap" onclick="handleVersionTap()" style="cursor:default;">AirCheck+ · v2.07.032T · built by eligrt</span>
-      <span class="footer-refresh" onclick="checkForUpdate()">בדוק עדכון</span>
+      <span id="versionTap" onclick="handleVersionTap()" style="cursor:default;">AirCheck+ · v2.07.033T · built by eligrt</span>
+      <span style="width:40px;"></span>
     </div>
   </div>
   <div class="screen" id="screenEditor">
@@ -909,7 +909,7 @@ html,body{height:100%;background:#1a1a1c;font-family:var(--font-ui);color:var(--
     <div class="editor-list" id="editorList"></div>
     <div class="footer-strip" style="display:flex;align-items:center;justify-content:space-between;padding:5px 14px 8px;">
       <span class="footer-refresh" onclick="reloadApp()">רענון</span>
-      <span id="versionTap" onclick="handleVersionTap()" style="cursor:default;">AirCheck+ · v2.07.032T · built by eligrt</span>
+      <span id="versionTap" onclick="handleVersionTap()" style="cursor:default;">AirCheck+ · v2.07.033T · built by eligrt</span>
       <span style="width:40px;"></span>
     </div>
   </div>
@@ -2229,23 +2229,6 @@ function reloadApp(){
 }
 
 // ── VERSION CHECK ──
-async function checkForUpdate(){
-  try{
-    const res=await fetch('https://eligrt.github.io/AirCheck/version.json?t='+Date.now());
-    const data=await res.json();
-    const latest=data.version||'';
-    const current=document.querySelector('[id="versionTap"]')?.textContent?.match(/v([\d.]+[T]?)/)?.[1]||'';
-    if(latest&&current&&latest!==current){
-      // New version available — redirect to live URL
-      window.location.href='https://eligrt.github.io/AirCheck/AirCheck_RD_test.html?t='+Date.now();
-    } else {
-      showToast('✓ הגרסה העדכנית מותקנת');
-    }
-  }catch(e){
-    showToast('שגיאה בבדיקת עדכון');
-  }
-}
-
 // ── WHAT'S NEW ──
 const WHATS_NEW_KEY='aircheck_whats_new_seen';
 const WHATS_NEW_VER='2.06';
@@ -3019,25 +3002,6 @@ function showScreen(id){
   document.getElementById(id).classList.add('active');
 }
 document.addEventListener('DOMContentLoaded',()=>{
-  // Register service worker for iOS PWA cache management
-  if('serviceWorker' in navigator){
-    navigator.serviceWorker.register('./sw.js').catch(()=>{});
-    // Listen for SW_UPDATED message — reload to get fresh version
-    navigator.serviceWorker.addEventListener('message', event => {
-      if(event.data && event.data.type==='SW_UPDATED'){
-        window.location.reload();
-      }
-    });
-  }
-  // iOS PWA force-reload — bust cache on standalone launch
-  if(getPwaPlatform()==='ios'&&window.matchMedia('(display-mode: standalone)').matches){
-    const url=new URL(window.location.href);
-    if(!url.searchParams.get('v')){
-      url.searchParams.set('v',Date.now());
-      window.location.replace(url.toString());
-      return;
-    }
-  }
   loadSettings();loadList();loadState();loadReg();loadRoute();drawRings();initSplash();
   if(FEATURES.WHATS_NEW)checkWhatsNew();
   if(FEATURES.METAR){const mb=document.getElementById('metarBtn');if(mb)mb.style.display='';}
