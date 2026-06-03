@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <!-- ═══════════════════════════════════════
-     AirCheck+ · v2.07.034T · built by eligrt
+     AirCheck+ · v2.07.035T · built by eligrt
      ═══════════════════════════════════════ -->
 <html lang="he" dir="rtl">
 <head>
@@ -372,7 +372,7 @@ html,body{height:100%;background:#1a1a1c;font-family:var(--font-ui);color:var(--
 /* Editor popup */
 #edPopup{display:none;position:fixed;inset:0;z-index:300;align-items:flex-end;justify-content:center;background:rgba(26,19,8,.75);backdrop-filter:blur(3px);padding:16px;}
 #edPopup.open{display:flex;}
-.ed-popup-box{background:var(--paper-hi);border:2px solid var(--gold);border-radius:8px;padding:22px 18px 24px;width:100%;box-shadow:0 20px 60px rgba(0,0,0,.4);}
+.ed-popup-box{background:var(--paper-hi);border:2px solid var(--gold);border-radius:8px;padding:22px 18px 24px;width:100%;max-width:420px;box-shadow:0 20px 60px rgba(0,0,0,.4);}
 .ed-popup-title{font-size:15px;font-weight:700;color:var(--ink-body);margin-bottom:14px;direction:rtl;}
 .ed-input-label{font-size:11px;color:var(--ink-muted);margin-bottom:4px;font-family:var(--font-mono);letter-spacing:.06em;}
 .ed-input{width:100%;padding:10px 12px;background:var(--paper);border:1px solid var(--gold);border-radius:3px;font-family:var(--font-ui);font-size:14px;color:var(--ink-body);margin-bottom:10px;direction:rtl;outline:none;}
@@ -613,7 +613,7 @@ html,body{height:100%;background:#1a1a1c;font-family:var(--font-ui);color:var(--
     <div class="splash-footer-wrap">
       <div class="footer-strip" style="display:flex;align-items:center;justify-content:space-between;padding:5px 14px 8px;">
         <span class="footer-refresh" onclick="reloadApp()">רענון</span>
-        <span id="versionTap" onclick="handleVersionTap()" style="cursor:default;">AirCheck+ · v2.07.034T · built by eligrt</span>
+        <span id="versionTap" onclick="handleVersionTap()" style="cursor:default;">AirCheck+ · v2.07.035T · built by eligrt</span>
         <span style="width:40px;"></span>
       </div>
     </div>
@@ -729,7 +729,7 @@ html,body{height:100%;background:#1a1a1c;font-family:var(--font-ui);color:var(--
     <div class="tree-panel" id="treePanel"></div>
     <div class="footer-strip" style="display:flex;align-items:center;justify-content:space-between;padding:5px 14px 8px;">
       <span class="footer-refresh" onclick="reloadApp()">רענון</span>
-      <span id="versionTap" onclick="handleVersionTap()" style="cursor:default;">AirCheck+ · v2.07.034T · built by eligrt</span>
+      <span id="versionTap" onclick="handleVersionTap()" style="cursor:default;">AirCheck+ · v2.07.035T · built by eligrt</span>
       <span style="width:40px;"></span>
     </div>
   </div>
@@ -788,7 +788,7 @@ html,body{height:100%;background:#1a1a1c;font-family:var(--font-ui);color:var(--
 
     <div class="footer-strip" style="display:flex;align-items:center;justify-content:space-between;padding:5px 14px 8px;">
       <span style="width:40px;"></span>
-      <span id="versionTap" onclick="handleVersionTap()" style="cursor:default;">AirCheck+ · v2.07.034T · built by eligrt</span>
+      <span id="versionTap" onclick="handleVersionTap()" style="cursor:default;">AirCheck+ · v2.07.035T · built by eligrt</span>
       <span style="width:40px;"></span>
     </div>
   </div>
@@ -890,7 +890,7 @@ html,body{height:100%;background:#1a1a1c;font-family:var(--font-ui);color:var(--
     </div>
     <div class="footer-strip" style="display:flex;align-items:center;justify-content:space-between;padding:5px 14px 8px;">
       <span class="footer-refresh" onclick="reloadApp()">רענון</span>
-      <span id="versionTap" onclick="handleVersionTap()" style="cursor:default;">AirCheck+ · v2.07.034T · built by eligrt</span>
+      <span id="versionTap" onclick="handleVersionTap()" style="cursor:default;">AirCheck+ · v2.07.035T · built by eligrt</span>
       <span style="width:40px;"></span>
     </div>
   </div>
@@ -909,7 +909,7 @@ html,body{height:100%;background:#1a1a1c;font-family:var(--font-ui);color:var(--
     <div class="editor-list" id="editorList"></div>
     <div class="footer-strip" style="display:flex;align-items:center;justify-content:space-between;padding:5px 14px 8px;">
       <span class="footer-refresh" onclick="reloadApp()">רענון</span>
-      <span id="versionTap" onclick="handleVersionTap()" style="cursor:default;">AirCheck+ · v2.07.034T · built by eligrt</span>
+      <span id="versionTap" onclick="handleVersionTap()" style="cursor:default;">AirCheck+ · v2.07.035T · built by eligrt</span>
       <span style="width:40px;"></span>
     </div>
   </div>
@@ -1855,40 +1855,37 @@ function openEdPopup(title,main,sub,hasSub,cb){
   document.getElementById('edInputSub').value=sub||'';
   document.getElementById('edSubRow').style.display=hasSub?'block':'none';
   edPopupCallback={cb,hasSub};
-  // Wait for keyboard via visualViewport, then show popup already positioned above it
-  if(window.visualViewport&&window.innerWidth<600){
-    const initialH=window.visualViewport.height;
-    const tempInp=document.createElement('input');
-    tempInp.style.cssText='position:fixed;top:0;left:0;opacity:0;height:1px;width:1px;';
-    document.body.appendChild(tempInp);
-    tempInp.focus();
-    let shown=false;
-    const onResize=()=>{
-      if(shown)return;
-      if(window.visualViewport.height<initialH-100){
-        shown=true;
-        window.visualViewport.removeEventListener('resize',onResize);
-        document.body.removeChild(tempInp);
-        document.getElementById('edPopup').classList.add('open');
-        setTimeout(()=>document.getElementById('edInputMain').focus(),50);
-      }
-    };
-    window.visualViewport.addEventListener('resize',onResize);
-    // Fallback if keyboard doesn't fire resize
-    setTimeout(()=>{
-      if(shown)return;
-      window.visualViewport.removeEventListener('resize',onResize);
-      try{document.body.removeChild(tempInp);}catch(e){}
-      document.getElementById('edPopup').classList.add('open');
-      setTimeout(()=>document.getElementById('edInputMain').focus(),50);
-    },600);
-  } else {
-    document.getElementById('edPopup').classList.add('open');
-    setTimeout(()=>document.getElementById('edInputMain').focus(),120);
+
+  const popup=document.getElementById('edPopup');
+  popup.classList.add('open');
+
+  // Reposition above keyboard when it appears
+  function reposition(){
+    if(!window.visualViewport)return;
+    const vv=window.visualViewport;
+    const box=popup.querySelector('.ed-popup-box');
+    if(!box)return;
+    // Place popup above the keyboard with some breathing room
+    const availableBottom=window.innerHeight-(vv.offsetTop+vv.height);
+    box.style.marginBottom=Math.max(availableBottom+8,16)+'px';
   }
+  if(window.visualViewport){
+    window.visualViewport.addEventListener('resize',reposition);
+    window.visualViewport.addEventListener('scroll',reposition);
+    popup._vpCleanup=()=>{
+      window.visualViewport.removeEventListener('resize',reposition);
+      window.visualViewport.removeEventListener('scroll',reposition);
+    };
+  }
+  setTimeout(()=>document.getElementById('edInputMain').focus(),120);
 }
 function closeEdPopup(){
-  document.getElementById('edPopup').classList.remove('open');
+  const popup=document.getElementById('edPopup');
+  popup.classList.remove('open');
+  // Reset margin and clean up viewport listeners
+  const box=popup.querySelector('.ed-popup-box');
+  if(box)box.style.marginBottom='';
+  if(popup._vpCleanup){popup._vpCleanup();popup._vpCleanup=null;}
   edPopupCallback=null;
 }
 function confirmEdPopup(){
@@ -3379,7 +3376,6 @@ function splashSecondaryAction(){
           ${section('OS')}
           ${osBar('iOS',osCounts.iOS,pwaCounts.iOS,'var(--ink)','rgba(28,61,110,.4)')}
           ${osBar('Android',osCounts.Android,pwaCounts.Android,'var(--cleared)','rgba(31,111,63,.4)')}
-          ${osBar('Desktop',osCounts.Desktop,pwaCounts.Desktop,'var(--amber)','rgba(245,158,11,.4)')}
           ${section('PWA ADOPTION')}
           ${adoptionBar('ראו את ההודעה',pwaPromptShown,total,'var(--gold)')}
           ${adoptionBar('התקינו',pwaInstalled,pwaPromptShown||1,'var(--cleared)')}
