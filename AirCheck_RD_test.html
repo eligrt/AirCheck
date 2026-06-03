@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <!-- ═══════════════════════════════════════
-     AirCheck+ · v2.07.027T · built by eligrt
+     AirCheck+ · v2.07.028T · built by eligrt
      ═══════════════════════════════════════ -->
 <html lang="he" dir="rtl">
 <head>
@@ -613,7 +613,7 @@ html,body{height:100%;background:#1a1a1c;font-family:var(--font-ui);color:var(--
     <div class="splash-footer-wrap">
       <div class="footer-strip" style="display:flex;align-items:center;justify-content:space-between;padding:5px 14px 8px;">
         <span class="footer-refresh" onclick="reloadApp()">רענון</span>
-        <span id="versionTap" onclick="handleVersionTap()" style="cursor:default;">AirCheck+ · v2.07.027T · built by eligrt</span>
+        <span id="versionTap" onclick="handleVersionTap()" style="cursor:default;">AirCheck+ · v2.07.028T · built by eligrt</span>
         <span style="width:40px;"></span>
       </div>
     </div>
@@ -729,7 +729,7 @@ html,body{height:100%;background:#1a1a1c;font-family:var(--font-ui);color:var(--
     <div class="tree-panel" id="treePanel"></div>
     <div class="footer-strip" style="display:flex;align-items:center;justify-content:space-between;padding:5px 14px 8px;">
       <span class="footer-refresh" onclick="reloadApp()">רענון</span>
-      <span id="versionTap" onclick="handleVersionTap()" style="cursor:default;">AirCheck+ · v2.07.027T · built by eligrt</span>
+      <span id="versionTap" onclick="handleVersionTap()" style="cursor:default;">AirCheck+ · v2.07.028T · built by eligrt</span>
       <span style="width:40px;"></span>
     </div>
   </div>
@@ -788,7 +788,7 @@ html,body{height:100%;background:#1a1a1c;font-family:var(--font-ui);color:var(--
 
     <div class="footer-strip" style="display:flex;align-items:center;justify-content:space-between;padding:5px 14px 8px;">
       <span style="width:40px;"></span>
-      <span id="versionTap" onclick="handleVersionTap()" style="cursor:default;">AirCheck+ · v2.07.027T · built by eligrt</span>
+      <span id="versionTap" onclick="handleVersionTap()" style="cursor:default;">AirCheck+ · v2.07.028T · built by eligrt</span>
       <span style="width:40px;"></span>
     </div>
   </div>
@@ -890,7 +890,7 @@ html,body{height:100%;background:#1a1a1c;font-family:var(--font-ui);color:var(--
     </div>
     <div class="footer-strip" style="display:flex;align-items:center;justify-content:space-between;padding:5px 14px 8px;">
       <span class="footer-refresh" onclick="reloadApp()">רענון</span>
-      <span id="versionTap" onclick="handleVersionTap()" style="cursor:default;">AirCheck+ · v2.07.027T · built by eligrt</span>
+      <span id="versionTap" onclick="handleVersionTap()" style="cursor:default;">AirCheck+ · v2.07.028T · built by eligrt</span>
       <span style="width:40px;"></span>
     </div>
   </div>
@@ -911,7 +911,7 @@ html,body{height:100%;background:#1a1a1c;font-family:var(--font-ui);color:var(--
     <div class="editor-list" id="editorList"></div>
     <div class="footer-strip" style="display:flex;align-items:center;justify-content:space-between;padding:5px 14px 8px;">
       <span class="footer-refresh" onclick="reloadApp()">רענון</span>
-      <span id="versionTap" onclick="handleVersionTap()" style="cursor:default;">AirCheck+ · v2.07.027T · built by eligrt</span>
+      <span id="versionTap" onclick="handleVersionTap()" style="cursor:default;">AirCheck+ · v2.07.028T · built by eligrt</span>
       <span style="width:40px;"></span>
     </div>
   </div>
@@ -1767,11 +1767,8 @@ function buildItemRow(it,ii,g,gi,ph,pi){
   const isCustom=!CL_DEFAULT.some(d=>norm(d.main)===norm(it.main)&&norm(d.group)===norm(g.name)&&norm(d.phase)===norm(ph.phase));
   row.draggable=true;row.dataset.pi=pi;row.dataset.gi=gi;row.dataset.ii=ii;
   const drag=document.createElement('span');drag.className='ed-drag';drag.textContent='⠿';
-  if(isCustom){
-    const dot=document.createElement('span');
-    dot.style.cssText='width:6px;height:6px;border-radius:50%;background:var(--ink);flex-shrink:0;margin-left:2px;';
-    row.appendChild(dot);
-  }
+  const dot=document.createElement('span');
+  dot.style.cssText='width:6px;height:6px;border-radius:50%;flex-shrink:0;margin-left:2px;background:'+(isCustom?'var(--ink)':'transparent')+';';
   const txt=document.createElement('div');txt.className='ed-item-text';
   const main=document.createElement('div');main.className='ed-item-main';main.textContent=it.main;txt.appendChild(main);
   if(it.sub){const sub=document.createElement('div');sub.className='ed-item-sub';sub.textContent=it.sub;txt.appendChild(sub);}
@@ -1850,7 +1847,7 @@ function buildItemRow(it,ii,g,gi,ph,pi){
     document.addEventListener('touchmove',onMove,{passive:false});
     document.addEventListener('touchend',onEnd);
   },{passive:false});
-  row.appendChild(drag);row.appendChild(txt);row.appendChild(editBtn);row.appendChild(delBtn);
+  row.appendChild(drag);row.appendChild(dot);row.appendChild(txt);row.appendChild(editBtn);row.appendChild(delBtn);
   return row;
 }
 
