@@ -17,19 +17,13 @@
 *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent;}
 html,body{min-height:100%;background:#1a1a1c;font-family:var(--font-ui);color:var(--ink);}
 body{display:flex;align-items:flex-start;justify-content:center;padding:24px 16px;}
-.card{
-  background:var(--paper);
-  background-image:repeating-linear-gradient(0deg,transparent 0,transparent 27px,var(--paper-line) 27px,var(--paper-line) 28px);
-  border:2px solid var(--gold);border-radius:8px;
-  width:100%;max-width:480px;overflow:hidden;
-  box-shadow:0 20px 60px rgba(0,0,0,.5);
-}
+.card{background:var(--paper);background-image:repeating-linear-gradient(0deg,transparent 0,transparent 27px,var(--paper-line) 27px,var(--paper-line) 28px);border:2px solid var(--gold);border-radius:8px;width:100%;max-width:480px;overflow:hidden;box-shadow:0 20px 60px rgba(0,0,0,.5);}
 .header{background:var(--ink);padding:16px 18px;}
 .header-mono{font-family:var(--font-mono);font-size:9px;color:rgba(244,236,220,.45);letter-spacing:.2em;text-transform:uppercase;margin-bottom:6px;direction:ltr;unicode-bidi:bidi-override;}
 .header-title{font-size:18px;font-weight:700;color:#f4ecdc;direction:rtl;}
 .header-sub{font-size:11px;color:rgba(244,236,220,.5);margin-top:3px;direction:rtl;}
 .tabs{display:flex;background:var(--paper);border-bottom:2px solid var(--gold-lite);}
-.tab{flex:1;padding:11px 6px;text-align:center;font-family:var(--font-mono);font-size:9px;letter-spacing:.08em;color:var(--ink-faint);cursor:pointer;border-bottom:3px solid transparent;margin-bottom:-2px;}
+.tab{flex:1;padding:10px 4px;text-align:center;font-family:var(--font-mono);font-size:8px;letter-spacing:.06em;color:var(--ink-faint);cursor:pointer;border-bottom:3px solid transparent;margin-bottom:-2px;white-space:nowrap;}
 .tab.active{color:var(--ink);border-bottom-color:var(--gold);font-weight:700;}
 .pills{padding:8px 14px;display:flex;gap:5px;flex-wrap:wrap;border-bottom:1px dashed var(--gold-lite);background:var(--paper-hi);}
 .pill{padding:4px 10px;border-radius:20px;border:1.5px solid var(--paper-edge);background:var(--paper);font-size:10px;font-weight:600;color:var(--ink-muted);cursor:pointer;white-space:nowrap;}
@@ -51,10 +45,12 @@ body{display:flex;align-items:flex-start;justify-content:center;padding:24px 16p
 .rename-row{padding:7px 12px;border-top:1px dashed var(--gold-lite);display:flex;gap:6px;align-items:center;}
 .rename-input{flex:1;padding:7px 10px;background:var(--paper);border:1.5px solid var(--gold);border-radius:4px;font-family:var(--font-ui);font-size:12px;color:var(--ink);direction:rtl;outline:none;}
 .rename-confirm{padding:7px 12px;background:var(--ink);border:none;border-radius:4px;color:var(--paper);font-size:11px;font-weight:700;cursor:pointer;font-family:var(--font-ui);white-space:nowrap;}
+.rename-confirm:disabled{opacity:.35;cursor:default;}
 .actions{display:flex;border-top:1px dashed var(--gold-lite);}
 .act{flex:1;padding:9px 4px;text-align:center;font-size:11px;font-weight:700;cursor:pointer;background:transparent;border:none;font-family:var(--font-ui);}
 .act:not(:last-child){border-left:1px dashed var(--gold-lite);}
 .act.approve{color:var(--cleared);}
+.act.approve:disabled{opacity:.35;cursor:default;}
 .act.rename{color:var(--ink-muted);}
 .act.reject{color:var(--stamp-red);}
 .act.back{color:var(--amber);}
@@ -65,6 +61,17 @@ body{display:flex;align-items:flex-start;justify-content:center;padding:24px 16p
 .rej-item{display:flex;align-items:flex-start;gap:8px;padding:10px 12px;background:var(--paper-hi);border:1px solid rgba(185,74,58,.15);border-radius:6px;direction:rtl;}
 .rej-badge{flex-shrink:0;margin-top:2px;font-family:var(--font-mono);font-size:8px;background:rgba(185,74,58,.08);color:var(--stamp-red);padding:2px 6px;border-radius:3px;letter-spacing:.04em;white-space:nowrap;}
 .rej-reason{font-size:10px;color:var(--ink-faint);margin-top:2px;font-style:italic;}
+/* tags management tab */
+.tags-body{padding:14px;}
+.tag-mgmt-item{display:flex;align-items:center;gap:8px;padding:8px 12px;background:var(--paper-hi);border:1px solid var(--paper-edge);border-radius:6px;margin-bottom:6px;direction:rtl;}
+.tag-mgmt-name{flex:1;font-size:13px;color:var(--ink);font-weight:600;}
+.tag-mgmt-count{font-family:var(--font-mono);font-size:9px;color:var(--ink-faint);}
+.tag-del{background:transparent;border:none;color:var(--stamp-red);font-size:14px;cursor:pointer;padding:0 4px;line-height:1;}
+.tag-add-row{display:flex;gap:8px;margin-top:10px;}
+.tag-add-input{flex:1;padding:9px 12px;background:var(--paper-hi);border:1.5px solid var(--gold-lite);border-radius:6px;font-family:var(--font-ui);font-size:13px;color:var(--ink);direction:rtl;outline:none;}
+.tag-add-input:focus{border-color:var(--ink);}
+.tag-add-btn{padding:9px 16px;background:var(--ink);border:none;border-radius:6px;color:var(--paper);font-family:var(--font-ui);font-size:13px;font-weight:700;cursor:pointer;white-space:nowrap;}
+.tag-add-btn:disabled{opacity:.35;cursor:default;}
 .loading{padding:30px;text-align:center;font-family:var(--font-mono);font-size:10px;color:var(--ink-faint);letter-spacing:.1em;}
 .footer{padding:10px 14px;border-top:1px dashed var(--gold-lite);text-align:center;}
 .footer-txt{font-family:var(--font-mono);font-size:9px;color:var(--ink-faint);letter-spacing:.1em;}
@@ -73,7 +80,7 @@ body{display:flex;align-items:flex-start;justify-content:center;padding:24px 16p
 <body>
 <div class="card">
   <div class="header">
-    <div class="header-mono">AirCheck+ · COMMUNITY REPOSITORY · v1.01.002</div>
+    <div class="header-mono">AirCheck+ · COMMUNITY REPOSITORY · v1.01.003</div>
     <div class="header-title">ניהול מאגר קהילתי</div>
     <div class="header-sub" id="headerSub">טוען...</div>
   </div>
@@ -81,11 +88,12 @@ body{display:flex;align-items:flex-start;justify-content:center;padding:24px 16p
     <div class="tab active" id="tab-pending" onclick="switchTab('pending')">ממתינים</div>
     <div class="tab" id="tab-approved" onclick="switchTab('approved')">מאושרים</div>
     <div class="tab" id="tab-rejected" onclick="switchTab('rejected')">נדחו</div>
+    <div class="tab" id="tab-tags" onclick="switchTab('tags')">תגיות</div>
   </div>
-  <div class="pills" id="pillsRow"></div>
+  <div class="pills" id="pillsRow" style="display:none;"></div>
   <div class="items-list" id="itemsList"><div class="loading">טוען נתונים...</div></div>
   <div class="footer">
-    <div class="footer-txt">AirCheck+ · CUSTOM REPOSITORY · v1.01.002 · eligrt</div>
+    <div class="footer-txt">AirCheck+ · CUSTOM REPOSITORY · v1.01.003 · eligrt</div>
   </div>
 </div>
 
@@ -106,11 +114,12 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 const db = getDatabase(app);
 
-const TAGS = ['מזג אוויר','ניירת','ציוד','מטוס','בטיחות','תקשורת','כללי'];
+const DEFAULT_TAGS = ['מזג אוויר','ניירת','ציוד','מטוס','בטיחות','תקשורת','כללי'];
 const REJECT_REASONS = ['זבל','כפול','פוגעני','אחר'];
 
 let currentTab = 'pending';
 let allData = { pending:{}, approved:{}, rejected:{} };
+let tags = [...DEFAULT_TAGS];
 let activeFilter = 'הכל';
 let itemStates = {};
 
@@ -121,6 +130,9 @@ async function loadAll(){
     allData.pending = val.pending || {};
     allData.approved = val.approved || {};
     allData.rejected = val.rejected || {};
+    // Load tags from Firebase, fall back to defaults
+    if(val.tags && Array.isArray(val.tags)) tags = val.tags;
+    else { tags = [...DEFAULT_TAGS]; await set(ref(db,'community/tags'), tags); }
     updateHeader();
     render();
   }catch(e){
@@ -132,7 +144,7 @@ function updateHeader(){
   const p = Object.keys(allData.pending).length;
   const a = Object.keys(allData.approved).length;
   const r = Object.keys(allData.rejected).length;
-  document.getElementById('headerSub').textContent = `${p} ממתינים · ${a} מאושרים · ${r} נדחו`;
+  document.getElementById('headerSub').textContent = `${p} ממתינים · ${a} מאושרים · ${r} נדחו · ${tags.length} תגיות`;
   document.getElementById('tab-pending').textContent = `ממתינים (${p})`;
   document.getElementById('tab-approved').textContent = `מאושרים (${a})`;
   document.getElementById('tab-rejected').textContent = `נדחו (${r})`;
@@ -147,11 +159,17 @@ window.switchTab = function(tab){
   render();
 };
 
-function render(){ renderPills(); renderItems(); }
+function render(){
+  const pillsRow = document.getElementById('pillsRow');
+  if(currentTab==='tags'){ pillsRow.style.display='none'; renderTagsTab(); return; }
+  pillsRow.style.display='';
+  renderPills();
+  renderItems();
+}
 
 function renderPills(){
   const pills = document.getElementById('pillsRow');
-  const options = currentTab==='rejected' ? ['הכל',...REJECT_REASONS] : ['הכל',...TAGS];
+  const options = currentTab==='rejected' ? ['הכל',...REJECT_REASONS] : ['הכל',...tags];
   pills.innerHTML = options.map(p=>
     `<div class="pill${activeFilter===p?' active':''}" onclick="setFilter('${p}')">${p}</div>`
   ).join('');
@@ -187,24 +205,76 @@ function renderItems(){
   filtered.forEach(([id,item])=>list.appendChild(buildItem(id,item)));
 }
 
+function renderTagsTab(){
+  const list = document.getElementById('itemsList');
+  // Count usage per tag
+  const usage = {};
+  tags.forEach(t=>usage[t]=0);
+  Object.values(allData.approved).forEach(item=>{ if(item.tag&&usage[item.tag]!==undefined) usage[item.tag]++; });
+
+  let html = '<div class="tags-body">';
+  if(!tags.length) html += '<div class="empty">אין תגיות עדיין</div>';
+  tags.forEach(t=>{
+    const count = usage[t]||0;
+    const canDelete = count===0;
+    html += `<div class="tag-mgmt-item">
+      <span class="tag-mgmt-name">${t}</span>
+      <span class="tag-mgmt-count">${count} פריטים</span>
+      ${canDelete
+        ? `<button class="tag-del" onclick="deleteTag('${t}')" title="מחק תגית">✕</button>`
+        : `<button class="tag-del" style="opacity:.25;cursor:default;" title="לא ניתן למחוק — בשימוש">✕</button>`
+      }
+    </div>`;
+  });
+  html += `<div class="tag-add-row">
+    <input class="tag-add-input" id="newTagInput" placeholder="שם תגית חדשה..." oninput="document.getElementById('addTagBtn').disabled=!this.value.trim()">
+    <button class="tag-add-btn" id="addTagBtn" disabled onclick="addTag()">הוסף ›</button>
+  </div>`;
+  html += '</div>';
+  list.innerHTML = html;
+}
+
+window.addTag = async function(){
+  const input = document.getElementById('newTagInput');
+  const name = (input.value||'').trim();
+  if(!name || tags.includes(name)) return;
+  tags.push(name);
+  try{
+    await set(ref(db,'community/tags'), tags);
+    updateHeader();
+    renderTagsTab();
+  }catch(e){ alert('שגיאה: '+e.message); tags.pop(); }
+};
+
+window.deleteTag = async function(tag){
+  const idx = tags.indexOf(tag);
+  if(idx===-1)return;
+  tags.splice(idx,1);
+  try{
+    await set(ref(db,'community/tags'), tags);
+    updateHeader();
+    renderTagsTab();
+  }catch(e){ alert('שגיאה: '+e.message); tags.splice(idx,0,tag); }
+};
+
 function getState(id){
   const src = allData[currentTab][id] || {};
-  if(!itemStates[id]) itemStates[id]={mode:'none',tag:src.tag||'',renameVal:src.text||'',reason:'',note:''};
+  if(!itemStates[id]) itemStates[id]={mode:'none', tag:src.tag||'', renameVal:src.text||'', reason:'', note:''};
   return itemStates[id];
 }
 
 function buildItem(id, item){
   if(currentTab==='rejected') return buildRejectedItem(id, item);
-
   const state = getState(id);
+  const isApproved = currentTab==='approved';
   const card = document.createElement('div');
-  card.className = currentTab==='approved' ? 'appr-item' : 'item-card';
+  card.className = isApproved ? 'appr-item' : 'item-card';
   card.id = 'item-'+id;
 
   // Body
   const body = document.createElement('div');
-  body.className = currentTab==='approved' ? 'appr-body' : 'item-body';
-  if(currentTab==='approved'){
+  body.className = isApproved ? 'appr-body' : 'item-body';
+  if(isApproved){
     body.innerHTML = `
       <div style="flex:1;font-size:13px;color:var(--ink);font-weight:600;">${item.text||'—'}</div>
       <div class="appr-tag">${item.tag||'כללי'}</div>
@@ -217,29 +287,33 @@ function buildItem(id, item){
   }
   card.appendChild(body);
 
-  // Tag picker — always shown for pending, shown in rename mode for approved
-  if(currentTab==='pending' || state.mode==='rename'){
+  const isApproveMode = state.mode==='approve';
+  const isRenameMode = state.mode==='rename';
+  const isRejectMode = state.mode==='reject';
+
+  // Tag picker — shown in approve or rename mode
+  if(isApproveMode || isRenameMode){
     const tagRow = document.createElement('div');
     tagRow.className = 'tag-row';
-    tagRow.innerHTML = TAGS.map(t=>
+    tagRow.innerHTML = tags.map(t=>
       `<div class="tag${state.tag===t?' selected':''}" onclick="selectTag('${id}','${t}')">${t}</div>`
     ).join('');
     card.appendChild(tagRow);
   }
 
   // Rename input
-  if(state.mode==='rename'){
+  if(isRenameMode){
     const renameRow = document.createElement('div');
     renameRow.className = 'rename-row';
     renameRow.innerHTML = `
       <input class="rename-input" id="rename-${id}" value="${(state.renameVal||'').replace(/"/g,'&quot;')}" oninput="updateRename('${id}',this.value)">
-      <button class="rename-confirm" onclick="doApprove('${id}')">אשר ›</button>
+      <button class="rename-confirm" id="renameConfirm-${id}" onclick="doApprove('${id}')" ${state.tag?'':'disabled'}>אשר ›</button>
     `;
     card.appendChild(renameRow);
   }
 
   // Reject reason
-  if(state.mode==='reject'){
+  if(isRejectMode){
     const rejectRow = document.createElement('div');
     rejectRow.className = 'reject-row';
     rejectRow.innerHTML = `
@@ -254,24 +328,28 @@ function buildItem(id, item){
   // Actions
   const actions = document.createElement('div');
   actions.className = 'actions';
-  const isRename = state.mode==='rename';
-  const isReject = state.mode==='reject';
 
-  if(isReject){
+  if(isRejectMode){
     actions.innerHTML = `
-      <button class="act approve" onclick="setMode('${id}','none')">ביטול</button>
+      <button class="act rename" onclick="setMode('${id}','none')">ביטול</button>
       <button class="act confirm-reject" onclick="doReject('${id}')">✕ אשר דחייה</button>
     `;
-  } else if(currentTab==='approved'){
+  } else if(isApproved){
     actions.innerHTML = `
-      <button class="act back" onclick="doMoveToPending('${id}')">↩ החזר להמתנה</button>
-      <button class="act rename" onclick="setMode('${id}','${isRename?'none':'rename'}')">${isRename?'סגור':'✎ שנה שם'}</button>
+      <button class="act back" onclick="doMoveToPending('${id}')">↩ החזר</button>
+      <button class="act rename" onclick="setMode('${id}','${isRenameMode?'none':'rename'}')">${isRenameMode?'סגור':'✎ שנה שם'}</button>
       <button class="act reject" onclick="setMode('${id}','reject')">✕ דחה</button>
+    `;
+  } else if(isApproveMode){
+    actions.innerHTML = `
+      <button class="act rename" onclick="setMode('${id}','none')">ביטול</button>
+      <button class="act rename" onclick="setMode('${id}','rename')">✎ שנה שם</button>
+      <button class="act approve" id="approveConfirm-${id}" onclick="doApprove('${id}')" ${state.tag?'':'disabled'}>✓ אשר</button>
     `;
   } else {
     actions.innerHTML = `
-      <button class="act approve" onclick="doApprove('${id}')">✓ אשר</button>
-      <button class="act rename" onclick="setMode('${id}','${isRename?'none':'rename'}')">${isRename?'סגור':'✎ שנה שם'}</button>
+      <button class="act approve" onclick="setMode('${id}','approve')">✓ אשר</button>
+      <button class="act rename" onclick="setMode('${id}','rename')">✎ שנה שם</button>
       <button class="act reject" onclick="setMode('${id}','reject')">✕ דחה</button>
     `;
   }
@@ -304,7 +382,8 @@ window.setMode = function(id, mode){
 };
 
 window.selectTag = function(id, tag){
-  getState(id).tag = getState(id).tag===tag ? '' : tag;
+  const state = getState(id);
+  state.tag = state.tag===tag ? '' : tag;
   rerenderItem(id);
 };
 
@@ -313,7 +392,12 @@ window.selectReason = function(id, reason){
   rerenderItem(id);
 };
 
-window.updateRename = function(id, val){ getState(id).renameVal=val; };
+window.updateRename = function(id, val){
+  getState(id).renameVal = val;
+  const btn = document.getElementById('renameConfirm-'+id);
+  if(btn) btn.disabled = !getState(id).tag;
+};
+
 window.updateNote = function(id, val){ getState(id).note=val; };
 
 function rerenderItem(id){
@@ -324,8 +408,9 @@ function rerenderItem(id){
 window.doApprove = async function(id){
   const item = allData[currentTab][id] || allData.pending[id] || {};
   const state = getState(id);
+  if(!state.tag){ alert('יש לבחור תגית לפני האישור'); return; }
   const text = (state.mode==='rename' && state.renameVal) ? state.renameVal.trim() : item.text;
-  const tag = state.tag || 'כללי';
+  const tag = state.tag;
   try{
     await set(ref(db,'community/approved/'+id),{text, tag, timestamp:Date.now(), originalText:item.text, deviceId:item.deviceId});
     await remove(ref(db,'community/pending/'+id));
@@ -341,11 +426,7 @@ window.doReject = async function(id){
   const item = allData[currentTab][id] || {};
   const state = getState(id);
   try{
-    await set(ref(db,'community/rejected/'+id),{
-      text:item.text, reason:state.reason||'', note:state.note||'',
-      timestamp:Date.now(), deviceId:item.deviceId
-    });
-    // Remove from whichever tab it came from
+    await set(ref(db,'community/rejected/'+id),{text:item.text, reason:state.reason||'', note:state.note||'', timestamp:Date.now(), deviceId:item.deviceId});
     await remove(ref(db,'community/'+currentTab+'/'+id));
     delete allData[currentTab][id];
     allData.rejected[id]={text:item.text, reason:state.reason||'', note:state.note||'', timestamp:Date.now()};
@@ -358,9 +439,7 @@ window.doReject = async function(id){
 window.doMoveToPending = async function(id){
   const item = allData[currentTab][id] || {};
   try{
-    await set(ref(db,'community/pending/'+id),{
-      text:item.text, timestamp:item.timestamp||Date.now(), deviceId:item.deviceId||''
-    });
+    await set(ref(db,'community/pending/'+id),{text:item.text, timestamp:item.timestamp||Date.now(), deviceId:item.deviceId||''});
     await remove(ref(db,'community/'+currentTab+'/'+id));
     delete allData[currentTab][id];
     allData.pending[id]={text:item.text, timestamp:item.timestamp||Date.now(), deviceId:item.deviceId||''};
