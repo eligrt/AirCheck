@@ -80,7 +80,7 @@ body{display:flex;align-items:flex-start;justify-content:center;padding:24px 16p
 <body>
 <div class="card">
   <div class="header">
-    <div class="header-mono">AirCheck+ · COMMUNITY REPOSITORY · v1.01.003</div>
+    <div class="header-mono">AirCheck+ · COMMUNITY REPOSITORY · v1.01.004</div>
     <div class="header-title">ניהול מאגר קהילתי</div>
     <div class="header-sub" id="headerSub">טוען...</div>
   </div>
@@ -93,7 +93,7 @@ body{display:flex;align-items:flex-start;justify-content:center;padding:24px 16p
   <div class="pills" id="pillsRow" style="display:none;"></div>
   <div class="items-list" id="itemsList"><div class="loading">טוען נתונים...</div></div>
   <div class="footer">
-    <div class="footer-txt">AirCheck+ · CUSTOM REPOSITORY · v1.01.003 · eligrt</div>
+    <div class="footer-txt">AirCheck+ · CUSTOM REPOSITORY · v1.01.004 · eligrt</div>
   </div>
 </div>
 
@@ -337,7 +337,7 @@ function buildItem(id, item){
   } else if(isApproved){
     actions.innerHTML = `
       <button class="act back" onclick="doMoveToPending('${id}')">↩ החזר</button>
-      <button class="act rename" onclick="setMode('${id}','${isRenameMode?'none':'rename'}')">${isRenameMode?'סגור':'✎ שנה שם'}</button>
+      <button class="act rename" onclick="setMode('${id}','${isRenameMode?'none':'rename'}')">${isRenameMode?'סגור':'✎ עריכה'}</button>
       <button class="act reject" onclick="setMode('${id}','reject')">✕ דחה</button>
     `;
   } else if(isApproveMode){
