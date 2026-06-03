@@ -35,25 +35,23 @@ body{display:flex;align-items:flex-start;justify-content:center;padding:24px 16p
 /* last update — inside header, clearly read-only */
 .last-update-strip{
   margin-top:10px;
-  background:rgba(0,0,0,.2);
+  background:rgba(255,255,255,.07);
   border-radius:4px;
   padding:8px 12px;
   border-right:3px solid var(--gold);
 }
 .last-update-strip-meta{
   font-family:var(--font-mono);font-size:8px;
-  color:rgba(244,236,220,.35);letter-spacing:.12em;
+  color:rgba(244,236,220,.45);letter-spacing:.12em;
   text-transform:uppercase;margin-bottom:4px;direction:ltr;
 }
 .last-update-strip-text{
-  font-size:12px;color:rgba(244,236,220,.65);
+  font-size:12px;color:rgba(244,236,220,.75);
   line-height:1.55;direction:rtl;white-space:pre-wrap;
-  max-height:80px;overflow:hidden;position:relative;
+  max-height:80px;overflow-y:auto;
+  scrollbar-width:none;
 }
-.last-update-strip-text::after{
-  content:'';position:absolute;bottom:0;left:0;right:0;height:20px;
-  background:linear-gradient(transparent,rgba(0,0,0,.2));
-}
+.last-update-strip-text::-webkit-scrollbar{display:none;}
 
 /* body */
 .body{padding:16px 18px;}
@@ -95,7 +93,7 @@ textarea::placeholder{color:rgba(28,61,110,.3);}
 <body>
 <div class="card">
   <div class="header">
-    <div class="header-mono">AirCheck+ · Tower · v1.01.003</div>
+    <div class="header-mono">AirCheck+ · Tower · v1.01.004</div>
     <div class="header-title">עדכון מצב שדה</div>
     <div class="header-station" id="headerStation">טוען...</div>
     <!-- Last update — read only, lives in header -->
@@ -113,7 +111,7 @@ textarea::placeholder{color:rgba(28,61,110,.3);}
   </div>
 
   <div class="footer">
-    <div class="footer-txt" id="footerTxt">AirCheck+ · Tower · v1.01.003</div>
+    <div class="footer-txt" id="footerTxt">AirCheck+ · Tower · v1.01.004</div>
   </div>
 </div>
 
@@ -147,7 +145,7 @@ const stationNames = {
 
 function init(){
   document.getElementById('headerStation').textContent = (stationNames[icao]||icao) + ' · ' + icao;
-  document.getElementById('footerTxt').textContent = 'AirCheck+ · Tower · v1.01.003 · ' + icao;
+  document.getElementById('footerTxt').textContent = 'AirCheck+ · Tower · v1.01.004 · ' + icao;
   loadLastUpdate();
 }
 
