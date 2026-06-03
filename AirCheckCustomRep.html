@@ -23,13 +23,13 @@ body{display:flex;align-items:flex-start;justify-content:center;padding:24px 16p
 .header-title{font-size:18px;font-weight:700;color:#f4ecdc;direction:rtl;}
 .header-sub{font-size:11px;color:rgba(244,236,220,.5);margin-top:3px;direction:rtl;}
 .tabs{display:flex;background:var(--paper);border-bottom:2px solid var(--gold-lite);}
-.tab{flex:1;padding:10px 4px;text-align:center;font-family:var(--font-mono);font-size:8px;letter-spacing:.06em;color:var(--ink-faint);cursor:pointer;border-bottom:3px solid transparent;margin-bottom:-2px;white-space:nowrap;}
+.tab{flex:1;padding:10px 4px;text-align:center;font-family:var(--font-ui);font-size:11px;font-weight:600;color:var(--ink-faint);cursor:pointer;border-bottom:3px solid transparent;margin-bottom:-2px;white-space:nowrap;}
 .tab.active{color:var(--ink);border-bottom-color:var(--gold);font-weight:700;}
 .pills{padding:8px 14px;display:flex;gap:5px;flex-wrap:wrap;border-bottom:1px dashed var(--gold-lite);background:var(--paper-hi);}
 .pill{padding:4px 10px;border-radius:20px;border:1.5px solid var(--paper-edge);background:var(--paper);font-size:10px;font-weight:600;color:var(--ink-muted);cursor:pointer;white-space:nowrap;}
 .pill.active{background:var(--ink);border-color:var(--ink);color:var(--paper);}
 .items-list{padding:10px 14px;display:flex;flex-direction:column;gap:8px;}
-.empty{padding:20px;text-align:center;font-size:12px;color:var(--ink-faint);font-family:var(--font-mono);}
+.empty{padding:20px;text-align:center;font-size:12px;color:var(--ink-faint);font-family:var(--font-ui);}
 .item-card{background:var(--paper-hi);border:1px solid var(--paper-edge);border-radius:6px;overflow:hidden;direction:rtl;}
 .item-body{padding:10px 12px;}
 .item-main{font-size:14px;color:var(--ink);font-weight:600;margin-bottom:4px;}
@@ -65,8 +65,8 @@ body{display:flex;align-items:flex-start;justify-content:center;padding:24px 16p
 .tags-body{padding:14px;display:flex;flex-direction:column;gap:12px;}
 .tags-section{background:var(--paper-hi);border:1px solid var(--paper-edge);border-radius:6px;overflow:hidden;}
 .tags-section-header{display:flex;align-items:center;gap:8px;padding:10px 12px;cursor:pointer;direction:rtl;user-select:none;}
-.tags-section-title{flex:1;font-family:var(--font-mono);font-size:9px;font-weight:700;color:var(--ink);letter-spacing:.12em;text-transform:uppercase;}
-.tags-section-meta{font-family:var(--font-mono);font-size:9px;color:var(--ink-faint);}
+.tags-section-title{flex:1;font-family:var(--font-ui);font-size:13px;font-weight:700;color:var(--ink);}
+.tags-section-meta{font-family:var(--font-ui);font-size:11px;color:var(--ink-faint);}
 .tags-section-toggle{font-size:10px;color:var(--ink-faint);flex-shrink:0;}
 .tags-section-body{padding:0 12px 10px;display:flex;flex-direction:column;gap:6px;border-top:1px dashed var(--gold-lite);}
 .tags-section-body.collapsed{display:none;}
@@ -96,7 +96,7 @@ body{display:flex;align-items:flex-start;justify-content:center;padding:24px 16p
 .btn-cancel{padding:7px 12px;background:transparent;border:1.5px solid var(--paper-edge);border-radius:5px;color:var(--ink-muted);font-family:var(--font-ui);font-size:12px;cursor:pointer;}
 /* back button as real button */
 .act.back{color:var(--amber);}
-.loading{padding:30px;text-align:center;font-family:var(--font-mono);font-size:10px;color:var(--ink-faint);letter-spacing:.1em;}
+.loading{padding:30px;text-align:center;font-family:var(--font-ui);font-size:12px;color:var(--ink-faint);}
 .footer{padding:10px 14px;border-top:1px dashed var(--gold-lite);text-align:center;}
 .footer-txt{font-family:var(--font-mono);font-size:9px;color:var(--ink-faint);letter-spacing:.1em;}
 </style>
@@ -104,7 +104,7 @@ body{display:flex;align-items:flex-start;justify-content:center;padding:24px 16p
 <body>
 <div class="card">
   <div class="header">
-    <div class="header-mono">AirCheck+ · COMMUNITY REPOSITORY · v1.01.008</div>
+    <div class="header-mono">AirCheck+ · COMMUNITY REPOSITORY · v1.01.010</div>
     <div class="header-title">ניהול מאגר קהילתי</div>
     <div class="header-sub" id="headerSub">טוען...</div>
   </div>
@@ -117,7 +117,7 @@ body{display:flex;align-items:flex-start;justify-content:center;padding:24px 16p
   <div class="pills" id="pillsRow" style="display:none;"></div>
   <div class="items-list" id="itemsList"><div class="loading">טוען נתונים...</div></div>
   <div class="footer">
-    <div class="footer-txt">AirCheck+ · CUSTOM REPOSITORY · v1.01.008 · eligrt</div>
+    <div class="footer-txt">AirCheck+ · CUSTOM REPOSITORY · v1.01.010 · eligrt</div>
   </div>
 </div>
 
@@ -300,16 +300,16 @@ function buildRejectedItem(id,item){
   div.style.borderColor='rgba(185,74,58,.3)';
   const body=document.createElement('div');
   body.className='item-body';
+  body.style.display='flex';body.style.alignItems='flex-start';body.style.gap='8px';
   body.innerHTML=`
-    <div style="font-size:14px;color:var(--stamp-red);font-weight:600;margin-bottom:4px;">${item.text||'—'}</div>
-    <div class="rej-reason">${item.reason||''}${item.note?' · '+item.note:''}</div>
-    <div style="font-family:var(--font-mono);font-size:8px;color:var(--ink-faint);margin-top:3px;">${timeAgo(item.timestamp)}</div>
+    <div style="flex:1;">
+      <div style="font-size:14px;color:var(--stamp-red);font-weight:600;margin-bottom:4px;">${item.text||'—'}</div>
+      <div class="rej-reason">${item.reason||''}${item.note?' · '+item.note:''}</div>
+      <div style="font-family:var(--font-mono);font-size:8px;color:var(--ink-faint);margin-top:3px;">${timeAgo(item.timestamp)}</div>
+    </div>
+    <button onclick="doMoveToPending('${id}')" style="flex-shrink:0;padding:5px 10px;background:transparent;border:1.5px solid var(--amber);border-radius:5px;color:var(--amber);font-family:var(--font-ui);font-size:11px;font-weight:700;cursor:pointer;white-space:nowrap;align-self:center;">↩ החזר</button>
   `;
   div.appendChild(body);
-  const actions=document.createElement('div');
-  actions.className='actions';
-  actions.innerHTML=`<button class="act back" onclick="doMoveToPending('${id}')">↩ החזר להמתנה</button>`;
-  div.appendChild(actions);
   return div;
 }
 
@@ -394,6 +394,8 @@ window.saveRenameTag=async function(type,idx){
       if(item.tag===old){ await set(ref(db,'community/approved/'+id),{...item,tag:newName}); allData.approved[id]={...item,tag:newName}; }
     }
   }
+  // Reset filter if it was pointing to the renamed tag
+  if(activeFilter===old) activeFilter='הכל';
   try{
     await set(ref(db,'community/'+(type==='tags'?'tags':'rejectReasons')),list_);
     renamingTag=null; renderTagsTab();
@@ -450,10 +452,15 @@ window.saveEdit=async function(id){
   const item=allData[currentTab][id]||{};
   const state=getState(id);
   const text=(state.editVal||'').trim()||item.text;
-  const tag=state.editTag||item.tag;
+  const updatedItem={...item, text};
+  // Only include tag if it's defined (pending items from rejected have no tag)
+  if(state.editTag) updatedItem.tag=state.editTag;
+  else if(item.tag) updatedItem.tag=item.tag;
+  // Remove undefined values
+  Object.keys(updatedItem).forEach(k=>updatedItem[k]===undefined&&delete updatedItem[k]);
   try{
-    await set(ref(db,'community/'+currentTab+'/'+id),{...item,text,tag});
-    allData[currentTab][id]={...item,text,tag};
+    await set(ref(db,'community/'+currentTab+'/'+id),updatedItem);
+    allData[currentTab][id]=updatedItem;
     delete itemStates[id]; activeFilter='הכל'; renderItems();
   }catch(e){alert('שגיאה: '+e.message);}
 };
