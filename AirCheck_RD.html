@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <!-- ═══════════════════════════════════════
-     AirCheck+ · v2.07.040 · built by eligrt
+     AirCheck+ · v2.07.041 · built by eligrt
      ═══════════════════════════════════════ -->
 <html lang="he" dir="rtl">
 <head>
@@ -613,7 +613,7 @@ html,body{height:100%;background:#1a1a1c;font-family:var(--font-ui);color:var(--
     <div class="splash-footer-wrap">
       <div class="footer-strip" style="display:flex;align-items:center;justify-content:space-between;padding:5px 14px 8px;">
         <span class="footer-refresh" onclick="reloadApp()">רענון</span>
-        <span id="versionTap" onclick="handleVersionTap()" style="cursor:default;">AirCheck+ · v2.07.040 · built by eligrt</span>
+        <span id="versionTap" onclick="handleVersionTap()" style="cursor:default;">AirCheck+ · v2.07.041 · built by eligrt</span>
         <span style="width:40px;"></span>
       </div>
     </div>
@@ -729,7 +729,7 @@ html,body{height:100%;background:#1a1a1c;font-family:var(--font-ui);color:var(--
     <div class="tree-panel" id="treePanel"></div>
     <div class="footer-strip" style="display:flex;align-items:center;justify-content:space-between;padding:5px 14px 8px;">
       <span class="footer-refresh" onclick="reloadApp()">רענון</span>
-      <span id="versionTap" onclick="handleVersionTap()" style="cursor:default;">AirCheck+ · v2.07.040 · built by eligrt</span>
+      <span id="versionTap" onclick="handleVersionTap()" style="cursor:default;">AirCheck+ · v2.07.041 · built by eligrt</span>
       <span style="width:40px;"></span>
     </div>
   </div>
@@ -788,7 +788,7 @@ html,body{height:100%;background:#1a1a1c;font-family:var(--font-ui);color:var(--
 
     <div class="footer-strip" style="display:flex;align-items:center;justify-content:space-between;padding:5px 14px 8px;">
       <span style="width:40px;"></span>
-      <span id="versionTap" onclick="handleVersionTap()" style="cursor:default;">AirCheck+ · v2.07.040 · built by eligrt</span>
+      <span id="versionTap" onclick="handleVersionTap()" style="cursor:default;">AirCheck+ · v2.07.041 · built by eligrt</span>
       <span style="width:40px;"></span>
     </div>
   </div>
@@ -890,7 +890,7 @@ html,body{height:100%;background:#1a1a1c;font-family:var(--font-ui);color:var(--
     </div>
     <div class="footer-strip" style="display:flex;align-items:center;justify-content:space-between;padding:5px 14px 8px;">
       <span class="footer-refresh" onclick="reloadApp()">רענון</span>
-      <span id="versionTap" onclick="handleVersionTap()" style="cursor:default;">AirCheck+ · v2.07.040 · built by eligrt</span>
+      <span id="versionTap" onclick="handleVersionTap()" style="cursor:default;">AirCheck+ · v2.07.041 · built by eligrt</span>
       <span style="width:40px;"></span>
     </div>
   </div>
@@ -909,7 +909,7 @@ html,body{height:100%;background:#1a1a1c;font-family:var(--font-ui);color:var(--
     <div class="editor-list" id="editorList"></div>
     <div class="footer-strip" style="display:flex;align-items:center;justify-content:space-between;padding:5px 14px 8px;">
       <span class="footer-refresh" onclick="reloadApp()">רענון</span>
-      <span id="versionTap" onclick="handleVersionTap()" style="cursor:default;">AirCheck+ · v2.07.040 · built by eligrt</span>
+      <span id="versionTap" onclick="handleVersionTap()" style="cursor:default;">AirCheck+ · v2.07.041 · built by eligrt</span>
       <span style="width:40px;"></span>
     </div>
   </div>
@@ -3278,11 +3278,15 @@ function splashSecondaryAction(){
       const pwaPromptShown=pilots.filter(p=>p.pwaPromptShown).length;
       const pwaInstalled=pilots.filter(p=>p.pwaInstalled).length;
 
-      // Community pending count
-      let communityPending=0;
+      // Community pending + approved + rejected count
+      let communityPending=0, communityApproved=0, communityRejected=0;
       try{
         const pendingSnap=await get(ref(db,'community/pending'));
         communityPending=pendingSnap.exists()?Object.keys(pendingSnap.val()).length:0;
+        const approvedSnap=await get(ref(db,'community/approved'));
+        communityApproved=approvedSnap.exists()?Object.keys(approvedSnap.val()).length:0;
+        const rejectedSnap=await get(ref(db,'community/rejected'));
+        communityRejected=rejectedSnap.exists()?Object.keys(rejectedSnap.val()).length:0;
       }catch(e){}
 
       function activeBar(label,count,tot){
@@ -3372,7 +3376,9 @@ function splashSecondaryAction(){
           ${section('PROFILE DISTRIBUTION')}
           ${Object.entries(profileDist).map(([k,v])=>row(k+' רשימות',v,total)).join('')}
           ${section('COMMUNITY')}
-          ${row('פריטים שנאספו',communityPending,communityPending)}
+          ${row('סה״כ פריטים שנאספו',communityPending+communityApproved+communityRejected,communityPending+communityApproved+communityRejected)}
+          ${row('ממתינים לאישור',communityPending,communityPending+communityApproved+communityRejected)}
+          ${row('מאושרים',communityApproved,communityPending+communityApproved+communityRejected)}
           ${section('METAR')}
           ${row('משתמשים ב־METAR',metarUsers,total)}
           ${row('סה״כ פתיחות',totalMetarOpens,totalMetarOpens)}
