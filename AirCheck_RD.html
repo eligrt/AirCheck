@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <!-- ═══════════════════════════════════════
-     AirCheck+ · v2.07.038 · built by eligrt
+     AirCheck+ · v2.07.040 · built by eligrt
      ═══════════════════════════════════════ -->
 <html lang="he" dir="rtl">
 <head>
@@ -613,7 +613,7 @@ html,body{height:100%;background:#1a1a1c;font-family:var(--font-ui);color:var(--
     <div class="splash-footer-wrap">
       <div class="footer-strip" style="display:flex;align-items:center;justify-content:space-between;padding:5px 14px 8px;">
         <span class="footer-refresh" onclick="reloadApp()">רענון</span>
-        <span id="versionTap" onclick="handleVersionTap()" style="cursor:default;">AirCheck+ · v2.07.038 · built by eligrt</span>
+        <span id="versionTap" onclick="handleVersionTap()" style="cursor:default;">AirCheck+ · v2.07.040 · built by eligrt</span>
         <span style="width:40px;"></span>
       </div>
     </div>
@@ -729,7 +729,7 @@ html,body{height:100%;background:#1a1a1c;font-family:var(--font-ui);color:var(--
     <div class="tree-panel" id="treePanel"></div>
     <div class="footer-strip" style="display:flex;align-items:center;justify-content:space-between;padding:5px 14px 8px;">
       <span class="footer-refresh" onclick="reloadApp()">רענון</span>
-      <span id="versionTap" onclick="handleVersionTap()" style="cursor:default;">AirCheck+ · v2.07.038 · built by eligrt</span>
+      <span id="versionTap" onclick="handleVersionTap()" style="cursor:default;">AirCheck+ · v2.07.040 · built by eligrt</span>
       <span style="width:40px;"></span>
     </div>
   </div>
@@ -788,7 +788,7 @@ html,body{height:100%;background:#1a1a1c;font-family:var(--font-ui);color:var(--
 
     <div class="footer-strip" style="display:flex;align-items:center;justify-content:space-between;padding:5px 14px 8px;">
       <span style="width:40px;"></span>
-      <span id="versionTap" onclick="handleVersionTap()" style="cursor:default;">AirCheck+ · v2.07.038 · built by eligrt</span>
+      <span id="versionTap" onclick="handleVersionTap()" style="cursor:default;">AirCheck+ · v2.07.040 · built by eligrt</span>
       <span style="width:40px;"></span>
     </div>
   </div>
@@ -890,7 +890,7 @@ html,body{height:100%;background:#1a1a1c;font-family:var(--font-ui);color:var(--
     </div>
     <div class="footer-strip" style="display:flex;align-items:center;justify-content:space-between;padding:5px 14px 8px;">
       <span class="footer-refresh" onclick="reloadApp()">רענון</span>
-      <span id="versionTap" onclick="handleVersionTap()" style="cursor:default;">AirCheck+ · v2.07.038 · built by eligrt</span>
+      <span id="versionTap" onclick="handleVersionTap()" style="cursor:default;">AirCheck+ · v2.07.040 · built by eligrt</span>
       <span style="width:40px;"></span>
     </div>
   </div>
@@ -909,7 +909,7 @@ html,body{height:100%;background:#1a1a1c;font-family:var(--font-ui);color:var(--
     <div class="editor-list" id="editorList"></div>
     <div class="footer-strip" style="display:flex;align-items:center;justify-content:space-between;padding:5px 14px 8px;">
       <span class="footer-refresh" onclick="reloadApp()">רענון</span>
-      <span id="versionTap" onclick="handleVersionTap()" style="cursor:default;">AirCheck+ · v2.07.038 · built by eligrt</span>
+      <span id="versionTap" onclick="handleVersionTap()" style="cursor:default;">AirCheck+ · v2.07.040 · built by eligrt</span>
       <span style="width:40px;"></span>
     </div>
   </div>
@@ -3303,22 +3303,22 @@ function splashSecondaryAction(){
           <span style="font-family:var(--font-mono);font-size:11px;color:var(--ink-body);direction:ltr;">${count} <span style="color:var(--ink-faint);font-size:10px;">(${p}%)</span></span>
         </div>`;
       }
-      function osBar(label,count,pwaCount,fill,fillLight){
+      function osBar(label,count,pwaCount,fill,fillLight,showPwa=true){
         const p=total>0?Math.round(count/total*100):0;
         const pp=count>0?Math.round(pwaCount/count*100):0;
         return `<div style="margin-bottom:8px;">
           <div style="display:flex;justify-content:space-between;font-size:10px;font-family:var(--font-mono);color:var(--ink-muted);margin-bottom:3px;direction:ltr;">
             <span style="color:var(--ink-body);font-weight:700;">${label}</span><span>${count} · ${p}%</span>
           </div>
-          <div style="height:5px;background:var(--paper-edge);border-radius:3px;overflow:hidden;margin-bottom:3px;">
+          <div style="height:5px;background:var(--paper-edge);border-radius:3px;overflow:hidden;margin-bottom:${showPwa?'3px':'0'};">
             <div style="height:100%;width:${p}%;background:${fill};border-radius:3px;"></div>
           </div>
-          <div style="display:flex;justify-content:space-between;font-size:9px;font-family:var(--font-mono);color:var(--ink-faint);margin-bottom:2px;direction:ltr;padding-right:8px;">
+          ${showPwa?`<div style="display:flex;justify-content:space-between;font-size:9px;font-family:var(--font-mono);color:var(--ink-faint);margin-bottom:2px;direction:ltr;padding-right:8px;">
             <span>PWA</span><span>${pwaCount} · ${pp}%</span>
           </div>
           <div style="height:3px;background:var(--paper-edge);border-radius:3px;overflow:hidden;margin-right:8px;">
             <div style="height:100%;width:${pp}%;background:${fillLight};border-radius:3px;"></div>
-          </div>
+          </div>`:''}
         </div>`;
       }
       function stationBar(label,count,fill){
@@ -3385,6 +3385,7 @@ function splashSecondaryAction(){
           ${section('OS')}
           ${osBar('iOS',osCounts.iOS,pwaCounts.iOS,'var(--ink)','rgba(28,61,110,.4)')}
           ${osBar('Android',osCounts.Android,pwaCounts.Android,'var(--cleared)','rgba(31,111,63,.4)')}
+          ${osBar('Desktop',osCounts.Desktop,0,'var(--amber)','rgba(245,158,11,.4)',false)}
           ${section('PWA ADOPTION')}
           ${adoptionBar('ראו את ההודעה',pwaPromptShown,total,'var(--gold)')}
           ${adoptionBar('התקינו',pwaInstalled,pwaPromptShown||1,'var(--cleared)')}
