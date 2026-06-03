@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
-<title>AirCheck+ · עדכון שדה</title>
+<title>AirCheck+ · Tower</title>
 <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Hebrew:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
 <style>
 :root{
@@ -26,20 +26,40 @@ body{display:flex;align-items:flex-start;justify-content:center;padding:24px 16p
   box-shadow:0 20px 60px rgba(0,0,0,.5);
 }
 
-.header{background:var(--ink);padding:16px 18px;}
-.header-mono{font-family:var(--font-mono);font-size:9px;color:rgba(244,236,220,.45);letter-spacing:.2em;text-transform:uppercase;margin-bottom:6px;}
+/* header */
+.header{background:var(--ink);padding:16px 18px 14px;}
+.header-mono{font-family:var(--font-mono);font-size:9px;color:rgba(244,236,220,.45);letter-spacing:.2em;text-transform:uppercase;margin-bottom:5px;direction:ltr;unicode-bidi:bidi-override;}
 .header-title{font-size:18px;font-weight:700;color:#f4ecdc;direction:rtl;}
-.header-sub{font-size:11px;color:rgba(244,236,220,.55);margin-top:3px;direction:rtl;}
+.header-station{font-size:11px;color:rgba(244,236,220,.55);margin-top:3px;direction:rtl;}
 
-.body{padding:18px;}
+/* last update — inside header, clearly read-only */
+.last-update-strip{
+  margin-top:10px;
+  background:rgba(0,0,0,.2);
+  border-radius:4px;
+  padding:8px 12px;
+  border-right:3px solid var(--gold);
+}
+.last-update-strip-meta{
+  font-family:var(--font-mono);font-size:8px;
+  color:rgba(244,236,220,.35);letter-spacing:.12em;
+  text-transform:uppercase;margin-bottom:4px;direction:ltr;
+}
+.last-update-strip-text{
+  font-size:12px;color:rgba(244,236,220,.65);
+  line-height:1.55;direction:rtl;white-space:pre-wrap;
+  max-height:80px;overflow:hidden;position:relative;
+}
+.last-update-strip-text::after{
+  content:'';position:absolute;bottom:0;left:0;right:0;height:20px;
+  background:linear-gradient(transparent,rgba(0,0,0,.2));
+}
 
-.field-label{font-family:var(--font-mono);font-size:9px;color:var(--ink-faint);letter-spacing:.15em;text-transform:uppercase;direction:ltr;margin-bottom:6px;display:block;}
-
-.icao-row{display:flex;align-items:center;gap:10px;margin-bottom:16px;direction:ltr;}
-.icao-badge{font-family:var(--font-mono);font-size:16px;font-weight:700;color:var(--ink);background:var(--paper-hi);border:1.5px solid var(--gold);border-radius:4px;padding:6px 14px;}
+/* body */
+.body{padding:16px 18px;}
 
 textarea{
-  width:100%;min-height:180px;padding:12px;
+  width:100%;min-height:160px;padding:12px;
   background:var(--paper-hi);border:1.5px solid var(--gold-lite);border-radius:4px;
   font-family:var(--font-ui);font-size:14px;line-height:1.6;color:var(--ink);
   resize:vertical;outline:none;direction:rtl;
@@ -51,7 +71,7 @@ textarea::placeholder{color:rgba(28,61,110,.3);}
 .char-count{font-family:var(--font-mono);font-size:9px;color:var(--ink-faint);text-align:left;margin-top:4px;letter-spacing:.06em;}
 
 .submit-btn{
-  width:100%;padding:14px;margin-top:14px;
+  width:100%;padding:14px;margin-top:12px;
   background:var(--ink);border:none;border-radius:6px;
   color:#f4ecdc;font-family:var(--font-ui);font-size:15px;font-weight:700;
   cursor:pointer;transition:opacity .15s;
@@ -59,31 +79,14 @@ textarea::placeholder{color:rgba(28,61,110,.3);}
 .submit-btn:active{opacity:.8;}
 .submit-btn:disabled{opacity:.35;cursor:default;}
 
-.divider{height:1px;background:var(--gold-lite);margin:16px 0;opacity:.6;}
-
-/* Status messages */
 .status{
-  padding:12px 14px;border-radius:4px;
+  padding:10px 12px;border-radius:4px;
   font-size:13px;line-height:1.5;direction:rtl;
-  display:none;
+  display:none;margin-top:10px;
 }
 .status.success{background:rgba(31,111,63,.1);border:1px solid rgba(31,111,63,.3);color:var(--cleared);}
 .status.error{background:rgba(185,74,58,.08);border:1px solid rgba(185,74,58,.25);color:var(--stamp-red);}
 .status.show{display:block;}
-
-/* Last update */
-.last-update{
-  background:var(--paper-hi);border:1px solid var(--paper-edge);border-radius:4px;
-  padding:12px 14px;margin-bottom:16px;
-}
-.last-update-header{
-  display:flex;align-items:center;justify-content:space-between;
-  margin-bottom:8px;
-}
-.last-update-label{font-family:var(--font-mono);font-size:9px;color:var(--ink-faint);letter-spacing:.15em;text-transform:uppercase;direction:ltr;}
-.last-update-time{font-family:var(--font-mono);font-size:9px;color:var(--ink-muted);direction:ltr;}
-.last-update-text{font-size:12px;color:var(--ink-muted);line-height:1.6;direction:rtl;white-space:pre-wrap;max-height:100px;overflow:hidden;position:relative;}
-.last-update-text::after{content:'';position:absolute;bottom:0;left:0;right:0;height:24px;background:linear-gradient(transparent,var(--paper-hi));}
 
 .footer{padding:10px 14px;border-top:1px dashed var(--gold-lite);text-align:center;}
 .footer-txt{font-family:var(--font-mono);font-size:9px;color:var(--ink-faint);letter-spacing:.1em;}
@@ -92,38 +95,25 @@ textarea::placeholder{color:rgba(28,61,110,.3);}
 <body>
 <div class="card">
   <div class="header">
-    <div class="header-mono">AirCheck+ · Tower · v1.01.002</div>
+    <div class="header-mono">AirCheck+ · Tower · v1.01.003</div>
     <div class="header-title">עדכון מצב שדה</div>
-    <div class="header-sub" id="headerSub">טוען...</div>
+    <div class="header-station" id="headerStation">טוען...</div>
+    <!-- Last update — read only, lives in header -->
+    <div class="last-update-strip" id="lastUpdateStrip" style="display:none;">
+      <div class="last-update-strip-meta">CURRENT · <span id="lastUpdateTime">—</span></div>
+      <div class="last-update-strip-text" id="lastUpdateText">—</div>
+    </div>
   </div>
 
   <div class="body">
-    <!-- Last update -->
-    <div class="last-update" id="lastUpdateBlock" style="display:none;">
-      <div class="last-update-header">
-        <span class="last-update-label">LAST UPDATE</span>
-        <span class="last-update-time" id="lastUpdateTime">—</span>
-      </div>
-      <div class="last-update-text" id="lastUpdateText">—</div>
-    </div>
-
-    <span class="field-label">שדה תעופה</span>
-    <div class="icao-row">
-      <div class="icao-badge" id="icaoBadge">—</div>
-      <span style="font-size:13px;color:var(--ink-muted);" id="icaoName">—</span>
-    </div>
-
-    <span class="field-label">הודעת עדכון שדה</span>
     <textarea id="msgInput" placeholder="הדבק כאן את הודעת מצב השדה מה-WhatsApp..." oninput="onInput()"></textarea>
     <div class="char-count" id="charCount">0 תווים</div>
-
     <div class="status" id="statusMsg"></div>
-
     <button class="submit-btn" id="submitBtn" onclick="submitUpdate()" disabled>שלח עדכון ›</button>
   </div>
 
   <div class="footer">
-    <div class="footer-txt" id="footerTxt">AirCheck+ · Tower · v1.01.002</div>
+    <div class="footer-txt" id="footerTxt">AirCheck+ · Tower · v1.01.003</div>
   </div>
 </div>
 
@@ -144,7 +134,6 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 const db = getDatabase(app);
 
-// Parse URL params
 const params = new URLSearchParams(window.location.search);
 const icao = (params.get('icao') || 'LLHZ').toUpperCase();
 
@@ -157,10 +146,8 @@ const stationNames = {
 };
 
 function init(){
-  document.getElementById('icaoBadge').textContent = icao;
-  document.getElementById('icaoName').textContent = stationNames[icao] || icao;
-  document.getElementById('headerSub').textContent = 'עדכון מצב שדה · ' + icao;
-  document.getElementById('footerTxt').textContent = 'AirCheck+ · Tower · v1.01.002 · ' + icao;
+  document.getElementById('headerStation').textContent = (stationNames[icao]||icao) + ' · ' + icao;
+  document.getElementById('footerTxt').textContent = 'AirCheck+ · Tower · v1.01.003 · ' + icao;
   loadLastUpdate();
 }
 
@@ -169,7 +156,7 @@ async function loadLastUpdate(){
     const snap = await get(ref(db, 'tower/' + icao + '/latest'));
     const data = snap.val();
     if(data){
-      document.getElementById('lastUpdateBlock').style.display = '';
+      document.getElementById('lastUpdateStrip').style.display = '';
       document.getElementById('lastUpdateText').textContent = data.text || '—';
       const d = new Date(data.timestamp);
       const h = String(d.getUTCHours()).padStart(2,'0');
@@ -193,21 +180,10 @@ window.submitUpdate = async function(){
   const btn = document.getElementById('submitBtn');
   btn.disabled = true;
   btn.textContent = 'שולח...';
-
   try{
     const now = Date.now();
-    await set(ref(db, 'tower/' + icao + '/latest'), {
-      text,
-      timestamp: now,
-      icao
-    });
-    // Also store in history
-    await set(ref(db, 'tower/' + icao + '/history/' + now), {
-      text,
-      timestamp: now,
-      icao
-    });
-
+    await set(ref(db, 'tower/' + icao + '/latest'), { text, timestamp: now, icao });
+    await set(ref(db, 'tower/' + icao + '/history/' + now), { text, timestamp: now, icao });
     document.getElementById('msgInput').value = '';
     document.getElementById('charCount').textContent = '0 תווים';
     showStatus('success', '✓ העדכון נשלח בהצלחה');
@@ -215,7 +191,6 @@ window.submitUpdate = async function(){
   }catch(e){
     showStatus('error', 'שגיאה בשליחה. בדוק חיבור לאינטרנט.');
   }
-
   btn.disabled = false;
   btn.textContent = 'שלח עדכון ›';
 };
