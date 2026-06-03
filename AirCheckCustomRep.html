@@ -1,0 +1,487 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<title>AirCheck+ · מאגר קהילתי</title>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Hebrew:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --paper:#f4ecdc;--paper-hi:#fbf6e8;--paper-edge:#e3d4ad;--paper-line:rgba(28,61,110,.055);
+  --ink:#1c3d6e;--ink-muted:#5a4a3a;--ink-faint:#8a7a5a;
+  --gold:#c8a04a;--gold-lite:#d4b878;--gold-deep:#8a6a2a;
+  --cleared:#1f6f3f;--stamp-red:#b94a3a;--amber:#f59e0b;
+  --font-ui:'IBM Plex Sans Hebrew',sans-serif;
+  --font-mono:'JetBrains Mono',monospace;
+}
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent;}
+html,body{min-height:100%;background:#1a1a1c;font-family:var(--font-ui);color:var(--ink);}
+body{display:flex;align-items:flex-start;justify-content:center;padding:24px 16px;}
+
+.card{
+  background:var(--paper);
+  background-image:repeating-linear-gradient(0deg,transparent 0,transparent 27px,var(--paper-line) 27px,var(--paper-line) 28px);
+  border:2px solid var(--gold);border-radius:8px;
+  width:100%;max-width:480px;overflow:hidden;
+  box-shadow:0 20px 60px rgba(0,0,0,.5);
+}
+
+/* header */
+.header{background:var(--ink);padding:16px 18px;}
+.header-mono{font-family:var(--font-mono);font-size:9px;color:rgba(244,236,220,.45);letter-spacing:.2em;text-transform:uppercase;margin-bottom:6px;direction:ltr;unicode-bidi:bidi-override;}
+.header-title{font-size:18px;font-weight:700;color:#f4ecdc;direction:rtl;}
+.header-sub{font-size:11px;color:rgba(244,236,220,.5);margin-top:3px;direction:rtl;}
+
+/* tabs */
+.tabs{display:flex;background:var(--paper);border-bottom:2px solid var(--gold-lite);}
+.tab{
+  flex:1;padding:11px 6px;text-align:center;
+  font-family:var(--font-mono);font-size:9px;letter-spacing:.08em;
+  color:var(--ink-faint);cursor:pointer;
+  border-bottom:3px solid transparent;margin-bottom:-2px;
+  transition:color .15s;
+}
+.tab.active{color:var(--ink);border-bottom-color:var(--gold);font-weight:700;}
+
+/* pills */
+.pills{
+  padding:8px 14px;display:flex;gap:5px;flex-wrap:wrap;
+  border-bottom:1px dashed var(--gold-lite);
+  background:var(--paper-hi);
+}
+.pill{
+  padding:4px 10px;border-radius:20px;
+  border:1.5px solid var(--paper-edge);
+  background:var(--paper);
+  font-size:10px;font-weight:600;color:var(--ink-muted);
+  cursor:pointer;white-space:nowrap;
+}
+.pill.active{background:var(--ink);border-color:var(--ink);color:var(--paper);}
+
+/* items list */
+.items-list{padding:10px 14px;display:flex;flex-direction:column;gap:8px;}
+.empty{padding:20px;text-align:center;font-size:12px;color:var(--ink-faint);font-family:var(--font-mono);}
+
+/* pending item */
+.item-card{
+  background:var(--paper-hi);
+  border:1px solid var(--paper-edge);
+  border-radius:6px;overflow:hidden;direction:rtl;
+}
+.item-body{padding:10px 12px;}
+.item-main{font-size:14px;color:var(--ink);font-weight:600;margin-bottom:4px;}
+.item-meta{font-family:var(--font-mono);font-size:8px;color:var(--ink-faint);letter-spacing:.04em;}
+
+/* tag picker */
+.tag-row{
+  padding:8px 12px;border-top:1px dashed var(--gold-lite);
+  display:flex;flex-wrap:wrap;gap:5px;direction:rtl;
+}
+.tag{
+  padding:3px 10px;border-radius:20px;
+  border:1px solid var(--paper-edge);
+  font-size:10px;font-weight:600;color:var(--ink-muted);
+  cursor:pointer;background:var(--paper);
+}
+.tag.selected{background:var(--ink);border-color:var(--ink);color:var(--paper);}
+
+/* reject reasons */
+.reject-row{
+  padding:8px 12px;border-top:1px dashed var(--gold-lite);
+  display:flex;flex-direction:column;gap:6px;direction:rtl;
+}
+.reject-reasons{display:flex;flex-wrap:wrap;gap:5px;}
+.rtag{
+  padding:3px 10px;border-radius:20px;
+  border:1px solid rgba(185,74,58,.3);
+  font-size:10px;font-weight:600;color:var(--stamp-red);
+  cursor:pointer;background:rgba(185,74,58,.04);
+}
+.rtag.selected{background:var(--stamp-red);color:var(--paper);border-color:var(--stamp-red);}
+.reject-note{
+  padding:6px 10px;
+  background:var(--paper);border:1px solid var(--paper-edge);border-radius:4px;
+  font-family:var(--font-ui);font-size:11px;color:var(--ink);direction:rtl;outline:none;width:100%;
+}
+
+/* rename input */
+.rename-row{
+  padding:7px 12px;border-top:1px dashed var(--gold-lite);
+  display:flex;gap:6px;align-items:center;
+}
+.rename-input{
+  flex:1;padding:7px 10px;
+  background:var(--paper);border:1.5px solid var(--gold);border-radius:4px;
+  font-family:var(--font-ui);font-size:12px;color:var(--ink);direction:rtl;outline:none;
+}
+.rename-confirm{
+  padding:7px 12px;background:var(--ink);border:none;border-radius:4px;
+  color:var(--paper);font-size:11px;font-weight:700;cursor:pointer;font-family:var(--font-ui);white-space:nowrap;
+}
+
+/* action bar */
+.actions{display:flex;border-top:1px dashed var(--gold-lite);}
+.act{
+  flex:1;padding:9px 4px;text-align:center;
+  font-size:11px;font-weight:700;cursor:pointer;
+  background:transparent;border:none;font-family:var(--font-ui);
+}
+.act:not(:last-child){border-left:1px dashed var(--gold-lite);}
+.act.approve{color:var(--cleared);}
+.act.rename{color:var(--ink-muted);}
+.act.reject{color:var(--stamp-red);}
+.act.confirm-reject{color:var(--paper);background:var(--stamp-red);}
+
+/* approved item */
+.appr-item{
+  display:flex;align-items:center;gap:8px;
+  padding:10px 12px;background:var(--paper-hi);
+  border:1px solid rgba(31,111,63,.2);border-radius:6px;direction:rtl;
+}
+.appr-tag{
+  flex-shrink:0;font-family:var(--font-mono);font-size:8px;
+  background:rgba(31,111,63,.1);color:var(--cleared);
+  padding:2px 7px;border-radius:3px;letter-spacing:.04em;
+}
+
+/* rejected item */
+.rej-item{
+  display:flex;align-items:flex-start;gap:8px;
+  padding:10px 12px;background:var(--paper-hi);
+  border:1px solid rgba(185,74,58,.15);border-radius:6px;direction:rtl;
+}
+.rej-badge{
+  flex-shrink:0;margin-top:2px;
+  font-family:var(--font-mono);font-size:8px;
+  background:rgba(185,74,58,.08);color:var(--stamp-red);
+  padding:2px 6px;border-radius:3px;letter-spacing:.04em;white-space:nowrap;
+}
+.rej-reason{font-size:10px;color:var(--ink-faint);margin-top:2px;font-style:italic;}
+
+/* loading */
+.loading{padding:30px;text-align:center;font-family:var(--font-mono);font-size:10px;color:var(--ink-faint);letter-spacing:.1em;}
+
+/* footer */
+.footer{padding:10px 14px;border-top:1px dashed var(--gold-lite);text-align:center;}
+.footer-txt{font-family:var(--font-mono);font-size:9px;color:var(--ink-faint);letter-spacing:.1em;}
+</style>
+</head>
+<body>
+<div class="card">
+  <div class="header">
+    <div class="header-mono">AirCheck+ · COMMUNITY REPOSITORY · v1.01.001</div>
+    <div class="header-title">ניהול מאגר קהילתי</div>
+    <div class="header-sub" id="headerSub">טוען...</div>
+  </div>
+
+  <div class="tabs">
+    <div class="tab active" id="tab-pending" onclick="switchTab('pending')">ממתינים</div>
+    <div class="tab" id="tab-approved" onclick="switchTab('approved')">מאושרים</div>
+    <div class="tab" id="tab-rejected" onclick="switchTab('rejected')">נדחו</div>
+  </div>
+
+  <div class="pills" id="pillsRow"></div>
+  <div class="items-list" id="itemsList"><div class="loading">טוען נתונים...</div></div>
+
+  <div class="footer">
+    <div class="footer-txt">AirCheck+ · CUSTOM REPOSITORY · v1.01.001 · eligrt</div>
+  </div>
+</div>
+
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/12.14.0/firebase-app.js";
+import { getDatabase, ref, set, get, remove, push } from "https://www.gstatic.com/firebasejs/12.14.0/firebase-database.js";
+
+const firebaseConfig = {
+  apiKey: "AIzaSyBoW1O9dTanLUZW5Z8jswn3hxpfFSdmzm0",
+  authDomain: "aircheck-80530.firebaseapp.com",
+  databaseURL: "https://aircheck-80530-default-rtdb.europe-west1.firebasedatabase.app",
+  projectId: "aircheck-80530",
+  storageBucket: "aircheck-80530.firebasestorage.app",
+  messagingSenderId: "816746630548",
+  appId: "1:816746630548:web:dac8392deff9b96cc9d381"
+};
+
+const app = initializeApp(firebaseConfig);
+const db = getDatabase(app);
+
+const TAGS = ['מזג אוויר','ניירת','ציוד','מטוס','בטיחות','תקשורת','כללי'];
+const REJECT_REASONS = ['זבל','כפול','פוגעני','אחר'];
+
+let currentTab = 'pending';
+let allData = { pending:{}, approved:{}, rejected:{} };
+let activeFilter = 'הכל';
+// Track UI state per item
+let itemStates = {}; // { id: { mode: 'none'|'tag'|'rename'|'reject', tag, renameVal, reason, note } }
+
+async function loadAll(){
+  try{
+    const snap = await get(ref(db,'community'));
+    const val = snap.val() || {};
+    allData.pending = val.pending || {};
+    allData.approved = val.approved || {};
+    allData.rejected = val.rejected || {};
+    updateHeader();
+    render();
+  }catch(e){
+    document.getElementById('itemsList').innerHTML = '<div class="empty">שגיאה בטעינת נתונים</div>';
+  }
+}
+
+function updateHeader(){
+  const p = Object.keys(allData.pending).length;
+  const a = Object.keys(allData.approved).length;
+  const r = Object.keys(allData.rejected).length;
+  document.getElementById('headerSub').textContent = `${p} ממתינים · ${a} מאושרים · ${r} נדחו`;
+  document.getElementById('tab-pending').textContent = `ממתינים (${p})`;
+  document.getElementById('tab-approved').textContent = `מאושרים (${a})`;
+  document.getElementById('tab-rejected').textContent = `נדחו (${r})`;
+}
+
+window.switchTab = function(tab){
+  currentTab = tab;
+  activeFilter = 'הכל';
+  itemStates = {};
+  document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
+  document.getElementById('tab-'+tab).classList.add('active');
+  render();
+};
+
+function render(){
+  renderPills();
+  renderItems();
+}
+
+function renderPills(){
+  const pills = document.getElementById('pillsRow');
+  let options = ['הכל'];
+  if(currentTab === 'rejected') options = ['הכל',...REJECT_REASONS];
+  else options = ['הכל',...TAGS];
+  pills.innerHTML = options.map(p=>
+    `<div class="pill${activeFilter===p?' active':''}" onclick="setFilter('${p}')">${p}</div>`
+  ).join('');
+}
+
+window.setFilter = function(f){
+  activeFilter = f;
+  renderPills();
+  renderItems();
+};
+
+function timeAgo(ts){
+  if(!ts)return '—';
+  const diff = Date.now()-ts;
+  const mins = Math.floor(diff/60000);
+  if(mins<60)return `לפני ${mins} דקות`;
+  const hrs = Math.floor(diff/3600000);
+  if(hrs<24)return `לפני ${hrs} שעות`;
+  const days = Math.floor(diff/86400000);
+  return `לפני ${days} ימים`;
+}
+
+function renderItems(){
+  const list = document.getElementById('itemsList');
+  const data = allData[currentTab];
+  const entries = Object.entries(data);
+
+  // Filter
+  const filtered = entries.filter(([id,item])=>{
+    if(activeFilter==='הכל')return true;
+    if(currentTab==='rejected')return item.reason===activeFilter;
+    return item.tag===activeFilter;
+  });
+
+  if(!filtered.length){
+    list.innerHTML = `<div class="empty">אין פריטים${activeFilter!=='הכל'?' בקטגוריה זו':''}</div>`;
+    return;
+  }
+
+  // Sort by timestamp desc
+  filtered.sort((a,b)=>(b[1].timestamp||0)-(a[1].timestamp||0));
+
+  list.innerHTML = '';
+  filtered.forEach(([id,item])=>{
+    list.appendChild(buildItem(id,item));
+  });
+}
+
+function buildItem(id, item){
+  const state = itemStates[id] || {mode:'none', tag:'', renameVal:item.text||'', reason:'', note:''};
+  itemStates[id] = state;
+
+  if(currentTab==='approved') return buildApprovedItem(id, item);
+  if(currentTab==='rejected') return buildRejectedItem(id, item);
+
+  // PENDING
+  const card = document.createElement('div');
+  card.className = 'item-card';
+  card.id = 'item-'+id;
+
+  // Body
+  const body = document.createElement('div');
+  body.className = 'item-body';
+  body.innerHTML = `
+    <div class="item-main">${item.text||'—'}</div>
+    <div class="item-meta">${timeAgo(item.timestamp)} · #${(item.deviceId||'').slice(-4)}</div>
+  `;
+  card.appendChild(body);
+
+  // Tag picker (shown when mode=tag or mode=rename+tag)
+  if(state.mode==='tag'||state.mode==='rename'){
+    const tagRow = document.createElement('div');
+    tagRow.className = 'tag-row';
+    tagRow.innerHTML = TAGS.map(t=>
+      `<div class="tag${state.tag===t?' selected':''}" onclick="selectTag('${id}','${t}')">${t}</div>`
+    ).join('');
+    card.appendChild(tagRow);
+  }
+
+  // Rename input
+  if(state.mode==='rename'){
+    const renameRow = document.createElement('div');
+    renameRow.className = 'rename-row';
+    renameRow.innerHTML = `
+      <input class="rename-input" id="rename-${id}" value="${state.renameVal}" oninput="updateRename('${id}',this.value)">
+      <button class="rename-confirm" onclick="doApprove('${id}')">אשר ›</button>
+    `;
+    card.appendChild(renameRow);
+  }
+
+  // Reject reason
+  if(state.mode==='reject'){
+    const rejectRow = document.createElement('div');
+    rejectRow.className = 'reject-row';
+    rejectRow.innerHTML = `
+      <div class="reject-reasons">
+        ${REJECT_REASONS.map(r=>`<div class="rtag${state.reason===r?' selected':''}" onclick="selectReason('${id}','${r}')">${r}</div>`).join('')}
+      </div>
+      <input class="reject-note" placeholder="הערה נוספת (אופציונלי)..." value="${state.note}" oninput="updateNote('${id}',this.value)">
+    `;
+    card.appendChild(rejectRow);
+  }
+
+  // Actions
+  const actions = document.createElement('div');
+  actions.className = 'actions';
+
+  if(state.mode==='reject'){
+    actions.innerHTML = `
+      <button class="act approve" onclick="setMode('${id}','none')">ביטול</button>
+      <button class="act rename" onclick="setMode('${id}','rename')">✎ שנה שם</button>
+      <button class="act confirm-reject" onclick="doReject('${id}')">✕ אשר דחייה</button>
+    `;
+  } else {
+    actions.innerHTML = `
+      <button class="act approve" onclick="doApprove('${id}')">✓ אשר</button>
+      <button class="act rename" onclick="setMode('${id}',state.mode==='rename'?'none':'rename')">${state.mode==='rename'?'סגור':'✎ שנה שם'}</button>
+      <button class="act reject" onclick="setMode('${id}','reject')">✕ דחה</button>
+    `;
+  }
+  card.appendChild(actions);
+  return card;
+}
+
+function buildApprovedItem(id, item){
+  const div = document.createElement('div');
+  div.className = 'appr-item';
+  div.innerHTML = `
+    <div style="flex:1;font-size:13px;color:var(--ink);font-weight:600;">${item.text||'—'}</div>
+    <div class="appr-tag">${item.tag||'כללי'}</div>
+  `;
+  return div;
+}
+
+function buildRejectedItem(id, item){
+  const div = document.createElement('div');
+  div.className = 'rej-item';
+  div.innerHTML = `
+    <div style="flex:1;">
+      <div style="font-size:13px;color:var(--ink-muted);font-weight:600;">${item.text||'—'}</div>
+      <div class="rej-reason">${item.reason||''}${item.note?' · '+item.note:''}</div>
+      <div style="font-family:var(--font-mono);font-size:8px;color:var(--ink-faint);margin-top:3px;">${timeAgo(item.timestamp)}</div>
+    </div>
+    <div class="rej-badge">נדחה</div>
+  `;
+  return div;
+}
+
+window.setMode = function(id, mode){
+  if(!itemStates[id])itemStates[id]={mode:'none',tag:'',renameVal:allData.pending[id]?.text||'',reason:'',note:''};
+  // Toggle
+  itemStates[id].mode = itemStates[id].mode===mode ? 'none' : mode;
+  rerenderItem(id);
+};
+
+window.selectTag = function(id, tag){
+  itemStates[id].tag = itemStates[id].tag===tag ? '' : tag;
+  rerenderItem(id);
+};
+
+window.selectReason = function(id, reason){
+  itemStates[id].reason = itemStates[id].reason===reason ? '' : reason;
+  rerenderItem(id);
+};
+
+window.updateRename = function(id, val){
+  itemStates[id].renameVal = val;
+};
+
+window.updateNote = function(id, val){
+  itemStates[id].note = val;
+};
+
+function rerenderItem(id){
+  const card = document.getElementById('item-'+id);
+  if(card){
+    const newCard = buildItem(id, allData.pending[id]);
+    card.replaceWith(newCard);
+  }
+}
+
+window.doApprove = async function(id){
+  const item = allData.pending[id];
+  const state = itemStates[id]||{};
+  const text = (state.mode==='rename'&&state.renameVal) ? state.renameVal.trim() : item.text;
+  const tag = state.tag||'כללי';
+  try{
+    // Write to approved
+    await set(ref(db,'community/approved/'+id),{
+      text, tag,
+      timestamp: Date.now(),
+      originalText: item.text,
+      deviceId: item.deviceId
+    });
+    // Remove from pending
+    await remove(ref(db,'community/pending/'+id));
+    delete allData.pending[id];
+    allData.approved[id] = {text, tag, timestamp: Date.now()};
+    delete itemStates[id];
+    updateHeader();
+    renderItems();
+  }catch(e){ alert('שגיאה: '+e.message); }
+};
+
+window.doReject = async function(id){
+  const item = allData.pending[id];
+  const state = itemStates[id]||{};
+  try{
+    await set(ref(db,'community/rejected/'+id),{
+      text: item.text,
+      reason: state.reason||'',
+      note: state.note||'',
+      timestamp: Date.now(),
+      deviceId: item.deviceId
+    });
+    await remove(ref(db,'community/pending/'+id));
+    delete allData.pending[id];
+    allData.rejected[id] = {text:item.text, reason:state.reason||'', note:state.note||'', timestamp:Date.now()};
+    delete itemStates[id];
+    updateHeader();
+    renderItems();
+  }catch(e){ alert('שגיאה: '+e.message); }
+};
+
+loadAll();
+</script>
+</body>
+</html>
