@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <!-- ═══════════════════════════════════════
-     AirCheck+ · v2.07.013T · built by eligrt
+     AirCheck+ · v2.07.015T · built by eligrt
      ═══════════════════════════════════════ -->
 <html lang="he" dir="rtl">
 <head>
@@ -613,7 +613,7 @@ html,body{height:100%;background:#1a1a1c;font-family:var(--font-ui);color:var(--
     <div class="splash-footer-wrap">
       <div class="footer-strip" style="display:flex;align-items:center;justify-content:space-between;padding:5px 14px 8px;">
         <span class="footer-refresh" onclick="reloadApp()">רענון</span>
-        <span id="versionTap" onclick="handleVersionTap()" style="cursor:default;">AirCheck+ · v2.07.013T · built by eligrt</span>
+        <span id="versionTap" onclick="handleVersionTap()" style="cursor:default;">AirCheck+ · v2.07.015T · built by eligrt</span>
         <span style="width:40px;"></span>
       </div>
     </div>
@@ -729,7 +729,7 @@ html,body{height:100%;background:#1a1a1c;font-family:var(--font-ui);color:var(--
     <div class="tree-panel" id="treePanel"></div>
     <div class="footer-strip" style="display:flex;align-items:center;justify-content:space-between;padding:5px 14px 8px;">
       <span class="footer-refresh" onclick="reloadApp()">רענון</span>
-      <span id="versionTap" onclick="handleVersionTap()" style="cursor:default;">AirCheck+ · v2.07.013T · built by eligrt</span>
+      <span id="versionTap" onclick="handleVersionTap()" style="cursor:default;">AirCheck+ · v2.07.015T · built by eligrt</span>
       <span style="width:40px;"></span>
     </div>
   </div>
@@ -788,7 +788,7 @@ html,body{height:100%;background:#1a1a1c;font-family:var(--font-ui);color:var(--
 
     <div class="footer-strip" style="display:flex;align-items:center;justify-content:space-between;padding:5px 14px 8px;">
       <span style="width:40px;"></span>
-      <span id="versionTap" onclick="handleVersionTap()" style="cursor:default;">AirCheck+ · v2.07.013T · built by eligrt</span>
+      <span id="versionTap" onclick="handleVersionTap()" style="cursor:default;">AirCheck+ · v2.07.015T · built by eligrt</span>
       <span style="width:40px;"></span>
     </div>
   </div>
@@ -875,10 +875,30 @@ html,body{height:100%;background:#1a1a1c;font-family:var(--font-ui);color:var(--
         </div>
       </div>
 
+      <div class="settings-section">
+        <span class="settings-section-label">CONTACT · יצירת קשר</span>
+        <div class="settings-card">
+          <div class="settings-row tappable" onclick="window.open('mailto:eligrt@gmail.com','_blank')">
+            <div style="flex:1;">
+              <div class="settings-row-label">✉️ שלח מייל למפתח</div>
+              <div style="font-size:10px;color:var(--ink-faint);margin-top:2px;font-family:var(--font-mono);direction:ltr;">eligrt@gmail.com</div>
+            </div>
+            <span class="settings-row-arrow">›</span>
+          </div>
+          <div class="settings-row tappable" onclick="window.open('https://wa.me/972544873523','_blank')">
+            <div style="flex:1;">
+              <div class="settings-row-label">💬 WhatsApp</div>
+              <div style="font-size:10px;color:var(--ink-faint);margin-top:2px;font-family:var(--font-mono);direction:ltr;">+972-54-4873523</div>
+            </div>
+            <span class="settings-row-arrow">›</span>
+          </div>
+        </div>
+      </div>
+
     </div>
     <div class="footer-strip" style="display:flex;align-items:center;justify-content:space-between;padding:5px 14px 8px;">
       <span class="footer-refresh" onclick="reloadApp()">רענון</span>
-      <span id="versionTap" onclick="handleVersionTap()" style="cursor:default;">AirCheck+ · v2.07.013T · built by eligrt</span>
+      <span id="versionTap" onclick="handleVersionTap()" style="cursor:default;">AirCheck+ · v2.07.015T · built by eligrt</span>
       <span style="width:40px;"></span>
     </div>
   </div>
@@ -899,7 +919,7 @@ html,body{height:100%;background:#1a1a1c;font-family:var(--font-ui);color:var(--
     <div class="editor-list" id="editorList"></div>
     <div class="footer-strip" style="display:flex;align-items:center;justify-content:space-between;padding:5px 14px 8px;">
       <span class="footer-refresh" onclick="reloadApp()">רענון</span>
-      <span id="versionTap" onclick="handleVersionTap()" style="cursor:default;">AirCheck+ · v2.07.013T · built by eligrt</span>
+      <span id="versionTap" onclick="handleVersionTap()" style="cursor:default;">AirCheck+ · v2.07.015T · built by eligrt</span>
       <span style="width:40px;"></span>
     </div>
   </div>
@@ -1003,6 +1023,7 @@ const CL=[
   {phase:"סגירת טיסה",group:"עודד",main:"סגירת טיסה במחשב המנחת (עודד)",sub:""},
 ];
 const CL_DEFAULT=CL.map(it=>({...it}));
+window.CL_DEFAULT_LIST=CL_DEFAULT;
 const PHASES=[];const PHASE_IDX={};
 function buildIndex(){PHASES.length=0;Object.keys(PHASE_IDX).forEach(k=>delete PHASE_IDX[k]);CL.forEach((item,i)=>{if(!PHASE_IDX[item.phase]){const p={name:item.phase,start:i,end:i,groups:[],gIdx:{}};PHASE_IDX[item.phase]=p;PHASES.push(p);}const p=PHASE_IDX[item.phase];p.end=i;if(!p.gIdx[item.group]){const g={name:item.group,start:i,end:i,items:[]};p.gIdx[item.group]=g;p.groups.push(g);}const g=p.gIdx[item.group];g.end=i;g.items.push(i);});}
 buildIndex();
@@ -1671,6 +1692,8 @@ function saveEditor(){
       saveState();
     }
     if(window.updateListTypeInFirebase)window.updateListTypeInFirebase(prof.type);
+    // Silent collection — send new non-default items to Firebase /pending
+    if(window.collectCustomItems)window.collectCustomItems(newList);
   }
   updateRunwayProfileLabel();
   if(_editorFromSettings){openSettings();}else{showScreen('screenChecklist');render();}
@@ -2236,7 +2259,7 @@ let _whatsNewShownThisSession=false;
 
 function checkPwaPopup(){
   if(!FEATURES.PWA_POPUP)return;
-  // Skip on desktop — mobile only
+  // Skip on desktop only — mobile (Android + iOS) gets the popup
   if(getPwaPlatform()==='desktop')return;
   // Skip if already running as PWA
   if(window.matchMedia('(display-mode: standalone)').matches)return;
@@ -2983,6 +3006,15 @@ function showScreen(id){
   document.getElementById(id).classList.add('active');
 }
 document.addEventListener('DOMContentLoaded',()=>{
+  // iOS PWA force-reload — bust cache on standalone launch
+  if(getPwaPlatform()==='ios'&&window.matchMedia('(display-mode: standalone)').matches){
+    const url=new URL(window.location.href);
+    if(!url.searchParams.get('v')){
+      url.searchParams.set('v',Date.now());
+      window.location.replace(url.toString());
+      return;
+    }
+  }
   loadSettings();loadList();loadState();loadReg();loadRoute();drawRings();initSplash();
   if(FEATURES.WHATS_NEW)checkWhatsNew();
   if(FEATURES.METAR){const mb=document.getElementById('metarBtn');if(mb)mb.style.display='';}
@@ -3204,11 +3236,20 @@ function splashSecondaryAction(){
       const pilots=Object.values(data);
       const total=pilots.length;
       const now=Date.now();
+      const hours48=48*60*60*1000;
       const sevenDays=7*24*60*60*1000;
       const thirtyDays=30*24*60*60*1000;
+      const ninetyDays=90*24*60*60*1000;
 
+      const active48=pilots.filter(p=>now-p.lastSeen<hours48).length;
       const active7=pilots.filter(p=>now-p.lastSeen<sevenDays).length;
       const active30=pilots.filter(p=>now-p.lastSeen<thirtyDays).length;
+      const active90=pilots.filter(p=>now-p.lastSeen<ninetyDays).length;
+
+      // Avg flights per pilot active in last 90 days
+      const active90pilots=pilots.filter(p=>now-p.lastSeen<ninetyDays);
+      const active90flights=active90pilots.reduce((s,p)=>s+(p.flightCount||0),0);
+      const avgFlights=active90pilots.length>0?(active90flights/active90pilots.length).toFixed(1):0;
 
       const custom=pilots.filter(p=>p.listType==='modified').length;
       const multiProfile=pilots.filter(p=>p.profileCount&&p.profileCount>1).length;
@@ -3243,6 +3284,13 @@ function splashSecondaryAction(){
       pilots.forEach(p=>{if(p.pwaInstalled&&osCounts[p.os]!==undefined)pwaCounts[p.os]++;});
       const pwaPromptShown=pilots.filter(p=>p.pwaPromptShown).length;
       const pwaInstalled=pilots.filter(p=>p.pwaInstalled).length;
+
+      // Community pending count
+      let communityPending=0;
+      try{
+        const pendingSnap=await get(ref(db,'community/pending'));
+        communityPending=pendingSnap.exists()?Object.keys(pendingSnap.val()).length:0;
+      }catch(e){}
 
       function row(label,count,tot){
         const p=tot>0?Math.round(count/tot*100):0;
@@ -3296,20 +3344,28 @@ function splashSecondaryAction(){
       }
 
       document.getElementById('statsContent').innerHTML=`
-        <div class="stats-grid" style="grid-template-columns:1fr 1fr 1fr;margin-bottom:4px;">
+        <div class="stats-grid" style="grid-template-columns:repeat(4,1fr);margin-bottom:4px;">
           <div class="stats-cell"><div class="stats-cell-val">${total}</div><div class="stats-cell-lbl">טייסים</div></div>
-          <div class="stats-cell"><div class="stats-cell-val">${active7}</div><div class="stats-cell-lbl">פעילים 7 ימים</div></div>
-          <div class="stats-cell"><div class="stats-cell-val">${active30}</div><div class="stats-cell-lbl">פעילים 30 יום</div></div>
+          <div class="stats-cell"><div class="stats-cell-val">${active48}</div><div class="stats-cell-lbl">פעילים 48ש</div></div>
+          <div class="stats-cell"><div class="stats-cell-val">${active7}</div><div class="stats-cell-lbl">פעילים 7י</div></div>
+          <div class="stats-cell"><div class="stats-cell-val">${active30}</div><div class="stats-cell-lbl">פעילים 30י</div></div>
+          <div class="stats-cell"><div class="stats-cell-val">${active90}</div><div class="stats-cell-lbl">פעילים 90י</div></div>
         </div>
         <div style="background:var(--paper);border:1px solid var(--gold-lite);border-radius:4px;padding:10px 12px;">
           ${section('FLIGHTS')}
           ${row('טיסות שהתחילו',totalFlights,totalFlights)}
           ${row('טיסות שהושלמו',totalCompleted,totalFlights||1)}
+          <div style="display:flex;justify-content:space-between;align-items:baseline;padding:3px 0;">
+            <span style="font-size:11px;color:var(--ink-muted);direction:rtl;">ממוצע טיסות לטייס פעיל (90י)</span>
+            <span style="font-family:var(--font-mono);font-size:11px;color:var(--ink-body);">${avgFlights}</span>
+          </div>
           ${section('CHECKLISTS')}
           ${row('צ׳קליסט מותאם אישית',custom,total)}
           ${row('עם רשימות מרובות',multiProfile,total)}
           ${section('PROFILE DISTRIBUTION')}
           ${Object.entries(profileDist).map(([k,v])=>row(k+' רשימות',v,total)).join('')}
+          ${section('COMMUNITY')}
+          ${row('פריטים שנאספו',communityPending,communityPending)}
           ${section('METAR')}
           ${row('משתמשים ב־METAR',metarUsers,total)}
           ${row('סה״כ פתיחות',totalMetarOpens,totalMetarOpens)}
@@ -3338,6 +3394,46 @@ function splashSecondaryAction(){
       const snap=await get(ref(db,'tower/'+icao+'/latest'));
       return snap.val();
     }catch(e){return null;}
+  };
+
+  // Silent community item collection — called on editor DONE
+  window.collectCustomItems=async function(list){
+    if(!list||!list.length)return;
+    try{
+      const deviceId=getDeviceId();
+      const defaultTexts=new Set(window._CL_DEFAULT_TEXTS||(window._CL_DEFAULT_TEXTS=[]));
+      // Build default text set once
+      if(!defaultTexts.size){
+        const raw=localStorage.getItem('aircheck_profiles_v1');
+        // Use CL_DEFAULT from main script via exposed global
+        if(window.CL_DEFAULT_LIST){window.CL_DEFAULT_LIST.forEach(it=>defaultTexts.add(it.main.trim().toLowerCase()));}
+      }
+      const customItems=list.filter(it=>{
+        const text=it.main.trim();
+        if(!text||text.length<3)return false;
+        return!defaultTexts.has(text.toLowerCase());
+      });
+      if(!customItems.length)return;
+      // Check existing pending/approved/rejected to avoid duplicates
+      const existingSnap=await get(ref(db,'community'));
+      const existing=existingSnap.val()||{};
+      const allTexts=new Set();
+      ['pending','approved','rejected'].forEach(status=>{
+        if(existing[status])Object.values(existing[status]).forEach(it=>{if(it.text)allTexts.add(it.text.trim().toLowerCase());});
+      });
+      // Write only truly new items
+      for(const item of customItems){
+        const text=item.main.trim();
+        if(allTexts.has(text.toLowerCase()))continue;
+        const key=deviceId+'_'+Date.now()+'_'+Math.random().toString(36).slice(2,6);
+        await set(ref(db,'community/pending/'+key),{
+          text,
+          deviceId,
+          timestamp:Date.now()
+        });
+        allTexts.add(text.toLowerCase());// prevent duplicates within same save
+      }
+    }catch(e){}
   };
 
   // Sync on load
