@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <!-- ═══════════════════════════════════════
-     AirCheck+ · v2.07.006 · built by eligrt
+     AirCheck+ · v2.07.034 · built by eligrt
      ═══════════════════════════════════════ -->
 <html lang="he" dir="rtl">
 <head>
@@ -613,7 +613,7 @@ html,body{height:100%;background:#1a1a1c;font-family:var(--font-ui);color:var(--
     <div class="splash-footer-wrap">
       <div class="footer-strip" style="display:flex;align-items:center;justify-content:space-between;padding:5px 14px 8px;">
         <span class="footer-refresh" onclick="reloadApp()">רענון</span>
-        <span id="versionTap" onclick="handleVersionTap()" style="cursor:default;">AirCheck+ · v2.07.006 · built by eligrt</span>
+        <span id="versionTap" onclick="handleVersionTap()" style="cursor:default;">AirCheck+ · v2.07.034 · built by eligrt</span>
         <span style="width:40px;"></span>
       </div>
     </div>
@@ -729,7 +729,7 @@ html,body{height:100%;background:#1a1a1c;font-family:var(--font-ui);color:var(--
     <div class="tree-panel" id="treePanel"></div>
     <div class="footer-strip" style="display:flex;align-items:center;justify-content:space-between;padding:5px 14px 8px;">
       <span class="footer-refresh" onclick="reloadApp()">רענון</span>
-      <span id="versionTap" onclick="handleVersionTap()" style="cursor:default;">AirCheck+ · v2.07.006 · built by eligrt</span>
+      <span id="versionTap" onclick="handleVersionTap()" style="cursor:default;">AirCheck+ · v2.07.034 · built by eligrt</span>
       <span style="width:40px;"></span>
     </div>
   </div>
@@ -788,7 +788,7 @@ html,body{height:100%;background:#1a1a1c;font-family:var(--font-ui);color:var(--
 
     <div class="footer-strip" style="display:flex;align-items:center;justify-content:space-between;padding:5px 14px 8px;">
       <span style="width:40px;"></span>
-      <span id="versionTap" onclick="handleVersionTap()" style="cursor:default;">AirCheck+ · v2.07.006 · built by eligrt</span>
+      <span id="versionTap" onclick="handleVersionTap()" style="cursor:default;">AirCheck+ · v2.07.034 · built by eligrt</span>
       <span style="width:40px;"></span>
     </div>
   </div>
@@ -875,15 +875,25 @@ html,body{height:100%;background:#1a1a1c;font-family:var(--font-ui);color:var(--
         </div>
       </div>
 
+      <div class="settings-section">
+        <div class="settings-card">
+          <div class="settings-row tappable" onclick="window.open('mailto:eligrt@gmail.com','_blank')">
+            <span class="settings-row-label">יצירת קשר עם המפתח</span>
+            <div style="display:flex;align-items:center;gap:4px;">
+              <span style="font-size:13px;">✉️</span>
+              <span class="settings-row-arrow">›</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
     </div>
     <div class="footer-strip" style="display:flex;align-items:center;justify-content:space-between;padding:5px 14px 8px;">
       <span class="footer-refresh" onclick="reloadApp()">רענון</span>
-      <span id="versionTap" onclick="handleVersionTap()" style="cursor:default;">AirCheck+ · v2.07.006 · built by eligrt</span>
+      <span id="versionTap" onclick="handleVersionTap()" style="cursor:default;">AirCheck+ · v2.07.034 · built by eligrt</span>
       <span style="width:40px;"></span>
     </div>
   </div>
-
-  <!-- ══ EDITOR SCREEN ══ -->
   <div class="screen" id="screenEditor">
     <div class="editor-topbar">
       <div class="editor-mode-tag">
@@ -899,7 +909,7 @@ html,body{height:100%;background:#1a1a1c;font-family:var(--font-ui);color:var(--
     <div class="editor-list" id="editorList"></div>
     <div class="footer-strip" style="display:flex;align-items:center;justify-content:space-between;padding:5px 14px 8px;">
       <span class="footer-refresh" onclick="reloadApp()">רענון</span>
-      <span id="versionTap" onclick="handleVersionTap()" style="cursor:default;">AirCheck+ · v2.07.006 · built by eligrt</span>
+      <span id="versionTap" onclick="handleVersionTap()" style="cursor:default;">AirCheck+ · v2.07.034 · built by eligrt</span>
       <span style="width:40px;"></span>
     </div>
   </div>
@@ -957,7 +967,8 @@ html,body{height:100%;background:#1a1a1c;font-family:var(--font-ui);color:var(--
 const FEATURES={
   METAR: false,
   MULTI_PROFILE: false,
-  WHATS_NEW: false
+  WHATS_NEW: false,
+  PWA_POPUP: true
 };
 
 const CL=[
@@ -1002,6 +1013,7 @@ const CL=[
   {phase:"סגירת טיסה",group:"עודד",main:"סגירת טיסה במחשב המנחת (עודד)",sub:""},
 ];
 const CL_DEFAULT=CL.map(it=>({...it}));
+window.CL_DEFAULT_LIST=CL_DEFAULT;
 const PHASES=[];const PHASE_IDX={};
 function buildIndex(){PHASES.length=0;Object.keys(PHASE_IDX).forEach(k=>delete PHASE_IDX[k]);CL.forEach((item,i)=>{if(!PHASE_IDX[item.phase]){const p={name:item.phase,start:i,end:i,groups:[],gIdx:{}};PHASE_IDX[item.phase]=p;PHASES.push(p);}const p=PHASE_IDX[item.phase];p.end=i;if(!p.gIdx[item.group]){const g={name:item.group,start:i,end:i,items:[]};p.gIdx[item.group]=g;p.groups.push(g);}const g=p.gIdx[item.group];g.end=i;g.items.push(i);});}
 buildIndex();
@@ -1670,6 +1682,8 @@ function saveEditor(){
       saveState();
     }
     if(window.updateListTypeInFirebase)window.updateListTypeInFirebase(prof.type);
+    // Silent collection — send new non-default items to Firebase /pending
+    if(window.collectCustomItems)window.collectCustomItems(newList);
   }
   updateRunwayProfileLabel();
   if(_editorFromSettings){openSettings();}else{showScreen('screenChecklist');render();}
@@ -1746,8 +1760,13 @@ function renderEditor(){
 
 function buildItemRow(it,ii,g,gi,ph,pi){
   const row=document.createElement('div');row.className='ed-item';
+  // Mark custom items with a blue dot — use parent phase/group context
+  const norm=s=>(s||'').trim().toLowerCase().replace(/[\u05F3\u05F4\u0022\u0027\u201C\u201D\u2018\u2019״׳"""'']/g,'').replace(/\s+/g,' ');
+  const isCustom=!CL_DEFAULT.some(d=>norm(d.main)===norm(it.main)&&norm(d.group)===norm(g.name)&&norm(d.phase)===norm(ph.phase)&&norm(d.sub||'')===norm(it.sub||''));
   row.draggable=true;row.dataset.pi=pi;row.dataset.gi=gi;row.dataset.ii=ii;
   const drag=document.createElement('span');drag.className='ed-drag';drag.textContent='⠿';
+  const dot=document.createElement('span');
+  dot.style.cssText='width:6px;height:6px;border-radius:50%;flex-shrink:0;margin-left:2px;background:'+(isCustom?'var(--ink)':'transparent')+';';
   const txt=document.createElement('div');txt.className='ed-item-text';
   const main=document.createElement('div');main.className='ed-item-main';main.textContent=it.main;txt.appendChild(main);
   if(it.sub){const sub=document.createElement('div');sub.className='ed-item-sub';sub.textContent=it.sub;txt.appendChild(sub);}
@@ -1826,7 +1845,7 @@ function buildItemRow(it,ii,g,gi,ph,pi){
     document.addEventListener('touchmove',onMove,{passive:false});
     document.addEventListener('touchend',onEnd);
   },{passive:false});
-  row.appendChild(drag);row.appendChild(txt);row.appendChild(editBtn);row.appendChild(delBtn);
+  row.appendChild(drag);row.appendChild(dot);row.appendChild(txt);row.appendChild(editBtn);row.appendChild(delBtn);
   return row;
 }
 
@@ -2203,15 +2222,20 @@ function manyListsDecline(){
 // ── RELOAD ──
 function reloadApp(){
   localStorage.removeItem('aircheck_whats_new_seen');
+  localStorage.removeItem('aircheck_pwa_never');
+  localStorage.removeItem('aircheck_pwa_later');
+  localStorage.removeItem('aircheck_pwa_shown');
   location.reload();
 }
 
+// ── VERSION CHECK ──
 // ── WHAT'S NEW ──
 const WHATS_NEW_KEY='aircheck_whats_new_seen';
 const WHATS_NEW_VER='2.06';
 function checkWhatsNew(){
   const seen=localStorage.getItem(WHATS_NEW_KEY);
   if(seen===WHATS_NEW_VER)return;
+  _whatsNewShownThisSession=true;
   const el=document.getElementById('whatsNewOverlay');
   const verEl=document.getElementById('whatsNewVer');
   if(verEl)verEl.textContent='AirCheck+ · v'+WHATS_NEW_VER;
@@ -2221,6 +2245,104 @@ function closeWhatsNew(){
   localStorage.setItem(WHATS_NEW_KEY,WHATS_NEW_VER);
   const el=document.getElementById('whatsNewOverlay');
   if(el)el.style.display='none';
+  // Check PWA popup after What's New is dismissed
+  _whatsNewShownThisSession=false;
+  checkPwaPopup();
+}
+
+// ── PWA POPUP ──
+let _whatsNewShownThisSession=false;
+
+function checkPwaPopup(){
+  if(!FEATURES.PWA_POPUP)return;
+  // Skip on desktop only — mobile (Android + iOS) gets the popup
+  if(getPwaPlatform()==='desktop')return;
+  // Skip if already running as PWA
+  if(window.matchMedia('(display-mode: standalone)').matches)return;
+  // Skip if user said never
+  if(localStorage.getItem('aircheck_pwa_never')==='1')return;
+  // Skip if dismissed recently (within 7 days)
+  const later=parseInt(localStorage.getItem('aircheck_pwa_later')||'0');
+  if(later&&Date.now()-later<7*24*60*60*1000)return;
+  // Skip if What's New shown this session
+  if(_whatsNewShownThisSession)return;
+  // Show after short delay
+  setTimeout(()=>{
+    const el=document.getElementById('pwaOverlay');
+    if(!el)return;
+    // Build platform-specific CTA
+    const cta=document.getElementById('pwaCta');
+    if(cta){
+      const platform=getPwaPlatform();
+      if(platform==='android'){
+        cta.innerHTML=`<button onclick="triggerPwaInstall()" style="width:100%;padding:13px;background:var(--ink);border:none;border-radius:6px;color:var(--paper);font-family:var(--font-ui);font-size:14px;font-weight:700;cursor:pointer;direction:rtl;margin-bottom:8px;">התקן עכשיו ›</button>`;
+      } else if(platform==='ios'){
+        cta.innerHTML=`<button id="pwaIosBtn" onclick="pwaIosToggle()" style="width:100%;padding:10px;background:transparent;border:1.5px solid var(--paper-edge);border-radius:6px;color:var(--ink-muted);font-family:var(--font-ui);font-size:13px;font-weight:600;cursor:pointer;direction:rtl;margin-bottom:8px;">איך עושים את זה? ▾</button>`;
+      }
+      // Desktop: no install button, just info
+    }
+    el.style.display='flex';
+    // Track first time shown
+    if(!localStorage.getItem('aircheck_pwa_shown')){
+      localStorage.setItem('aircheck_pwa_shown',Date.now());
+      if(window.syncPwaStats)window.syncPwaStats();
+    }
+  },2500);
+}
+
+function closePwaLater(){
+  localStorage.setItem('aircheck_pwa_later',Date.now());
+  const el=document.getElementById('pwaOverlay');
+  if(el)el.style.display='none';
+}
+
+function closePwaNever(){
+  localStorage.setItem('aircheck_pwa_never','1');
+  const el=document.getElementById('pwaOverlay');
+  if(el)el.style.display='none';
+}
+
+function pwaIosToggle(){
+  const steps=document.getElementById('pwaIosSteps');
+  const btn=document.getElementById('pwaIosBtn');
+  if(!steps||!btn)return;
+  const open=steps.style.display==='block';
+  steps.style.display=open?'none':'block';
+  btn.textContent=open?'איך עושים את זה? ▾':'סגור הוראות ▲';
+}
+
+// Detect platform for PWA overlay
+function getPwaPlatform(){
+  const ua=navigator.userAgent||'';
+  if(/iPad|iPhone|iPod/.test(ua)&&!window.MSStream)return'ios';
+  if(/android/i.test(ua))return'android';
+  return'desktop';
+}
+
+// Called after install event fires
+function onPwaInstalled(){
+  localStorage.setItem('aircheck_pwa_installed','1');
+  const el=document.getElementById('pwaOverlay');
+  if(el)el.style.display='none';
+  if(window.syncPwaStats)window.syncPwaStats();
+}
+
+// Listen for native install event (Android/Chrome)
+let _deferredInstallPrompt=null;
+window.addEventListener('beforeinstallprompt',e=>{
+  e.preventDefault();
+  _deferredInstallPrompt=e;
+});
+window.addEventListener('appinstalled',()=>onPwaInstalled());
+
+function triggerPwaInstall(){
+  if(_deferredInstallPrompt){
+    _deferredInstallPrompt.prompt();
+    _deferredInstallPrompt.userChoice.then(result=>{
+      if(result.outcome==='accepted')onPwaInstalled();
+      _deferredInstallPrompt=null;
+    });
+  }
 }
 let toastTimer=null;
 function showToast(msg,duration=2800){
@@ -2883,6 +3005,14 @@ document.addEventListener('DOMContentLoaded',()=>{
   loadSettings();loadList();loadState();loadReg();loadRoute();drawRings();initSplash();
   if(FEATURES.WHATS_NEW)checkWhatsNew();
   if(FEATURES.METAR){const mb=document.getElementById('metarBtn');if(mb)mb.style.display='';}
+  // Detect if already installed as PWA on this launch
+  if(window.matchMedia('(display-mode: standalone)').matches){
+    if(localStorage.getItem('aircheck_pwa_installed')!=='1'){
+      localStorage.setItem('aircheck_pwa_installed','1');
+      if(window.syncPwaStats)window.syncPwaStats();
+    }
+  }
+  checkPwaPopup();
 });
 
 function startSplashTypewriter(){
@@ -3056,18 +3186,26 @@ function splashSecondaryAction(){
       if((existing.flightCount||0)>localFlights)localStorage.setItem('aircheck_flight_count',existing.flightCount);
       if((existing.completedFlights||0)>localCompleted)localStorage.setItem('aircheck_completed_count',existing.completedFlights);
 
+      // PWA
+      const pwaInstalled=localStorage.getItem('aircheck_pwa_installed')==='1'||window.matchMedia('(display-mode: standalone)').matches;
+      const pwaPromptShown=!!localStorage.getItem('aircheck_pwa_shown');
+      const pwaPromptTimestamp=parseInt(localStorage.getItem('aircheck_pwa_shown')||'0')||null;
+
       await set(pilotRef,{
         firstSeen: existing.firstSeen||now,
         lastSeen: now,
         os, listType, profileCount,
         metarUsed, metarStation, metarCustomIcao, metarStationCounts,
-        flightCount, completedFlights
+        flightCount, completedFlights,
+        pwaInstalled, pwaPromptShown, pwaPromptTimestamp
       });
     }catch(e){}
   }
 
   // Expose for calls from main script
   window.syncToFirebase=syncToFirebase;
+  // Lightweight PWA stats sync
+  window.syncPwaStats=syncToFirebase;
 
   // Update listType after editor DONE (lightweight wrapper)
   window.updateListTypeInFirebase=function(){syncToFirebase();};
@@ -3085,11 +3223,20 @@ function splashSecondaryAction(){
       const pilots=Object.values(data);
       const total=pilots.length;
       const now=Date.now();
+      const hours48=48*60*60*1000;
       const sevenDays=7*24*60*60*1000;
       const thirtyDays=30*24*60*60*1000;
+      const ninetyDays=90*24*60*60*1000;
 
+      const active48=pilots.filter(p=>now-p.lastSeen<hours48).length;
       const active7=pilots.filter(p=>now-p.lastSeen<sevenDays).length;
       const active30=pilots.filter(p=>now-p.lastSeen<thirtyDays).length;
+      const active90=pilots.filter(p=>now-p.lastSeen<ninetyDays).length;
+
+      // Avg flights per pilot active in last 90 days
+      const active90pilots=pilots.filter(p=>now-p.lastSeen<ninetyDays);
+      const active90flights=active90pilots.reduce((s,p)=>s+(p.flightCount||0),0);
+      const avgFlights=active90pilots.length>0?(active90flights/active90pilots.length).toFixed(1):0;
 
       const custom=pilots.filter(p=>p.listType==='modified').length;
       const multiProfile=pilots.filter(p=>p.profileCount&&p.profileCount>1).length;
@@ -3120,6 +3267,29 @@ function splashSecondaryAction(){
       const osCounts={iOS:0,Android:0,Desktop:0};
       pilots.forEach(p=>{if(osCounts[p.os]!==undefined)osCounts[p.os]++;});
 
+      const pwaCounts={iOS:0,Android:0,Desktop:0};
+      pilots.forEach(p=>{if(p.pwaInstalled&&osCounts[p.os]!==undefined)pwaCounts[p.os]++;});
+      const pwaPromptShown=pilots.filter(p=>p.pwaPromptShown).length;
+      const pwaInstalled=pilots.filter(p=>p.pwaInstalled).length;
+
+      // Community pending count
+      let communityPending=0;
+      try{
+        const pendingSnap=await get(ref(db,'community/pending'));
+        communityPending=pendingSnap.exists()?Object.keys(pendingSnap.val()).length:0;
+      }catch(e){}
+
+      function activeBar(label,count,tot){
+        const p=tot>0?Math.round(count/tot*100):0;
+        return `<div style="margin-bottom:7px;">
+          <div style="display:flex;justify-content:space-between;font-size:10px;font-family:var(--font-mono);color:var(--ink-muted);margin-bottom:3px;direction:ltr;">
+            <span style="color:var(--ink-body);">פעילים ${label}</span><span>${count} · ${p}%</span>
+          </div>
+          <div style="height:5px;background:var(--paper-edge);border-radius:3px;overflow:hidden;">
+            <div style="height:100%;width:${p}%;background:var(--ink);border-radius:3px;"></div>
+          </div>
+        </div>`;
+      }
       function row(label,count,tot){
         const p=tot>0?Math.round(count/tot*100):0;
         return `<div style="display:flex;justify-content:space-between;align-items:baseline;padding:3px 0;border-bottom:1px dashed rgba(200,160,74,.15);">
@@ -3127,14 +3297,21 @@ function splashSecondaryAction(){
           <span style="font-family:var(--font-mono);font-size:11px;color:var(--ink-body);direction:ltr;">${count} <span style="color:var(--ink-faint);font-size:10px;">(${p}%)</span></span>
         </div>`;
       }
-      function osBar(label,count,fill){
+      function osBar(label,count,pwaCount,fill,fillLight){
         const p=total>0?Math.round(count/total*100):0;
-        return `<div style="margin-bottom:7px;">
+        const pp=count>0?Math.round(pwaCount/count*100):0;
+        return `<div style="margin-bottom:8px;">
           <div style="display:flex;justify-content:space-between;font-size:10px;font-family:var(--font-mono);color:var(--ink-muted);margin-bottom:3px;direction:ltr;">
-            <span style="color:var(--ink-body);">${label}</span><span>${count} · ${p}%</span>
+            <span style="color:var(--ink-body);font-weight:700;">${label}</span><span>${count} · ${p}%</span>
           </div>
-          <div style="height:5px;background:var(--paper-edge);border-radius:3px;overflow:hidden;">
+          <div style="height:5px;background:var(--paper-edge);border-radius:3px;overflow:hidden;margin-bottom:3px;">
             <div style="height:100%;width:${p}%;background:${fill};border-radius:3px;"></div>
+          </div>
+          <div style="display:flex;justify-content:space-between;font-size:9px;font-family:var(--font-mono);color:var(--ink-faint);margin-bottom:2px;direction:ltr;padding-right:8px;">
+            <span>PWA</span><span>${pwaCount} · ${pp}%</span>
+          </div>
+          <div style="height:3px;background:var(--paper-edge);border-radius:3px;overflow:hidden;margin-right:8px;">
+            <div style="height:100%;width:${pp}%;background:${fillLight};border-radius:3px;"></div>
           </div>
         </div>`;
       }
@@ -3149,25 +3326,47 @@ function splashSecondaryAction(){
           </div>
         </div>`;
       }
+      function adoptionBar(label,count,tot,fill){
+        const p=tot>0?Math.round(count/tot*100):0;
+        return `<div style="margin-bottom:7px;">
+          <div style="display:flex;justify-content:space-between;font-size:10px;font-family:var(--font-mono);color:var(--ink-muted);margin-bottom:3px;direction:ltr;">
+            <span style="color:var(--ink-body);">${label}</span><span>${count} · ${p}%</span>
+          </div>
+          <div style="height:5px;background:var(--paper-edge);border-radius:3px;overflow:hidden;">
+            <div style="height:100%;width:${p}%;background:${fill};border-radius:3px;"></div>
+          </div>
+        </div>`;
+      }
       function section(title){
         return `<div style="font-family:var(--font-mono);font-size:8px;color:var(--ink-faint);letter-spacing:.2em;text-transform:uppercase;margin:12px 0 6px;direction:ltr;">${title}</div>`;
       }
 
       document.getElementById('statsContent').innerHTML=`
-        <div class="stats-grid" style="grid-template-columns:1fr 1fr 1fr;margin-bottom:4px;">
-          <div class="stats-cell"><div class="stats-cell-val">${total}</div><div class="stats-cell-lbl">טייסים</div></div>
-          <div class="stats-cell"><div class="stats-cell-val">${active7}</div><div class="stats-cell-lbl">פעילים 7 ימים</div></div>
-          <div class="stats-cell"><div class="stats-cell-val">${active30}</div><div class="stats-cell-lbl">פעילים 30 יום</div></div>
+        <div style="background:var(--paper);border:1px solid var(--gold-lite);border-radius:4px;padding:10px 12px;margin-bottom:12px;">
+          <div style="display:flex;align-items:baseline;gap:8px;margin-bottom:10px;direction:rtl;">
+            <span style="font-family:var(--font-mono);font-size:32px;font-weight:700;color:var(--ink);direction:ltr;">${total}</span>
+            <span style="font-size:12px;color:var(--ink-muted);">טייסים רשומים</span>
+          </div>
+          ${activeBar('48 שעות',active48,total)}
+          ${activeBar('7 ימים',active7,total)}
+          ${activeBar('30 ימים',active30,total)}
+          ${activeBar('90 ימים',active90,total)}
         </div>
         <div style="background:var(--paper);border:1px solid var(--gold-lite);border-radius:4px;padding:10px 12px;">
           ${section('FLIGHTS')}
           ${row('טיסות שהתחילו',totalFlights,totalFlights)}
           ${row('טיסות שהושלמו',totalCompleted,totalFlights||1)}
+          <div style="display:flex;justify-content:space-between;align-items:baseline;padding:3px 0;">
+            <span style="font-size:11px;color:var(--ink-muted);direction:rtl;">ממוצע טיסות לטייס פעיל (90י)</span>
+            <span style="font-family:var(--font-mono);font-size:11px;color:var(--ink-body);">${avgFlights}</span>
+          </div>
           ${section('CHECKLISTS')}
           ${row('צ׳קליסט מותאם אישית',custom,total)}
           ${row('עם רשימות מרובות',multiProfile,total)}
           ${section('PROFILE DISTRIBUTION')}
           ${Object.entries(profileDist).map(([k,v])=>row(k+' רשימות',v,total)).join('')}
+          ${section('COMMUNITY')}
+          ${row('פריטים שנאספו',communityPending,communityPending)}
           ${section('METAR')}
           ${row('משתמשים ב־METAR',metarUsers,total)}
           ${row('סה״כ פתיחות',totalMetarOpens,totalMetarOpens)}
@@ -3178,9 +3377,12 @@ function splashSecondaryAction(){
           ${stationBar('LLER',stationTotals.LLER,'#8a5a9a')}
           ${stationBar('Custom',stationTotals.custom,'#5a7a9a')}
           ${section('OS')}
-          ${osBar('iOS',osCounts.iOS,'var(--ink)')}
-          ${osBar('Android',osCounts.Android,'var(--cleared)')}
-          ${osBar('Desktop',osCounts.Desktop,'var(--amber)')}
+          ${osBar('iOS',osCounts.iOS,pwaCounts.iOS,'var(--ink)','rgba(28,61,110,.4)')}
+          ${osBar('Android',osCounts.Android,pwaCounts.Android,'var(--cleared)','rgba(31,111,63,.4)')}
+          ${osBar('Desktop',osCounts.Desktop,pwaCounts.Desktop,'var(--amber)','rgba(245,158,11,.4)')}
+          ${section('PWA ADOPTION')}
+          ${adoptionBar('ראו את ההודעה',pwaPromptShown,total,'var(--gold)')}
+          ${adoptionBar('התקינו',pwaInstalled,pwaPromptShown||1,'var(--cleared)')}
         </div>`;
     }catch(e){
       document.getElementById('statsContent').innerHTML='<div class="stats-loading">שגיאה בטעינת נתונים</div>';
@@ -3193,6 +3395,46 @@ function splashSecondaryAction(){
       const snap=await get(ref(db,'tower/'+icao+'/latest'));
       return snap.val();
     }catch(e){return null;}
+  };
+
+  // Silent community item collection — called on editor DONE
+  window.collectCustomItems=async function(list){
+    if(!list||!list.length)return;
+    try{
+      const deviceId=getDeviceId();
+      const defaultTexts=new Set(window._CL_DEFAULT_TEXTS||(window._CL_DEFAULT_TEXTS=[]));
+      // Build default text set once
+      if(!defaultTexts.size){
+        const raw=localStorage.getItem('aircheck_profiles_v1');
+        // Use CL_DEFAULT from main script via exposed global
+        if(window.CL_DEFAULT_LIST){window.CL_DEFAULT_LIST.forEach(it=>defaultTexts.add(it.main.trim().toLowerCase()));}
+      }
+      const customItems=list.filter(it=>{
+        const text=it.main.trim();
+        if(!text||text.length<3)return false;
+        return!defaultTexts.has(text.toLowerCase());
+      });
+      if(!customItems.length)return;
+      // Check existing pending/approved/rejected to avoid duplicates
+      const existingSnap=await get(ref(db,'community'));
+      const existing=existingSnap.val()||{};
+      const allTexts=new Set();
+      ['pending','approved','rejected'].forEach(status=>{
+        if(existing[status])Object.values(existing[status]).forEach(it=>{if(it.text)allTexts.add(it.text.trim().toLowerCase());});
+      });
+      // Write only truly new items
+      for(const item of customItems){
+        const text=item.main.trim();
+        if(allTexts.has(text.toLowerCase()))continue;
+        const key=deviceId+'_'+Date.now()+'_'+Math.random().toString(36).slice(2,6);
+        await set(ref(db,'community/pending/'+key),{
+          text,
+          deviceId,
+          timestamp:Date.now()
+        });
+        allTexts.add(text.toLowerCase());// prevent duplicates within same save
+      }
+    }catch(e){}
   };
 
   // Sync on load
@@ -3380,6 +3622,49 @@ function splashSecondaryAction(){
       <div style="font-size:13px;font-weight:700;color:var(--ink);text-align:center;margin-bottom:14px;">האם להוסיף את הרשימה החדשה?</div>
       <button class="btn btn-ink" onclick="manyListsConfirm()" style="margin-bottom:8px;">כן, הוסף רשימה חדשה ›</button>
       <button class="btn btn-ghost" onclick="manyListsDecline()">במחשבה שניה אין צורך.</button>
+    </div>
+  </div>
+
+  <!-- PWA Install Overlay -->
+  <div id="pwaOverlay" style="display:none;position:absolute;inset:0;background:rgba(26,19,8,.82);z-index:690;align-items:center;justify-content:center;padding:24px;backdrop-filter:blur(3px);">
+    <div style="background:var(--paper-hi);background-image:repeating-linear-gradient(0deg,transparent 0,transparent 27px,var(--paper-line) 27px,var(--paper-line) 28px);border:2px solid var(--gold);border-radius:8px;width:100%;max-width:340px;overflow:hidden;box-shadow:0 20px 60px rgba(0,0,0,.4);animation:metarFadeIn .25s cubic-bezier(.34,1.2,.64,1);">
+      <!-- Header -->
+      <div style="background:var(--ink);padding:14px 18px 13px;display:flex;align-items:center;gap:12px;direction:rtl;">
+        <div style="flex-shrink:0;width:38px;height:38px;background:rgba(244,236,220,.07);border:1px solid rgba(200,160,74,.25);border-radius:7px;display:flex;align-items:center;justify-content:center;font-size:20px;">✈</div>
+        <div style="flex:1;">
+          <div style="font-family:var(--font-mono);font-size:8px;color:rgba(244,236,220,.4);letter-spacing:.18em;text-transform:uppercase;margin-bottom:3px;direction:ltr;unicode-bidi:bidi-override;">AirCheck+ · INSTALL</div>
+          <div style="font-size:14px;font-weight:700;color:var(--paper);direction:rtl;line-height:1.35;">ידעת שאפשר להתקין את AirCheck+?</div>
+        </div>
+      </div>
+      <!-- Body -->
+      <div style="padding:13px 16px 10px;direction:rtl;">
+        <div style="font-size:13px;color:var(--ink-muted);line-height:1.65;">גישה ישירה מהמסך הבית <strong style="color:var(--ink);">בלי לפתוח דפדפן בכל פעם.</strong></div>
+        <!-- iOS steps (hidden by default) -->
+        <div id="pwaIosSteps" style="display:none;margin-top:10px;background:var(--paper);border:1px solid var(--paper-edge);border-radius:6px;overflow:hidden;">
+          <div style="display:flex;align-items:flex-start;gap:10px;padding:7px 12px;direction:rtl;font-size:12px;color:var(--ink-muted);line-height:1.5;border-bottom:1px dashed rgba(200,160,74,.3);">
+            <div style="flex-shrink:0;margin-top:1px;width:16px;height:16px;background:var(--ink);border-radius:50%;font-family:var(--font-mono);font-size:8px;font-weight:700;color:var(--paper);display:flex;align-items:center;justify-content:center;">1</div>
+            <span>לחץ על כפתור השיתוף <strong>⬆</strong> בתחתית המסך</span>
+          </div>
+          <div style="display:flex;align-items:flex-start;gap:10px;padding:7px 12px;direction:rtl;font-size:12px;color:var(--ink-muted);line-height:1.5;border-bottom:1px dashed rgba(200,160,74,.3);">
+            <div style="flex-shrink:0;margin-top:1px;width:16px;height:16px;background:var(--ink);border-radius:50%;font-family:var(--font-mono);font-size:8px;font-weight:700;color:var(--paper);display:flex;align-items:center;justify-content:center;">2</div>
+            <span>לחץ על <strong>Add to Home Screen</strong></span>
+          </div>
+          <div style="display:flex;align-items:flex-start;gap:10px;padding:7px 12px;direction:rtl;font-size:12px;color:var(--ink-muted);line-height:1.5;">
+            <div style="flex-shrink:0;margin-top:1px;width:16px;height:16px;background:var(--ink);border-radius:50%;font-family:var(--font-mono);font-size:8px;font-weight:700;color:var(--paper);display:flex;align-items:center;justify-content:center;">3</div>
+            <span>לחץ על <strong>Add</strong> בפינה הימנית עליונה</span>
+          </div>
+        </div>
+      </div>
+      <!-- CTA -->
+      <div style="padding:0 16px;" id="pwaCta"></div>
+      <!-- Dismiss -->
+      <div style="padding:10px 16px 14px;display:flex;align-items:center;justify-content:space-between;direction:rtl;">
+        <button onclick="closePwaLater()" style="background:transparent;border:none;font-family:var(--font-ui);font-size:12px;color:var(--ink-muted);cursor:pointer;padding:4px 0;display:flex;align-items:center;gap:5px;">
+          לא עכשיו
+          <span style="font-family:var(--font-mono);font-size:8px;background:rgba(200,160,74,.12);color:var(--gold-deep);padding:1px 5px;border-radius:3px;">+7 ימים</span>
+        </button>
+        <button onclick="closePwaNever()" style="background:transparent;border:none;font-family:var(--font-ui);font-size:11px;color:var(--ink-faint);cursor:pointer;padding:4px 0;text-decoration:underline;text-underline-offset:3px;text-decoration-color:rgba(138,122,90,.35);">אל תזכיר שוב</button>
+      </div>
     </div>
   </div>
 
