@@ -80,7 +80,7 @@ body{display:flex;align-items:flex-start;justify-content:center;padding:24px 16p
 <body>
 <div class="card">
   <div class="header">
-    <div class="header-mono">AirCheck+ · COMMUNITY REPOSITORY · v1.01.004</div>
+    <div class="header-mono">AirCheck+ · COMMUNITY REPOSITORY · v1.01.006</div>
     <div class="header-title">ניהול מאגר קהילתי</div>
     <div class="header-sub" id="headerSub">טוען...</div>
   </div>
@@ -93,7 +93,7 @@ body{display:flex;align-items:flex-start;justify-content:center;padding:24px 16p
   <div class="pills" id="pillsRow" style="display:none;"></div>
   <div class="items-list" id="itemsList"><div class="loading">טוען נתונים...</div></div>
   <div class="footer">
-    <div class="footer-txt">AirCheck+ · CUSTOM REPOSITORY · v1.01.004 · eligrt</div>
+    <div class="footer-txt">AirCheck+ · CUSTOM REPOSITORY · v1.01.006 · eligrt</div>
   </div>
 </div>
 
@@ -121,7 +121,7 @@ let currentTab = 'pending';
 let allData = { pending:{}, approved:{}, rejected:{} };
 let tags = [...DEFAULT_TAGS];
 let activeFilter = 'הכל';
-let itemStates = {};
+let itemStates = {}; // { id: { mode: 'none'|'approve'|'edit'|'reject', editVal, reason, note } }
 
 async function loadAll(){
   try{
@@ -130,7 +130,6 @@ async function loadAll(){
     allData.pending = val.pending || {};
     allData.approved = val.approved || {};
     allData.rejected = val.rejected || {};
-    // Load tags from Firebase, fall back to defaults
     if(val.tags && Array.isArray(val.tags)) tags = val.tags;
     else { tags = [...DEFAULT_TAGS]; await set(ref(db,'community/tags'), tags); }
     updateHeader();
@@ -151,9 +150,7 @@ function updateHeader(){
 }
 
 window.switchTab = function(tab){
-  currentTab = tab;
-  activeFilter = 'הכל';
-  itemStates = {};
+  currentTab = tab; activeFilter = 'הכל'; itemStates = {};
   document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
   document.getElementById('tab-'+tab).classList.add('active');
   render();
@@ -162,9 +159,7 @@ window.switchTab = function(tab){
 function render(){
   const pillsRow = document.getElementById('pillsRow');
   if(currentTab==='tags'){ pillsRow.style.display='none'; renderTagsTab(); return; }
-  pillsRow.style.display='';
-  renderPills();
-  renderItems();
+  pillsRow.style.display=''; renderPills(); renderItems();
 }
 
 function renderPills(){
@@ -207,59 +202,48 @@ function renderItems(){
 
 function renderTagsTab(){
   const list = document.getElementById('itemsList');
-  // Count usage per tag
   const usage = {};
   tags.forEach(t=>usage[t]=0);
-  Object.values(allData.approved).forEach(item=>{ if(item.tag&&usage[item.tag]!==undefined) usage[item.tag]++; });
-
+  Object.values(allData.approved).forEach(item=>{ if(item.tag&&usage[item.tag]!==undefined)usage[item.tag]++; });
   let html = '<div class="tags-body">';
   if(!tags.length) html += '<div class="empty">אין תגיות עדיין</div>';
   tags.forEach(t=>{
     const count = usage[t]||0;
-    const canDelete = count===0;
     html += `<div class="tag-mgmt-item">
       <span class="tag-mgmt-name">${t}</span>
       <span class="tag-mgmt-count">${count} פריטים</span>
-      ${canDelete
-        ? `<button class="tag-del" onclick="deleteTag('${t}')" title="מחק תגית">✕</button>`
-        : `<button class="tag-del" style="opacity:.25;cursor:default;" title="לא ניתן למחוק — בשימוש">✕</button>`
-      }
+      ${count===0
+        ? `<button class="tag-del" onclick="deleteTag('${t}')">✕</button>`
+        : `<button class="tag-del" style="opacity:.25;cursor:default;" title="בשימוש">✕</button>`}
     </div>`;
   });
   html += `<div class="tag-add-row">
     <input class="tag-add-input" id="newTagInput" placeholder="שם תגית חדשה..." oninput="document.getElementById('addTagBtn').disabled=!this.value.trim()">
     <button class="tag-add-btn" id="addTagBtn" disabled onclick="addTag()">הוסף ›</button>
-  </div>`;
-  html += '</div>';
+  </div></div>`;
   list.innerHTML = html;
 }
 
 window.addTag = async function(){
   const input = document.getElementById('newTagInput');
   const name = (input.value||'').trim();
-  if(!name || tags.includes(name)) return;
+  if(!name||tags.includes(name))return;
   tags.push(name);
-  try{
-    await set(ref(db,'community/tags'), tags);
-    updateHeader();
-    renderTagsTab();
-  }catch(e){ alert('שגיאה: '+e.message); tags.pop(); }
+  try{ await set(ref(db,'community/tags'),tags); updateHeader(); renderTagsTab(); }
+  catch(e){ alert('שגיאה: '+e.message); tags.pop(); }
 };
 
 window.deleteTag = async function(tag){
   const idx = tags.indexOf(tag);
   if(idx===-1)return;
   tags.splice(idx,1);
-  try{
-    await set(ref(db,'community/tags'), tags);
-    updateHeader();
-    renderTagsTab();
-  }catch(e){ alert('שגיאה: '+e.message); tags.splice(idx,0,tag); }
+  try{ await set(ref(db,'community/tags'),tags); updateHeader(); renderTagsTab(); }
+  catch(e){ alert('שגיאה: '+e.message); tags.splice(idx,0,tag); }
 };
 
 function getState(id){
   const src = allData[currentTab][id] || {};
-  if(!itemStates[id]) itemStates[id]={mode:'none', tag:src.tag||'', renameVal:src.text||'', reason:'', note:''};
+  if(!itemStates[id]) itemStates[id]={mode:'none', editVal:src.text||'', reason:'', note:''};
   return itemStates[id];
 }
 
@@ -271,15 +255,35 @@ function buildItem(id, item){
   card.className = isApproved ? 'appr-item' : 'item-card';
   card.id = 'item-'+id;
 
-  // Body
+  // ── BODY ──
   const body = document.createElement('div');
-  body.className = isApproved ? 'appr-body' : 'item-body';
-  if(isApproved){
+  if(state.mode==='edit'){
+    // Editable text + tag picker
+    body.className = 'item-body';
+    body.innerHTML = `
+      <div class="rename-row" style="border-top:none;padding:0 0 8px 0;">
+        <input class="rename-input" id="edit-${id}" value="${(state.editVal||'').replace(/"/g,'&quot;')}" oninput="updateEdit('${id}',this.value)">
+        <button class="rename-confirm" onclick="saveEdit('${id}')">שמור</button>
+        <button onclick="setMode('${id}','none')" style="padding:7px 10px;background:transparent;border:1px solid var(--paper-edge);border-radius:4px;font-size:11px;color:var(--ink-muted);cursor:pointer;font-family:var(--font-ui);">ביטול</button>
+      </div>
+      <div style="font-family:var(--font-mono);font-size:8px;color:var(--ink-faint);">${timeAgo(item.timestamp)} · #${(item.deviceId||'').slice(-4)}</div>
+    `;
+    // Tag picker for approved items in edit mode
+    if(isApproved){
+      const tagRow = document.createElement('div');
+      tagRow.className = 'tag-row';
+      tagRow.innerHTML = `<span style="font-size:10px;color:var(--ink-faint);margin-left:6px;">קטגוריה:</span>`+
+        tags.map(t=>`<div class="tag${item.tag===t?' selected':''}" onclick="changeTag('${id}','${t}')">${t}</div>`).join('');
+      body.appendChild(tagRow);
+    }
+  } else if(isApproved){
+    body.className = 'appr-body';
     body.innerHTML = `
       <div style="flex:1;font-size:13px;color:var(--ink);font-weight:600;">${item.text||'—'}</div>
       <div class="appr-tag">${item.tag||'כללי'}</div>
     `;
   } else {
+    body.className = 'item-body';
     body.innerHTML = `
       <div class="item-main">${item.text||'—'}</div>
       <div class="item-meta">${timeAgo(item.timestamp)} · #${(item.deviceId||'').slice(-4)}</div>
@@ -287,33 +291,17 @@ function buildItem(id, item){
   }
   card.appendChild(body);
 
-  const isApproveMode = state.mode==='approve';
-  const isRenameMode = state.mode==='rename';
-  const isRejectMode = state.mode==='reject';
-
-  // Tag picker — shown in approve or rename mode
-  if(isApproveMode || isRenameMode){
+  // ── APPROVE: tag picker — selecting a tag immediately approves ──
+  if(state.mode==='approve'){
     const tagRow = document.createElement('div');
     tagRow.className = 'tag-row';
-    tagRow.innerHTML = tags.map(t=>
-      `<div class="tag${state.tag===t?' selected':''}" onclick="selectTag('${id}','${t}')">${t}</div>`
-    ).join('');
+    tagRow.innerHTML = `<span style="font-size:10px;color:var(--ink-faint);align-self:center;margin-left:4px;">בחר קטגוריה:</span>`+
+      tags.map(t=>`<div class="tag" onclick="approveWithTag('${id}','${t}')">${t}</div>`).join('');
     card.appendChild(tagRow);
   }
 
-  // Rename input
-  if(isRenameMode){
-    const renameRow = document.createElement('div');
-    renameRow.className = 'rename-row';
-    renameRow.innerHTML = `
-      <input class="rename-input" id="rename-${id}" value="${(state.renameVal||'').replace(/"/g,'&quot;')}" oninput="updateRename('${id}',this.value)">
-      <button class="rename-confirm" id="renameConfirm-${id}" onclick="doApprove('${id}')" ${state.tag?'':'disabled'}>אשר ›</button>
-    `;
-    card.appendChild(renameRow);
-  }
-
-  // Reject reason
-  if(isRejectMode){
+  // ── REJECT: reason picker + note ──
+  if(state.mode==='reject'){
     const rejectRow = document.createElement('div');
     rejectRow.className = 'reject-row';
     rejectRow.innerHTML = `
@@ -325,31 +313,36 @@ function buildItem(id, item){
     card.appendChild(rejectRow);
   }
 
-  // Actions
+  // ── ACTIONS ──
   const actions = document.createElement('div');
   actions.className = 'actions';
 
-  if(isRejectMode){
+  if(state.mode==='reject'){
     actions.innerHTML = `
       <button class="act rename" onclick="setMode('${id}','none')">ביטול</button>
       <button class="act confirm-reject" onclick="doReject('${id}')">✕ אשר דחייה</button>
     `;
+  } else if(state.mode==='approve'){
+    actions.innerHTML = `
+      <button class="act rename" onclick="setMode('${id}','none')">ביטול</button>
+      <button class="act rename" onclick="setMode('${id}','edit')">✎ עריכה</button>
+      <button class="act reject" onclick="setMode('${id}','reject')">✕ דחה</button>
+    `;
+  } else if(state.mode==='edit'){
+    // No action bar — save/cancel inside body
+    card.appendChild(actions);
+    return card;
   } else if(isApproved){
     actions.innerHTML = `
       <button class="act back" onclick="doMoveToPending('${id}')">↩ החזר</button>
-      <button class="act rename" onclick="setMode('${id}','${isRenameMode?'none':'rename'}')">${isRenameMode?'סגור':'✎ עריכה'}</button>
+      <button class="act rename" onclick="setMode('${id}','edit')">✎ עריכה</button>
       <button class="act reject" onclick="setMode('${id}','reject')">✕ דחה</button>
     `;
-  } else if(isApproveMode){
-    actions.innerHTML = `
-      <button class="act rename" onclick="setMode('${id}','none')">ביטול</button>
-      <button class="act rename" onclick="setMode('${id}','rename')">✎ שנה שם</button>
-      <button class="act approve" id="approveConfirm-${id}" onclick="doApprove('${id}')" ${state.tag?'':'disabled'}>✓ אשר</button>
-    `;
   } else {
+    // Pending default
     actions.innerHTML = `
       <button class="act approve" onclick="setMode('${id}','approve')">✓ אשר</button>
-      <button class="act rename" onclick="setMode('${id}','rename')">✎ שנה שם</button>
+      <button class="act rename" onclick="setMode('${id}','edit')">✎ עריכה</button>
       <button class="act reject" onclick="setMode('${id}','reject')">✕ דחה</button>
     `;
   }
@@ -378,46 +371,55 @@ function buildRejectedItem(id, item){
 window.setMode = function(id, mode){
   const state = getState(id);
   state.mode = state.mode===mode ? 'none' : mode;
+  // Reset editVal to current text when opening edit
+  if(mode==='edit') state.editVal = (allData[currentTab][id]||{}).text||'';
   rerenderItem(id);
 };
 
-window.selectTag = function(id, tag){
-  const state = getState(id);
-  state.tag = state.tag===tag ? '' : tag;
-  rerenderItem(id);
-};
-
-window.selectReason = function(id, reason){
-  getState(id).reason = getState(id).reason===reason ? '' : reason;
-  rerenderItem(id);
-};
-
-window.updateRename = function(id, val){
-  getState(id).renameVal = val;
-  const btn = document.getElementById('renameConfirm-'+id);
-  if(btn) btn.disabled = !getState(id).tag;
-};
-
+window.updateEdit = function(id, val){ getState(id).editVal=val; };
 window.updateNote = function(id, val){ getState(id).note=val; };
 
-function rerenderItem(id){
-  const card = document.getElementById('item-'+id);
-  if(card) card.replaceWith(buildItem(id, allData[currentTab][id]));
-}
-
-window.doApprove = async function(id){
-  const item = allData[currentTab][id] || allData.pending[id] || {};
+window.selectReason = function(id, reason){
   const state = getState(id);
-  if(!state.tag){ alert('יש לבחור תגית לפני האישור'); return; }
-  const text = (state.mode==='rename' && state.renameVal) ? state.renameVal.trim() : item.text;
-  const tag = state.tag;
+  state.reason = state.reason===reason ? '' : reason;
+  rerenderItem(id);
+};
+
+// Selecting a tag immediately approves the pending item
+window.approveWithTag = async function(id, tag){
+  const item = allData.pending[id] || {};
+  const state = getState(id);
+  const text = state.editVal && state.editVal.trim() ? state.editVal.trim() : item.text;
   try{
     await set(ref(db,'community/approved/'+id),{text, tag, timestamp:Date.now(), originalText:item.text, deviceId:item.deviceId});
     await remove(ref(db,'community/pending/'+id));
     delete allData.pending[id];
     allData.approved[id]={text, tag, timestamp:Date.now(), deviceId:item.deviceId};
     delete itemStates[id];
-    updateHeader();
+    activeFilter='הכל'; updateHeader(); renderItems();
+  }catch(e){ alert('שגיאה: '+e.message); }
+};
+
+// Change tag of approved item immediately
+window.changeTag = async function(id, tag){
+  const item = allData.approved[id] || {};
+  try{
+    await set(ref(db,'community/approved/'+id),{...item, tag, timestamp:Date.now()});
+    allData.approved[id]={...item, tag};
+    delete itemStates[id];
+    activeFilter='הכל'; updateHeader(); renderItems();
+  }catch(e){ alert('שגיאה: '+e.message); }
+};
+
+// Save edited text
+window.saveEdit = async function(id){
+  const item = allData[currentTab][id] || {};
+  const state = getState(id);
+  const text = (state.editVal||'').trim() || item.text;
+  try{
+    await set(ref(db,'community/'+currentTab+'/'+id),{...item, text});
+    allData[currentTab][id]={...item, text};
+    delete itemStates[id];
     renderItems();
   }catch(e){ alert('שגיאה: '+e.message); }
 };
@@ -431,8 +433,7 @@ window.doReject = async function(id){
     delete allData[currentTab][id];
     allData.rejected[id]={text:item.text, reason:state.reason||'', note:state.note||'', timestamp:Date.now()};
     delete itemStates[id];
-    updateHeader();
-    renderItems();
+    updateHeader(); renderItems();
   }catch(e){ alert('שגיאה: '+e.message); }
 };
 
@@ -444,10 +445,14 @@ window.doMoveToPending = async function(id){
     delete allData[currentTab][id];
     allData.pending[id]={text:item.text, timestamp:item.timestamp||Date.now(), deviceId:item.deviceId||''};
     delete itemStates[id];
-    updateHeader();
-    renderItems();
+    updateHeader(); renderItems();
   }catch(e){ alert('שגיאה: '+e.message); }
 };
+
+function rerenderItem(id){
+  const card = document.getElementById('item-'+id);
+  if(card) card.replaceWith(buildItem(id, allData[currentTab][id]));
+}
 
 loadAll();
 </script>
