@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<title>AirCheck+ · עדכון שדה</title>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Hebrew:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --paper:#f4ecdc;--paper-hi:#fbf6e8;--paper-edge:#e3d4ad;
+  --ink:#1c3d6e;--ink-muted:#5a4a3a;--ink-faint:#8a7a5a;
+  --gold:#c8a04a;--gold-lite:#d4b878;
+  --cleared:#1f6f3f;--stamp-red:#b94a3a;--amber:#f59e0b;
+  --font-ui:'IBM Plex Sans Hebrew',sans-serif;
+  --font-mono:'JetBrains Mono',monospace;
+}
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent;}
+html,body{min-height:100%;background:#1a1a1c;font-family:var(--font-ui);color:var(--ink);}
+body{display:flex;align-items:flex-start;justify-content:center;padding:24px 16px;}
+
+.card{
+  background:var(--paper);
+  background-image:repeating-linear-gradient(0deg,transparent 0,transparent 27px,rgba(28,61,110,.055) 27px,rgba(28,61,110,.055) 28px);
+  border:2px solid var(--gold);border-radius:8px;
+  width:100%;max-width:420px;overflow:hidden;
+  box-shadow:0 20px 60px rgba(0,0,0,.5);
+}
+
+.header{background:var(--ink);padding:16px 18px;}
+.header-mono{font-family:var(--font-mono);font-size:9px;color:rgba(244,236,220,.45);letter-spacing:.2em;text-transform:uppercase;margin-bottom:6px;}
+.header-title{font-size:18px;font-weight:700;color:#f4ecdc;direction:rtl;}
+.header-sub{font-size:11px;color:rgba(244,236,220,.55);margin-top:3px;direction:rtl;}
+
+.body{padding:18px;}
+
+.field-label{font-family:var(--font-mono);font-size:9px;color:var(--ink-faint);letter-spacing:.15em;text-transform:uppercase;direction:ltr;margin-bottom:6px;display:block;}
+
+.icao-row{display:flex;align-items:center;gap:10px;margin-bottom:16px;direction:ltr;}
+.icao-badge{font-family:var(--font-mono);font-size:16px;font-weight:700;color:var(--ink);background:var(--paper-hi);border:1.5px solid var(--gold);border-radius:4px;padding:6px 14px;}
+
+textarea{
+  width:100%;min-height:180px;padding:12px;
+  background:var(--paper-hi);border:1.5px solid var(--gold-lite);border-radius:4px;
+  font-family:var(--font-ui);font-size:14px;line-height:1.6;color:var(--ink);
+  resize:vertical;outline:none;direction:rtl;
+  transition:border-color .15s;
+}
+textarea:focus{border-color:var(--ink);}
+textarea::placeholder{color:rgba(28,61,110,.3);}
+
+.char-count{font-family:var(--font-mono);font-size:9px;color:var(--ink-faint);text-align:left;margin-top:4px;letter-spacing:.06em;}
+
+.submit-btn{
+  width:100%;padding:14px;margin-top:14px;
+  background:var(--ink);border:none;border-radius:6px;
+  color:#f4ecdc;font-family:var(--font-ui);font-size:15px;font-weight:700;
+  cursor:pointer;transition:opacity .15s;
+}
+.submit-btn:active{opacity:.8;}
+.submit-btn:disabled{opacity:.35;cursor:default;}
+
+.divider{height:1px;background:var(--gold-lite);margin:16px 0;opacity:.6;}
+
+/* Status messages */
+.status{
+  padding:12px 14px;border-radius:4px;
+  font-size:13px;line-height:1.5;direction:rtl;
+  display:none;
+}
+.status.success{background:rgba(31,111,63,.1);border:1px solid rgba(31,111,63,.3);color:var(--cleared);}
+.status.error{background:rgba(185,74,58,.08);border:1px solid rgba(185,74,58,.25);color:var(--stamp-red);}
+.status.show{display:block;}
+
+/* Last update */
+.last-update{
+  background:var(--paper-hi);border:1px solid var(--paper-edge);border-radius:4px;
+  padding:12px 14px;margin-bottom:16px;
+}
+.last-update-header{
+  display:flex;align-items:center;justify-content:space-between;
+  margin-bottom:8px;
+}
+.last-update-label{font-family:var(--font-mono);font-size:9px;color:var(--ink-faint);letter-spacing:.15em;text-transform:uppercase;direction:ltr;}
+.last-update-time{font-family:var(--font-mono);font-size:9px;color:var(--ink-muted);direction:ltr;}
+.last-update-text{font-size:12px;color:var(--ink-muted);line-height:1.6;direction:rtl;white-space:pre-wrap;max-height:100px;overflow:hidden;position:relative;}
+.last-update-text::after{content:'';position:absolute;bottom:0;left:0;right:0;height:24px;background:linear-gradient(transparent,var(--paper-hi));}
+
+.footer{padding:10px 14px;border-top:1px dashed var(--gold-lite);text-align:center;}
+.footer-txt{font-family:var(--font-mono);font-size:9px;color:var(--ink-faint);letter-spacing:.1em;}
+</style>
+</head>
+<body>
+<div class="card">
+  <div class="header">
+    <div class="header-mono">AirCheck+ · Tower · v1.01.002</div>
+    <div class="header-title">עדכון מצב שדה</div>
+    <div class="header-sub" id="headerSub">טוען...</div>
+  </div>
+
+  <div class="body">
+    <!-- Last update -->
+    <div class="last-update" id="lastUpdateBlock" style="display:none;">
+      <div class="last-update-header">
+        <span class="last-update-label">LAST UPDATE</span>
+        <span class="last-update-time" id="lastUpdateTime">—</span>
+      </div>
+      <div class="last-update-text" id="lastUpdateText">—</div>
+    </div>
+
+    <span class="field-label">שדה תעופה</span>
+    <div class="icao-row">
+      <div class="icao-badge" id="icaoBadge">—</div>
+      <span style="font-size:13px;color:var(--ink-muted);" id="icaoName">—</span>
+    </div>
+
+    <span class="field-label">הודעת עדכון שדה</span>
+    <textarea id="msgInput" placeholder="הדבק כאן את הודעת מצב השדה מה-WhatsApp..." oninput="onInput()"></textarea>
+    <div class="char-count" id="charCount">0 תווים</div>
+
+    <div class="status" id="statusMsg"></div>
+
+    <button class="submit-btn" id="submitBtn" onclick="submitUpdate()" disabled>שלח עדכון ›</button>
+  </div>
+
+  <div class="footer">
+    <div class="footer-txt" id="footerTxt">AirCheck+ · Tower · v1.01.002</div>
+  </div>
+</div>
+
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/12.14.0/firebase-app.js";
+import { getDatabase, ref, set, get } from "https://www.gstatic.com/firebasejs/12.14.0/firebase-database.js";
+
+const firebaseConfig = {
+  apiKey: "AIzaSyBoW1O9dTanLUZW5Z8jswn3hxpfFSdmzm0",
+  authDomain: "aircheck-80530.firebaseapp.com",
+  databaseURL: "https://aircheck-80530-default-rtdb.europe-west1.firebasedatabase.app",
+  projectId: "aircheck-80530",
+  storageBucket: "aircheck-80530.firebasestorage.app",
+  messagingSenderId: "816746630548",
+  appId: "1:816746630548:web:dac8392deff9b96cc9d381"
+};
+
+const app = initializeApp(firebaseConfig);
+const db = getDatabase(app);
+
+// Parse URL params
+const params = new URLSearchParams(window.location.search);
+const icao = (params.get('icao') || 'LLHZ').toUpperCase();
+
+const stationNames = {
+  LLHZ: 'הרצליה · Herzliya',
+  LLBG: 'נתב״ג · Ben Gurion',
+  LLIB: 'ראש פינה · Rosh Pina',
+  LLHA: 'חיפה · Haifa',
+  LLER: 'רמון · Ramon'
+};
+
+function init(){
+  document.getElementById('icaoBadge').textContent = icao;
+  document.getElementById('icaoName').textContent = stationNames[icao] || icao;
+  document.getElementById('headerSub').textContent = 'עדכון מצב שדה · ' + icao;
+  document.getElementById('footerTxt').textContent = 'AirCheck+ · Tower · v1.01.002 · ' + icao;
+  loadLastUpdate();
+}
+
+async function loadLastUpdate(){
+  try{
+    const snap = await get(ref(db, 'tower/' + icao + '/latest'));
+    const data = snap.val();
+    if(data){
+      document.getElementById('lastUpdateBlock').style.display = '';
+      document.getElementById('lastUpdateText').textContent = data.text || '—';
+      const d = new Date(data.timestamp);
+      const h = String(d.getUTCHours()).padStart(2,'0');
+      const m = String(d.getUTCMinutes()).padStart(2,'0');
+      const day = String(d.getDate()).padStart(2,'0');
+      const mo = String(d.getMonth()+1).padStart(2,'0');
+      document.getElementById('lastUpdateTime').textContent = day+'/'+mo+' '+h+':'+m+'Z';
+    }
+  }catch(e){}
+}
+
+window.onInput = function(){
+  const val = document.getElementById('msgInput').value;
+  document.getElementById('charCount').textContent = val.length + ' תווים';
+  document.getElementById('submitBtn').disabled = val.trim().length < 5;
+};
+
+window.submitUpdate = async function(){
+  const text = document.getElementById('msgInput').value.trim();
+  if(!text) return;
+  const btn = document.getElementById('submitBtn');
+  btn.disabled = true;
+  btn.textContent = 'שולח...';
+
+  try{
+    const now = Date.now();
+    await set(ref(db, 'tower/' + icao + '/latest'), {
+      text,
+      timestamp: now,
+      icao
+    });
+    // Also store in history
+    await set(ref(db, 'tower/' + icao + '/history/' + now), {
+      text,
+      timestamp: now,
+      icao
+    });
+
+    document.getElementById('msgInput').value = '';
+    document.getElementById('charCount').textContent = '0 תווים';
+    showStatus('success', '✓ העדכון נשלח בהצלחה');
+    loadLastUpdate();
+  }catch(e){
+    showStatus('error', 'שגיאה בשליחה. בדוק חיבור לאינטרנט.');
+  }
+
+  btn.disabled = false;
+  btn.textContent = 'שלח עדכון ›';
+};
+
+function showStatus(type, msg){
+  const el = document.getElementById('statusMsg');
+  el.className = 'status ' + type + ' show';
+  el.textContent = msg;
+  setTimeout(() => el.classList.remove('show'), 4000);
+}
+
+init();
+</script>
+</body>
+</html>
