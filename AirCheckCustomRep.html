@@ -64,10 +64,10 @@ body{display:flex;align-items:flex-start;justify-content:center;padding:24px 16p
 /* tags management tab */
 .tags-body{padding:14px;display:flex;flex-direction:column;gap:12px;}
 .tags-section{background:var(--paper-hi);border:1px solid var(--paper-edge);border-radius:6px;overflow:hidden;}
-.tags-section-header{display:flex;align-items:center;justify-content:space-between;padding:10px 12px;cursor:pointer;direction:rtl;user-select:none;}
-.tags-section-title{font-family:var(--font-mono);font-size:9px;font-weight:700;color:var(--ink);letter-spacing:.12em;text-transform:uppercase;}
+.tags-section-header{display:flex;align-items:center;gap:8px;padding:10px 12px;cursor:pointer;direction:rtl;user-select:none;}
+.tags-section-title{flex:1;font-family:var(--font-mono);font-size:9px;font-weight:700;color:var(--ink);letter-spacing:.12em;text-transform:uppercase;}
 .tags-section-meta{font-family:var(--font-mono);font-size:9px;color:var(--ink-faint);}
-.tags-section-toggle{font-size:11px;color:var(--ink-faint);}
+.tags-section-toggle{font-size:10px;color:var(--ink-faint);flex-shrink:0;}
 .tags-section-body{padding:0 12px 10px;display:flex;flex-direction:column;gap:6px;border-top:1px dashed var(--gold-lite);}
 .tags-section-body.collapsed{display:none;}
 .tag-mgmt-item{display:flex;align-items:center;gap:8px;padding:7px 10px;background:var(--paper);border:1px solid var(--paper-edge);border-radius:5px;direction:rtl;margin-top:6px;}
@@ -92,8 +92,8 @@ body{display:flex;align-items:flex-start;justify-content:center;padding:24px 16p
 .edit-label{font-family:var(--font-mono);font-size:8px;color:var(--ink-faint);letter-spacing:.12em;text-transform:uppercase;margin-bottom:5px;}
 .edit-text-input{width:100%;padding:8px 10px;background:var(--paper-hi);border:1.5px solid var(--gold);border-radius:4px;font-family:var(--font-ui);font-size:13px;color:var(--ink);direction:rtl;outline:none;margin-bottom:10px;}
 .edit-save-row{display:flex;gap:8px;justify-content:flex-start;}
-.btn-save{padding:9px 18px;background:var(--ink);border:none;border-radius:5px;color:var(--paper);font-family:var(--font-ui);font-size:13px;font-weight:700;cursor:pointer;}
-.btn-cancel{padding:9px 14px;background:transparent;border:1.5px solid var(--paper-edge);border-radius:5px;color:var(--ink-muted);font-family:var(--font-ui);font-size:13px;cursor:pointer;}
+.btn-save{padding:7px 16px;background:var(--ink);border:none;border-radius:5px;color:var(--paper);font-family:var(--font-ui);font-size:12px;font-weight:700;cursor:pointer;}
+.btn-cancel{padding:7px 12px;background:transparent;border:1.5px solid var(--paper-edge);border-radius:5px;color:var(--ink-muted);font-family:var(--font-ui);font-size:12px;cursor:pointer;}
 /* back button as real button */
 .act.back{color:var(--amber);}
 .loading{padding:30px;text-align:center;font-family:var(--font-mono);font-size:10px;color:var(--ink-faint);letter-spacing:.1em;}
@@ -104,7 +104,7 @@ body{display:flex;align-items:flex-start;justify-content:center;padding:24px 16p
 <body>
 <div class="card">
   <div class="header">
-    <div class="header-mono">AirCheck+ · COMMUNITY REPOSITORY · v1.01.007</div>
+    <div class="header-mono">AirCheck+ · COMMUNITY REPOSITORY · v1.01.008</div>
     <div class="header-title">ניהול מאגר קהילתי</div>
     <div class="header-sub" id="headerSub">טוען...</div>
   </div>
@@ -117,7 +117,7 @@ body{display:flex;align-items:flex-start;justify-content:center;padding:24px 16p
   <div class="pills" id="pillsRow" style="display:none;"></div>
   <div class="items-list" id="itemsList"><div class="loading">טוען נתונים...</div></div>
   <div class="footer">
-    <div class="footer-txt">AirCheck+ · CUSTOM REPOSITORY · v1.01.007 · eligrt</div>
+    <div class="footer-txt">AirCheck+ · CUSTOM REPOSITORY · v1.01.008 · eligrt</div>
   </div>
 </div>
 
@@ -296,18 +296,16 @@ function buildItem(id,item){
 
 function buildRejectedItem(id,item){
   const div=document.createElement('div');
-  div.className='rej-item'; div.id='item-'+id;
-  div.innerHTML=`
-    <div style="flex:1;">
-      <div style="font-size:13px;color:var(--ink-muted);font-weight:600;">${item.text||'—'}</div>
-      <div class="rej-reason">${item.reason||''}${item.note?' · '+item.note:''}</div>
-      <div style="font-family:var(--font-mono);font-size:8px;color:var(--ink-faint);margin-top:3px;">${timeAgo(item.timestamp)}</div>
-    </div>
-    <div style="display:flex;flex-direction:column;gap:4px;align-items:flex-end;">
-      <div class="rej-badge">נדחה</div>
-    </div>
+  div.className='item-card'; div.id='item-'+id;
+  div.style.borderColor='rgba(185,74,58,.3)';
+  const body=document.createElement('div');
+  body.className='item-body';
+  body.innerHTML=`
+    <div style="font-size:14px;color:var(--stamp-red);font-weight:600;margin-bottom:4px;">${item.text||'—'}</div>
+    <div class="rej-reason">${item.reason||''}${item.note?' · '+item.note:''}</div>
+    <div style="font-family:var(--font-mono);font-size:8px;color:var(--ink-faint);margin-top:3px;">${timeAgo(item.timestamp)}</div>
   `;
-  // Back button as real action bar
+  div.appendChild(body);
   const actions=document.createElement('div');
   actions.className='actions';
   actions.innerHTML=`<button class="act back" onclick="doMoveToPending('${id}')">↩ החזר להמתנה</button>`;
@@ -327,11 +325,9 @@ function renderTagsTab(){
     const countLabel=`${list_.length} פריטים`;
     let html=`<div class="tags-section">
       <div class="tags-section-header" onclick="toggleSection('${type}')">
+        <span class="tags-section-toggle">${isExpanded?'▼':'◀'}</span>
         <span class="tags-section-title">${title}</span>
-        <span style="display:flex;align-items:center;gap:8px;">
-          <span class="tags-section-meta">${countLabel}</span>
-          <span class="tags-section-toggle">${isExpanded?'▲':'▼'}</span>
-        </span>
+        <span class="tags-section-meta">${countLabel}</span>
       </div>
       <div class="tags-section-body${isExpanded?'':' collapsed'}" id="section-body-${type}">`;
 
