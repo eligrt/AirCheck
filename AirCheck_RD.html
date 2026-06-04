@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <!-- ═══════════════════════════════════════
-     AirCheck+ · v2.07.041 · built by eligrt
+     AirCheck+ · v2.07.044 · built by eligrt
      ═══════════════════════════════════════ -->
 <html lang="he" dir="rtl">
 <head>
@@ -613,7 +613,7 @@ html,body{height:100%;background:#1a1a1c;font-family:var(--font-ui);color:var(--
     <div class="splash-footer-wrap">
       <div class="footer-strip" style="display:flex;align-items:center;justify-content:space-between;padding:5px 14px 8px;">
         <span class="footer-refresh" onclick="reloadApp()">רענון</span>
-        <span id="versionTap" onclick="handleVersionTap()" style="cursor:default;">AirCheck+ · v2.07.041 · built by eligrt</span>
+        <span id="versionTap" onclick="handleVersionTap()" style="cursor:default;">AirCheck+ · v2.07.044 · built by eligrt</span>
         <span style="width:40px;"></span>
       </div>
     </div>
@@ -729,7 +729,7 @@ html,body{height:100%;background:#1a1a1c;font-family:var(--font-ui);color:var(--
     <div class="tree-panel" id="treePanel"></div>
     <div class="footer-strip" style="display:flex;align-items:center;justify-content:space-between;padding:5px 14px 8px;">
       <span class="footer-refresh" onclick="reloadApp()">רענון</span>
-      <span id="versionTap" onclick="handleVersionTap()" style="cursor:default;">AirCheck+ · v2.07.041 · built by eligrt</span>
+      <span id="versionTap" onclick="handleVersionTap()" style="cursor:default;">AirCheck+ · v2.07.044 · built by eligrt</span>
       <span style="width:40px;"></span>
     </div>
   </div>
@@ -788,7 +788,7 @@ html,body{height:100%;background:#1a1a1c;font-family:var(--font-ui);color:var(--
 
     <div class="footer-strip" style="display:flex;align-items:center;justify-content:space-between;padding:5px 14px 8px;">
       <span style="width:40px;"></span>
-      <span id="versionTap" onclick="handleVersionTap()" style="cursor:default;">AirCheck+ · v2.07.041 · built by eligrt</span>
+      <span id="versionTap" onclick="handleVersionTap()" style="cursor:default;">AirCheck+ · v2.07.044 · built by eligrt</span>
       <span style="width:40px;"></span>
     </div>
   </div>
@@ -890,7 +890,7 @@ html,body{height:100%;background:#1a1a1c;font-family:var(--font-ui);color:var(--
     </div>
     <div class="footer-strip" style="display:flex;align-items:center;justify-content:space-between;padding:5px 14px 8px;">
       <span class="footer-refresh" onclick="reloadApp()">רענון</span>
-      <span id="versionTap" onclick="handleVersionTap()" style="cursor:default;">AirCheck+ · v2.07.041 · built by eligrt</span>
+      <span id="versionTap" onclick="handleVersionTap()" style="cursor:default;">AirCheck+ · v2.07.044 · built by eligrt</span>
       <span style="width:40px;"></span>
     </div>
   </div>
@@ -909,7 +909,7 @@ html,body{height:100%;background:#1a1a1c;font-family:var(--font-ui);color:var(--
     <div class="editor-list" id="editorList"></div>
     <div class="footer-strip" style="display:flex;align-items:center;justify-content:space-between;padding:5px 14px 8px;">
       <span class="footer-refresh" onclick="reloadApp()">רענון</span>
-      <span id="versionTap" onclick="handleVersionTap()" style="cursor:default;">AirCheck+ · v2.07.041 · built by eligrt</span>
+      <span id="versionTap" onclick="handleVersionTap()" style="cursor:default;">AirCheck+ · v2.07.044 · built by eligrt</span>
       <span style="width:40px;"></span>
     </div>
   </div>
@@ -968,7 +968,8 @@ const FEATURES={
   METAR: false,
   MULTI_PROFILE: false,
   WHATS_NEW: false,
-  PWA_POPUP: true
+  PWA_POPUP: true,
+  DONATE: false
 };
 
 const CL=[
@@ -1307,6 +1308,8 @@ function showAllDoneOverlay(lastPhase){
   localStorage.setItem('aircheck_completed_count',cc);
   if(window.syncToFirebase)window.syncToFirebase();
   showScreen('screenSummary');
+  // Show donation popup after 3rd completed flight
+  if(cc>=3) setTimeout(()=>checkDonatePopup(), 1500);
 }
 function dismissAllDone(){showScreen('screenChecklist');render();}
 
@@ -2231,6 +2234,8 @@ function reloadApp(){
   localStorage.removeItem('aircheck_pwa_never');
   localStorage.removeItem('aircheck_pwa_later');
   localStorage.removeItem('aircheck_pwa_shown');
+  localStorage.removeItem('aircheck_donated');
+  localStorage.removeItem('aircheck_donate_later');
   location.reload();
 }
 
@@ -2306,6 +2311,35 @@ function closePwaNever(){
   localStorage.setItem('aircheck_pwa_never','1');
   const el=document.getElementById('pwaOverlay');
   if(el)el.style.display='none';
+}
+
+// ── DONATION POPUP ──
+function checkDonatePopup(){
+  if(!FEATURES.DONATE)return;
+  if(localStorage.getItem('aircheck_donated')==='1')return;
+  const later=parseInt(localStorage.getItem('aircheck_donate_later')||'0');
+  if(later&&Date.now()-later<7*24*60*60*1000)return;
+  // Only show if What's New and PWA popups are not showing this session
+  if(_whatsNewShownThisSession)return;
+  const el=document.getElementById('donateOverlay');
+  if(el)el.style.display='flex';
+}
+
+function closeDonate(){
+  const el=document.getElementById('donateOverlay');
+  if(el)el.style.display='none';
+}
+
+function closeDonateNow(){
+  // User tapped donate — mark as donated, never show again
+  localStorage.setItem('aircheck_donated','1');
+  closeDonate();
+  window.open('https://links.payboxapp.com/rgeb4553G3b','_blank');
+}
+
+function closeDonateSnooze(){
+  localStorage.setItem('aircheck_donate_later',Date.now());
+  closeDonate();
 }
 
 function pwaIosToggle(){
@@ -3676,6 +3710,42 @@ function splashSecondaryAction(){
           <span style="font-family:var(--font-mono);font-size:8px;background:rgba(200,160,74,.12);color:var(--gold-deep);padding:1px 5px;border-radius:3px;">+7 ימים</span>
         </button>
         <button onclick="closePwaNever()" style="background:transparent;border:none;font-family:var(--font-ui);font-size:11px;color:var(--ink-faint);cursor:pointer;padding:4px 0;text-decoration:underline;text-underline-offset:3px;text-decoration-color:rgba(138,122,90,.35);">אל תזכיר שוב</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Donation Overlay -->
+  <div id="donateOverlay" style="display:none;position:absolute;inset:0;background:rgba(26,19,8,.82);z-index:685;align-items:center;justify-content:center;padding:24px;backdrop-filter:blur(3px);">
+    <div style="background:var(--paper-hi);background-image:repeating-linear-gradient(0deg,transparent 0,transparent 27px,var(--paper-line) 27px,var(--paper-line) 28px);border:2px solid var(--gold);border-radius:8px;width:100%;max-width:340px;overflow:hidden;box-shadow:0 20px 60px rgba(0,0,0,.4);animation:metarFadeIn .25s cubic-bezier(.34,1.2,.64,1);">
+      <!-- Header -->
+      <div style="background:var(--ink);padding:14px 18px 13px;display:flex;align-items:center;gap:12px;direction:rtl;">
+        <div style="font-size:26px;line-height:1;">❤️</div>
+        <div style="flex:1;">
+          <div style="font-family:var(--font-mono);font-size:8px;color:rgba(244,236,220,.4);letter-spacing:.18em;text-transform:uppercase;margin-bottom:3px;direction:ltr;unicode-bidi:bidi-override;">AirCheck+ · SUPPORT</div>
+          <div style="font-size:14px;font-weight:700;color:var(--paper);direction:rtl;line-height:1.35;">הצ׳קליסט שמעל הצ׳קליסט</div>
+        </div>
+      </div>
+      <!-- Body -->
+      <div style="padding:13px 16px 10px;direction:rtl;">
+        <div style="font-size:13px;color:var(--ink-muted);line-height:1.7;direction:rtl;">
+          היי טייס 👋<br><br>
+          שרתים, אחסון ופיתוח, לכל זה יש עלויות 🤷‍♂️<br><br>
+          נהנית מהאפליקציה? כל תרומה, קטנה כגדולה, תעזור לשמור את AirCheck... טסה ✈
+        </div>
+      </div>
+      <!-- CTA -->
+      <div style="padding:0 16px;">
+        <button onclick="closeDonateNow()" style="width:100%;padding:13px;background:var(--ink);border:none;border-radius:6px;color:var(--paper);font-family:var(--font-ui);font-size:14px;font-weight:700;cursor:pointer;direction:rtl;display:flex;align-items:center;justify-content:center;gap:8px;">
+          <span>תרום עכשיו</span>
+          <span style="font-size:11px;opacity:.65;font-family:var(--font-mono);direction:ltr;">Paybox ›</span>
+        </button>
+      </div>
+      <!-- Dismiss -->
+      <div style="padding:10px 16px 14px;display:flex;align-items:center;justify-content:center;">
+        <button onclick="closeDonateSnooze()" style="background:transparent;border:none;font-family:var(--font-ui);font-size:12px;color:var(--ink-muted);cursor:pointer;padding:4px 0;display:flex;align-items:center;gap:5px;">
+          אחר כך
+          <span style="font-family:var(--font-mono);font-size:8px;background:rgba(200,160,74,.12);color:var(--gold-deep);padding:1px 5px;border-radius:3px;">+7 ימים</span>
+        </button>
       </div>
     </div>
   </div>
