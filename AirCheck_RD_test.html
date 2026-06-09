@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <!-- ═══════════════════════════════════════
-     AirCheck+ · v2.07.047T · built by eligrt
+     AirCheck+ · v2.07.051T · built by eligrt
      ═══════════════════════════════════════ -->
 <html lang="he" dir="rtl">
 <head>
@@ -493,16 +493,7 @@ html,body{height:100%;background:#1a1a1c;font-family:var(--font-ui);color:var(--
 
 
 /* ── METAR STATION PICKER ── */
-.ms-btn{width:100%;padding:11px 14px;border-radius:var(--r);border:1.5px solid var(--gold-lite);background:var(--paper);cursor:pointer;display:flex;align-items:center;transition:background .12s,border-color .12s;direction:rtl;}
-.ms-btn:active{background:rgba(200,160,74,.08);}
-.ms-btn.selected{background:rgba(200,160,74,.14);border-color:var(--gold);border-width:2px;}
-.ms-btn.selected .ms-check{opacity:1;}
-.ms-check{font-family:var(--font-mono);font-size:12px;font-weight:700;color:var(--gold-deep);opacity:0;transition:opacity .12s;flex-shrink:0;width:18px;text-align:center;order:3;}
-.ms-name{font-size:13px;color:var(--ink-muted);font-family:var(--font-ui);flex:1;text-align:right;order:1;}
-.ms-icao{font-family:var(--font-mono);font-size:14px;font-weight:700;color:var(--ink-body);letter-spacing:.06em;flex-shrink:0;width:52px;text-align:left;direction:ltr;order:2;margin:0 10px;}
-.ms-custom{cursor:pointer;}
-.ms-custom-input{background:transparent;border:none;border-bottom:1.5px dashed transparent;outline:none;font-family:var(--font-mono);font-size:14px;font-weight:700;color:var(--ink-body);flex-shrink:0;width:5ch;padding:0 0 1px;text-transform:uppercase;caret-color:var(--gold);letter-spacing:.06em;direction:ltr;text-align:left;-webkit-appearance:none;appearance:none;order:2;margin:0 10px;transition:border-color .15s;}
-.ms-custom-input::placeholder{color:rgba(28,61,110,.25);}
+
 .ms-btn.selected .ms-custom-input{border-bottom-color:rgba(28,61,110,.35);}
 .ms-custom-input:focus{border-bottom-color:rgba(28,61,110,.5);}
 .settings-row-sub{font-size:10px;color:var(--ink-muted);margin-top:2px;font-family:var(--font-mono);letter-spacing:.04em;}
@@ -613,7 +604,7 @@ html,body{height:100%;background:#1a1a1c;font-family:var(--font-ui);color:var(--
     <div class="splash-footer-wrap">
       <div class="footer-strip" style="display:flex;align-items:center;justify-content:space-between;padding:5px 14px 8px;">
         <span class="footer-refresh" onclick="reloadApp()">רענון</span>
-        <span id="versionTap" onclick="handleVersionTap()" style="cursor:default;">AirCheck+ · v2.07.047T · built by eligrt</span>
+        <span id="versionTap" onclick="handleVersionTap()" style="cursor:default;">AirCheck+ · v2.07.051T · built by eligrt</span>
         <span style="width:40px;"></span>
       </div>
     </div>
@@ -729,7 +720,7 @@ html,body{height:100%;background:#1a1a1c;font-family:var(--font-ui);color:var(--
     <div class="tree-panel" id="treePanel"></div>
     <div class="footer-strip" style="display:flex;align-items:center;justify-content:space-between;padding:5px 14px 8px;">
       <span class="footer-refresh" onclick="reloadApp()">רענון</span>
-      <span id="versionTap" onclick="handleVersionTap()" style="cursor:default;">AirCheck+ · v2.07.047T · built by eligrt</span>
+      <span id="versionTap" onclick="handleVersionTap()" style="cursor:default;">AirCheck+ · v2.07.051T · built by eligrt</span>
       <span style="width:40px;"></span>
     </div>
   </div>
@@ -743,8 +734,8 @@ html,body{height:100%;background:#1a1a1c;font-family:var(--font-ui);color:var(--
         </div>
       </div>
       <div class="phase-overlay-next" id="phaseOverlayNext"></div>
-      <button class="btn btn-ink" style="margin-bottom:8px" onclick="dismissPhaseOverlay()">המשך עכשיו ›</button>
-      <button class="btn btn-ghost" onclick="dismissPhaseOverlay()">סגור — אמשיך מאוחר יותר</button>
+      <button class="btn btn-ink" style="margin-bottom:8px" onclick="continuePhaseNow()">המשך עכשיו ›</button>
+      <button class="btn btn-ghost" onclick="parkPhaseAndExit()">סגור — אמשיך מאוחר יותר</button>
     </div>
   </div>
 
@@ -788,7 +779,7 @@ html,body{height:100%;background:#1a1a1c;font-family:var(--font-ui);color:var(--
 
     <div class="footer-strip" style="display:flex;align-items:center;justify-content:space-between;padding:5px 14px 8px;">
       <span style="width:40px;"></span>
-      <span id="versionTap" onclick="handleVersionTap()" style="cursor:default;">AirCheck+ · v2.07.047T · built by eligrt</span>
+      <span id="versionTap" onclick="handleVersionTap()" style="cursor:default;">AirCheck+ · v2.07.051T · built by eligrt</span>
       <span style="width:40px;"></span>
     </div>
   </div>
@@ -890,7 +881,7 @@ html,body{height:100%;background:#1a1a1c;font-family:var(--font-ui);color:var(--
     </div>
     <div class="footer-strip" style="display:flex;align-items:center;justify-content:space-between;padding:5px 14px 8px;">
       <span class="footer-refresh" onclick="reloadApp()">רענון</span>
-      <span id="versionTap" onclick="handleVersionTap()" style="cursor:default;">AirCheck+ · v2.07.047T · built by eligrt</span>
+      <span id="versionTap" onclick="handleVersionTap()" style="cursor:default;">AirCheck+ · v2.07.051T · built by eligrt</span>
       <span style="width:40px;"></span>
     </div>
   </div>
@@ -909,7 +900,7 @@ html,body{height:100%;background:#1a1a1c;font-family:var(--font-ui);color:var(--
     <div class="editor-list" id="editorList"></div>
     <div class="footer-strip" style="display:flex;align-items:center;justify-content:space-between;padding:5px 14px 8px;">
       <span class="footer-refresh" onclick="reloadApp()">רענון</span>
-      <span id="versionTap" onclick="handleVersionTap()" style="cursor:default;">AirCheck+ · v2.07.047T · built by eligrt</span>
+      <span id="versionTap" onclick="handleVersionTap()" style="cursor:default;">AirCheck+ · v2.07.051T · built by eligrt</span>
       <span style="width:40px;"></span>
     </div>
   </div>
@@ -1168,7 +1159,43 @@ function animHold(ts){
   }
 }
 requestAnimationFrame(animHold);}
-function releaseHold(){clearTimeout(holdTimer);if(holdState==='confirmed'){holdState='flipping';const card=document.getElementById('cardTop');document.getElementById('cardStamp').classList.remove('visible');card.classList.add('flipping');setTimeout(()=>{status[current]='done';const prevPhase=CL[current].phase;advanceToNext();holdState='idle';resetRunwayBtn(true);const newPhase=CL[current]?CL[current].phase:null;const prevPhaseObj=PHASE_IDX[prevPhase];if(prevPhaseObj){const phAllItems=prevPhaseObj.groups.reduce((a,g)=>a.concat(g.items),[]);const pComplete=phAllItems.every(j=>status[j]==='done'||status[j]==='skipped');const pAllGreen=phAllItems.every(j=>status[j]==='done');const allDone=CL.every((_,j)=>status[j]==='done'||status[j]==='skipped');const anySkipped=CL.some((_,j)=>status[j]==='skipped');const anyUpcoming=CL.some((_,j)=>!status[j]||status[j]==='upcoming');if(allDone&&!anySkipped&&!anyUpcoming){card.classList.remove('flipping');showAllDoneOverlay(prevPhase);return;}if(pAllGreen&&newPhase&&newPhase!==prevPhase){card.classList.remove('flipping');showPhaseOverlay(prevPhase,newPhase);return;}}render();card.classList.remove('flipping');},450);}else{cancelHold();}}
+function releaseHold(){
+  clearTimeout(holdTimer);
+  if(holdState==='confirmed'){
+    holdState='flipping';
+    const card=document.getElementById('cardTop');
+    document.getElementById('cardStamp').classList.remove('visible');
+    setTimeout(()=>{
+      status[current]='done';
+      const prevPhase=CL[current].phase;
+      advanceToNext();
+      holdState='idle';
+      resetRunwayBtn(true);
+      const newPhase=CL[current]?CL[current].phase:null;
+      const prevPhaseObj=PHASE_IDX[prevPhase];
+      if(prevPhaseObj){
+        const phAllItems=prevPhaseObj.groups.reduce((a,g)=>a.concat(g.items),[]);
+        const pAllGreen=phAllItems.every(j=>status[j]==='done');
+        const allDone=CL.every((_,j)=>status[j]==='done'||status[j]==='skipped');
+        const anySkipped=CL.some((_,j)=>status[j]==='skipped');
+        const anyUpcoming=CL.some((_,j)=>!status[j]||status[j]==='upcoming');
+        if(allDone&&!anySkipped&&!anyUpcoming){
+          card.classList.remove('flipping');
+          showAllDoneOverlay(prevPhase);
+          return;
+        }
+        if(pAllGreen&&newPhase&&newPhase!==prevPhase){
+          // Show overlay BEFORE flip — pilot decides whether to continue
+          card.classList.remove('flipping');
+          showPhaseOverlay(prevPhase,newPhase);
+          return;
+        }
+      }
+      card.classList.add('flipping');
+      setTimeout(()=>{render();card.classList.remove('flipping');},450);
+    },0);
+  }else{cancelHold();}
+}
 function cancelHold(){if(holdState==='flipping'||holdState==='confirmed')return;clearTimeout(holdTimer);holdState='idle';resetRunwayBtn();document.getElementById('confirmHint').textContent='לחץ והחזק את המסלול לאישור';document.getElementById('confirmHint').classList.remove('confirmed');document.getElementById('cardStamp').classList.remove('visible');}
 function resetRunwayBtn(instant){
   const fill=document.getElementById('runwayFill');
@@ -1273,7 +1300,15 @@ function bulkConfirm(){
   holdState='idle';resetRunwayBtn();render();
 }
 function showPhaseOverlay(donePhaseName,nextPhaseName){document.getElementById('phaseOverlayTitle').textContent=donePhaseName;document.getElementById('phaseOverlayNext').textContent=nextPhaseName?'השלב הבא: '+nextPhaseName:'כל השלבים הושלמו!';document.getElementById('phaseOverlay').classList.add('open');}
-function dismissPhaseOverlay(){document.getElementById('phaseOverlay').classList.remove('open');saveState();showScreen('screenSplash');initSplash();}
+function dismissPhaseOverlay(){document.getElementById('phaseOverlay').classList.remove('open');}
+function continuePhaseNow(){
+  dismissPhaseOverlay();
+  saveState();
+  const card=document.getElementById('cardTop');
+  card.classList.add('flipping');
+  setTimeout(()=>{render();card.classList.remove('flipping');},450);
+}
+function parkPhaseAndExit(){dismissPhaseOverlay();saveState();showScreen('screenSplash');initSplash();}
 function showAllDoneOverlay(lastPhase){
   const done=Object.values(status).filter(s=>s==='done').length;
   const skipped=Object.values(status).filter(s=>s==='skipped').length;
@@ -1334,14 +1369,6 @@ function dismissAllDone(){showScreen('screenChecklist');render();}
 function openModal(){
   document.getElementById('modal').classList.add('open');
 }
-function openNewFlightModal(){
-  document.querySelector('.modal-box').className='modal-box amber';
-  document.getElementById('modalTitle').textContent='טיסה חדשה?';
-  document.getElementById('modalSub').textContent='פעולה זו תאפס את כל ההתקדמות הנוכחית.';
-  document.getElementById('modalConfirmBtn').textContent='כן, אפס והתחל מחדש';
-  document.getElementById('modalConfirmBtn').onclick=()=>{closeModal();startNew();};
-  openModal();
-}
 function closeModal(){
   document.getElementById('modal').classList.remove('open');
   const cb=document.getElementById('modalCancelBtn');
@@ -1389,11 +1416,10 @@ function getProfiles(){
   _profiles={profiles:[],activeProfile:null};
   try{
     const oldRaw=localStorage.getItem(LIST_KEY);
-    const oldType=localStorage.getItem('aircheck_list_type')||'default';
     const id=generateProfileId();
     let list=CL_DEFAULT.map(it=>({...it}));
     if(oldRaw){const saved=JSON.parse(oldRaw);if(Array.isArray(saved)&&saved.length)list=saved;}
-    _profiles.profiles.push({id,name:'רגיל',type:oldType,list});
+    _profiles.profiles.push({id,name:'רגיל',type:'default',list});
     _profiles.activeProfile=id;
   }catch(e){
     const id=generateProfileId();
@@ -2531,7 +2557,7 @@ function saveSettingsTail(val){
   document.getElementById('stampInit').textContent='PIC · 4X-'+(val||'HHH');
   try{localStorage.setItem(REG_KEY,val);}catch(e){}
 }
-function saveSettingsRoute(){}
+
 
 // ── METAR ──
 const METAR_STATION_KEY='aircheck_metar_station';
@@ -2643,69 +2669,8 @@ function onMetarPillInput(val){
     if(window.syncToFirebase)window.syncToFirebase();
   }
 }
-let _msPending='LLBG';
-function openMetarStationPicker(){
-  const sel=localStorage.getItem(METAR_STATION_KEY)||'LLBG';
-  _msPending=sel;
-  document.querySelectorAll('.ms-btn').forEach(b=>b.classList.remove('selected'));
-  const activeBtn=document.getElementById('msbtn-'+sel);
-  if(activeBtn)activeBtn.classList.add('selected');
-  if(sel==='custom'){
-    document.getElementById('msCustomInput').value=localStorage.getItem(METAR_CUSTOM_KEY)||'';
-  }
-  msUpdateConfirm();
-  document.getElementById('metarStationModal').style.display='flex';
-}
-function msClose(){
-  document.getElementById('metarStationModal').style.display='none';
-}
-function handleStationModalClick(e){
-  if(e.target===document.getElementById('metarStationModal'))msClose();
-}
-function msSelect(val){
-  _msPending=val;
-  document.querySelectorAll('.ms-btn').forEach(b=>b.classList.remove('selected'));
-  const btn=document.getElementById('msbtn-'+val);
-  if(btn)btn.classList.add('selected');
-  if(val==='custom')setTimeout(()=>document.getElementById('msCustomInput').focus(),60);
-  msUpdateConfirm();
-}
-function msUpdateConfirm(){
-  const btn=document.getElementById('msConfirmBtn');
-  if(!btn)return;
-  if(_msPending==='custom'){
-    btn.disabled=(document.getElementById('msCustomInput').value||'').length<4;
-  } else {
-    btn.disabled=false;
-  }
-}
-function msConfirm(){
-  const sel=_msPending;
-  localStorage.setItem(METAR_STATION_KEY,sel);
-  if(sel==='custom'){
-    const val=document.getElementById('msCustomInput').value||'';
-    localStorage.setItem(METAR_CUSTOM_KEY,val);
-  }
-  syncMetarSettingsUI();
-  _metarCache={metar:null,taf:null,fetchedAt:null,icao:null};
-  msClose();
-  if(document.getElementById('metarOverlay').classList.contains('open')){
-    // Update tower tab visibility for new station
-    const newIcao=getMetarIcao();
-    const towerBtn=document.getElementById('towerTabBtn');
-    const TOWER_STATIONS=['LLHZ'];
-    if(towerBtn){
-      towerBtn.style.display=TOWER_STATIONS.includes(newIcao)?'':'none';
-      if(!TOWER_STATIONS.includes(newIcao)&&_metarCurrentTab==='tower'){
-        _metarCurrentTab='metar';
-        document.getElementById('metarTabBtn').classList.add('active');
-        document.getElementById('tafTabBtn').classList.remove('active');
-        towerBtn.classList.remove('active');
-      }
-    }
-    fetchMetar(false);
-  }
-}
+
+
 
 function openMetar(){
   localStorage.setItem('aircheck_metar_used','1');
@@ -3202,7 +3167,7 @@ function splashSecondaryAction(){
   // Detect list type
   function getListType(){
     const prof=typeof getActiveProfile==='function'?getActiveProfile():null;
-    return prof?prof.type:(localStorage.getItem('aircheck_list_type')||'default');
+    return prof?prof.type:'default';
   }
 
   // ── SINGLE SYNC FUNCTION ──
@@ -3510,52 +3475,6 @@ function splashSecondaryAction(){
 <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js" defer></script>
 
   <!-- ══ METAR STATION PICKER MODAL ══ -->
-  <div id="metarStationModal" onclick="handleStationModalClick(event)" style="display:none;position:absolute;inset:0;background:rgba(26,19,8,.8);z-index:550;align-items:center;justify-content:center;padding:24px;backdrop-filter:blur(3px);">
-    <div class="modal-box" style="text-align:center;">
-      <div style="font-family:var(--font-mono);font-size:16px;font-weight:700;letter-spacing:.1em;direction:ltr;margin-bottom:2px;color:var(--ink-body);">METAR · TAF</div>
-      <div style="font-size:11px;color:var(--ink-muted);margin-bottom:16px;letter-spacing:.04em;">בחר תחנה</div>
-      <div style="display:flex;flex-direction:column;gap:7px;margin-bottom:14px;" id="stationBtnList">
-        <button class="ms-btn" id="msbtn-LLBG" onclick="msSelect('LLBG')">
-          <span class="ms-name">נתב״ג · Ben Gurion</span>
-          <span class="ms-icao">LLBG</span>
-          <span class="ms-check">✓</span>
-        </button>
-        <button class="ms-btn" id="msbtn-LLHA" onclick="msSelect('LLHA')">
-          <span class="ms-name">חיפה · Haifa</span>
-          <span class="ms-icao">LLHA</span>
-          <span class="ms-check">✓</span>
-        </button>
-        <button class="ms-btn" id="msbtn-LLIB" onclick="msSelect('LLIB')">
-          <span class="ms-name">ראש פינה · Rosh Pina</span>
-          <span class="ms-icao">LLIB</span>
-          <span class="ms-check">✓</span>
-        </button>
-        <button class="ms-btn" id="msbtn-LLER" onclick="msSelect('LLER')">
-          <span class="ms-name">רמון · Ramon</span>
-          <span class="ms-icao">LLER</span>
-          <span class="ms-check">✓</span>
-        </button>
-        <button class="ms-btn" id="msbtn-LLHZ" onclick="msSelect('LLHZ')">
-          <span class="ms-name">הרצליה · Herzliya</span>
-          <span class="ms-icao">LLHZ</span>
-          <span class="ms-check">✓</span>
-        </button>
-        <div class="ms-btn ms-custom" id="msbtn-custom" onclick="msSelect('custom')">
-          <span class="ms-name">אחר</span>
-          <input class="ms-custom-input" id="msCustomInput"
-            type="text" placeholder="LLXX" maxlength="4"
-            autocomplete="off" autocorrect="off" spellcheck="false"
-            onclick="event.stopPropagation();msSelect('custom')"
-            oninput="this.value=this.value.toUpperCase().replace(/[^A-Z0-9]/g,'');msUpdateConfirm()">
-          <span class="ms-check">✓</span>
-        </div>
-      </div>
-      <div style="height:1px;background:var(--gold-lite);margin:0 0 14px;opacity:.7;"></div>
-      <button class="btn btn-ink" id="msConfirmBtn" onclick="msConfirm()" style="margin-bottom:8px;">אישור</button>
-      <button class="btn btn-ghost" onclick="msClose()">ביטול</button>
-    </div>
-  </div>
-
   <!-- ══ METAR OVERLAY ══ -->
   <div id="metarOverlay" onclick="handleMetarOverlayClick(event)">
     <div class="metar-sheet" id="metarSheet">
