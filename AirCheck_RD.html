@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <!-- ═══════════════════════════════════════
-     AirCheck+ · v2.07.045 · built by eligrt
+     AirCheck+ · v2.07.046 · built by eligrt
      ═══════════════════════════════════════ -->
 <html lang="he" dir="rtl">
 <head>
@@ -613,7 +613,7 @@ html,body{height:100%;background:#1a1a1c;font-family:var(--font-ui);color:var(--
     <div class="splash-footer-wrap">
       <div class="footer-strip" style="display:flex;align-items:center;justify-content:space-between;padding:5px 14px 8px;">
         <span class="footer-refresh" onclick="reloadApp()">רענון</span>
-        <span id="versionTap" onclick="handleVersionTap()" style="cursor:default;">AirCheck+ · v2.07.045 · built by eligrt</span>
+        <span id="versionTap" onclick="handleVersionTap()" style="cursor:default;">AirCheck+ · v2.07.046 · built by eligrt</span>
         <span style="width:40px;"></span>
       </div>
     </div>
@@ -721,7 +721,7 @@ html,body{height:100%;background:#1a1a1c;font-family:var(--font-ui);color:var(--
 
     <div class="nav-row">
       <button class="nav-btn" id="navBack" onclick="goBack()">‹ קודם</button>
-      <button class="nav-btn narrow amber" id="navSkipJump" onclick="jumpToUnchecked()">חזור ל<br>לא מסומן</button>
+      <button class="nav-btn narrow amber" id="navSkipJump" onclick="jumpToUnchecked()">חזור ללא מסומן</button>
       <button class="nav-btn narrow warn" id="navUncheck" onclick="uncheckCurrent()">בטל<br>סימון</button>
       <button class="nav-btn" id="navNext" onclick="goNext()">הבא ›</button>
     </div>
@@ -729,7 +729,7 @@ html,body{height:100%;background:#1a1a1c;font-family:var(--font-ui);color:var(--
     <div class="tree-panel" id="treePanel"></div>
     <div class="footer-strip" style="display:flex;align-items:center;justify-content:space-between;padding:5px 14px 8px;">
       <span class="footer-refresh" onclick="reloadApp()">רענון</span>
-      <span id="versionTap" onclick="handleVersionTap()" style="cursor:default;">AirCheck+ · v2.07.045 · built by eligrt</span>
+      <span id="versionTap" onclick="handleVersionTap()" style="cursor:default;">AirCheck+ · v2.07.046 · built by eligrt</span>
       <span style="width:40px;"></span>
     </div>
   </div>
@@ -788,7 +788,7 @@ html,body{height:100%;background:#1a1a1c;font-family:var(--font-ui);color:var(--
 
     <div class="footer-strip" style="display:flex;align-items:center;justify-content:space-between;padding:5px 14px 8px;">
       <span style="width:40px;"></span>
-      <span id="versionTap" onclick="handleVersionTap()" style="cursor:default;">AirCheck+ · v2.07.045 · built by eligrt</span>
+      <span id="versionTap" onclick="handleVersionTap()" style="cursor:default;">AirCheck+ · v2.07.046 · built by eligrt</span>
       <span style="width:40px;"></span>
     </div>
   </div>
@@ -890,7 +890,7 @@ html,body{height:100%;background:#1a1a1c;font-family:var(--font-ui);color:var(--
     </div>
     <div class="footer-strip" style="display:flex;align-items:center;justify-content:space-between;padding:5px 14px 8px;">
       <span class="footer-refresh" onclick="reloadApp()">רענון</span>
-      <span id="versionTap" onclick="handleVersionTap()" style="cursor:default;">AirCheck+ · v2.07.045 · built by eligrt</span>
+      <span id="versionTap" onclick="handleVersionTap()" style="cursor:default;">AirCheck+ · v2.07.046 · built by eligrt</span>
       <span style="width:40px;"></span>
     </div>
   </div>
@@ -909,7 +909,7 @@ html,body{height:100%;background:#1a1a1c;font-family:var(--font-ui);color:var(--
     <div class="editor-list" id="editorList"></div>
     <div class="footer-strip" style="display:flex;align-items:center;justify-content:space-between;padding:5px 14px 8px;">
       <span class="footer-refresh" onclick="reloadApp()">רענון</span>
-      <span id="versionTap" onclick="handleVersionTap()" style="cursor:default;">AirCheck+ · v2.07.045 · built by eligrt</span>
+      <span id="versionTap" onclick="handleVersionTap()" style="cursor:default;">AirCheck+ · v2.07.046 · built by eligrt</span>
       <span style="width:40px;"></span>
     </div>
   </div>
@@ -1202,18 +1202,28 @@ function goNext(){
     }
   }
 }
-function jumpToUnchecked(){const idx=CL.findIndex((_,i)=>status[i]==='skipped');if(idx!==-1){current=idx;holdState='idle';resetRunwayBtn();render();}}
+function jumpToUnchecked(){
+  // Find all skipped indices
+  const skipped=CL.reduce((arr,_,i)=>{ if(status[i]==='skipped')arr.push(i); return arr; },[]);
+  if(!skipped.length)return;
+  // Find next skipped after current position, wrap around
+  const next=skipped.find(i=>i>current)??skipped[0];
+  current=next;
+  holdState='idle';resetRunwayBtn();render();
+}
 function updateNavBtns(){
   const isFirst=current===0;
   const isLast=current===CL.length-1;
   const isDone=status[current]==='done';
-  const hasUnchecked=CL.some((_,i)=>status[i]==='skipped'&&i!==current);
+  const skippedCount=CL.filter((_,i)=>status[i]==='skipped'&&i!==current).length;
   const hasSkippedAnywhere=CL.some((_,i)=>status[i]==='skipped');
   const lastItemNotDone=isLast&&status[current]!=='done';
   document.getElementById('navBack').disabled=isFirst;
   document.getElementById('navNext').disabled=isLast&&!hasSkippedAnywhere&&!lastItemNotDone;
   document.getElementById('navUncheck').disabled=!isDone;
-  document.getElementById('navSkipJump').disabled=!hasUnchecked;
+  const jumpBtn=document.getElementById('navSkipJump');
+  jumpBtn.disabled=!skippedCount;
+  jumpBtn.innerHTML=skippedCount?`חזור ללא מסומן (${skippedCount})`:'חזור ללא מסומן';
 }
 let _bulkPhaseItems=[];let _bulkIsComplete=false;
 function openBulkPopup(p,allItems,isComplete,segEl){
