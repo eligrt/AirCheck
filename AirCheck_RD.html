@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <!-- ═══════════════════════════════════════
-     AirCheck+ · v2.07.046 · built by eligrt
+     AirCheck+ · v2.07.047 · built by eligrt
      ═══════════════════════════════════════ -->
 <html lang="he" dir="rtl">
 <head>
@@ -613,7 +613,7 @@ html,body{height:100%;background:#1a1a1c;font-family:var(--font-ui);color:var(--
     <div class="splash-footer-wrap">
       <div class="footer-strip" style="display:flex;align-items:center;justify-content:space-between;padding:5px 14px 8px;">
         <span class="footer-refresh" onclick="reloadApp()">רענון</span>
-        <span id="versionTap" onclick="handleVersionTap()" style="cursor:default;">AirCheck+ · v2.07.046 · built by eligrt</span>
+        <span id="versionTap" onclick="handleVersionTap()" style="cursor:default;">AirCheck+ · v2.07.047 · built by eligrt</span>
         <span style="width:40px;"></span>
       </div>
     </div>
@@ -729,7 +729,7 @@ html,body{height:100%;background:#1a1a1c;font-family:var(--font-ui);color:var(--
     <div class="tree-panel" id="treePanel"></div>
     <div class="footer-strip" style="display:flex;align-items:center;justify-content:space-between;padding:5px 14px 8px;">
       <span class="footer-refresh" onclick="reloadApp()">רענון</span>
-      <span id="versionTap" onclick="handleVersionTap()" style="cursor:default;">AirCheck+ · v2.07.046 · built by eligrt</span>
+      <span id="versionTap" onclick="handleVersionTap()" style="cursor:default;">AirCheck+ · v2.07.047 · built by eligrt</span>
       <span style="width:40px;"></span>
     </div>
   </div>
@@ -788,7 +788,7 @@ html,body{height:100%;background:#1a1a1c;font-family:var(--font-ui);color:var(--
 
     <div class="footer-strip" style="display:flex;align-items:center;justify-content:space-between;padding:5px 14px 8px;">
       <span style="width:40px;"></span>
-      <span id="versionTap" onclick="handleVersionTap()" style="cursor:default;">AirCheck+ · v2.07.046 · built by eligrt</span>
+      <span id="versionTap" onclick="handleVersionTap()" style="cursor:default;">AirCheck+ · v2.07.047 · built by eligrt</span>
       <span style="width:40px;"></span>
     </div>
   </div>
@@ -890,7 +890,7 @@ html,body{height:100%;background:#1a1a1c;font-family:var(--font-ui);color:var(--
     </div>
     <div class="footer-strip" style="display:flex;align-items:center;justify-content:space-between;padding:5px 14px 8px;">
       <span class="footer-refresh" onclick="reloadApp()">רענון</span>
-      <span id="versionTap" onclick="handleVersionTap()" style="cursor:default;">AirCheck+ · v2.07.046 · built by eligrt</span>
+      <span id="versionTap" onclick="handleVersionTap()" style="cursor:default;">AirCheck+ · v2.07.047 · built by eligrt</span>
       <span style="width:40px;"></span>
     </div>
   </div>
@@ -909,7 +909,7 @@ html,body{height:100%;background:#1a1a1c;font-family:var(--font-ui);color:var(--
     <div class="editor-list" id="editorList"></div>
     <div class="footer-strip" style="display:flex;align-items:center;justify-content:space-between;padding:5px 14px 8px;">
       <span class="footer-refresh" onclick="reloadApp()">רענון</span>
-      <span id="versionTap" onclick="handleVersionTap()" style="cursor:default;">AirCheck+ · v2.07.046 · built by eligrt</span>
+      <span id="versionTap" onclick="handleVersionTap()" style="cursor:default;">AirCheck+ · v2.07.047 · built by eligrt</span>
       <span style="width:40px;"></span>
     </div>
   </div>
@@ -1015,6 +1015,13 @@ const CL=[
 ];
 const CL_DEFAULT=CL.map(it=>({...it}));
 window.CL_DEFAULT_LIST=CL_DEFAULT;
+
+// Normalize text for comparison — strip special quotes, trim, lowercase
+function norm(s){return(s||'').trim().toLowerCase().replace(/[\u05F3\u05F4\u0022\u0027\u201C\u201D\u2018\u2019״׳"""'']/g,'').replace(/\s+/g,' ');}
+
+// Pre-built Set of default item keys for O(1) custom item detection
+// Key format: "main|group|phase|sub" — built once, never changes
+const _defaultItemKeys=new Set(CL_DEFAULT.map(d=>`${norm(d.main)}|${norm(d.group)}|${norm(d.phase)}|${norm(d.sub||'')}`));
 const PHASES=[];const PHASE_IDX={};
 function buildIndex(){PHASES.length=0;Object.keys(PHASE_IDX).forEach(k=>delete PHASE_IDX[k]);CL.forEach((item,i)=>{if(!PHASE_IDX[item.phase]){const p={name:item.phase,start:i,end:i,groups:[],gIdx:{}};PHASE_IDX[item.phase]=p;PHASES.push(p);}const p=PHASE_IDX[item.phase];p.end=i;if(!p.gIdx[item.group]){const g={name:item.group,start:i,end:i,items:[]};p.gIdx[item.group]=g;p.groups.push(g);}const g=p.gIdx[item.group];g.end=i;g.items.push(i);});}
 buildIndex();
@@ -1441,9 +1448,12 @@ function renderProfileTabStrip(){
   const p=getProfiles();
   _editorActiveProfileId=_editorActiveProfileId||p.activeProfile;
   const activeProf=p.profiles.find(pr=>pr.id===_editorActiveProfileId);
-  // Check if current edData matches default — compare live content, not just type flag
+  // Check if current edData matches default — use pre-built Set for O(1) lookup
   const currentList=edDataToCL(edData);
-  const isDefault=currentList.length===CL_DEFAULT.length&&currentList.every((it,i)=>it.main===CL_DEFAULT[i].main&&it.group===CL_DEFAULT[i].group&&it.phase===CL_DEFAULT[i].phase);
+  const isDefault=currentList.length===CL_DEFAULT.length&&currentList.every(it=>{
+    const key=`${norm(it.main)}|${norm(it.group)}|${norm(it.phase)}|${norm(it.sub||'')}`;
+    return _defaultItemKeys.has(key);
+  });
 
   if(!FEATURES.MULTI_PROFILE){
     strip.style.display='none';
@@ -1782,9 +1792,9 @@ function renderEditor(){
 
 function buildItemRow(it,ii,g,gi,ph,pi){
   const row=document.createElement('div');row.className='ed-item';
-  // Mark custom items with a blue dot — use parent phase/group context
-  const norm=s=>(s||'').trim().toLowerCase().replace(/[\u05F3\u05F4\u0022\u0027\u201C\u201D\u2018\u2019״׳"""'']/g,'').replace(/\s+/g,' ');
-  const isCustom=!CL_DEFAULT.some(d=>norm(d.main)===norm(it.main)&&norm(d.group)===norm(g.name)&&norm(d.phase)===norm(ph.phase)&&norm(d.sub||'')===norm(it.sub||''));
+  // Mark custom items with a blue dot — O(1) Set lookup instead of O(n) loop
+  const itemKey=`${norm(it.main)}|${norm(g.name)}|${norm(ph.phase)}|${norm(it.sub||'')}`;
+  const isCustom=!_defaultItemKeys.has(itemKey);
   row.draggable=true;row.dataset.pi=pi;row.dataset.gi=gi;row.dataset.ii=ii;
   const drag=document.createElement('span');drag.className='ed-drag';drag.textContent='⠿';
   const dot=document.createElement('span');
