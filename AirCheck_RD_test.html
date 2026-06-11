@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <!-- ═══════════════════════════════════════
-     AirCheck+ · v2.07.060T · built by eligrt
+     AirCheck+ · v2.07.061T · built by eligrt
      ═══════════════════════════════════════ -->
 <html lang="he" dir="rtl">
 <head>
@@ -611,7 +611,7 @@ html,body{height:100%;background:#1a1a1c;font-family:var(--font-ui);color:var(--
     <div class="splash-footer-wrap">
       <div class="footer-strip" style="display:flex;align-items:center;justify-content:space-between;padding:5px 14px 8px;">
         <span class="footer-refresh" onclick="reloadApp()">רענון</span>
-        <span id="versionTap" onclick="handleVersionTap()" style="cursor:default;">AirCheck+ · v2.07.060T · built by eligrt</span>
+        <span id="versionTap" onclick="handleVersionTap()" style="cursor:default;">AirCheck+ · v2.07.061T · built by eligrt</span>
         <span style="width:40px;"></span>
       </div>
     </div>
@@ -728,7 +728,7 @@ html,body{height:100%;background:#1a1a1c;font-family:var(--font-ui);color:var(--
     <div class="tree-panel" id="treePanel"></div>
     <div class="footer-strip" style="display:flex;align-items:center;justify-content:space-between;padding:5px 14px 8px;">
       <span class="footer-refresh" onclick="reloadApp()">רענון</span>
-      <span id="versionTap" onclick="handleVersionTap()" style="cursor:default;">AirCheck+ · v2.07.060T · built by eligrt</span>
+      <span id="versionTap" onclick="handleVersionTap()" style="cursor:default;">AirCheck+ · v2.07.061T · built by eligrt</span>
       <span style="width:40px;"></span>
     </div>
   </div>
@@ -787,7 +787,7 @@ html,body{height:100%;background:#1a1a1c;font-family:var(--font-ui);color:var(--
 
     <div class="footer-strip" style="display:flex;align-items:center;justify-content:space-between;padding:5px 14px 8px;">
       <span style="width:40px;"></span>
-      <span id="versionTap" onclick="handleVersionTap()" style="cursor:default;">AirCheck+ · v2.07.060T · built by eligrt</span>
+      <span id="versionTap" onclick="handleVersionTap()" style="cursor:default;">AirCheck+ · v2.07.061T · built by eligrt</span>
       <span style="width:40px;"></span>
     </div>
   </div>
@@ -889,7 +889,7 @@ html,body{height:100%;background:#1a1a1c;font-family:var(--font-ui);color:var(--
     </div>
     <div class="footer-strip" style="display:flex;align-items:center;justify-content:space-between;padding:5px 14px 8px;">
       <span class="footer-refresh" onclick="reloadApp()">רענון</span>
-      <span id="versionTap" onclick="handleVersionTap()" style="cursor:default;">AirCheck+ · v2.07.060T · built by eligrt</span>
+      <span id="versionTap" onclick="handleVersionTap()" style="cursor:default;">AirCheck+ · v2.07.061T · built by eligrt</span>
       <span style="width:40px;"></span>
     </div>
   </div>
@@ -908,7 +908,7 @@ html,body{height:100%;background:#1a1a1c;font-family:var(--font-ui);color:var(--
     <div class="editor-list" id="editorList"></div>
     <div class="footer-strip" style="display:flex;align-items:center;justify-content:space-between;padding:5px 14px 8px;">
       <span class="footer-refresh" onclick="reloadApp()">רענון</span>
-      <span id="versionTap" onclick="handleVersionTap()" style="cursor:default;">AirCheck+ · v2.07.060T · built by eligrt</span>
+      <span id="versionTap" onclick="handleVersionTap()" style="cursor:default;">AirCheck+ · v2.07.061T · built by eligrt</span>
       <span style="width:40px;"></span>
     </div>
   </div>
@@ -1059,9 +1059,10 @@ function trackExternalLinkTap(url, lbl){
 }
 function trackExternalLinkTap(url,lbl){
   try{
+    const key=lbl.replace(/[\.#$\/\[\] ]/g,'_');
     let counts={};
     try{counts=JSON.parse(localStorage.getItem('aircheck_external_link_counts')||'{}');}catch(e){}
-    counts[lbl]=(counts[lbl]||0)+1;
+    counts[key]=(counts[key]||0)+1;
     localStorage.setItem('aircheck_external_link_counts',JSON.stringify(counts));
     localStorage.setItem('aircheck_external_link_used','1');
     if(typeof syncToFirebase==='function')syncToFirebase();
