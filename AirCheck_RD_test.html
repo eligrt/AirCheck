@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <!-- ═══════════════════════════════════════
-     AirCheck+ · v2.07.053T · built by eligrt
+     AirCheck+ · v2.07.054T · built by eligrt
      ═══════════════════════════════════════ -->
 <html lang="he" dir="rtl">
 <head>
@@ -611,7 +611,7 @@ html,body{height:100%;background:#1a1a1c;font-family:var(--font-ui);color:var(--
     <div class="splash-footer-wrap">
       <div class="footer-strip" style="display:flex;align-items:center;justify-content:space-between;padding:5px 14px 8px;">
         <span class="footer-refresh" onclick="reloadApp()">רענון</span>
-        <span id="versionTap" onclick="handleVersionTap()" style="cursor:default;">AirCheck+ · v2.07.053T · built by eligrt</span>
+        <span id="versionTap" onclick="handleVersionTap()" style="cursor:default;">AirCheck+ · v2.07.054T · built by eligrt</span>
         <span style="width:40px;"></span>
       </div>
     </div>
@@ -728,7 +728,7 @@ html,body{height:100%;background:#1a1a1c;font-family:var(--font-ui);color:var(--
     <div class="tree-panel" id="treePanel"></div>
     <div class="footer-strip" style="display:flex;align-items:center;justify-content:space-between;padding:5px 14px 8px;">
       <span class="footer-refresh" onclick="reloadApp()">רענון</span>
-      <span id="versionTap" onclick="handleVersionTap()" style="cursor:default;">AirCheck+ · v2.07.053T · built by eligrt</span>
+      <span id="versionTap" onclick="handleVersionTap()" style="cursor:default;">AirCheck+ · v2.07.054T · built by eligrt</span>
       <span style="width:40px;"></span>
     </div>
   </div>
@@ -787,7 +787,7 @@ html,body{height:100%;background:#1a1a1c;font-family:var(--font-ui);color:var(--
 
     <div class="footer-strip" style="display:flex;align-items:center;justify-content:space-between;padding:5px 14px 8px;">
       <span style="width:40px;"></span>
-      <span id="versionTap" onclick="handleVersionTap()" style="cursor:default;">AirCheck+ · v2.07.053T · built by eligrt</span>
+      <span id="versionTap" onclick="handleVersionTap()" style="cursor:default;">AirCheck+ · v2.07.054T · built by eligrt</span>
       <span style="width:40px;"></span>
     </div>
   </div>
@@ -889,7 +889,7 @@ html,body{height:100%;background:#1a1a1c;font-family:var(--font-ui);color:var(--
     </div>
     <div class="footer-strip" style="display:flex;align-items:center;justify-content:space-between;padding:5px 14px 8px;">
       <span class="footer-refresh" onclick="reloadApp()">רענון</span>
-      <span id="versionTap" onclick="handleVersionTap()" style="cursor:default;">AirCheck+ · v2.07.053T · built by eligrt</span>
+      <span id="versionTap" onclick="handleVersionTap()" style="cursor:default;">AirCheck+ · v2.07.054T · built by eligrt</span>
       <span style="width:40px;"></span>
     </div>
   </div>
@@ -908,7 +908,7 @@ html,body{height:100%;background:#1a1a1c;font-family:var(--font-ui);color:var(--
     <div class="editor-list" id="editorList"></div>
     <div class="footer-strip" style="display:flex;align-items:center;justify-content:space-between;padding:5px 14px 8px;">
       <span class="footer-refresh" onclick="reloadApp()">רענון</span>
-      <span id="versionTap" onclick="handleVersionTap()" style="cursor:default;">AirCheck+ · v2.07.053T · built by eligrt</span>
+      <span id="versionTap" onclick="handleVersionTap()" style="cursor:default;">AirCheck+ · v2.07.054T · built by eligrt</span>
       <span style="width:40px;"></span>
     </div>
   </div>
@@ -1465,6 +1465,30 @@ function loadList(){
     CL.length=0;prof.list.forEach(it=>CL.push(it));buildIndex();
   }
   updateRunwayProfileLabel();
+}
+
+function patchDefaultLinks(){
+  const LINK_PATCHES=[
+    {main:'בדוק NOTAM',url:'https://notam.liorbenhorin.xyz/',urlLabel:'NOTAM IL'},
+    {main:'הגשת תוכנית טיסה',url:'https://fpl.co.il/',urlLabel:'fpl.co.il'}
+  ];
+  let patched=false;
+  const p=getProfiles();
+  p.profiles.forEach(prof=>{
+    (prof.list||[]).forEach(it=>{
+      const match=LINK_PATCHES.find(lp=>lp.main===it.main);
+      if(match&&!it.url){
+        it.url=match.url;
+        it.urlLabel=match.urlLabel;
+        patched=true;
+      }
+    });
+  });
+  if(patched){
+    saveProfiles(p);
+    const prof=getActiveProfile();
+    if(prof&&prof.list)CL.length=0,prof.list.forEach(it=>CL.push(it)),buildIndex();
+  }
 }
 
 function updateRunwayProfileLabel(){
@@ -3051,7 +3075,7 @@ function showScreen(id){
   document.getElementById(id).classList.add('active');
 }
 document.addEventListener('DOMContentLoaded',()=>{
-  loadSettings();loadList();loadState();loadReg();loadRoute();drawRings();initSplash();
+  loadSettings();loadList();patchDefaultLinks();loadState();loadReg();loadRoute();drawRings();initSplash();
   if(FEATURES.WHATS_NEW)checkWhatsNew();
   if(FEATURES.METAR){const mb=document.getElementById('metarBtn');if(mb)mb.style.display='';}
   // Detect if already installed as PWA on this launch
