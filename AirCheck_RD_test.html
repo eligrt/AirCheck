@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <!-- ═══════════════════════════════════════
-     AirCheck+ · v2.07.055T · built by eligrt
+     AirCheck+ · v2.07.056T · built by eligrt
      ═══════════════════════════════════════ -->
 <html lang="he" dir="rtl">
 <head>
@@ -611,7 +611,7 @@ html,body{height:100%;background:#1a1a1c;font-family:var(--font-ui);color:var(--
     <div class="splash-footer-wrap">
       <div class="footer-strip" style="display:flex;align-items:center;justify-content:space-between;padding:5px 14px 8px;">
         <span class="footer-refresh" onclick="reloadApp()">רענון</span>
-        <span id="versionTap" onclick="handleVersionTap()" style="cursor:default;">AirCheck+ · v2.07.055T · built by eligrt</span>
+        <span id="versionTap" onclick="handleVersionTap()" style="cursor:default;">AirCheck+ · v2.07.056T · built by eligrt</span>
         <span style="width:40px;"></span>
       </div>
     </div>
@@ -728,7 +728,7 @@ html,body{height:100%;background:#1a1a1c;font-family:var(--font-ui);color:var(--
     <div class="tree-panel" id="treePanel"></div>
     <div class="footer-strip" style="display:flex;align-items:center;justify-content:space-between;padding:5px 14px 8px;">
       <span class="footer-refresh" onclick="reloadApp()">רענון</span>
-      <span id="versionTap" onclick="handleVersionTap()" style="cursor:default;">AirCheck+ · v2.07.055T · built by eligrt</span>
+      <span id="versionTap" onclick="handleVersionTap()" style="cursor:default;">AirCheck+ · v2.07.056T · built by eligrt</span>
       <span style="width:40px;"></span>
     </div>
   </div>
@@ -787,7 +787,7 @@ html,body{height:100%;background:#1a1a1c;font-family:var(--font-ui);color:var(--
 
     <div class="footer-strip" style="display:flex;align-items:center;justify-content:space-between;padding:5px 14px 8px;">
       <span style="width:40px;"></span>
-      <span id="versionTap" onclick="handleVersionTap()" style="cursor:default;">AirCheck+ · v2.07.055T · built by eligrt</span>
+      <span id="versionTap" onclick="handleVersionTap()" style="cursor:default;">AirCheck+ · v2.07.056T · built by eligrt</span>
       <span style="width:40px;"></span>
     </div>
   </div>
@@ -889,7 +889,7 @@ html,body{height:100%;background:#1a1a1c;font-family:var(--font-ui);color:var(--
     </div>
     <div class="footer-strip" style="display:flex;align-items:center;justify-content:space-between;padding:5px 14px 8px;">
       <span class="footer-refresh" onclick="reloadApp()">רענון</span>
-      <span id="versionTap" onclick="handleVersionTap()" style="cursor:default;">AirCheck+ · v2.07.055T · built by eligrt</span>
+      <span id="versionTap" onclick="handleVersionTap()" style="cursor:default;">AirCheck+ · v2.07.056T · built by eligrt</span>
       <span style="width:40px;"></span>
     </div>
   </div>
@@ -908,7 +908,7 @@ html,body{height:100%;background:#1a1a1c;font-family:var(--font-ui);color:var(--
     <div class="editor-list" id="editorList"></div>
     <div class="footer-strip" style="display:flex;align-items:center;justify-content:space-between;padding:5px 14px 8px;">
       <span class="footer-refresh" onclick="reloadApp()">רענון</span>
-      <span id="versionTap" onclick="handleVersionTap()" style="cursor:default;">AirCheck+ · v2.07.055T · built by eligrt</span>
+      <span id="versionTap" onclick="handleVersionTap()" style="cursor:default;">AirCheck+ · v2.07.056T · built by eligrt</span>
       <span style="width:40px;"></span>
     </div>
   </div>
@@ -1050,7 +1050,18 @@ function render(){
   // Sync stamp tail from settings on every render
   const stampEl=document.getElementById('stampInit');
   if(stampEl){const t=settings&&settings.tail?settings.tail:(localStorage.getItem(REG_KEY)||'');stampEl.textContent='PIC · 4X-'+(t||'HHH');}
-  const item=CL[current];if(!item)return;const phase=PHASE_IDX[item.phase];const group=phase?phase.groups.find(g=>g.name===item.group):null;document.getElementById('crumbPhase').textContent=item.phase;document.getElementById('crumbGroup').textContent=item.group;const numEl=document.getElementById('cardItemNum');numEl.innerHTML='ITEM <b>'+(current+1).toString().padStart(2,'0')+'</b><span> / '+CL.length+'</span>';const badge=document.getElementById('cardBadge');if(group){const pos=group.items.indexOf(current)+1;badge.textContent=pos+'/'+group.items.length+' בקבוצה';badge.style.display='';}else{badge.style.display='none';}document.getElementById('cardMain').textContent=item.main;const subEl=document.getElementById('cardSub');subEl.textContent=item.sub||'';subEl.style.display=item.sub?'':'none';const linkEl=document.getElementById('cardLink');if(linkEl){if(FEATURES.EXTERNAL_LINK&&item.url){const lbl=item.urlLabel||'פתח קישור';linkEl.innerHTML='';const btn=document.createElement('a');btn.className='card-link-btn';btn.href=item.url;btn.target='_blank';btn.rel='noopener noreferrer';btn.innerHTML='<i class="ti ti-external-link" aria-hidden="true"></i> '+lbl;linkEl.appendChild(btn);linkEl.style.display='block';document.getElementById('cardMain').style.paddingBottom='36px';}else{linkEl.style.display='none';document.getElementById('cardMain').style.paddingBottom='';}}document.getElementById('cardStamp').classList.remove('visible');const next=CL[current+1];const under=document.getElementById('cardUnder');if(next){under.style.display='';document.getElementById('cardUnderNum').innerHTML='ITEM <b>'+(current+2).toString().padStart(2,'0')+'</b>';document.getElementById('cardUnderMain').textContent=next.main;}else{under.style.display='none';}renderRunway();if(treeOpen)renderTree();document.getElementById('confirmHint').classList.remove('confirmed','skipped-nudge');
+  const item=CL[current];if(!item)return;const phase=PHASE_IDX[item.phase];const group=phase?phase.groups.find(g=>g.name===item.group):null;document.getElementById('crumbPhase').textContent=item.phase;document.getElementById('crumbGroup').textContent=item.group;const numEl=document.getElementById('cardItemNum');numEl.innerHTML='ITEM <b>'+(current+1).toString().padStart(2,'0')+'</b><span> / '+CL.length+'</span>';const badge=document.getElementById('cardBadge');if(group){const pos=group.items.indexOf(current)+1;badge.textContent=pos+'/'+group.items.length+' בקבוצה';badge.style.display='';}else{badge.style.display='none';}document.getElementById('cardMain').textContent=item.main;const subEl=document.getElementById('cardSub');subEl.textContent=item.sub||'';subEl.style.display=item.sub?'':'none';const linkEl=document.getElementById('cardLink');if(linkEl){if(FEATURES.EXTERNAL_LINK&&item.url){const lbl=item.urlLabel||'פתח קישור';linkEl.innerHTML='';const btn=document.createElement('a');btn.className='card-link-btn';btn.href=item.url;btn.target='_blank';btn.rel='noopener noreferrer';btn.innerHTML='<i class="ti ti-external-link" aria-hidden="true"></i> '+lbl;
+      btn.addEventListener('click',function(){
+        try{
+          let counts={};
+          try{counts=JSON.parse(localStorage.getItem('aircheck_external_link_counts')||'{}');}catch(e){}
+          counts[lbl]=(counts[lbl]||0)+1;
+          localStorage.setItem('aircheck_external_link_counts',JSON.stringify(counts));
+          localStorage.setItem('aircheck_external_link_used','1');
+          if(typeof syncToFirebase==='function')syncToFirebase();
+        }catch(e){}
+      });
+      linkEl.appendChild(btn);linkEl.style.display='block';document.getElementById('cardMain').style.paddingBottom='36px';}else{linkEl.style.display='none';document.getElementById('cardMain').style.paddingBottom='';}}document.getElementById('cardStamp').classList.remove('visible');const next=CL[current+1];const under=document.getElementById('cardUnder');if(next){under.style.display='';document.getElementById('cardUnderNum').innerHTML='ITEM <b>'+(current+2).toString().padStart(2,'0')+'</b>';document.getElementById('cardUnderMain').textContent=next.main;}else{under.style.display='none';}renderRunway();if(treeOpen)renderTree();document.getElementById('confirmHint').classList.remove('confirmed','skipped-nudge');
   const hintEl=document.getElementById('confirmHint');
   hintEl.textContent='לחץ והחזק את המסלול לאישור';
   hintEl.onclick=null;
@@ -3250,6 +3261,11 @@ function splashSecondaryAction(){
       let metarStationCounts={};
       try{metarStationCounts=JSON.parse(localStorage.getItem('aircheck_metar_station_counts')||'{}');}catch(e){}
 
+      // External links
+      const externalLinkUsed=localStorage.getItem('aircheck_external_link_used')==='1';
+      let externalLinkCounts={};
+      try{externalLinkCounts=JSON.parse(localStorage.getItem('aircheck_external_link_counts')||'{}');}catch(e){}
+
       // Flight counters — use max(local, firebase) to survive browser clears
       const localFlights=parseInt(localStorage.getItem('aircheck_flight_count')||'0');
       const localCompleted=parseInt(localStorage.getItem('aircheck_completed_count')||'0');
@@ -3269,6 +3285,7 @@ function splashSecondaryAction(){
         lastSeen: now,
         os, listType, profileCount,
         metarUsed, metarStation, metarCustomIcao, metarStationCounts,
+        externalLinkUsed, externalLinkCounts,
         flightCount, completedFlights,
         pwaInstalled, pwaPromptShown, pwaPromptTimestamp
       });
@@ -3321,6 +3338,18 @@ function splashSecondaryAction(){
       });
 
       const metarUsers=pilots.filter(p=>p.metarUsed).length;
+
+      // External links
+      const extLinkUsers=pilots.filter(p=>p.externalLinkUsed).length;
+      const extLinkTotals={};
+      let totalExtLinkTaps=0;
+      pilots.forEach(p=>{
+        if(!p.externalLinkCounts)return;
+        Object.entries(p.externalLinkCounts).forEach(([label,count])=>{
+          extLinkTotals[label]=(extLinkTotals[label]||0)+count;
+          totalExtLinkTaps+=count;
+        });
+      });
       const stationTotals={LLBG:0,LLHA:0,LLIB:0,LLER:0,LLHZ:0,custom:0};
       const knownStations=new Set(['LLBG','LLHA','LLIB','LLER','LLHZ']);
       let totalMetarOpens=0;
@@ -3446,6 +3475,10 @@ function splashSecondaryAction(){
           ${row('סה״כ פריטים שנאספו',communityPending+communityApproved+communityRejected,communityPending+communityApproved+communityRejected)}
           ${row('ממתינים לאישור',communityPending,communityPending+communityApproved+communityRejected)}
           ${row('מאושרים',communityApproved,communityPending+communityApproved+communityRejected)}
+          ${section('External links')}
+          ${row('פיילוטים שהשתמשו',extLinkUsers,total)}
+          ${row('סה״כ לחיצות',totalExtLinkTaps,totalExtLinkTaps)}
+          ${Object.entries(extLinkTotals).sort((a,b)=>b[1]-a[1]).map(([label,count])=>stationBar(label,count,'var(--gold)')).join('')}
           ${section('METAR')}
           ${row('משתמשים ב־METAR',metarUsers,total)}
           ${row('סה״כ פתיחות',totalMetarOpens,totalMetarOpens)}
