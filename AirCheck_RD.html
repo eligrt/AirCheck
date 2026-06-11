@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <!-- ═══════════════════════════════════════
-     AirCheck+ · v2.07.054 · built by eligrt
+     AirCheck+ · v2.07.055 · built by eligrt
      ═══════════════════════════════════════ -->
 <html lang="he" dir="rtl">
 <head>
@@ -161,7 +161,7 @@ html,body{height:100%;background:#1a1a1c;font-family:var(--font-ui);color:var(--
 .card-badge{font-size:10px;color:var(--ink-muted);background:var(--paper);padding:2px 8px;border-radius:10px;border:1px solid var(--gold-lite);font-family:var(--font-mono);}
 .card-main{font-size:24px;font-weight:700;line-height:1.3;color:var(--ink-body);margin-bottom:6px;direction:rtl;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;}
 .card-sub{font-size:13px;color:var(--ink-muted);line-height:1.5;font-style:italic;direction:rtl;}
-.card-link-btn{display:inline-flex;align-items:center;gap:6px;background:transparent;color:var(--gold);border:2px solid var(--gold);border-radius:4px;padding:5px 13px;font-family:var(--font-ui);font-size:12px;font-weight:600;cursor:pointer;margin-top:8px;text-decoration:none;direction:ltr;}
+.card-link-btn{display:inline-flex;align-items:center;gap:6px;background:transparent;color:var(--gold);border:2px solid var(--gold);border-radius:4px;padding:5px 13px;font-family:var(--font-ui);font-size:12px;font-weight:600;cursor:pointer;text-decoration:none;direction:ltr;position:absolute;bottom:14px;left:18px;z-index:3;}
 .card-link-btn:active{opacity:.7;}
 .card-link-btn i{font-size:14px;}
 .ed-item-link{font-size:10px;color:var(--ink-faint);font-family:var(--font-mono);margin-top:2px;direction:ltr;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;max-width:200px;}
@@ -611,7 +611,7 @@ html,body{height:100%;background:#1a1a1c;font-family:var(--font-ui);color:var(--
     <div class="splash-footer-wrap">
       <div class="footer-strip" style="display:flex;align-items:center;justify-content:space-between;padding:5px 14px 8px;">
         <span class="footer-refresh" onclick="reloadApp()">רענון</span>
-        <span id="versionTap" onclick="handleVersionTap()" style="cursor:default;">AirCheck+ · v2.07.054 · built by eligrt</span>
+        <span id="versionTap" onclick="handleVersionTap()" style="cursor:default;">AirCheck+ · v2.07.055 · built by eligrt</span>
         <span style="width:40px;"></span>
       </div>
     </div>
@@ -677,7 +677,7 @@ html,body{height:100%;background:#1a1a1c;font-family:var(--font-ui);color:var(--
         </div>
         <div class="card-main" id="cardMain"></div>
         <div class="card-sub" id="cardSub"></div>
-        <div id="cardLink" style="display:none;flex-direction:row;justify-content:flex-end;"></div>
+        <div id="cardLink" style="display:none;"></div>
         <div class="card-stamp" id="cardStamp">
           <div class="stamp-box">
             <div class="stamp-text">CHECKED</div>
@@ -728,7 +728,7 @@ html,body{height:100%;background:#1a1a1c;font-family:var(--font-ui);color:var(--
     <div class="tree-panel" id="treePanel"></div>
     <div class="footer-strip" style="display:flex;align-items:center;justify-content:space-between;padding:5px 14px 8px;">
       <span class="footer-refresh" onclick="reloadApp()">רענון</span>
-      <span id="versionTap" onclick="handleVersionTap()" style="cursor:default;">AirCheck+ · v2.07.054 · built by eligrt</span>
+      <span id="versionTap" onclick="handleVersionTap()" style="cursor:default;">AirCheck+ · v2.07.055 · built by eligrt</span>
       <span style="width:40px;"></span>
     </div>
   </div>
@@ -787,7 +787,7 @@ html,body{height:100%;background:#1a1a1c;font-family:var(--font-ui);color:var(--
 
     <div class="footer-strip" style="display:flex;align-items:center;justify-content:space-between;padding:5px 14px 8px;">
       <span style="width:40px;"></span>
-      <span id="versionTap" onclick="handleVersionTap()" style="cursor:default;">AirCheck+ · v2.07.054 · built by eligrt</span>
+      <span id="versionTap" onclick="handleVersionTap()" style="cursor:default;">AirCheck+ · v2.07.055 · built by eligrt</span>
       <span style="width:40px;"></span>
     </div>
   </div>
@@ -889,7 +889,7 @@ html,body{height:100%;background:#1a1a1c;font-family:var(--font-ui);color:var(--
     </div>
     <div class="footer-strip" style="display:flex;align-items:center;justify-content:space-between;padding:5px 14px 8px;">
       <span class="footer-refresh" onclick="reloadApp()">רענון</span>
-      <span id="versionTap" onclick="handleVersionTap()" style="cursor:default;">AirCheck+ · v2.07.054 · built by eligrt</span>
+      <span id="versionTap" onclick="handleVersionTap()" style="cursor:default;">AirCheck+ · v2.07.055 · built by eligrt</span>
       <span style="width:40px;"></span>
     </div>
   </div>
@@ -908,7 +908,7 @@ html,body{height:100%;background:#1a1a1c;font-family:var(--font-ui);color:var(--
     <div class="editor-list" id="editorList"></div>
     <div class="footer-strip" style="display:flex;align-items:center;justify-content:space-between;padding:5px 14px 8px;">
       <span class="footer-refresh" onclick="reloadApp()">רענון</span>
-      <span id="versionTap" onclick="handleVersionTap()" style="cursor:default;">AirCheck+ · v2.07.054 · built by eligrt</span>
+      <span id="versionTap" onclick="handleVersionTap()" style="cursor:default;">AirCheck+ · v2.07.055 · built by eligrt</span>
       <span style="width:40px;"></span>
     </div>
   </div>
@@ -1050,7 +1050,7 @@ function render(){
   // Sync stamp tail from settings on every render
   const stampEl=document.getElementById('stampInit');
   if(stampEl){const t=settings&&settings.tail?settings.tail:(localStorage.getItem(REG_KEY)||'');stampEl.textContent='PIC · 4X-'+(t||'HHH');}
-  const item=CL[current];if(!item)return;const phase=PHASE_IDX[item.phase];const group=phase?phase.groups.find(g=>g.name===item.group):null;document.getElementById('crumbPhase').textContent=item.phase;document.getElementById('crumbGroup').textContent=item.group;const numEl=document.getElementById('cardItemNum');numEl.innerHTML='ITEM <b>'+(current+1).toString().padStart(2,'0')+'</b><span> / '+CL.length+'</span>';const badge=document.getElementById('cardBadge');if(group){const pos=group.items.indexOf(current)+1;badge.textContent=pos+'/'+group.items.length+' בקבוצה';badge.style.display='';}else{badge.style.display='none';}document.getElementById('cardMain').textContent=item.main;const subEl=document.getElementById('cardSub');subEl.textContent=item.sub||'';subEl.style.display=item.sub?'':'none';const linkEl=document.getElementById('cardLink');if(linkEl){if(FEATURES.EXTERNAL_LINK&&item.url){const lbl=item.urlLabel||'פתח קישור';linkEl.innerHTML='';const btn=document.createElement('a');btn.className='card-link-btn';btn.href=item.url;btn.target='_blank';btn.rel='noopener noreferrer';btn.innerHTML='<i class="ti ti-external-link" aria-hidden="true"></i> '+lbl;linkEl.appendChild(btn);linkEl.style.display='flex';}else{linkEl.style.display='none';}}document.getElementById('cardStamp').classList.remove('visible');const next=CL[current+1];const under=document.getElementById('cardUnder');if(next){under.style.display='';document.getElementById('cardUnderNum').innerHTML='ITEM <b>'+(current+2).toString().padStart(2,'0')+'</b>';document.getElementById('cardUnderMain').textContent=next.main;}else{under.style.display='none';}renderRunway();if(treeOpen)renderTree();document.getElementById('confirmHint').classList.remove('confirmed','skipped-nudge');
+  const item=CL[current];if(!item)return;const phase=PHASE_IDX[item.phase];const group=phase?phase.groups.find(g=>g.name===item.group):null;document.getElementById('crumbPhase').textContent=item.phase;document.getElementById('crumbGroup').textContent=item.group;const numEl=document.getElementById('cardItemNum');numEl.innerHTML='ITEM <b>'+(current+1).toString().padStart(2,'0')+'</b><span> / '+CL.length+'</span>';const badge=document.getElementById('cardBadge');if(group){const pos=group.items.indexOf(current)+1;badge.textContent=pos+'/'+group.items.length+' בקבוצה';badge.style.display='';}else{badge.style.display='none';}document.getElementById('cardMain').textContent=item.main;const subEl=document.getElementById('cardSub');subEl.textContent=item.sub||'';subEl.style.display=item.sub?'':'none';const linkEl=document.getElementById('cardLink');if(linkEl){if(FEATURES.EXTERNAL_LINK&&item.url){const lbl=item.urlLabel||'פתח קישור';linkEl.innerHTML='';const btn=document.createElement('a');btn.className='card-link-btn';btn.href=item.url;btn.target='_blank';btn.rel='noopener noreferrer';btn.innerHTML='<i class="ti ti-external-link" aria-hidden="true"></i> '+lbl;linkEl.appendChild(btn);linkEl.style.display='block';document.getElementById('cardMain').style.paddingBottom='36px';}else{linkEl.style.display='none';document.getElementById('cardMain').style.paddingBottom='';}}document.getElementById('cardStamp').classList.remove('visible');const next=CL[current+1];const under=document.getElementById('cardUnder');if(next){under.style.display='';document.getElementById('cardUnderNum').innerHTML='ITEM <b>'+(current+2).toString().padStart(2,'0')+'</b>';document.getElementById('cardUnderMain').textContent=next.main;}else{under.style.display='none';}renderRunway();if(treeOpen)renderTree();document.getElementById('confirmHint').classList.remove('confirmed','skipped-nudge');
   const hintEl=document.getElementById('confirmHint');
   hintEl.textContent='לחץ והחזק את המסלול לאישור';
   hintEl.onclick=null;
