@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <!-- ═══════════════════════════════════════
-     AirCheck+ · v2.07.051 · built by eligrt
+     AirCheck+ · v2.07.053 · built by eligrt
      ═══════════════════════════════════════ -->
 <html lang="he" dir="rtl">
 <head>
@@ -20,6 +20,7 @@
 <meta property="og:type" content="website" />
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Hebrew:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet" media="print" onload="this.media='all'">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@2.44.0/tabler-icons.min.css">
 <style>
 :root{
   --paper:#f4ecdc;--paper-hi:#fbf6e8;--paper-edge:#e3d4ad;--paper-line:rgba(28,61,110,.055);
@@ -160,6 +161,12 @@ html,body{height:100%;background:#1a1a1c;font-family:var(--font-ui);color:var(--
 .card-badge{font-size:10px;color:var(--ink-muted);background:var(--paper);padding:2px 8px;border-radius:10px;border:1px solid var(--gold-lite);font-family:var(--font-mono);}
 .card-main{font-size:24px;font-weight:700;line-height:1.3;color:var(--ink-body);margin-bottom:6px;direction:rtl;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;}
 .card-sub{font-size:13px;color:var(--ink-muted);line-height:1.5;font-style:italic;direction:rtl;}
+.card-link-btn{display:inline-flex;align-items:center;gap:6px;background:transparent;color:var(--gold);border:2px solid var(--gold);border-radius:4px;padding:5px 13px;font-family:var(--font-ui);font-size:12px;font-weight:600;cursor:pointer;margin-top:8px;text-decoration:none;direction:ltr;}
+.card-link-btn:active{opacity:.7;}
+.card-link-btn i{font-size:14px;}
+.ed-item-link{font-size:10px;color:var(--ink-faint);font-family:var(--font-mono);margin-top:2px;direction:ltr;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;max-width:200px;}
+.ed-popup-link-section{margin-top:10px;padding-top:10px;border-top:1px dashed var(--gold-lite);}
+.ed-popup-link-label{font-size:10px;color:var(--ink-faint);font-family:var(--font-mono);letter-spacing:.06em;margin-bottom:6px;}
 .card-stamp{position:absolute;bottom:14px;left:18px;direction:ltr;transform-origin:left bottom;pointer-events:none;transform:rotate(-7deg) scale(.85);opacity:0;transition:opacity .14s ease-out,transform .18s ease-out;}
 .card-stamp.visible{opacity:1;transform:rotate(-7deg) scale(1);}
 .stamp-box{border:2.5px solid var(--stamp-red);padding:4px 12px 5px;text-align:center;color:var(--stamp-red);font-family:var(--font-mono);background:rgba(251,246,232,.6);}
@@ -604,7 +611,7 @@ html,body{height:100%;background:#1a1a1c;font-family:var(--font-ui);color:var(--
     <div class="splash-footer-wrap">
       <div class="footer-strip" style="display:flex;align-items:center;justify-content:space-between;padding:5px 14px 8px;">
         <span class="footer-refresh" onclick="reloadApp()">רענון</span>
-        <span id="versionTap" onclick="handleVersionTap()" style="cursor:default;">AirCheck+ · v2.07.051 · built by eligrt</span>
+        <span id="versionTap" onclick="handleVersionTap()" style="cursor:default;">AirCheck+ · v2.07.053 · built by eligrt</span>
         <span style="width:40px;"></span>
       </div>
     </div>
@@ -670,6 +677,7 @@ html,body{height:100%;background:#1a1a1c;font-family:var(--font-ui);color:var(--
         </div>
         <div class="card-main" id="cardMain"></div>
         <div class="card-sub" id="cardSub"></div>
+        <div id="cardLink" style="display:none;flex-direction:row;justify-content:flex-end;"></div>
         <div class="card-stamp" id="cardStamp">
           <div class="stamp-box">
             <div class="stamp-text">CHECKED</div>
@@ -720,7 +728,7 @@ html,body{height:100%;background:#1a1a1c;font-family:var(--font-ui);color:var(--
     <div class="tree-panel" id="treePanel"></div>
     <div class="footer-strip" style="display:flex;align-items:center;justify-content:space-between;padding:5px 14px 8px;">
       <span class="footer-refresh" onclick="reloadApp()">רענון</span>
-      <span id="versionTap" onclick="handleVersionTap()" style="cursor:default;">AirCheck+ · v2.07.051 · built by eligrt</span>
+      <span id="versionTap" onclick="handleVersionTap()" style="cursor:default;">AirCheck+ · v2.07.053 · built by eligrt</span>
       <span style="width:40px;"></span>
     </div>
   </div>
@@ -779,7 +787,7 @@ html,body{height:100%;background:#1a1a1c;font-family:var(--font-ui);color:var(--
 
     <div class="footer-strip" style="display:flex;align-items:center;justify-content:space-between;padding:5px 14px 8px;">
       <span style="width:40px;"></span>
-      <span id="versionTap" onclick="handleVersionTap()" style="cursor:default;">AirCheck+ · v2.07.051 · built by eligrt</span>
+      <span id="versionTap" onclick="handleVersionTap()" style="cursor:default;">AirCheck+ · v2.07.053 · built by eligrt</span>
       <span style="width:40px;"></span>
     </div>
   </div>
@@ -881,7 +889,7 @@ html,body{height:100%;background:#1a1a1c;font-family:var(--font-ui);color:var(--
     </div>
     <div class="footer-strip" style="display:flex;align-items:center;justify-content:space-between;padding:5px 14px 8px;">
       <span class="footer-refresh" onclick="reloadApp()">רענון</span>
-      <span id="versionTap" onclick="handleVersionTap()" style="cursor:default;">AirCheck+ · v2.07.051 · built by eligrt</span>
+      <span id="versionTap" onclick="handleVersionTap()" style="cursor:default;">AirCheck+ · v2.07.053 · built by eligrt</span>
       <span style="width:40px;"></span>
     </div>
   </div>
@@ -900,7 +908,7 @@ html,body{height:100%;background:#1a1a1c;font-family:var(--font-ui);color:var(--
     <div class="editor-list" id="editorList"></div>
     <div class="footer-strip" style="display:flex;align-items:center;justify-content:space-between;padding:5px 14px 8px;">
       <span class="footer-refresh" onclick="reloadApp()">רענון</span>
-      <span id="versionTap" onclick="handleVersionTap()" style="cursor:default;">AirCheck+ · v2.07.051 · built by eligrt</span>
+      <span id="versionTap" onclick="handleVersionTap()" style="cursor:default;">AirCheck+ · v2.07.053 · built by eligrt</span>
       <span style="width:40px;"></span>
     </div>
   </div>
@@ -928,6 +936,12 @@ html,body{height:100%;background:#1a1a1c;font-family:var(--font-ui);color:var(--
       <div id="edSubRow">
         <div class="ed-input-label">הסבר (אופציונלי)</div>
         <input class="ed-input" id="edInputSub" placeholder="לדוגמה: שדה המראה ונחיתה">
+      </div>
+      <div id="edLinkSection" class="ed-popup-link-section" style="display:none;">
+        <div class="ed-popup-link-label">קישור חיצוני (אופציונלי)</div>
+        <input class="ed-input" id="edInputUrl" placeholder="https://..." style="direction:ltr;font-size:12px;" autocomplete="off" autocapitalize="off">
+        <div class="ed-input-label" style="margin-top:6px;">תווית כפתור</div>
+        <input class="ed-input" id="edInputUrlLabel" placeholder='לדוגמה: NavLog, NOTAMs IAA'>
       </div>
       <div class="ed-popup-btns">
         <button class="btn btn-ghost" style="flex:1" onclick="closeEdPopup()">ביטול</button>
@@ -960,7 +974,8 @@ const FEATURES={
   MULTI_PROFILE: false,
   WHATS_NEW: false,
   PWA_POPUP: true,
-  DONATE: false
+  DONATE: false,
+  EXTERNAL_LINK: false
 };
 
 const CL=[
@@ -979,8 +994,8 @@ const CL=[
   {phase:"יום לפני",group:"בדיקת מז״א",main:"בדוק מפות רוח בנתיב",sub:""},
   {phase:"יום לפני",group:"בדיקת מז״א",main:"בדוק מפות SIG",sub:""},
   {phase:"יום לפני",group:"בדיקת מז״א",main:"אמת נתונים באפליקציית מז״א",sub:""},
-  {phase:"יום לפני",group:"מודיעין טיס",main:"בדוק NOTAM",sub:""},
-  {phase:"יום לפני",group:"מודיעין טיס",main:"הגשת תוכנית טיסה",sub:""},
+  {phase:"יום לפני",group:"מודיעין טיס",main:"בדוק NOTAM",sub:"",url:"https://notam.liorbenhorin.xyz/",urlLabel:"NOTAM IL"},
+  {phase:"יום לפני",group:"מודיעין טיס",main:"הגשת תוכנית טיסה",sub:"",url:"https://fpl.co.il/",urlLabel:"fpl.co.il"},
   {phase:"יום לפני",group:"מודיעין טיס",main:"קבלת מרשה טיסה",sub:""},
   {phase:"הגעה למנחת ולמטוס",group:"רישומים וניירת",main:"פתיחת טיסה במחשב המנחת (עודד)",sub:""},
   {phase:"הגעה למנחת ולמטוס",group:"רישומים וניירת",main:"ודא המצאות תעודות המטוס בקוקפיט",sub:"בעלות, כושר טיסה ורדיו"},
@@ -1035,7 +1050,7 @@ function render(){
   // Sync stamp tail from settings on every render
   const stampEl=document.getElementById('stampInit');
   if(stampEl){const t=settings&&settings.tail?settings.tail:(localStorage.getItem(REG_KEY)||'');stampEl.textContent='PIC · 4X-'+(t||'HHH');}
-  const item=CL[current];if(!item)return;const phase=PHASE_IDX[item.phase];const group=phase?phase.groups.find(g=>g.name===item.group):null;document.getElementById('crumbPhase').textContent=item.phase;document.getElementById('crumbGroup').textContent=item.group;const numEl=document.getElementById('cardItemNum');numEl.innerHTML='ITEM <b>'+(current+1).toString().padStart(2,'0')+'</b><span> / '+CL.length+'</span>';const badge=document.getElementById('cardBadge');if(group){const pos=group.items.indexOf(current)+1;badge.textContent=pos+'/'+group.items.length+' בקבוצה';badge.style.display='';}else{badge.style.display='none';}document.getElementById('cardMain').textContent=item.main;const subEl=document.getElementById('cardSub');subEl.textContent=item.sub||'';subEl.style.display=item.sub?'':'none';document.getElementById('cardStamp').classList.remove('visible');const next=CL[current+1];const under=document.getElementById('cardUnder');if(next){under.style.display='';document.getElementById('cardUnderNum').innerHTML='ITEM <b>'+(current+2).toString().padStart(2,'0')+'</b>';document.getElementById('cardUnderMain').textContent=next.main;}else{under.style.display='none';}renderRunway();if(treeOpen)renderTree();document.getElementById('confirmHint').classList.remove('confirmed','skipped-nudge');
+  const item=CL[current];if(!item)return;const phase=PHASE_IDX[item.phase];const group=phase?phase.groups.find(g=>g.name===item.group):null;document.getElementById('crumbPhase').textContent=item.phase;document.getElementById('crumbGroup').textContent=item.group;const numEl=document.getElementById('cardItemNum');numEl.innerHTML='ITEM <b>'+(current+1).toString().padStart(2,'0')+'</b><span> / '+CL.length+'</span>';const badge=document.getElementById('cardBadge');if(group){const pos=group.items.indexOf(current)+1;badge.textContent=pos+'/'+group.items.length+' בקבוצה';badge.style.display='';}else{badge.style.display='none';}document.getElementById('cardMain').textContent=item.main;const subEl=document.getElementById('cardSub');subEl.textContent=item.sub||'';subEl.style.display=item.sub?'':'none';const linkEl=document.getElementById('cardLink');if(linkEl){if(FEATURES.EXTERNAL_LINK&&item.url){const lbl=item.urlLabel||'פתח קישור';linkEl.innerHTML='';const btn=document.createElement('a');btn.className='card-link-btn';btn.href=item.url;btn.target='_blank';btn.rel='noopener noreferrer';btn.innerHTML='<i class="ti ti-external-link" aria-hidden="true"></i> '+lbl;linkEl.appendChild(btn);linkEl.style.display='flex';}else{linkEl.style.display='none';}}document.getElementById('cardStamp').classList.remove('visible');const next=CL[current+1];const under=document.getElementById('cardUnder');if(next){under.style.display='';document.getElementById('cardUnderNum').innerHTML='ITEM <b>'+(current+2).toString().padStart(2,'0')+'</b>';document.getElementById('cardUnderMain').textContent=next.main;}else{under.style.display='none';}renderRunway();if(treeOpen)renderTree();document.getElementById('confirmHint').classList.remove('confirmed','skipped-nudge');
   const hintEl=document.getElementById('confirmHint');
   hintEl.textContent='לחץ והחזק את המסלול לאישור';
   hintEl.onclick=null;
@@ -1698,13 +1713,13 @@ function clToEdData(list){
     if(!phMap[item.phase]){phMap[item.phase]={phase:item.phase,groups:[],gMap:{}};phases.push(phMap[item.phase]);}
     const p=phMap[item.phase];
     if(!p.gMap[item.group]){p.gMap[item.group]={name:item.group,items:[]};p.groups.push(p.gMap[item.group]);}
-    p.gMap[item.group].items.push({main:item.main,sub:item.sub||''});
+    p.gMap[item.group].items.push({main:item.main,sub:item.sub||'',url:item.url||'',urlLabel:item.urlLabel||''});
   });
   return phases;
 }
 function edDataToCL(data){
   const list=[];
-  data.forEach(p=>p.groups.forEach(g=>g.items.forEach(it=>list.push({phase:p.phase,group:g.name,main:it.main,sub:it.sub||''}))));
+  data.forEach(p=>p.groups.forEach(g=>g.items.forEach(it=>list.push({phase:p.phase,group:g.name,main:it.main,sub:it.sub||'',url:it.url||'',urlLabel:it.urlLabel||''}))));
   return list;
 }
 let _editorFromSettings=false;
@@ -1794,7 +1809,7 @@ function renderEditor(){
       g.items.forEach((it,ii)=>itemsDiv.appendChild(buildItemRow(it,ii,g,gi,ph,pi)));
 
       const addItem=document.createElement('button');addItem.className='ed-add';addItem.textContent='+ הוסף פריט';
-      addItem.onclick=()=>openEdPopup('הוסף פריט','','',true,(m,s)=>{g.items.push({main:m,sub:s});renderEditor();});
+      addItem.onclick=()=>openEdPopup('הוסף פריט','','',true,(m,s,u,ul)=>{g.items.push({main:m,sub:s,url:u||'',urlLabel:ul||''});renderEditor();});
       itemsDiv.appendChild(addItem);
       gDiv.appendChild(ghdr);gDiv.appendChild(itemsDiv);groups.appendChild(gDiv);
     });
@@ -1828,8 +1843,9 @@ function buildItemRow(it,ii,g,gi,ph,pi){
   const txt=document.createElement('div');txt.className='ed-item-text';
   const main=document.createElement('div');main.className='ed-item-main';main.textContent=it.main;txt.appendChild(main);
   if(it.sub){const sub=document.createElement('div');sub.className='ed-item-sub';sub.textContent=it.sub;txt.appendChild(sub);}
+  if(FEATURES.EXTERNAL_LINK&&it.url){const linkInd=document.createElement('div');linkInd.className='ed-item-link';linkInd.textContent='🔗 '+(it.urlLabel||it.url);txt.appendChild(linkInd);}
   const editBtn=document.createElement('button');editBtn.className='ed-icon on-paper';editBtn.textContent='✎';
-  editBtn.onclick=e=>{e.stopPropagation();openEdPopup('עריכת פריט',it.main,it.sub,true,(m,s)=>{it.main=m;it.sub=s;renderEditor();});};
+  editBtn.onclick=e=>{e.stopPropagation();openEdPopup('עריכת פריט',it.main,it.sub,true,(m,s,u,ul)=>{it.main=m;it.sub=s;it.url=u||'';it.urlLabel=ul||'';renderEditor();},it.url||'',it.urlLabel||'');};
   const delBtn=document.createElement('button');delBtn.className='ed-icon del on-paper';delBtn.textContent='✕';
   delBtn.onclick=e=>{e.stopPropagation();showConfirm('מחיקת פריט','למחוק את הפריט "'+it.main+'"?',()=>{g.items.splice(ii,1);renderEditor();},'danger');};
   // Desktop drag — on full row
@@ -1907,11 +1923,15 @@ function buildItemRow(it,ii,g,gi,ph,pi){
   return row;
 }
 
-function openEdPopup(title,main,sub,hasSub,cb){
+function openEdPopup(title,main,sub,hasSub,cb,url,urlLabel){
   document.getElementById('edPopupTitle').textContent=title;
   document.getElementById('edInputMain').value=main||'';
   document.getElementById('edInputSub').value=sub||'';
   document.getElementById('edSubRow').style.display=hasSub?'block':'none';
+  const linkSec=document.getElementById('edLinkSection');
+  if(linkSec)linkSec.style.display=(hasSub&&FEATURES.EXTERNAL_LINK)?'block':'none';
+  if(document.getElementById('edInputUrl'))document.getElementById('edInputUrl').value=url||'';
+  if(document.getElementById('edInputUrlLabel'))document.getElementById('edInputUrlLabel').value=urlLabel||'';
   edPopupCallback={cb,hasSub};
 
   const popup=document.getElementById('edPopup');
@@ -1949,7 +1969,9 @@ function closeEdPopup(){
 function confirmEdPopup(){
   const main=document.getElementById('edInputMain').value.trim();if(!main)return;
   const sub=document.getElementById('edInputSub').value.trim();
-  if(edPopupCallback){if(edPopupCallback.hasSub)edPopupCallback.cb(main,sub);else edPopupCallback.cb(main);}
+  const url=(document.getElementById('edInputUrl')?.value||'').trim();
+  const urlLabel=(document.getElementById('edInputUrlLabel')?.value||'').trim();
+  if(edPopupCallback){if(edPopupCallback.hasSub)edPopupCallback.cb(main,sub,url,urlLabel);else edPopupCallback.cb(main);}
   closeEdPopup();
 }
 document.addEventListener('keydown',e=>{if(e.key==='Enter'&&document.getElementById('edPopup').classList.contains('open'))confirmEdPopup();});
@@ -2020,7 +2042,9 @@ function processXLSFile(file){
           if(r[1])gr=String(r[1]).trim();
           const main=String(r[2]||'').trim();
           const sub=String(r[3]||'').trim();
-          if(main&&ph&&gr)newList.push({phase:ph,group:gr,main,sub});
+          const url=String(r[4]||'').trim();
+          const urlLabel=String(r[5]||'').trim();
+          if(main&&ph&&gr)newList.push({phase:ph,group:gr,main,sub,url,urlLabel});
           else if(r[2]&&(!ph||!gr))warnings.push('שורה '+(i+1)+': חסר שלב או קבוצה');
         });
         if(newList.length>0){
@@ -2153,14 +2177,14 @@ function confirmXLSImport(){
 function exportChecklist(){
   if(typeof XLSX==='undefined'){showToast('טוען ספריה...');return;}
   const wb=XLSX.utils.book_new();
-  const aoa=[['AirCheck+ — Personal Flight Checklist','','',''],['Phase','Group','Item','Sub']];
+  const aoa=[['AirCheck+ — Personal Flight Checklist','','','','',''],['Phase','Group','Item','Sub','URL','URLLabel']];
   let prevPhase='',prevGroup='';
   CL.forEach(it=>{
-    aoa.push([it.phase!==prevPhase?it.phase:'',it.group!==prevGroup?it.group:'',it.main,it.sub||'']);
+    aoa.push([it.phase!==prevPhase?it.phase:'',it.group!==prevGroup?it.group:'',it.main,it.sub||'',it.url||'',it.urlLabel||'']);
     prevPhase=it.phase;prevGroup=it.group;
   });
   const ws=XLSX.utils.aoa_to_sheet(aoa);
-  ws['!cols']=[{wch:28},{wch:22},{wch:36},{wch:30}];
+  ws['!cols']=[{wch:28},{wch:22},{wch:36},{wch:30},{wch:36},{wch:20}];
   XLSX.utils.book_append_sheet(wb,ws,'Checklist');
   XLSX.writeFile(wb,'AirCheck+_Export.xlsx');
   showToast('✓ הקובץ יוצא בהצלחה — בדוק את ההורדות');
@@ -2176,16 +2200,16 @@ function exportEditorToXLS(){
     const a1stamp='AirCheck+ · Personal Flight Checklist · '+ver+' · built by eligrt · Exported: '+exportDate;
     p.profiles.forEach(prof=>{
       const list=prof.list||[];
-      const aoa=[[a1stamp],['Phase','Group','Item','Sub']];
+      const aoa=[[a1stamp],['Phase','Group','Item','Sub','URL','URLLabel']];
       let prevPhase='',prevGroup='';
       list.forEach(it=>{
-        aoa.push([it.phase!==prevPhase?it.phase:'',it.group!==prevGroup?it.group:'',it.main,it.sub||'']);
+        aoa.push([it.phase!==prevPhase?it.phase:'',it.group!==prevGroup?it.group:'',it.main,it.sub||'',it.url||'',it.urlLabel||'']);
         prevPhase=it.phase;prevGroup=it.group;
       });
       const ws=XLSX.utils.aoa_to_sheet(aoa);
-      // Delete B1/C1/D1 so A1 content spreads visually across columns
-      delete ws['B1'];delete ws['C1'];delete ws['D1'];
-      ws['!cols']=[{wch:28},{wch:22},{wch:36},{wch:30}];
+      // Delete B1/C1/D1/E1/F1 so A1 content spreads visually
+      delete ws['B1'];delete ws['C1'];delete ws['D1'];delete ws['E1'];delete ws['F1'];
+      ws['!cols']=[{wch:28},{wch:22},{wch:36},{wch:30},{wch:36},{wch:20}];
       const sheetName=prof.name.replace(/[\\\/\?\*\[\]\:]/g,'').substring(0,31)||'רשימה';
       XLSX.utils.book_append_sheet(wb,ws,sheetName);
     });
