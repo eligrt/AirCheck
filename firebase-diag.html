@@ -21,18 +21,24 @@ h1{font-size:14px;color:rgba(244,236,220,.5);letter-spacing:.1em;text-transform:
 .step.fail .step-title{color:#eb5757;}
 .step.warn .step-title{color:var(--amber);}
 .step.pending .step-title{color:rgba(244,236,220,.4);}
-button{width:100%;padding:14px;background:#1c3d6e;border:none;border-radius:6px;color:#f4ecdc;font-family:'JetBrains Mono',monospace;font-size:13px;font-weight:700;cursor:pointer;margin-top:8px;}
+.btns{display:flex;gap:8px;margin-top:8px;}
+button{flex:1;padding:14px;border:none;border-radius:6px;font-family:'JetBrains Mono',monospace;font-size:12px;font-weight:700;cursor:pointer;}
+.btn-run{background:#1c3d6e;color:#f4ecdc;}
+.btn-reset{background:#b94a3a;color:#fff;}
 button:active{opacity:.8;}
 </style>
 </head>
 <body>
 <h1>AirCheck+ · Firebase Diagnostic</h1>
 <div id="steps"></div>
-<button onclick="runDiag()">Run Diagnostics</button>
+<div class="btns">
+  <button class="btn-run" onclick="runDiag()">▶ Run Diagnostics</button>
+  <button class="btn-reset" onclick="resetData()">✕ Reset Link Data</button>
+</div>
 
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/12.14.0/firebase-app.js";
-import { getDatabase, ref, get, set } from "https://www.gstatic.com/firebasejs/12.14.0/firebase-database.js";
+import { getDatabase, ref, get, set, remove } from "https://www.gstatic.com/firebasejs/12.14.0/firebase-database.js";
 
 const firebaseConfig = {
   apiKey: "AIzaSyBoW1O9dTanLUZW5Z8jswn3hxpfFSdmzm0",
@@ -64,17 +70,14 @@ function addStep(id, title, status, val){
 window.runDiag = async function(){
   document.getElementById('steps').innerHTML = '';
 
-  // Step 1 — Device ID
   const deviceId = localStorage.getItem('aircheck_device_id');
-  addStep('s1', '1. Device ID', deviceId ? 'ok' : 'fail', deviceId || 'NOT FOUND — not running AirCheck+?');
+  addStep('s1', '1. Device ID', deviceId ? 'ok' : 'fail', deviceId || 'NOT FOUND');
 
-  // Step 2 — localStorage external links
   const extCounts = localStorage.getItem('aircheck_external_link_counts');
   const extUsed = localStorage.getItem('aircheck_external_link_used');
   addStep('s2', '2. localStorage external links', extCounts ? 'ok' : 'warn',
     'counts: ' + (extCounts || 'null') + ' | used: ' + (extUsed || 'null'));
 
-  // Step 3 — Firebase read
   addStep('s3', '3. Firebase read...', 'pending', 'testing...');
   try{
     const snap = await get(ref(db, 'pilots/' + deviceId));
@@ -90,15 +93,13 @@ window.runDiag = async function(){
     addStep('s3', '3. Firebase read', 'fail', 'ERROR: ' + e.message);
   }
 
-  // Step 4 — Firebase write test
   addStep('s4', '4. Firebase write test...', 'pending', 'testing...');
   try{
     const testVal = Date.now();
     await set(ref(db, 'pilots/' + deviceId + '/diagTest'), testVal);
-    // Read back to confirm
     const snap2 = await get(ref(db, 'pilots/' + deviceId + '/diagTest'));
     if(snap2.val() === testVal){
-      addStep('s4', '4. Firebase write', 'ok', 'Write confirmed: ' + testVal);
+      addStep('s4', '4. Firebase write', 'ok', 'Write + read-back confirmed: ' + testVal);
     } else {
       addStep('s4', '4. Firebase write', 'fail', 'Write silent fail — value mismatch');
     }
@@ -106,15 +107,14 @@ window.runDiag = async function(){
     addStep('s4', '4. Firebase write', 'fail', 'ERROR: ' + e.message);
   }
 
-  // Step 5 — Write external link counts
-  addStep('s5', '5. Write extLinkCounts...', 'pending', 'testing...');
+  addStep('s5', '5. Write sanitized extLinkCounts...', 'pending', 'testing...');
   try{
-    const counts = {'NOTAM_IL': 99, 'fpl_co_il': 99};
+    const counts = {'NOTAM_IL': 1, 'fpl_co_il': 1};
     await set(ref(db, 'pilots/' + deviceId + '/externalLinkCounts'), counts);
     const snap3 = await get(ref(db, 'pilots/' + deviceId + '/externalLinkCounts'));
     const written = snap3.val();
-    if(written && written['NOTAM_IL'] === 99){
-      addStep('s5', '5. Write extLinkCounts', 'ok', 'Written: ' + JSON.stringify(written));
+    if(written && written['NOTAM_IL'] === 1){
+      addStep('s5', '5. Write extLinkCounts', 'ok', 'Written + confirmed: ' + JSON.stringify(written));
     } else {
       addStep('s5', '5. Write extLinkCounts', 'fail', 'Mismatch: ' + JSON.stringify(written));
     }
@@ -122,11 +122,42 @@ window.runDiag = async function(){
     addStep('s5', '5. Write extLinkCounts', 'fail', 'ERROR: ' + e.message);
   }
 
-  // Step 6 — Summary
-  const allOk = [...document.querySelectorAll('.step')].every(s => s.classList.contains('ok'));
+  const allOk = [...document.querySelectorAll('.step')].filter(s=>s.id!=='s6').every(s => s.classList.contains('ok'));
   addStep('s6', allOk ? '✓ All checks passed' : '⚠ Some checks failed',
     allOk ? 'ok' : 'warn',
-    allOk ? 'Firebase is working correctly from this device/network' : 'See failed steps above');
+    allOk ? 'Firebase working correctly from this device/network' : 'See failed steps above');
+};
+
+window.resetData = async function(){
+  const deviceId = localStorage.getItem('aircheck_device_id');
+  if(!deviceId){ alert('No device ID found in localStorage'); return; }
+
+  document.getElementById('steps').innerHTML = '';
+  addStep('r1', 'Resetting...', 'pending', 'clearing localStorage and Firebase...');
+
+  try{
+    // Clear localStorage
+    localStorage.removeItem('aircheck_external_link_counts');
+    localStorage.removeItem('aircheck_external_link_used');
+
+    // Clear Firebase
+    await remove(ref(db, 'pilots/' + deviceId + '/externalLinkCounts'));
+    await remove(ref(db, 'pilots/' + deviceId + '/externalLinkUsed'));
+    await set(ref(db, 'pilots/' + deviceId + '/externalLinkUsed'), false);
+
+    // Verify
+    const snap = await get(ref(db, 'pilots/' + deviceId));
+    const data = snap.val() || {};
+
+    addStep('r1', '✓ Reset complete', 'ok',
+      'device: ' + deviceId +
+      '\nlocalStorage counts: ' + (localStorage.getItem('aircheck_external_link_counts') || 'null') +
+      '\nFirebase extLinkCounts: ' + JSON.stringify(data.externalLinkCounts || null) +
+      '\nFirebase extLinkUsed: ' + data.externalLinkUsed
+    );
+  }catch(e){
+    addStep('r1', 'Reset failed', 'fail', 'ERROR: ' + e.message);
+  }
 };
 </script>
 </body>
