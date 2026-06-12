@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <!-- ═══════════════════════════════════════
-     AirCheck+ · v2.07.062 · built by eligrt
+     AirCheck+ · v2.07.063 · built by eligrt
      ═══════════════════════════════════════ -->
 <html lang="he" dir="rtl">
 <head>
@@ -611,7 +611,7 @@ html,body{height:100%;background:#1a1a1c;font-family:var(--font-ui);color:var(--
     <div class="splash-footer-wrap">
       <div class="footer-strip" style="display:flex;align-items:center;justify-content:space-between;padding:5px 14px 8px;">
         <span class="footer-refresh" onclick="reloadApp()">רענון</span>
-        <span id="versionTap" onclick="handleVersionTap()" style="cursor:default;">AirCheck+ · v2.07.062 · built by eligrt</span>
+        <span id="versionTap" onclick="handleVersionTap()" style="cursor:default;">AirCheck+ · v2.07.063 · built by eligrt</span>
         <span style="width:40px;"></span>
       </div>
     </div>
@@ -728,7 +728,7 @@ html,body{height:100%;background:#1a1a1c;font-family:var(--font-ui);color:var(--
     <div class="tree-panel" id="treePanel"></div>
     <div class="footer-strip" style="display:flex;align-items:center;justify-content:space-between;padding:5px 14px 8px;">
       <span class="footer-refresh" onclick="reloadApp()">רענון</span>
-      <span id="versionTap" onclick="handleVersionTap()" style="cursor:default;">AirCheck+ · v2.07.062 · built by eligrt</span>
+      <span id="versionTap" onclick="handleVersionTap()" style="cursor:default;">AirCheck+ · v2.07.063 · built by eligrt</span>
       <span style="width:40px;"></span>
     </div>
   </div>
@@ -787,7 +787,7 @@ html,body{height:100%;background:#1a1a1c;font-family:var(--font-ui);color:var(--
 
     <div class="footer-strip" style="display:flex;align-items:center;justify-content:space-between;padding:5px 14px 8px;">
       <span style="width:40px;"></span>
-      <span id="versionTap" onclick="handleVersionTap()" style="cursor:default;">AirCheck+ · v2.07.062 · built by eligrt</span>
+      <span id="versionTap" onclick="handleVersionTap()" style="cursor:default;">AirCheck+ · v2.07.063 · built by eligrt</span>
       <span style="width:40px;"></span>
     </div>
   </div>
@@ -889,7 +889,7 @@ html,body{height:100%;background:#1a1a1c;font-family:var(--font-ui);color:var(--
     </div>
     <div class="footer-strip" style="display:flex;align-items:center;justify-content:space-between;padding:5px 14px 8px;">
       <span class="footer-refresh" onclick="reloadApp()">רענון</span>
-      <span id="versionTap" onclick="handleVersionTap()" style="cursor:default;">AirCheck+ · v2.07.062 · built by eligrt</span>
+      <span id="versionTap" onclick="handleVersionTap()" style="cursor:default;">AirCheck+ · v2.07.063 · built by eligrt</span>
       <span style="width:40px;"></span>
     </div>
   </div>
@@ -908,7 +908,7 @@ html,body{height:100%;background:#1a1a1c;font-family:var(--font-ui);color:var(--
     <div class="editor-list" id="editorList"></div>
     <div class="footer-strip" style="display:flex;align-items:center;justify-content:space-between;padding:5px 14px 8px;">
       <span class="footer-refresh" onclick="reloadApp()">רענון</span>
-      <span id="versionTap" onclick="handleVersionTap()" style="cursor:default;">AirCheck+ · v2.07.062 · built by eligrt</span>
+      <span id="versionTap" onclick="handleVersionTap()" style="cursor:default;">AirCheck+ · v2.07.063 · built by eligrt</span>
       <span style="width:40px;"></span>
     </div>
   </div>
@@ -1046,24 +1046,19 @@ function loadRoute(){}
 function updateClock(){const now=new Date();const h=String(now.getUTCHours()).padStart(2,'0');const m=String(now.getUTCMinutes()).padStart(2,'0');document.getElementById('utcClock').textContent=h+':'+m;document.getElementById('stampTime').textContent=h+':'+m+' UTC';}
 setInterval(updateClock,10000);updateClock();
 function drawRings(){const g=document.getElementById('ringCoils');g.innerHTML='';const n=8;for(let k=0;k<n;k++){const x=8+k*((352-8)/7);const ns='http://www.w3.org/2000/svg';const back=document.createElementNS(ns,'path');back.setAttribute('d',`M ${x-3} 30 Q ${x-5} 18 ${x+2} 8 Q ${x+5} 4 ${x+8} 6`);back.setAttribute('fill','none');back.setAttribute('stroke','url(#wireDark)');back.setAttribute('stroke-width','1.6');back.setAttribute('stroke-linecap','round');back.setAttribute('opacity','.9');g.appendChild(back);const hole=document.createElementNS(ns,'ellipse');hole.setAttribute('cx',x);hole.setAttribute('cy','30');hole.setAttribute('rx','5');hole.setAttribute('ry','2.2');hole.setAttribute('fill','url(#paperHole)');g.appendChild(hole);const hole2=document.createElementNS(ns,'ellipse');hole2.setAttribute('cx',x);hole2.setAttribute('cy','30.5');hole2.setAttribute('rx','4');hole2.setAttribute('ry','1.2');hole2.setAttribute('fill','#000');hole2.setAttribute('opacity','.55');g.appendChild(hole2);const front=document.createElementNS(ns,'path');front.setAttribute('d',`M ${x+8} 6 Q ${x+13} 9 ${x+12} 16 Q ${x+10} 24 ${x+5} 30`);front.setAttribute('fill','none');front.setAttribute('stroke','url(#wireGrad)');front.setAttribute('stroke-width','2.1');front.setAttribute('stroke-linecap','round');g.appendChild(front);const hl=document.createElementNS(ns,'circle');hl.setAttribute('cx',x+10);hl.setAttribute('cy','8');hl.setAttribute('r','.9');hl.setAttribute('fill','#fff');hl.setAttribute('opacity','.95');g.appendChild(hl);}}
-function trackExternalLinkTap(url, lbl){
-  try{
-    let counts={};
-    try{counts=JSON.parse(localStorage.getItem('aircheck_external_link_counts')||'{}');}catch(e){}
-    counts[lbl]=(counts[lbl]||0)+1;
-    localStorage.setItem('aircheck_external_link_counts',JSON.stringify(counts));
-    localStorage.setItem('aircheck_external_link_used','1');
-    if(typeof syncToFirebase==='function')syncToFirebase();
-  }catch(e){}
-  window.open(url,'_blank','noopener,noreferrer');
-}
 function trackExternalLinkTap(url,lbl){
   try{
     const key=lbl.replace(/[\.#$\/\[\] ]/g,'_');
+    // Store count
     let counts={};
     try{counts=JSON.parse(localStorage.getItem('aircheck_external_link_counts')||'{}');}catch(e){}
     counts[key]=(counts[key]||0)+1;
     localStorage.setItem('aircheck_external_link_counts',JSON.stringify(counts));
+    // Store label mapping key->original
+    let labels={};
+    try{labels=JSON.parse(localStorage.getItem('aircheck_external_link_labels')||'{}');}catch(e){}
+    labels[key]=lbl;
+    localStorage.setItem('aircheck_external_link_labels',JSON.stringify(labels));
     localStorage.setItem('aircheck_external_link_used','1');
     if(typeof syncToFirebase==='function')syncToFirebase();
   }catch(e){}
@@ -3278,6 +3273,7 @@ function splashSecondaryAction(){
       // External links
       const externalLinkUsed=localStorage.getItem('aircheck_external_link_used')==='1';
       let externalLinkCounts={};
+      let externalLinkLabels={};
       try{
         const rawCounts=JSON.parse(localStorage.getItem('aircheck_external_link_counts')||'{}');
         // Sanitize keys — Firebase keys cannot contain . # $ / [ ] or spaces
@@ -3288,6 +3284,7 @@ function splashSecondaryAction(){
         // Save sanitized counts back to localStorage
         localStorage.setItem('aircheck_external_link_counts',JSON.stringify(externalLinkCounts));
       }catch(e){}
+      try{externalLinkLabels=JSON.parse(localStorage.getItem('aircheck_external_link_labels')||'{}');}catch(e){}
 
       // Flight counters — use max(local, firebase) to survive browser clears
       const localFlights=parseInt(localStorage.getItem('aircheck_flight_count')||'0');
@@ -3308,7 +3305,7 @@ function splashSecondaryAction(){
         lastSeen: now,
         os, listType, profileCount,
         metarUsed, metarStation, metarCustomIcao, metarStationCounts,
-        externalLinkUsed, externalLinkCounts,
+        externalLinkUsed, externalLinkCounts, externalLinkLabels,
         flightCount, completedFlights,
         pwaInstalled, pwaPromptShown, pwaPromptTimestamp
       });
@@ -3365,13 +3362,20 @@ function splashSecondaryAction(){
       // External links
       const extLinkUsers=pilots.filter(p=>p.externalLinkUsed).length;
       const extLinkTotals={};
+      const extLinkLabelsMap={};
       let totalExtLinkTaps=0;
       pilots.forEach(p=>{
         if(!p.externalLinkCounts)return;
-        Object.entries(p.externalLinkCounts).forEach(([label,count])=>{
-          extLinkTotals[label]=(extLinkTotals[label]||0)+count;
+        Object.entries(p.externalLinkCounts).forEach(([key,count])=>{
+          extLinkTotals[key]=(extLinkTotals[key]||0)+count;
           totalExtLinkTaps+=count;
         });
+        // Collect label mappings
+        if(p.externalLinkLabels){
+          Object.entries(p.externalLinkLabels).forEach(([key,lbl])=>{
+            if(!extLinkLabelsMap[key])extLinkLabelsMap[key]=lbl;
+          });
+        }
       });
       const stationTotals={LLBG:0,LLHA:0,LLIB:0,LLER:0,LLHZ:0,custom:0};
       const knownStations=new Set(['LLBG','LLHA','LLIB','LLER','LLHZ']);
@@ -3444,8 +3448,8 @@ function splashSecondaryAction(){
           </div>`:''}
         </div>`;
       }
-      function stationBar(label,count,fill){
-        const p=totalMetarOpens>0?Math.round(count/totalMetarOpens*100):0;
+      function stationBar(label,count,fill,customPct){
+        const p=customPct!==undefined?customPct:(totalMetarOpens>0?Math.round(count/totalMetarOpens*100):0);
         return `<div style="margin-bottom:7px;">
           <div style="display:flex;justify-content:space-between;font-size:10px;font-family:var(--font-mono);color:var(--ink-muted);margin-bottom:3px;direction:ltr;">
             <span style="color:var(--ink-body);">${label}</span><span>${count} · ${p}%</span>
@@ -3499,9 +3503,9 @@ function splashSecondaryAction(){
           ${row('ממתינים לאישור',communityPending,communityPending+communityApproved+communityRejected)}
           ${row('מאושרים',communityApproved,communityPending+communityApproved+communityRejected)}
           ${section('External links')}
-          ${row('פיילוטים שהשתמשו',extLinkUsers,total)}
+          ${`<div style="display:flex;justify-content:space-between;align-items:baseline;padding:3px 0;border-bottom:1px dashed rgba(200,160,74,.15);"><span style="font-size:11px;color:var(--ink-muted);direction:rtl;">משתמשים בקישורים חיצוניים</span><span style="font-family:var(--font-mono);font-size:11px;color:var(--ink-body);direction:ltr;">${extLinkUsers}</span></div>`}
           ${`<div style="display:flex;justify-content:space-between;align-items:baseline;padding:3px 0;border-bottom:1px dashed rgba(200,160,74,.15);"><span style="font-size:11px;color:var(--ink-muted);direction:rtl;">סה״כ לחיצות</span><span style="font-family:var(--font-mono);font-size:11px;color:var(--ink-body);direction:ltr;">${totalExtLinkTaps}</span></div>`}
-          ${Object.entries(extLinkTotals).sort((a,b)=>b[1]-a[1]).map(([label,count])=>stationBar(label,count,'var(--gold)')).join('')}
+          ${Object.entries(extLinkTotals).sort((a,b)=>b[1]-a[1]).map(([key,count])=>{const displayLabel=extLinkLabelsMap[key]||key;const pct=totalExtLinkTaps>0?Math.round(count/totalExtLinkTaps*100):0;return stationBar(displayLabel,count,'var(--gold)',pct);}).join('')}
           ${section('METAR')}
           ${row('משתמשים ב־METAR',metarUsers,total)}
           ${row('סה״כ פתיחות',totalMetarOpens,totalMetarOpens)}
