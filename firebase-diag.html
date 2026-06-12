@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<title>AirCheck+ · Firebase Diagnostic</title>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+:root{--green:#1f6f3f;--red:#b94a3a;--amber:#f59e0b;--ink:#1c3d6e;--paper:#f4ecdc;}
+*{box-sizing:border-box;margin:0;padding:0;}
+body{background:#1a1a1c;font-family:'JetBrains Mono',monospace;padding:16px;color:#f4ecdc;}
+h1{font-size:14px;color:rgba(244,236,220,.5);letter-spacing:.1em;text-transform:uppercase;margin-bottom:16px;}
+.step{background:#2a2218;border-radius:6px;padding:12px 14px;margin-bottom:10px;border-left:4px solid #555;}
+.step.ok{border-color:var(--green);}
+.step.fail{border-color:var(--red);}
+.step.warn{border-color:var(--amber);}
+.step.pending{border-color:#555;}
+.step-title{font-size:12px;font-weight:700;margin-bottom:4px;}
+.step-val{font-size:11px;color:rgba(244,236,220,.6);word-break:break-all;line-height:1.6;}
+.step.ok .step-title{color:#6fcf97;}
+.step.fail .step-title{color:#eb5757;}
+.step.warn .step-title{color:var(--amber);}
+.step.pending .step-title{color:rgba(244,236,220,.4);}
+button{width:100%;padding:14px;background:#1c3d6e;border:none;border-radius:6px;color:#f4ecdc;font-family:'JetBrains Mono',monospace;font-size:13px;font-weight:700;cursor:pointer;margin-top:8px;}
+button:active{opacity:.8;}
+</style>
+</head>
+<body>
+<h1>AirCheck+ · Firebase Diagnostic</h1>
+<div id="steps"></div>
+<button onclick="runDiag()">Run Diagnostics</button>
+
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/12.14.0/firebase-app.js";
+import { getDatabase, ref, get, set } from "https://www.gstatic.com/firebasejs/12.14.0/firebase-database.js";
+
+const firebaseConfig = {
+  apiKey: "AIzaSyBoW1O9dTanLUZW5Z8jswn3hxpfFSdmzm0",
+  authDomain: "aircheck-80530.firebaseapp.com",
+  databaseURL: "https://aircheck-80530-default-rtdb.europe-west1.firebasedatabase.app",
+  projectId: "aircheck-80530",
+  storageBucket: "aircheck-80530.firebasestorage.app",
+  messagingSenderId: "816746630548",
+  appId: "1:816746630548:web:dac8392deff9b96cc9d381"
+};
+
+const app = initializeApp(firebaseConfig);
+const db = getDatabase(app);
+
+function addStep(id, title, status, val){
+  const el = document.getElementById(id) || (() => {
+    const d = document.createElement('div');
+    d.id = id;
+    d.className = 'step pending';
+    d.innerHTML = `<div class="step-title"></div><div class="step-val"></div>`;
+    document.getElementById('steps').appendChild(d);
+    return d;
+  })();
+  el.className = 'step ' + status;
+  el.querySelector('.step-title').textContent = title;
+  el.querySelector('.step-val').textContent = val || '';
+}
+
+window.runDiag = async function(){
+  document.getElementById('steps').innerHTML = '';
+
+  // Step 1 — Device ID
+  const deviceId = localStorage.getItem('aircheck_device_id');
+  addStep('s1', '1. Device ID', deviceId ? 'ok' : 'fail', deviceId || 'NOT FOUND — not running AirCheck+?');
+
+  // Step 2 — localStorage external links
+  const extCounts = localStorage.getItem('aircheck_external_link_counts');
+  const extUsed = localStorage.getItem('aircheck_external_link_used');
+  addStep('s2', '2. localStorage external links', extCounts ? 'ok' : 'warn',
+    'counts: ' + (extCounts || 'null') + ' | used: ' + (extUsed || 'null'));
+
+  // Step 3 — Firebase read
+  addStep('s3', '3. Firebase read...', 'pending', 'testing...');
+  try{
+    const snap = await get(ref(db, 'pilots/' + deviceId));
+    const data = snap.val();
+    if(data){
+      addStep('s3', '3. Firebase read', 'ok',
+        'lastSeen: ' + new Date(data.lastSeen).toISOString() +
+        ' | extLinkCounts: ' + JSON.stringify(data.externalLinkCounts||null));
+    } else {
+      addStep('s3', '3. Firebase read', 'warn', 'Device not found in Firebase');
+    }
+  }catch(e){
+    addStep('s3', '3. Firebase read', 'fail', 'ERROR: ' + e.message);
+  }
+
+  // Step 4 — Firebase write test
+  addStep('s4', '4. Firebase write test...', 'pending', 'testing...');
+  try{
+    const testVal = Date.now();
+    await set(ref(db, 'pilots/' + deviceId + '/diagTest'), testVal);
+    // Read back to confirm
+    const snap2 = await get(ref(db, 'pilots/' + deviceId + '/diagTest'));
+    if(snap2.val() === testVal){
+      addStep('s4', '4. Firebase write', 'ok', 'Write confirmed: ' + testVal);
+    } else {
+      addStep('s4', '4. Firebase write', 'fail', 'Write silent fail — value mismatch');
+    }
+  }catch(e){
+    addStep('s4', '4. Firebase write', 'fail', 'ERROR: ' + e.message);
+  }
+
+  // Step 5 — Write external link counts
+  addStep('s5', '5. Write extLinkCounts...', 'pending', 'testing...');
+  try{
+    const counts = {'NOTAM_IL': 99, 'fpl_co_il': 99};
+    await set(ref(db, 'pilots/' + deviceId + '/externalLinkCounts'), counts);
+    const snap3 = await get(ref(db, 'pilots/' + deviceId + '/externalLinkCounts'));
+    const written = snap3.val();
+    if(written && written['NOTAM_IL'] === 99){
+      addStep('s5', '5. Write extLinkCounts', 'ok', 'Written: ' + JSON.stringify(written));
+    } else {
+      addStep('s5', '5. Write extLinkCounts', 'fail', 'Mismatch: ' + JSON.stringify(written));
+    }
+  }catch(e){
+    addStep('s5', '5. Write extLinkCounts', 'fail', 'ERROR: ' + e.message);
+  }
+
+  // Step 6 — Summary
+  const allOk = [...document.querySelectorAll('.step')].every(s => s.classList.contains('ok'));
+  addStep('s6', allOk ? '✓ All checks passed' : '⚠ Some checks failed',
+    allOk ? 'ok' : 'warn',
+    allOk ? 'Firebase is working correctly from this device/network' : 'See failed steps above');
+};
+</script>
+</body>
+</html>
