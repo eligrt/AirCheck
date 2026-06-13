@@ -45,7 +45,7 @@ body{
 /* Progress */
 .progress-bar{
   height:3px;background:var(--paper-edge);
-  position:sticky;top:69px;z-index:9;
+  position:sticky;top:0;z-index:9;
 }
 .progress-fill{
   height:100%;background:var(--cleared);
@@ -138,10 +138,7 @@ body{
 </head>
 <body>
 
-<div class="header">
-  <div>
-    <div class="header-title">תדרוך נוסע ✈</div>
-    <div class="header-sub">Passenger Briefing</div>
+<div class="header-sub">Passenger Briefing</div>
   </div>
   <div style="display:flex;align-items:center;gap:10px;"><button class="reset-btn" onclick="resetAll()">↺ אפס</button><div class="header-logo" dir="ltr">AirCheck+</div></div>
 </div>
@@ -149,9 +146,12 @@ body{
 
 <div class="content">
 
-  <div class="intro-card">
-    <p>עברו על הסעיפים הבאים עם הנוסע לפני הטיסה.<br>
-    <strong>סמנו כל סעיף לאחר הסבר.</strong></p>
+  <div class="intro-card" style="text-align:right;">
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:6px;">
+      <button class="reset-btn" onclick="resetAll()">↺ אפס</button>
+      <div style="font-size:16px;font-weight:700;color:var(--ink);">תדרוך נוסע ✈</div>
+    </div>
+    <p>עברו על הסעיפים הבאים עם הנוסע לפני הטיסה. <strong>סמנו כל סעיף לאחר הסבר.</strong></p>
   </div>
 
   <!-- SAFETY -->
@@ -239,7 +239,7 @@ body{
 
 </div>
 
-<div class="footer" dir="ltr">PASSENGER BRIEFING · V1.03 · BUILT BY ELIGRT</div>
+<div class="footer" dir="ltr">PASSENGER BRIEFING · V1.04 · BUILT BY ELIGRT</div>
 
 <script>
 const items = document.querySelectorAll('.item');
@@ -257,7 +257,7 @@ function updateProgress() {
   if(done === total){
     setTimeout(()=>{
       document.getElementById('completionPopup').style.display='flex';
-    }, 300);
+    }, 200);
   }
 }
 
