@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<title>תדרוך נוסע | AirCheck+</title>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Hebrew:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --paper:#f4ecdc;--paper-hi:#fbf6e8;--paper-edge:#e3d4ad;
+  --ink:#1c3d6e;--ink-muted:#5a4a3a;--ink-faint:#8a7a5a;
+  --gold:#c8a04a;--gold-lite:#d4b878;
+  --cleared:#1f6f3f;--amber:#f59e0b;
+  --font-ui:'IBM Plex Sans Hebrew',sans-serif;
+  --font-mono:'JetBrains Mono',monospace;
+}
+*{box-sizing:border-box;margin:0;padding:0;}
+body{
+  background:var(--paper);
+  font-family:var(--font-ui);
+  min-height:100vh;
+  padding:0;
+}
+
+/* Header */
+.header{
+  background:var(--ink);
+  padding:10px 16px 8px;
+  display:flex;align-items:center;justify-content:space-between;
+  border-bottom:3px solid var(--gold);
+  position:sticky;top:0;z-index:10;
+}
+.header-title{
+  font-size:18px;font-weight:700;color:#f4ecdc;
+}
+.header-sub{
+  font-family:var(--font-mono);font-size:9px;
+  color:rgba(244,236,220,.45);letter-spacing:.15em;text-transform:uppercase;margin-top:2px;
+}
+.header-logo{
+  font-family:var(--font-mono);font-size:11px;font-weight:700;
+  color:rgba(244,236,220,.4);letter-spacing:.04em;
+}
+
+/* Progress */
+.progress-bar{
+  height:3px;background:var(--paper-edge);
+  position:sticky;top:69px;z-index:9;
+}
+.progress-fill{
+  height:100%;background:var(--cleared);
+  transition:width .3s ease;width:0%;
+}
+
+/* Content */
+.content{padding:12px 14px 24px;}
+
+/* Intro card */
+.intro-card{
+  background:rgba(28,61,110,.06);
+  border:1px solid rgba(28,61,110,.12);
+  border-radius:8px;padding:8px 12px;margin-bottom:12px;
+  text-align:center;
+}
+.intro-card p{font-size:11px;color:var(--ink-muted);line-height:1.5;}
+.intro-card strong{color:var(--ink);}
+
+/* Section */
+.section{margin-bottom:12px;}
+.section-header{
+  display:flex;align-items:center;gap:10px;
+  padding:8px 12px;
+  background:var(--ink);
+  border-radius:6px 6px 0 0;
+}
+.section-icon{font-size:20px;line-height:1;}
+.section-title{font-size:14px;font-weight:700;color:#f4ecdc;}
+.section-items{
+  border:1px solid var(--paper-edge);border-top:none;
+  border-radius:0 0 6px 6px;overflow:hidden;
+}
+
+/* Item */
+.item{
+  display:flex;align-items:center;gap:12px;
+  padding:11px 12px;
+  background:var(--paper-hi);
+  border-bottom:1px solid var(--paper-edge);
+  cursor:pointer;
+  transition:background .15s;
+  -webkit-tap-highlight-color:transparent;
+}
+.item:last-child{border-bottom:none;}
+.item:active{background:var(--paper-edge);}
+.item.checked{background:#f0f7f0;}
+
+.item-check{
+  width:24px;height:24px;border-radius:50%;
+  border:2px solid var(--paper-edge);
+  flex-shrink:0;
+  display:flex;align-items:center;justify-content:center;
+  transition:all .2s;background:var(--paper);
+}
+.item.checked .item-check{
+  background:var(--cleared);border-color:var(--cleared);
+}
+.checkmark{
+  font-size:13px;color:#fff;opacity:0;transition:opacity .2s;
+}
+.item.checked .checkmark{opacity:1;}
+
+.item-text{
+  font-size:13px;color:var(--ink-muted);line-height:1.3;flex:1;
+  transition:color .2s;
+}
+.item.checked .item-text{
+  color:var(--cleared);text-decoration:line-through;opacity:.7;
+}
+
+/* Done banner */
+.reset-btn{
+  padding:12px;
+  background:transparent;border:1.5px dashed var(--gold-lite);
+  border-radius:6px;
+  font-family:var(--font-ui);font-size:13px;color:var(--ink-faint);
+  cursor:pointer;text-align:center;
+}
+.reset-btn:active{background:var(--paper-edge);}
+
+/* Footer */
+.footer{
+  text-align:center;padding:16px;
+  font-family:var(--font-mono);font-size:9px;color:var(--ink-faint);
+  letter-spacing:.1em;text-transform:uppercase;
+  border-top:1px solid var(--paper-edge);
+  margin-top:8px;
+}
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div>
+    <div class="header-title">תדרוך נוסע ✈</div>
+    <div class="header-sub">Passenger Briefing</div>
+  </div>
+  <div class="header-logo" dir="ltr">AirCheck+</div>
+</div>
+<div class="progress-bar"><div class="progress-fill" id="progressFill"></div></div>
+
+<div class="content">
+
+  <div class="intro-card">
+    <p>עברו על הסעיפים הבאים עם הנוסע לפני הטיסה.<br>
+    <strong>סמנו כל סעיף לאחר הסבר.</strong></p>
+  </div>
+
+  <!-- SAFETY -->
+  <div class="section">
+    <div class="section-header" style="background:#8b1a1a;">
+      <div class="section-icon">🛡️</div>
+      <div class="section-title">בטיחות</div>
+      <div style="margin-right:auto;font-family:var(--font-mono);font-size:9px;color:rgba(255,200,200,.6);letter-spacing:.1em;">CRITICAL</div>
+    </div>
+    <div class="section-items">
+      <div class="item" onclick="toggle(this)">
+        <div class="item-check"><span class="checkmark">✓</span></div>
+        <div class="item-text">לא נוגעים בכלום ללא אישור טייס</div>
+      </div>
+      <div class="item" onclick="toggle(this)">
+        <div class="item-check"><span class="checkmark">✓</span></div>
+        <div class="item-text">חגורות בטיחות לאורך כל הטיסה</div>
+      </div>
+      <div class="item" onclick="toggle(this)">
+        <div class="item-check"><span class="checkmark">✓</span></div>
+        <div class="item-text">תרגול פתיחת חגורות</div>
+      </div>
+      <div class="item" onclick="toggle(this)">
+        <div class="item-check"><span class="checkmark">✓</span></div>
+        <div class="item-text">תרגול פתיחת חופה</div>
+      </div>
+      <div class="item" onclick="toggle(this)">
+        <div class="item-check"><span class="checkmark">✓</span></div>
+        <div class="item-text">מיקום מטף כיבוי אש</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- COMMUNICATION -->
+  <div class="section">
+    <div class="section-header" style="background:#b07d00;">
+      <div class="section-icon">📻</div>
+      <div class="section-title">תקשורת</div>
+      <div style="margin-right:auto;font-family:var(--font-mono);font-size:9px;color:rgba(255,220,120,.6);letter-spacing:.1em;">IMPORTANT</div>
+    </div>
+    <div class="section-items">
+      <div class="item" onclick="toggle(this)">
+        <div class="item-check"><span class="checkmark">✓</span></div>
+        <div class="item-text">קוקפיט שקט בהמראה ונחיתה</div>
+      </div>
+      <div class="item" onclick="toggle(this)">
+        <div class="item-check"><span class="checkmark">✓</span></div>
+        <div class="item-text">משהו מוזר? אל תניח — דבר! <span style="font-size:12px;color:var(--ink-faint);">(שקט הפיל מטוסים)</span></div>
+      </div>
+      <div class="item" onclick="toggle(this)">
+        <div class="item-check"><span class="checkmark">✓</span></div>
+        <div class="item-text">כששומעים משהו בקשר — שותקים</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- FUN -->
+  <div class="section">
+    <div class="section-header" style="background:#1f5c30;">
+      <div class="section-icon">😊</div>
+      <div class="section-title">נוחות</div>
+      <div style="margin-right:auto;font-family:var(--font-mono);font-size:9px;color:rgba(150,255,180,.6);letter-spacing:.1em;">RECOMMENDED</div>
+    </div>
+    <div class="section-items">
+      <div class="item" onclick="toggle(this)">
+        <div class="item-check"><span class="checkmark">✓</span></div>
+        <div class="item-text">מרגישים לא טוב / לא נעים — מיד לומר</div>
+      </div>
+      <div class="item" onclick="toggle(this)">
+        <div class="item-check"><span class="checkmark">✓</span></div>
+        <div class="item-text">מיקום פתחי אוורור</div>
+      </div>
+      <div class="item" onclick="toggle(this)">
+        <div class="item-check"><span class="checkmark">✓</span></div>
+        <div class="item-text">תפעול שקית הקאה</div>
+      </div>
+      <div class="item" onclick="toggle(this)">
+        <div class="item-check"><span class="checkmark">✓</span></div>
+        <div class="item-text">שאלות? חששות?</div>
+      </div>
+    </div>
+  </div>
+
+  <div style="display:flex;gap:8px;margin-top:16px;">
+    <button class="reset-btn" onclick="resetAll()" style="flex:1;margin-top:0;">↺ אפס</button>
+    <button id="doneBanner" disabled style="flex:1;padding:12px;border-radius:6px;font-family:var(--font-ui);font-size:13px;font-weight:700;cursor:default;border:none;background:transparent;color:var(--ink-faint);border:1.5px dashed var(--paper-edge);transition:all .3s;">✅ תדרוך הושלם</button>
+  </div>
+
+</div>
+
+<div class="footer">AirCheck+ · Personal Flight Checklist · eligrt.github.io</div>
+
+<script>
+const items = document.querySelectorAll('.item');
+const total = items.length;
+
+function toggle(el) {
+  el.classList.toggle('checked');
+  updateProgress();
+}
+
+function updateProgress() {
+  const done = document.querySelectorAll('.item.checked').length;
+  const pct = Math.round(done / total * 100);
+  document.getElementById('progressFill').style.width = pct + '%';
+  const btn = document.getElementById('doneBanner');
+  if(done === total){
+    btn.disabled = false;
+    btn.style.background = 'var(--ink)';
+    btn.style.color = '#f4ecdc';
+    btn.style.border = 'none';
+    btn.style.cursor = 'default';
+  } else {
+    btn.disabled = true;
+    btn.style.background = 'transparent';
+    btn.style.color = 'var(--ink-faint)';
+    btn.style.border = '1.5px dashed var(--paper-edge)';
+  }
+}
+
+function resetAll() {
+  items.forEach(i => i.classList.remove('checked'));
+  updateProgress();
+  window.scrollTo({top: 0, behavior: 'smooth'});
+}
+</script>
+</body>
+</html>
