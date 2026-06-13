@@ -119,13 +119,12 @@ body{
 
 /* Done banner */
 .reset-btn{
-  padding:12px;
-  background:transparent;border:1.5px dashed var(--gold-lite);
-  border-radius:6px;
-  font-family:var(--font-ui);font-size:13px;color:var(--ink-faint);
-  cursor:pointer;text-align:center;
+  background:transparent;border:1px solid rgba(244,236,220,.3);
+  border-radius:4px;padding:3px 10px;
+  font-family:var(--font-mono);font-size:10px;color:rgba(244,236,220,.6);
+  cursor:pointer;letter-spacing:.04em;
 }
-.reset-btn:active{background:var(--paper-edge);}
+.reset-btn:active{background:rgba(255,255,255,.1);}
 
 /* Footer */
 .footer{
@@ -144,7 +143,7 @@ body{
     <div class="header-title">תדרוך נוסע ✈</div>
     <div class="header-sub">Passenger Briefing</div>
   </div>
-  <div class="header-logo" dir="ltr">AirCheck+</div>
+  <div style="display:flex;align-items:center;gap:10px;"><button class="reset-btn" onclick="resetAll()">↺ אפס</button><div class="header-logo" dir="ltr">AirCheck+</div></div>
 </div>
 <div class="progress-bar"><div class="progress-fill" id="progressFill"></div></div>
 
@@ -236,14 +235,11 @@ body{
     </div>
   </div>
 
-  <div style="display:flex;gap:8px;margin-top:16px;">
-    <button class="reset-btn" onclick="resetAll()" style="flex:1;margin-top:0;">↺ אפס</button>
-    <button id="doneBanner" disabled style="flex:1;padding:12px;border-radius:6px;font-family:var(--font-ui);font-size:13px;font-weight:700;cursor:default;border:none;background:transparent;color:var(--ink-faint);border:1.5px dashed var(--paper-edge);transition:all .3s;">✅ תדרוך הושלם</button>
-  </div>
+
 
 </div>
 
-<div class="footer">AirCheck+ · Personal Flight Checklist · eligrt.github.io</div>
+<div class="footer" dir="ltr">PASSENGER BRIEFING · V1.03 · BUILT BY ELIGRT</div>
 
 <script>
 const items = document.querySelectorAll('.item');
@@ -258,26 +254,44 @@ function updateProgress() {
   const done = document.querySelectorAll('.item.checked').length;
   const pct = Math.round(done / total * 100);
   document.getElementById('progressFill').style.width = pct + '%';
-  const btn = document.getElementById('doneBanner');
   if(done === total){
-    btn.disabled = false;
-    btn.style.background = 'var(--ink)';
-    btn.style.color = '#f4ecdc';
-    btn.style.border = 'none';
-    btn.style.cursor = 'default';
-  } else {
-    btn.disabled = true;
-    btn.style.background = 'transparent';
-    btn.style.color = 'var(--ink-faint)';
-    btn.style.border = '1.5px dashed var(--paper-edge)';
+    setTimeout(()=>{
+      document.getElementById('completionPopup').style.display='flex';
+    }, 300);
   }
+}
+
+function closePopup() {
+  document.getElementById('completionPopup').style.display='none';
+}
+
+function backToApp() {
+  if(window.history.length > 1){ history.back(); }
+  else{ window.close(); }
 }
 
 function resetAll() {
   items.forEach(i => i.classList.remove('checked'));
-  updateProgress();
+  document.getElementById('progressFill').style.width = '0%';
+  document.getElementById('completionPopup').style.display='none';
   window.scrollTo({top: 0, behavior: 'smooth'});
 }
 </script>
+
+<!-- Completion Popup -->
+<div id="completionPopup" style="display:none;position:fixed;inset:0;background:rgba(26,19,8,.75);z-index:100;align-items:center;justify-content:center;padding:24px;backdrop-filter:blur(3px);">
+  <div style="background:var(--paper);background-image:repeating-linear-gradient(0deg,transparent 0,transparent 27px,rgba(28,61,110,.055) 27px,rgba(28,61,110,.055) 28px);border:2px solid var(--cleared);border-radius:8px;width:100%;max-width:300px;overflow:hidden;direction:rtl;text-align:center;">
+    <div style="background:var(--cleared);padding:16px;">
+      <div style="font-size:36px;margin-bottom:6px;">✅</div>
+      <div style="font-size:18px;font-weight:700;color:#fff;">תדרוך הושלם!</div>
+      <div style="font-size:11px;color:rgba(255,255,255,.7);margin-top:4px;">כל הסעיפים הוסברו לנוסע</div>
+    </div>
+    <div style="padding:16px;display:flex;gap:8px;">
+      <button onclick="closePopup()" style="flex:1;padding:10px;background:transparent;border:1.5px solid var(--paper-edge);border-radius:6px;font-family:var(--font-ui);font-size:12px;color:var(--ink-muted);cursor:pointer;">‹ חזור לתדרוך</button>
+      <button onclick="backToApp()" style="flex:1;padding:10px;background:var(--ink);border:none;border-radius:6px;font-family:var(--font-ui);font-size:12px;font-weight:700;color:#f4ecdc;cursor:pointer;">חזרה ל-<span dir="ltr">AirCheck+</span></button>
+    </div>
+  </div>
+</div>
+
 </body>
 </html>
