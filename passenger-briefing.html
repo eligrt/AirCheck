@@ -20,6 +20,7 @@ body{
   font-family:var(--font-ui);
   min-height:100vh;
   padding:0;
+  margin:0;
 }
 
 /* Header */
@@ -53,13 +54,13 @@ body{
 }
 
 /* Content */
-.content{padding:12px 14px 24px;}
+.content{padding:0 14px 16px;}
 
 /* Intro card */
 .intro-card{
   background:rgba(28,61,110,.06);
   border:1px solid rgba(28,61,110,.12);
-  border-radius:8px;padding:8px 12px;margin-bottom:12px;
+  border-radius:8px;padding:6px 10px;margin-bottom:6px;
   text-align:center;
 }
 .intro-card p{font-size:11px;color:var(--ink-muted);line-height:1.5;}
@@ -142,22 +143,25 @@ body{
   </div>
   <div style="display:flex;align-items:center;gap:10px;"><button class="reset-btn" onclick="resetAll()">↺ אפס</button><div class="header-logo" dir="ltr">AirCheck+</div></div>
 </div>
-<div class="progress-bar"><div class="progress-fill" id="progressFill"></div></div>
 
 <div class="content">
 
   <div class="intro-card" style="text-align:right;">
-    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:6px;">
-      <button class="reset-btn" onclick="resetAll()">↺ אפס</button>
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:6px;direction:rtl;">
       <div style="font-size:16px;font-weight:700;color:var(--ink);">תדרוך נוסע ✈</div>
+      <button class="reset-btn" onclick="resetAll()">↺ אפס</button>
     </div>
     <p>עברו על הסעיפים הבאים עם הנוסע לפני הטיסה. <strong>סמנו כל סעיף לאחר הסבר.</strong></p>
+  </div>
+  <div style="display:flex;align-items:center;gap:8px;margin:8px 0;direction:ltr;">
+    <div id="progressPct" style="font-family:var(--font-mono);font-size:10px;color:var(--ink-faint);min-width:28px;text-align:right;">0%</div>
+    <div class="progress-bar" style="position:static;flex:1;border-radius:3px;overflow:hidden;height:4px;"><div class="progress-fill" id="progressFill"></div></div>
   </div>
 
   <!-- SAFETY -->
   <div class="section">
     <div class="section-header" style="background:#8b1a1a;">
-      <div class="section-icon">🛡️</div>
+      <div class="section-icon">⚠️</div>
       <div class="section-title">בטיחות</div>
       <div style="margin-right:auto;font-family:var(--font-mono);font-size:9px;color:rgba(255,200,200,.6);letter-spacing:.1em;">CRITICAL</div>
     </div>
@@ -199,11 +203,11 @@ body{
       </div>
       <div class="item" onclick="toggle(this)">
         <div class="item-check"><span class="checkmark">✓</span></div>
-        <div class="item-text">משהו מוזר? אל תניח — דבר! <span style="font-size:12px;color:var(--ink-faint);">(שקט הפיל מטוסים)</span></div>
+        <div class="item-text">משהו מוזר? אל תניח - דבר! <span style="font-size:12px;color:var(--ink-faint);">(שקט הפיל מטוסים)</span></div>
       </div>
       <div class="item" onclick="toggle(this)">
         <div class="item-check"><span class="checkmark">✓</span></div>
-        <div class="item-text">כששומעים משהו בקשר — שותקים</div>
+        <div class="item-text">כששומעים משהו בקשר - שותקים</div>
       </div>
     </div>
   </div>
@@ -218,7 +222,7 @@ body{
     <div class="section-items">
       <div class="item" onclick="toggle(this)">
         <div class="item-check"><span class="checkmark">✓</span></div>
-        <div class="item-text">מרגישים לא טוב / לא נעים — מיד לומר</div>
+        <div class="item-text">מרגישים לא טוב / לא נעים - מיד לומר</div>
       </div>
       <div class="item" onclick="toggle(this)">
         <div class="item-check"><span class="checkmark">✓</span></div>
@@ -239,7 +243,7 @@ body{
 
 </div>
 
-<div class="footer" dir="ltr">PASSENGER BRIEFING · V1.04 · BUILT BY ELIGRT</div>
+<div class="footer" dir="ltr">PASSENGER BRIEFING · V1.11 · BUILT BY ELIGRT</div>
 
 <script>
 const items = document.querySelectorAll('.item');
@@ -254,10 +258,11 @@ function updateProgress() {
   const done = document.querySelectorAll('.item.checked').length;
   const pct = Math.round(done / total * 100);
   document.getElementById('progressFill').style.width = pct + '%';
+  document.getElementById('progressPct').textContent = pct + '%';
   if(done === total){
     setTimeout(()=>{
       document.getElementById('completionPopup').style.display='flex';
-    }, 200);
+    }, 300);
   }
 }
 
@@ -273,6 +278,7 @@ function backToApp() {
 function resetAll() {
   items.forEach(i => i.classList.remove('checked'));
   document.getElementById('progressFill').style.width = '0%';
+  document.getElementById('progressPct').textContent = '0%';
   document.getElementById('completionPopup').style.display='none';
   window.scrollTo({top: 0, behavior: 'smooth'});
 }
