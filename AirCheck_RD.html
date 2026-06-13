@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <!-- ═══════════════════════════════════════
-     AirCheck+ · v2.08.006 · built by eligrt
+     AirCheck+ · v2.08.040 · built by eligrt
      ═══════════════════════════════════════ -->
 <html lang="he" dir="rtl">
 <head>
@@ -15,7 +15,7 @@
 <title>AirCheck+</title>
 <meta property="og:title" content="AirCheck+ | Personal flight checklist" />
 <meta property="og:description" content="&quot;The checklist on top of the checklist&quot;" />
-<meta property="og:image" content="https://eligrt.github.io/AirCheck/AirCheck_icon_RD.png" />
+<meta property="og:image" content="https://eligrt.github.io/AirCheck/AirCheck_og_RD.png" />
 <meta property="og:url" content="https://eligrt.github.io/AirCheck/AirCheck_RD.html" />
 <meta property="og:type" content="website" />
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -39,7 +39,7 @@ html,body{height:100%;background:#1a1a1c;font-family:var(--font-ui);color:var(--
 
 /* ── SPLASH SCREEN ── */
 #screenSplash{flex-direction:column;overflow:hidden;background:linear-gradient(180deg,#0e2348 0%,#1c3d6e 40%,#4a6a8a 52%,#c0b090 62%,#f4ecdc 70%,#f4ecdc 100%);}
-.splash-hero{flex-shrink:0;background:transparent;padding:24px 24px 20px;display:flex;flex-direction:column;align-items:center;gap:8px;}
+.splash-hero{flex-shrink:0;background:transparent;padding:24px 18px 0;display:flex;flex-direction:column;align-items:center;gap:8px;}
 .splash-logo-wrap{width:220px;height:220px;border-radius:0;overflow:hidden;flex-shrink:0;}
 .splash-logo-wrap img{width:220px;height:220px;object-fit:contain;display:block;}
 .splash-app-title{font-family:var(--font-mono);font-size:28px;font-weight:700;color:var(--paper);direction:ltr;letter-spacing:-.5px;}
@@ -294,7 +294,49 @@ html,body{height:100%;background:#1a1a1c;font-family:var(--font-ui);color:var(--
 
 /* ── SUMMARY SCREEN ── */
 #screenSummary{flex-direction:column;overflow:hidden;}
-.summary-strip{flex-shrink:0;background:var(--asphalt);padding:10px 14px;display:flex;align-items:center;justify-content:space-between;direction:ltr;border-bottom:2px solid var(--gold);}
+.rank-strip-box{background:rgba(10,22,48,.65);border:1px solid rgba(200,160,74,.5);border-radius:6px;padding:10px 12px 10px;margin:8px 0 0;direction:ltr;width:100%;}
+.rank-strip-title{font-size:11px;font-weight:600;color:rgba(244,236,220,.85);text-align:right;margin-bottom:10px;direction:rtl;}
+.rank-route{display:flex;align-items:flex-start;width:100%;position:relative;direction:ltr;}
+.rank-route::before{content:'';position:absolute;top:5px;left:0;right:0;height:1.5px;background:rgba(244,236,220,.12);z-index:0;}
+.rn{flex:1;display:flex;flex-direction:column;align-items:center;gap:5px;position:relative;z-index:1;}
+.rn-dot{width:11px;height:11px;border-radius:50%;flex-shrink:0;}
+.rn-dot.done{background:rgba(244,236,220,.55);}
+.rn-dot.active{background:#f4ecdc;width:13px;height:13px;box-shadow:0 0 0 3px rgba(244,236,220,.2);}
+.rn-dot.future{background:transparent;border:1.5px solid rgba(244,236,220,.15);}
+.rn-info{display:flex;flex-direction:column;align-items:center;gap:1px;margin-top:4px;}
+.rn-icon{font-size:12px;line-height:1;}
+.rn-name{font-family:var(--font-mono);font-size:6px;color:rgba(244,236,220,.4);text-align:center;white-space:nowrap;}
+.rn.active .rn-icon{font-size:16px;}
+.rn.active .rn-name{color:rgba(244,236,220,.9);font-size:7px;font-weight:700;}
+.rn.done .rn-icon{opacity:.6;}
+.rn.future .rn-icon{opacity:.2;}
+.rn.future .rn-name{color:rgba(244,236,220,.15);}
+.rank-stats-lines{margin-top:10px;direction:rtl;}
+.rank-header-current{display:flex;align-items:center;justify-content:space-between;padding:0 0 8px;border-bottom:1px solid rgba(244,236,220,.1);margin-bottom:8px;direction:ltr;}
+.rank-header-left{display:flex;align-items:center;gap:8px;}
+.rank-header-icon{font-size:28px;line-height:1;flex-shrink:0;}
+.rank-header-rankname{font-size:20px;font-weight:700;color:#f4ecdc;line-height:1;}
+.rank-header-right{direction:rtl;text-align:right;flex:1;}
+.rank-header-label{font-size:11px;font-weight:600;color:rgba(244,236,220,.8);line-height:1.4;}
+.strip-milestones{display:flex;width:100%;margin-bottom:3px;}
+.strip-milestone{flex:1;font-family:var(--font-mono);font-size:7px;color:rgba(244,236,220,.2);text-align:center;}
+.strip-milestone.active{color:rgba(244,236,220,.55);}
+.rank-stat-line{font-family:var(--font-mono);font-size:10px;color:rgba(244,236,220,.55);line-height:1.8;text-align:right;direction:rtl;}
+.rank-stat-line strong{color:rgba(244,236,220,.9);}
+.rank-stat-line .rank-next{color:rgba(200,160,74,.8);}
+.rank-progress-bar{background:var(--paper-hi);border-bottom:1px solid var(--paper-edge);padding:8px 14px;display:flex;align-items:center;gap:10px;direction:rtl;}
+.rp-icon{font-size:28px;flex-shrink:0;}
+.rp-info{flex:1;}
+.rp-line1{font-size:12px;color:var(--ink);font-weight:600;}
+.rp-line2{font-size:11px;color:var(--ink-muted);margin-top:2px;}
+.rp-bar{height:2px;background:var(--paper-edge);border-radius:2px;margin-top:5px;overflow:hidden;direction:ltr;}
+.rp-bar-fill{height:100%;background:var(--ink);border-radius:2px;opacity:.5;}
+.rankup-box{margin:8px 14px;background:linear-gradient(135deg,rgba(200,160,74,.12),rgba(200,160,74,.04));border:1.5px solid var(--gold);border-radius:8px;padding:12px 14px;text-align:center;}
+.rankup-icon{font-size:40px;margin-bottom:4px;}
+.rankup-title{font-size:8px;color:var(--ink-faint);font-family:var(--font-mono);letter-spacing:.12em;text-transform:uppercase;margin-bottom:3px;}
+.rankup-name{font-size:20px;font-weight:700;color:var(--ink);margin-bottom:4px;}
+.rankup-sub{font-size:10px;color:var(--ink-muted);line-height:1.55;}
+.summary-strip{flex-shrink:0;background:var(--asphalt);padding:8px 10px;display:flex;align-items:center;justify-content:space-between;direction:ltr;border-bottom:2px solid var(--gold);gap:0;}
 .summary-strip-col{display:flex;flex-direction:column;align-items:center;gap:2px;}
 .summary-strip-label{font-size:8px;color:rgba(244,236,220,.6);letter-spacing:.18em;text-transform:uppercase;font-family:var(--font-mono);}
 .summary-strip-val{font-size:15px;font-weight:700;font-family:var(--font-mono);color:var(--paper);}
@@ -311,7 +353,7 @@ html,body{height:100%;background:#1a1a1c;font-family:var(--font-ui);color:var(--
 .summary-phase-hdr{font-size:10px;font-family:var(--font-mono);letter-spacing:.12em;color:var(--ink-faint);text-transform:uppercase;padding:8px 0 3px;border-bottom:1px solid rgba(200,160,74,.25);margin-bottom:4px;}
 .summary-group-hdr{font-size:11px;color:var(--ink-muted);font-weight:600;padding:4px 0 2px;letter-spacing:.03em;border-bottom:1px dotted rgba(200,160,74,.2);margin-bottom:2px;}
 .summary-item{display:flex;align-items:center;gap:8px;padding:3px 0 3px 4px;font-size:12px;}
-.summary-btns{flex-shrink:0;padding:10px 14px 14px;display:flex;flex-direction:column;gap:8px;border-top:1px dashed var(--gold-lite);background:var(--paper-hi);}
+.summary-btns{flex-shrink:0;padding:10px 14px 14px;display:flex;flex-direction:row;gap:8px;border-top:1px dashed var(--gold-lite);background:var(--paper-hi);}
 
 
 /* ── BULK PHASE POPUP ── */
@@ -477,7 +519,7 @@ html,body{height:100%;background:#1a1a1c;font-family:var(--font-ui);color:var(--
 /* Tail input in settings */
 .tail-setting-wrap{display:flex;align-items:center;gap:0;direction:ltr;border-bottom:1.5px dashed rgba(28,61,110,.4);padding-bottom:1px;}
 .tail-setting-prefix{font-family:var(--font-mono);font-size:13px;font-weight:700;color:var(--ink-muted);}
-.tail-setting-input{background:transparent;border:none;outline:none;font-family:var(--font-mono);font-size:13px;font-weight:700;color:var(--ink-body);width:3ch;padding:0;text-transform:uppercase;caret-color:var(--gold);letter-spacing:0;-webkit-appearance:none;appearance:none;}
+.tail-setting-input{background:transparent;border:none;outline:none;font-family:var(--font-mono);font-size:13px;font-weight:700;color:var(--ink);width:3ch;padding:0;text-transform:uppercase;caret-color:var(--gold);letter-spacing:0;-webkit-appearance:none;appearance:none;direction:ltr;}
 /* Toggle */
 .tog{width:40px;height:22px;border-radius:11px;padding:2px;cursor:pointer;position:relative;flex-shrink:0;border:none;transition:background .2s;}
 .tog-knob{width:16px;height:16px;border-radius:50%;background:var(--paper-hi);box-shadow:0 1px 3px rgba(0,0,0,.3);position:absolute;top:3px;transition:left .2s;}
@@ -593,6 +635,10 @@ html,body{height:100%;background:#1a1a1c;font-family:var(--font-ui);color:var(--
       <div class="splash-app-title">AirCheck+</div>
       <div class="splash-app-sub" id="splashSub" style="opacity:0;transition:opacity 1.2s ease;">personal flight checklist</div>
       <div class="splash-app-slogan" id="splashSlogan" style="opacity:0;"></div>
+    <div id="splashRankBox" class="rank-strip-box" style="display:none;">
+      <div id="splashRankStrip"></div>
+      <div class="rank-stats-lines" id="splashRankStats"></div>
+    </div>
     </div>
     <div class="splash-body">
       <div class="splash-resume-card" id="splashResumeCard" style="display:none;">
@@ -601,18 +647,75 @@ html,body{height:100%;background:#1a1a1c;font-family:var(--font-ui);color:var(--
         <div class="splash-runway"><div class="splash-runway-fill" id="splashRunwayFill" style="width:0%"></div></div>
         <div class="splash-runway-pct" id="splashRunwayPct"></div>
       </div>
-      <button class="splash-btn-primary" id="splashMainBtn" onclick="splashMainAction()">
-        <span style="display:inline-block;transform:scaleX(-1)">✈</span> התחל טיסה
-      </button>
-      <button class="splash-btn-secondary" id="splashSecondaryBtn" onclick="splashSecondaryAction()" style="display:none;">
-        <span style="display:inline-block;transform:scaleX(-1)">✈</span> התחל טיסה חדשה
-      </button>
+      <div id="splashBtnsWrap" style="display:flex;gap:8px;width:100%;">
+        <button class="splash-btn-secondary" id="splashSecondaryBtn" onclick="splashSecondaryAction()" style="display:none;flex:1;font-size:12px;">
+          <span style="display:inline-block;transform:scaleX(-1)">✈</span> התחל טיסה חדשה
+        </button>
+        <button class="splash-btn-primary" id="splashMainBtn" onclick="splashMainAction()" style="flex:2;">
+          <span style="display:inline-block;transform:scaleX(-1)">✈</span> התחל טיסה
+        </button>
+      </div>
     </div>
     <div class="splash-footer-wrap">
       <div class="footer-strip" style="display:flex;align-items:center;justify-content:space-between;padding:5px 14px 8px;">
         <span class="footer-refresh" onclick="reloadApp()">רענון</span>
-        <span id="versionTap" onclick="handleVersionTap()" style="cursor:default;">AirCheck+ · v2.08.006 · built by eligrt</span>
+        <span id="versionTap" onclick="handleVersionTap()" style="cursor:default;">AirCheck+ · v2.08.040 · built by eligrt</span>
         <span style="width:40px;"></span>
+      </div>
+    </div>
+  </div>
+
+  <!-- FLIGHT DETAILS POPUP -->
+  <div id="flightDetailsPopup" style="display:none;position:absolute;inset:0;background:rgba(26,19,8,.82);z-index:600;align-items:center;justify-content:center;padding:24px;backdrop-filter:blur(3px);">
+    <div style="background:var(--paper);background-image:repeating-linear-gradient(0deg,transparent 0,transparent 27px,rgba(28,61,110,.055) 27px,rgba(28,61,110,.055) 28px);border:2px solid var(--gold);border-radius:8px;width:100%;max-width:320px;overflow:hidden;direction:rtl;">
+      <div style="background:var(--ink);padding:12px 18px 10px;text-align:center;">
+        <div style="font-family:var(--font-mono);font-size:9px;color:rgba(244,236,220,.45);letter-spacing:.2em;text-transform:uppercase;margin-bottom:4px;">FLIGHT DETAILS</div>
+        <div style="font-size:17px;font-weight:700;color:var(--paper);">פרטי הטיסה</div>
+      </div>
+      <div style="padding:14px 16px 6px;display:flex;flex-direction:column;gap:10px;">
+        <div style="display:flex;gap:8px;align-items:flex-end;direction:ltr;text-align:center;">
+          <div style="flex:1;">
+            <div style="font-family:var(--font-mono);font-size:9px;color:var(--ink-faint);letter-spacing:.1em;margin-bottom:4px;text-align:center;">FROM</div>
+            <input id="fdFrom" type="text" maxlength="6" dir="auto" placeholder="LLHZ"
+              style="width:100%;background:var(--paper-hi);border:1.5px solid var(--gold-lite);border-radius:4px;padding:8px 10px;font-family:var(--font-mono);font-size:15px;font-weight:700;color:var(--ink);text-transform:uppercase;outline:none;text-align:center;"
+              autocomplete="off" autocorrect="off" spellcheck="false"
+              oninput="this.value=this.value.toUpperCase()">
+          </div>
+          <div style="font-size:18px;color:var(--ink-faint);padding-bottom:8px;">›</div>
+          <div style="flex:1;">
+            <div style="font-family:var(--font-mono);font-size:9px;color:var(--ink-faint);letter-spacing:.1em;margin-bottom:4px;text-align:center;">VIA</div>
+            <input id="fdVia" type="text" maxlength="6" dir="auto" placeholder="—"
+              style="width:100%;background:var(--paper-hi);border:1.5px solid var(--gold-lite);border-radius:4px;padding:8px 10px;font-family:var(--font-mono);font-size:15px;font-weight:700;color:var(--ink);text-transform:uppercase;outline:none;text-align:center;"
+              autocomplete="off" autocorrect="off" spellcheck="false"
+              oninput="this.value=this.value.toUpperCase()">
+          </div>
+          <div style="font-size:18px;color:var(--ink-faint);padding-bottom:8px;">›</div>
+          <div style="flex:1;">
+            <div style="font-family:var(--font-mono);font-size:9px;color:var(--ink-faint);letter-spacing:.1em;margin-bottom:4px;text-align:center;">TO</div>
+            <input id="fdTo" type="text" maxlength="6" dir="auto" placeholder="LLHZ"
+              style="width:100%;background:var(--paper-hi);border:1.5px solid var(--gold-lite);border-radius:4px;padding:8px 10px;font-family:var(--font-mono);font-size:15px;font-weight:700;color:var(--ink);text-transform:uppercase;outline:none;text-align:center;"
+              autocomplete="off" autocorrect="off" spellcheck="false"
+              oninput="this.value=this.value.toUpperCase()">
+          </div>
+        </div>
+        <div style="display:flex;gap:8px;align-items:flex-end;direction:ltr;text-align:center;">
+          <div style="flex:1;">
+            <div style="font-family:var(--font-mono);font-size:9px;color:var(--ink-faint);letter-spacing:.1em;margin-bottom:4px;text-align:center;">Aircraft Registration / Call-Sign</div>
+            <div style="background:var(--paper-hi);border:1.5px solid var(--gold-lite);border-radius:4px;padding:8px 10px;display:flex;align-items:center;justify-content:center;gap:2px;">
+              <span style="font-family:var(--font-mono);font-size:15px;font-weight:700;color:var(--ink-faint);">4X-</span>
+              <input id="fdReg" type="text" maxlength="3" dir="ltr"
+                style="background:transparent;border:none;outline:none;font-family:var(--font-mono);font-size:15px;font-weight:700;color:var(--ink);text-transform:uppercase;width:3ch;caret-color:var(--gold);padding:0;"
+                autocomplete="off" autocorrect="off" spellcheck="false"
+                oninput="this.value=this.value.toUpperCase().replace(/[^A-Z0-9]/g,'')">
+            </div>
+          </div>
+        </div>
+        <div style="text-align:center;">
+          <button onclick="flightDetailsChangeReg()" style="background:transparent;border:none;font-family:var(--font-ui);font-size:10px;color:var(--ink-faint);cursor:pointer;text-decoration:underline;padding:0;">עדכן נתוני ברירת מחדל ›</button>
+        </div>
+      </div>
+      <div style="padding:10px 16px 14px;">
+        <button onclick="confirmFlightDetails()" style="width:100%;padding:12px;background:var(--ink);border:none;border-radius:6px;font-family:var(--font-ui);font-size:14px;font-weight:700;color:var(--paper);cursor:pointer;">שמור והתחל ✈</button>
       </div>
     </div>
   </div>
@@ -644,6 +747,8 @@ html,body{height:100%;background:#1a1a1c;font-family:var(--font-ui);color:var(--
           <span class="runway-meta-profile-badge" id="runwayProfileBadge"></span>
           <span class="runway-meta-profile-name" id="runwayProfileName">—</span>
           <span style="color:var(--ink-faint);font-size:9px;letter-spacing:.04em;font-family:var(--font-ui);">:מציג צ׳קליסט</span>
+          <span id="runwayFlightNoDot" style="opacity:.4;display:none;">·</span>
+          <span id="runwayFlightNo" style="color:var(--gold);font-family:var(--font-mono);font-size:9px;font-weight:700;"></span>
         </div>
       </div>
       <div class="runway-phases" id="runwayPhases"></div>
@@ -728,7 +833,7 @@ html,body{height:100%;background:#1a1a1c;font-family:var(--font-ui);color:var(--
     <div class="tree-panel" id="treePanel"></div>
     <div class="footer-strip" style="display:flex;align-items:center;justify-content:space-between;padding:5px 14px 8px;">
       <span class="footer-refresh" onclick="reloadApp()">רענון</span>
-      <span id="versionTap" onclick="handleVersionTap()" style="cursor:default;">AirCheck+ · v2.08.006 · built by eligrt</span>
+      <span id="versionTap" onclick="handleVersionTap()" style="cursor:default;">AirCheck+ · v2.08.040 · built by eligrt</span>
       <span style="width:40px;"></span>
     </div>
   </div>
@@ -756,9 +861,21 @@ html,body{height:100%;background:#1a1a1c;font-family:var(--font-ui);color:var(--
         <span class="summary-strip-label">UTC</span>
         <span class="summary-strip-val" id="summaryUtc">--:--</span>
       </div>
-      <div class="summary-strip-col">
-        <span class="summary-strip-label">FLT</span>
-        <span class="summary-strip-route" id="summaryRoute">— → —</span>
+      <div style="display:flex;align-items:center;gap:4px;flex:1;justify-content:center;">
+        <div class="summary-strip-col" id="summaryFromCol">
+          <span class="summary-strip-label">FROM</span>
+          <span class="summary-strip-val" id="summaryFrom">—</span>
+        </div>
+        <div style="color:rgba(244,236,220,.5);font-size:16px;font-weight:300;line-height:1;margin-top:10px;padding:0 3px;">›</div>
+        <div class="summary-strip-col" id="summaryViaCol">
+          <span class="summary-strip-label">VIA</span>
+          <span class="summary-strip-val" id="summaryVia">—</span>
+        </div>
+        <div id="summaryArrow2" style="color:rgba(244,236,220,.5);font-size:16px;font-weight:300;line-height:1;margin-top:10px;padding:0 3px;">›</div>
+        <div class="summary-strip-col" id="summaryToCol">
+          <span class="summary-strip-label">TO</span>
+          <span class="summary-strip-val" id="summaryTo">—</span>
+        </div>
       </div>
       <div class="summary-strip-col">
         <span class="summary-strip-label">REG</span>
@@ -766,6 +883,7 @@ html,body{height:100%;background:#1a1a1c;font-family:var(--font-ui);color:var(--
       </div>
     </div>
 
+    <div id="summaryRankBar" class="rank-progress-bar" style="display:none;"><div class="rp-icon" id="summaryRankIcon">—</div><div class="rp-info"><div class="rp-line1" id="summaryRankLine1"></div><div class="rp-line2" id="summaryRankLine2"></div><div class="rp-bar"><div class="rp-bar-fill" id="summaryRankBarFill" style="width:0%;"></div></div></div></div>
     <div class="summary-header">
       <div class="summary-stamp-wrap">
         <div class="summary-stamp">
@@ -780,14 +898,15 @@ html,body{height:100%;background:#1a1a1c;font-family:var(--font-ui);color:var(--
       <div id="summaryList"></div>
     </div>
 
+    <div id="summaryRankUp" class="rankup-box" style="display:none;"></div>
     <div class="summary-btns">
-      <button class="btn btn-ghost" onclick="showScreen('screenChecklist');render()">‹ חזור לרשימה</button>
-      <button class="btn btn-ink" onclick="openNewFlightModal()">✦ טיסה חדשה</button>
+      <button class="btn btn-ghost" style="flex:1" onclick="showScreen('screenChecklist');render()">‹ חזור לרשימה</button>
+      <button class="btn btn-ink" style="flex:1" onclick="openNewFlightModal()">✦ טיסה חדשה</button>
     </div>
 
     <div class="footer-strip" style="display:flex;align-items:center;justify-content:space-between;padding:5px 14px 8px;">
       <span style="width:40px;"></span>
-      <span id="versionTap" onclick="handleVersionTap()" style="cursor:default;">AirCheck+ · v2.08.006 · built by eligrt</span>
+      <span id="versionTap" onclick="handleVersionTap()" style="cursor:default;">AirCheck+ · v2.08.040 · built by eligrt</span>
       <span style="width:40px;"></span>
     </div>
   </div>
@@ -837,6 +956,14 @@ html,body{height:100%;background:#1a1a1c;font-family:var(--font-ui);color:var(--
                 autocomplete="off" autocorrect="off" spellcheck="false"
                 oninput="this.value=this.value.toUpperCase().replace(/[^A-Z0-9]/g,'');saveSettingsTail(this.value)">
             </div>
+          </div>
+          <div class="settings-row" id="homeBaseRow" style="display:none;">
+            <span class="settings-row-label">מנחת הבית</span>
+            <input id="settingsHomeBaseInput" type="text"
+              style="background:transparent;border:none;border-bottom:1.5px dashed rgba(28,61,110,.4);outline:none;font-family:var(--font-mono);font-size:13px;font-weight:700;color:var(--ink);width:6ch;text-align:left;direction:ltr;caret-color:var(--gold);"
+              placeholder="LLHZ" maxlength="6"
+              autocomplete="off" autocorrect="off" spellcheck="false"
+              oninput="this.value=this.value.toUpperCase();saveSettingsHomeBase(this.value)">
           </div>
         </div>
       </div>
@@ -889,7 +1016,7 @@ html,body{height:100%;background:#1a1a1c;font-family:var(--font-ui);color:var(--
     </div>
     <div class="footer-strip" style="display:flex;align-items:center;justify-content:space-between;padding:5px 14px 8px;">
       <span class="footer-refresh" onclick="reloadApp()">רענון</span>
-      <span id="versionTap" onclick="handleVersionTap()" style="cursor:default;">AirCheck+ · v2.08.006 · built by eligrt</span>
+      <span id="versionTap" onclick="handleVersionTap()" style="cursor:default;">AirCheck+ · v2.08.040 · built by eligrt</span>
       <span style="width:40px;"></span>
     </div>
   </div>
@@ -908,7 +1035,7 @@ html,body{height:100%;background:#1a1a1c;font-family:var(--font-ui);color:var(--
     <div class="editor-list" id="editorList"></div>
     <div class="footer-strip" style="display:flex;align-items:center;justify-content:space-between;padding:5px 14px 8px;">
       <span class="footer-refresh" onclick="reloadApp()">רענון</span>
-      <span id="versionTap" onclick="handleVersionTap()" style="cursor:default;">AirCheck+ · v2.08.006 · built by eligrt</span>
+      <span id="versionTap" onclick="handleVersionTap()" style="cursor:default;">AirCheck+ · v2.08.040 · built by eligrt</span>
       <span style="width:40px;"></span>
     </div>
   </div>
@@ -941,7 +1068,7 @@ html,body{height:100%;background:#1a1a1c;font-family:var(--font-ui);color:var(--
         <div class="ed-popup-link-label">קישור חיצוני (אופציונלי)</div>
         <input class="ed-input" id="edInputUrl" placeholder="https://..." style="direction:ltr;font-size:12px;" autocomplete="off" autocapitalize="off">
         <div class="ed-input-label" style="margin-top:6px;">תווית כפתור</div>
-        <input class="ed-input" id="edInputUrlLabel" placeholder='לדוגמה: NavLog, NOTAMs IAA'>
+        <input class="ed-input" id="edInputUrlLabel" placeholder='לדוגמה: NavLog, NOTAMs IAA' dir="auto">
       </div>
       <div class="ed-popup-btns">
         <button class="btn btn-ghost" style="flex:1" onclick="closeEdPopup()">ביטול</button>
@@ -975,7 +1102,9 @@ const FEATURES={
   WHATS_NEW: true,
   PWA_POPUP: true,
   DONATE: false,
-  EXTERNAL_LINK: true
+  EXTERNAL_LINK: true,
+  FLIGHT_DETAILS: false,
+  RANKING: false
 };
 
 const CL=[
@@ -996,6 +1125,7 @@ const CL=[
   {phase:"יום לפני",group:"בדיקת מז״א",main:"אמת נתונים באפליקציית מז״א",sub:""},
   {phase:"יום לפני",group:"מודיעין טיס",main:"בדוק NOTAM",sub:"",url:"https://notam.liorbenhorin.xyz/",urlLabel:"NOTAM IL"},
   {phase:"יום לפני",group:"מודיעין טיס",main:"הגשת תוכנית טיסה",sub:"",url:"https://fpl.co.il/",urlLabel:"fpl.co.il"},
+  {phase:"הגעה למנחת ולמטוס",group:"הכנת קוקפיט",main:"תדרוך נוסע (אם נדרש)",sub:"",url:"https://eligrt.github.io/AirCheck/passenger-briefing.html",urlLabel:"Passenger Briefing"},
   {phase:"יום לפני",group:"מודיעין טיס",main:"קבלת מרשה טיסה",sub:""},
   {phase:"הגעה למנחת ולמטוס",group:"רישומים וניירת",main:"פתיחת טיסה במחשב המנחת (עודד)",sub:""},
   {phase:"הגעה למנחת ולמטוס",group:"רישומים וניירת",main:"ודא המצאות תעודות המטוס בקוקפיט",sub:"בעלות, כושר טיסה ורדיו"},
@@ -1349,16 +1479,35 @@ function showAllDoneOverlay(lastPhase){
   const skipped=Object.values(status).filter(s=>s==='skipped').length;
   const now=new Date();
   const utc=String(now.getUTCHours()).padStart(2,'0')+':'+String(now.getUTCMinutes()).padStart(2,'0');
-  let from='',to='',tail=settings.tail?'4X-'+settings.tail:'—';
-  try{const r=JSON.parse(localStorage.getItem('aircheck_rd_route')||'{}');from=r.from||'';to=r.to||'';}catch(e){}
+  let from='',via='',to='',tail=settings.tail?'4X-'+settings.tail:'—';
+  // If flight details has a reg, use that instead
+  if(FEATURES.FLIGHT_DETAILS){try{const fd=JSON.parse(localStorage.getItem(FLIGHT_DETAILS_KEY)||'{}');if(fd.reg)tail='4X-'+fd.reg;}catch(e){}}
+  try{
+    if(FEATURES.FLIGHT_DETAILS){
+      const d=JSON.parse(localStorage.getItem(FLIGHT_DETAILS_KEY)||'{}');
+      from=d.from||'';via=d.via||'';to=d.to||'';
+    }else{
+      const r=JSON.parse(localStorage.getItem('aircheck_rd_route')||'{}');from=r.from||'';to=r.to||'';
+    }
+  }catch(e){}
   // strip
   document.getElementById('summaryUtc').textContent=utc;
-  document.getElementById('summaryRoute').textContent=(from||'—')+' → '+(to||'—');
+  if(FEATURES.FLIGHT_DETAILS){
+    document.getElementById('summaryFrom').textContent=from||'—';
+    document.getElementById('summaryTo').textContent=to||'—';
+    const viaCol=document.getElementById('summaryViaCol');
+    if(viaCol){document.getElementById('summaryVia').textContent=via||'—';}
+  }else{
+    // legacy: update route display if element exists
+    const routeEl=document.getElementById('summaryRoute');
+    if(routeEl)routeEl.textContent=(from||'—')+' → '+(to||'—');
+  }
   document.getElementById('summaryReg').textContent=tail;
   // stamp
   document.getElementById('summaryStampPhase').textContent=lastPhase||'הצ׳קליסט';
   // meta
-  let meta='<span>'+done+'</span> פריטים אושרו';
+  const ccForMeta=parseInt(localStorage.getItem('aircheck_completed_count')||'0')+1;
+  let meta='<span>טיסה מספר '+ccForMeta+'</span> &nbsp;·&nbsp; <span>'+done+'</span> פריטים אושרו';
   if(skipped>0)meta+=' &nbsp;·&nbsp; <span>'+skipped+'</span> דולגו';
   document.getElementById('summaryMeta').innerHTML=meta;
   // list
@@ -1392,8 +1541,32 @@ function showAllDoneOverlay(lastPhase){
   });
   // Increment completed counter
   const cc=parseInt(localStorage.getItem('aircheck_completed_count')||'0')+1;
+  const prevCc=cc-1;
   localStorage.setItem('aircheck_completed_count',cc);
   if(window.syncToFirebase)window.syncToFirebase();
+  // Rank
+  const rankData=getRank(cc);
+  const prevRankData=getRank(prevCc);
+  const rankBar=document.getElementById('summaryRankBar');
+  const rankUp=document.getElementById('summaryRankUp');
+  const isRankUp=rankData.current&&(!prevRankData.current||rankData.current.name!==prevRankData.current.name);
+  if(rankData.current&&rankBar){
+    document.getElementById('summaryRankIcon').textContent=rankData.current.icon;
+    document.getElementById('summaryRankLine1').textContent=rankData.current.name+' · '+cc+' צ׳קליסטים הושלמו';
+    if(rankData.next){
+      document.getElementById('summaryRankLine2').textContent='עוד '+rankData.toNext+' לדרגת '+rankData.next.icon+' '+rankData.next.name;
+      const pct=Math.round(((cc-rankData.current.min)/(rankData.current.max-rankData.current.min+1))*100);
+      document.getElementById('summaryRankBarFill').style.width=Math.min(pct,100)+'%';
+    }else{
+      document.getElementById('summaryRankLine2').textContent='הגעת לדרגה הגבוהה ביותר!';
+      document.getElementById('summaryRankBarFill').style.width='100%';
+    }
+    rankBar.style.display='none';// rank bar removed from summary — only rank-up shown
+  }
+  if(isRankUp&&rankUp){
+    rankUp.style.display='';
+    rankUp.innerHTML='<div class="rankup-icon">'+rankData.current.icon+'</div><div class="rankup-title" style="direction:rtl;">ברכות לרגל קבלת דרגת <span dir="ltr">AirCheck+</span> חדשה</div><div class="rankup-name">'+rankData.current.name+'</div><div class="rankup-sub" style="direction:rtl;">השלמת '+cc+' צ׳קליסטים מלאים. כל הכבוד!</div>';
+  }else if(rankUp){rankUp.style.display='none';}
   showScreen('screenSummary');
   // Show donation popup after 3rd completed flight
   if(cc>=3) setTimeout(()=>checkDonatePopup(), 1500);
@@ -1416,19 +1589,84 @@ function startNew(){
   if(window.syncToFirebase)window.syncToFirebase();
   clearState();holdState='idle';resetRunwayBtn();showScreen('screenChecklist');render();
 }
+function openFlightDetailsPopup(){
+  const popup=document.getElementById('flightDetailsPopup');
+  if(!popup)return;
+  // Restore saved values if returning from settings, otherwise use defaults
+  let from='',via='',to='';
+  try{
+    const tmp=JSON.parse(sessionStorage.getItem('_fd_tmp')||'null');
+    if(tmp){from=tmp.from||'';via=tmp.via||'';to=tmp.to||'';}
+    else{const home=settings.homeBase||'';from=home;to=home;}
+  }catch(e){const home=settings.homeBase||'';from=home;to=home;}
+  document.getElementById('fdFrom').value=from;
+  document.getElementById('fdVia').value=via;
+  document.getElementById('fdTo').value=to;
+  let savedReg=settings.tail||'';
+  try{const tmp2=JSON.parse(sessionStorage.getItem('_fd_tmp')||'null');if(tmp2&&tmp2.reg!==undefined)savedReg=tmp2.reg;sessionStorage.removeItem('_fd_tmp');}catch(e){}
+  document.getElementById('fdReg').value=savedReg;
+  popup.style.display='flex';
+}
+function closeFlightDetails(){
+  const popup=document.getElementById('flightDetailsPopup');
+  if(popup)popup.style.display='none';
+  startNew();
+}
+function confirmFlightDetails(){
+  const from=document.getElementById('fdFrom').value.trim();
+  const via=document.getElementById('fdVia').value.trim();
+  const to=document.getElementById('fdTo').value.trim();
+  const regSuffix=(document.getElementById('fdReg').value||'').trim().toUpperCase().replace(/[^A-Z0-9]/g,'').substring(0,3);
+  if(regSuffix&&regSuffix!==settings.tail){settings.tail=regSuffix;saveSettings();}
+  try{
+    const details={from,via,to,reg:regSuffix||settings.tail||''};
+    localStorage.setItem(FLIGHT_DETAILS_KEY,JSON.stringify(details));
+    localStorage.setItem('aircheck_rd_route',JSON.stringify({from,to}));
+    if(!settings.homeBase&&from){settings.homeBase=from;saveSettings();}
+  }catch(e){}
+  const popup=document.getElementById('flightDetailsPopup');
+  if(popup)popup.style.display='none';
+  startNew();
+}
+function flightDetailsChangeReg(){
+  // Save current field values before leaving
+  try{
+    const tmp={from:document.getElementById('fdFrom').value,via:document.getElementById('fdVia').value,to:document.getElementById('fdTo').value,reg:document.getElementById('fdReg').value};
+    sessionStorage.setItem('_fd_tmp',JSON.stringify(tmp));
+  }catch(e){}
+  const popup=document.getElementById('flightDetailsPopup');
+  if(popup)popup.style.display='none';
+  _settingsFromFlightDetails=true;
+  showScreen('screenSettings');
+}
 // ── SETTINGS ──
 const SETTINGS_KEY='aircheck_rd_settings';
-let settings={tail:'',holdMs:300,sounds:false,theme:'day'};
+const FLIGHT_DETAILS_KEY='aircheck_flight_details';
+let settings={tail:'',holdMs:300,sounds:false,theme:'day',homeBase:''};
 
 function loadSettings(){
   // Hide profile name row if multi-profile not enabled
   const metaLeft=document.getElementById('runwayMetaLeft');
   if(metaLeft)metaLeft.style.display=FEATURES.MULTI_PROFILE?'':'none';
+  // Flight number
+  const cc=parseInt(localStorage.getItem('aircheck_completed_count')||'0');
+  const flightNoEl=document.getElementById('runwayFlightNo');
+  const flightNoDotEl=document.getElementById('runwayFlightNoDot');
+  if(flightNoEl&&cc>0){
+    flightNoEl.textContent='#'+(cc+1);
+    if(flightNoDotEl)flightNoDotEl.style.display='';
+  }
   try{const r=localStorage.getItem(SETTINGS_KEY);if(r)settings=Object.assign(settings,JSON.parse(r));}catch(e){}
   // Sync tail to stamp on load
   if(settings.tail){
     document.getElementById('stampInit').textContent='PIC · 4X-'+settings.tail;
     try{localStorage.setItem(REG_KEY,settings.tail);}catch(e){}
+  }
+  const hbRow=document.getElementById('homeBaseRow');
+  if(hbRow)hbRow.style.display=FEATURES.FLIGHT_DETAILS?'':'none';
+  if(FEATURES.FLIGHT_DETAILS){
+    const hbInput=document.getElementById('settingsHomeBaseInput');
+    if(hbInput)hbInput.value=settings.homeBase||'';
   }
 }
 function saveSettings(){
@@ -1493,7 +1731,8 @@ function loadList(){
 function patchDefaultLinks(){
   const LINK_PATCHES=[
     {main:'בדוק NOTAM',url:'https://notam.liorbenhorin.xyz/',urlLabel:'NOTAM IL'},
-    {main:'הגשת תוכנית טיסה',url:'https://fpl.co.il/',urlLabel:'fpl.co.il'}
+    {main:'הגשת תוכנית טיסה',url:'https://fpl.co.il/',urlLabel:'fpl.co.il'},
+    {main:'תדרוך נוסע (אם נדרש)',url:'https://eligrt.github.io/AirCheck/passenger-briefing.html',urlLabel:'Passenger Briefing'}
   ];
   let patched=false;
   const p=getProfiles();
@@ -1684,12 +1923,15 @@ let _selectedProfileForFlight=null;
 function openNewFlightModal(){
   const p=getProfiles();
   if(!FEATURES.MULTI_PROFILE||p.profiles.length<=1){
-    // Single profile — confirm and start directly
+    // Single profile — confirm and start
     document.querySelector('.modal-box').className='modal-box amber';
     document.getElementById('modalTitle').textContent='טיסה חדשה?';
     document.getElementById('modalSub').textContent='פעולה זו תאפס את כל ההתקדמות הנוכחית.';
     document.getElementById('modalConfirmBtn').textContent='כן, אפס והתחל מחדש';
-    document.getElementById('modalConfirmBtn').onclick=()=>{closeModal();startNew();};
+    document.getElementById('modalConfirmBtn').onclick=()=>{
+      closeModal();
+      if(FEATURES.FLIGHT_DETAILS){openFlightDetailsPopup();}else{startNew();}
+    };
     openModal();
   } else {
     // Multiple profiles — show selector
@@ -1732,7 +1974,7 @@ function profileSelectConfirm(){
     localStorage.setItem('aircheck_flight_count',fc);
   }
   profileSelectClose();
-  holdState='idle';resetRunwayBtn();showScreen('screenChecklist');render();
+  if(FEATURES.FLIGHT_DETAILS){openFlightDetailsPopup();}else{holdState='idle';resetRunwayBtn();showScreen('screenChecklist');render();}
 }
 
 let edData=[];
@@ -1770,6 +2012,7 @@ function edDataToCL(data){
   return list;
 }
 let _editorFromSettings=false;
+let _settingsFromFlightDetails=false;
 function openEditor(fromSettings){
   _editorFromSettings=!!fromSettings;
   const p=getProfiles();
@@ -2614,6 +2857,11 @@ function updateListTypeIndicator(){
   }
 }
 function closeSettings(){
+  if(_settingsFromFlightDetails){
+    _settingsFromFlightDetails=false;
+    openFlightDetailsPopup();
+    return;
+  }
   showScreen('screenChecklist');
 }
 function setHoldDuration(ms, key){
@@ -3137,6 +3385,78 @@ function startSplashTypewriter(){
     },speed);
   },600);
 }
+
+// ── RANKING ──
+const RANKS=[
+  {name:'Cadet',       icon:'🐣', min:1,   max:4},
+  {name:'2nd Officer', icon:'📋', min:5,   max:9},
+  {name:'1st Officer', icon:'🛩️', min:10,  max:19},
+  {name:'Captain',     icon:'👨‍✈️', min:20,  max:49},
+  {name:'Commander',   icon:'👑', min:50,  max:99},
+  {name:'Maverick',    icon:'🎯', min:100, max:Infinity}
+];
+function getRank(n){
+  let current=null,next=null;
+  for(let i=0;i<RANKS.length;i++){
+    if(n>=RANKS[i].min){current=RANKS[i];next=RANKS[i+1]||null;}
+  }
+  if(!current&&n>0){current=RANKS[0];next=RANKS[1];}
+  const toNext=next?next.min-n:0;
+  return{current,next,toNext,count:n};
+}
+function buildRankStrip(n){
+  const{current,next,toNext}=getRank(n);
+  // Calculate fill width LTR (Cadet=left, Maverick=right)
+  let lineWidth='0%';
+  if(current){
+    const nRanks=RANKS.length; // 6
+    const cellW=100/nRanks;    // 16.67% per cell
+    const idx=RANKS.indexOf(current);
+    const next=RANKS[idx+1]||null;
+    const dotPos=cellW*idx+cellW/2;           // center of current cell
+    const nextPos=next?cellW*(idx+1)+cellW/2:100; // center of next cell
+    const segSize=current.max>=999?100:(current.max-current.min+1);
+    const partial=Math.min((n-current.min)/segSize,1);
+    lineWidth=(dotPos+partial*(nextPos-dotPos)).toFixed(2)+'%';
+  }
+  let html='';
+  // Header: icon+rank name left, title right
+  if(current){
+    html+='<div class="rank-header-current">';
+    html+='<div class="rank-header-left"><div class="rank-header-icon">'+current.icon+'</div><div class="rank-header-rankname">'+current.name+'</div></div>';
+    html+='<div class="rank-header-right"><div class="rank-header-label">דרגת ה-<span dir="ltr">AirCheck+</span> שלך</div></div>';
+    html+='</div>';
+  }
+  // Entire strip section is LTR
+  html+='<div style="direction:ltr;">';
+  // Milestones row
+  html+='<div class="strip-milestones">';
+  RANKS.forEach(r=>{ html+='<div class="strip-milestone">'+r.min+'</div>'; });
+  html+='</div>';
+  // Track + floating count label
+  // Track wrapper — force LTR at this level
+  html+='<div style="direction:ltr;position:relative;padding-top:18px;">';
+  // Floating count — absolutely positioned at lineWidth from left
+  html+='<div style="position:absolute;top:0;left:'+lineWidth+';transform:translateX(-50%);font-family:var(--font-mono);font-size:9px;font-weight:700;color:#f4ecdc;white-space:nowrap;">'+n+'</div>';
+  html+='<div style="position:relative;height:11px;display:flex;align-items:center;">';
+  html+='<div style="position:absolute;top:50%;left:0;right:0;height:1.5px;background:linear-gradient(to right,rgba(244,236,220,.55) '+lineWidth+',rgba(244,236,220,.12) '+lineWidth+');transform:translateY(-50%);"></div>';
+  html+='<div style="display:flex;width:100%;position:relative;z-index:1;">';
+  RANKS.forEach(r=>{
+    const state=!current?'future':r.min<current.min?'done':r.min===current.min?'active':'future';
+    html+='<div class="rn '+state+'" style="flex:1;display:flex;justify-content:center;"><div class="rn-dot '+state+'"></div></div>';
+  });
+  html+='</div></div></div></div>';
+  // Icons + names (LTR)
+  html+='<div style="display:flex;width:100%;margin-top:4px;direction:ltr;">';
+  RANKS.forEach(r=>{
+    const state=!current?'future':r.min<current.min?'done':r.min===current.min?'active':'future';
+    html+='<div class="rn '+state+'" style="flex:1;"><div class="rn-info"><div class="rn-icon">'+r.icon+'</div><div class="rn-name">'+r.name+'</div></div></div>';
+  });
+  html+='</div>';
+  html+='</div>';// end direction:ltr wrapper
+  return html;
+}
+
 function initSplash(){
   document.getElementById('app').addEventListener('click',e=>{
     if(window._bulkJustOpened){window._bulkJustOpened=false;return;}
@@ -3144,6 +3464,20 @@ function initSplash(){
     if(popup&&popup.classList.contains('open')&&!popup.contains(e.target))closeBulkPopup();
   });
   startSplashTypewriter();
+  // Rank strip
+  const cc=parseInt(localStorage.getItem('aircheck_completed_count')||'0');
+  const rankBox=document.getElementById('splashRankBox');
+  const rankStrip=document.getElementById('splashRankStrip');
+  const rankStats=document.getElementById('splashRankStats');
+  if(FEATURES.RANKING&&rankBox&&cc>0){
+    const{current,next,toNext}=getRank(cc);
+    rankStrip.innerHTML=buildRankStrip(cc);
+    let statsHtml='';
+    if(next)statsHtml='<div class="rank-stat-line">השלם עוד <strong class="rank-next">'+toNext+'</strong> צ׳קליסטים לקבלת דרגת <strong class="rank-next">'+next.icon+' '+next.name+'</strong></div>';
+    else statsHtml='<div class="rank-stat-line">הגעת לדרגה הגבוהה ביותר! '+current.icon+'</div>';
+    rankStats.innerHTML=statsHtml;
+    rankBox.style.display='';
+  }
   const subEl2=document.getElementById('splashSub');if(subEl2){setTimeout(()=>{subEl2.style.opacity='1';},100);}
   const done=Object.values(status).filter(s=>s==='done').length;
   const hasProgress=done>0;
@@ -3185,7 +3519,8 @@ function splashMainAction(){
     // Multiple profiles — show selector
     openNewFlightModal();
   } else {
-    clearState();showScreen('screenChecklist');render();
+    clearState();
+    if(FEATURES.FLIGHT_DETAILS){openFlightDetailsPopup();}else{showScreen('screenChecklist');render();}
   }
 }
 
@@ -3194,7 +3529,7 @@ function splashSecondaryAction(){
   const p=getProfiles();
   const doStart=()=>{
     if(FEATURES.MULTI_PROFILE&&p.profiles.length>1){openNewFlightModal();}
-    else{clearState();showScreen('screenChecklist');render();}
+    else{clearState();if(FEATURES.FLIGHT_DETAILS){openFlightDetailsPopup();}else{showScreen('screenChecklist');render();}}
   };
   if(done>0){
     document.querySelector('.modal-box').className='modal-box danger';
@@ -3350,6 +3685,8 @@ function splashSecondaryAction(){
       const active7=pilots.filter(p=>now-p.lastSeen<sevenDays).length;
       const active30=pilots.filter(p=>now-p.lastSeen<thirtyDays).length;
       const active90=pilots.filter(p=>now-p.lastSeen<ninetyDays).length;
+      const openedOnce=pilots.filter(p=>p.firstSeen&&p.lastSeen&&Math.abs(p.lastSeen-p.firstSeen)<60000).length;
+      const neverStarted=pilots.filter(p=>!p.flightCount||p.flightCount===0).length;
 
       // Avg flights per pilot active in last 90 days
       const active90pilots=pilots.filter(p=>now-p.lastSeen<ninetyDays);
@@ -3492,8 +3829,28 @@ function splashSecondaryAction(){
           ${activeBar('7 ימים',active7,total)}
           ${activeBar('30 ימים',active30,total)}
           ${activeBar('90 ימים',active90,total)}
+          ${row('פתחו פעם אחת בלבד',openedOnce,total)}
+          ${row('מעולם לא התחילו טיסה',neverStarted,total)}
         </div>
         <div style="background:var(--paper);border:1px solid var(--gold-lite);border-radius:4px;padding:10px 12px;">
+          ${section('Ranks')}
+          ${(()=>{
+            const rankDist={};
+            RANKS.forEach(r=>rankDist[r.name]=0);
+            pilots.forEach(p=>{
+              const n=p.completedFlights||0;
+              if(n<1)return;
+              const r=getRank(n);
+              if(r.current)rankDist[r.current.name]=(rankDist[r.current.name]||0)+1;
+            });
+            const maxVal=Math.max(...Object.values(rankDist),1);
+            return RANKS.map(r=>{
+              const count=rankDist[r.name]||0;
+              const pct=total>0?Math.round(count/total*100):0;
+              const barPct=Math.round(count/maxVal*100);
+              return stationBar(r.icon+' '+r.name,count,'var(--ink)',pct);
+            }).join('');
+          })()}
           ${section('FLIGHTS')}
           ${row('טיסות שהתחילו',totalFlights,totalFlights)}
           ${row('טיסות שהושלמו',totalCompleted,totalFlights||1)}
