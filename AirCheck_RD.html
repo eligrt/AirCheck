@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <!-- ═══════════════════════════════════════
-     AirCheck+ · v2.08.041 · built by eligrt
+     AirCheck+ · v2.08.042 · built by eligrt
      ═══════════════════════════════════════ -->
 <html lang="he" dir="rtl">
 <head>
@@ -164,7 +164,7 @@ html,body{height:100%;background:#1a1a1c;font-family:var(--font-ui);color:var(--
 .card-link-btn{display:inline-flex;align-items:center;gap:6px;background:transparent;color:var(--gold);border:2px solid var(--gold);border-radius:4px;padding:5px 13px;font-family:var(--font-ui);font-size:12px;font-weight:600;cursor:pointer;text-decoration:none;direction:ltr;position:absolute;bottom:14px;left:18px;z-index:3;pointer-events:auto;}
 .card-link-btn:active{opacity:.7;}
 .card-link-btn i{font-size:14px;}
-.ed-item-link{font-size:10px;color:var(--ink-faint);font-family:var(--font-mono);margin-top:2px;direction:ltr;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;max-width:200px;}
+.ed-item-link{font-size:10px;color:var(--ink-faint);font-family:var(--font-mono);margin-top:2px;direction:rtl;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
 .ed-popup-link-section{margin-top:10px;padding-top:10px;border-top:1px dashed var(--gold-lite);}
 .ed-popup-link-label{font-size:10px;color:var(--ink-faint);font-family:var(--font-mono);letter-spacing:.06em;margin-bottom:6px;}
 .card-stamp{position:absolute;bottom:14px;left:18px;direction:ltr;transform-origin:left bottom;pointer-events:none;transform:rotate(-7deg) scale(.85);opacity:0;transition:opacity .14s ease-out,transform .18s ease-out;}
@@ -659,7 +659,7 @@ html,body{height:100%;background:#1a1a1c;font-family:var(--font-ui);color:var(--
     <div class="splash-footer-wrap">
       <div class="footer-strip" style="display:flex;align-items:center;justify-content:space-between;padding:5px 14px 8px;">
         <span class="footer-refresh" onclick="reloadApp()">רענון</span>
-        <span id="versionTap" onclick="handleVersionTap()" style="cursor:default;">AirCheck+ · v2.08.041 · built by eligrt</span>
+        <span id="versionTap" onclick="handleVersionTap()" style="cursor:default;">AirCheck+ · v2.08.042 · built by eligrt</span>
         <span style="width:40px;"></span>
       </div>
     </div>
@@ -833,7 +833,7 @@ html,body{height:100%;background:#1a1a1c;font-family:var(--font-ui);color:var(--
     <div class="tree-panel" id="treePanel"></div>
     <div class="footer-strip" style="display:flex;align-items:center;justify-content:space-between;padding:5px 14px 8px;">
       <span class="footer-refresh" onclick="reloadApp()">רענון</span>
-      <span id="versionTap" onclick="handleVersionTap()" style="cursor:default;">AirCheck+ · v2.08.041 · built by eligrt</span>
+      <span id="versionTap" onclick="handleVersionTap()" style="cursor:default;">AirCheck+ · v2.08.042 · built by eligrt</span>
       <span style="width:40px;"></span>
     </div>
   </div>
@@ -906,7 +906,7 @@ html,body{height:100%;background:#1a1a1c;font-family:var(--font-ui);color:var(--
 
     <div class="footer-strip" style="display:flex;align-items:center;justify-content:space-between;padding:5px 14px 8px;">
       <span style="width:40px;"></span>
-      <span id="versionTap" onclick="handleVersionTap()" style="cursor:default;">AirCheck+ · v2.08.041 · built by eligrt</span>
+      <span id="versionTap" onclick="handleVersionTap()" style="cursor:default;">AirCheck+ · v2.08.042 · built by eligrt</span>
       <span style="width:40px;"></span>
     </div>
   </div>
@@ -1016,7 +1016,7 @@ html,body{height:100%;background:#1a1a1c;font-family:var(--font-ui);color:var(--
     </div>
     <div class="footer-strip" style="display:flex;align-items:center;justify-content:space-between;padding:5px 14px 8px;">
       <span class="footer-refresh" onclick="reloadApp()">רענון</span>
-      <span id="versionTap" onclick="handleVersionTap()" style="cursor:default;">AirCheck+ · v2.08.041 · built by eligrt</span>
+      <span id="versionTap" onclick="handleVersionTap()" style="cursor:default;">AirCheck+ · v2.08.042 · built by eligrt</span>
       <span style="width:40px;"></span>
     </div>
   </div>
@@ -1035,7 +1035,7 @@ html,body{height:100%;background:#1a1a1c;font-family:var(--font-ui);color:var(--
     <div class="editor-list" id="editorList"></div>
     <div class="footer-strip" style="display:flex;align-items:center;justify-content:space-between;padding:5px 14px 8px;">
       <span class="footer-refresh" onclick="reloadApp()">רענון</span>
-      <span id="versionTap" onclick="handleVersionTap()" style="cursor:default;">AirCheck+ · v2.08.041 · built by eligrt</span>
+      <span id="versionTap" onclick="handleVersionTap()" style="cursor:default;">AirCheck+ · v2.08.042 · built by eligrt</span>
       <span style="width:40px;"></span>
     </div>
   </div>
@@ -1130,7 +1130,6 @@ const CL=[
   {phase:"הגעה למנחת ולמטוס",group:"רישומים וניירת",main:"פתיחת טיסה במחשב המנחת (עודד)",sub:""},
   {phase:"הגעה למנחת ולמטוס",group:"רישומים וניירת",main:"ודא המצאות תעודות המטוס בקוקפיט",sub:"בעלות, כושר טיסה ורדיו"},
   {phase:"הגעה למנחת ולמטוס",group:"רישומים וניירת",main:"בדיקת תקלות (אדומים)",sub:""},
-  {phase:"הגעה למנחת ולמטוס",group:"הכנת קוקפיט",main:"תדרוך נוסע (אם נדרש)",sub:""},
   {phase:"הגעה למנחת ולמטוס",group:"הכנת קוקפיט",main:"דפיות ומפות",sub:""},
   {phase:"הגעה למנחת ולמטוס",group:"הכנת קוקפיט",main:"מצלמות: מקם והפעל",sub:""},
   {phase:"הגעה למנחת ולמטוס",group:"הכנת קוקפיט",main:"GPS: מקם והפעל",sub:""},
