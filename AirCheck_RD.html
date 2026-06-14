@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <!-- ═══════════════════════════════════════
-     AirCheck+ · v2.08.042 · built by eligrt
+     AirCheck+ · v2.08.043 · built by eligrt
      ═══════════════════════════════════════ -->
 <html lang="he" dir="rtl">
 <head>
@@ -659,7 +659,7 @@ html,body{height:100%;background:#1a1a1c;font-family:var(--font-ui);color:var(--
     <div class="splash-footer-wrap">
       <div class="footer-strip" style="display:flex;align-items:center;justify-content:space-between;padding:5px 14px 8px;">
         <span class="footer-refresh" onclick="reloadApp()">רענון</span>
-        <span id="versionTap" onclick="handleVersionTap()" style="cursor:default;">AirCheck+ · v2.08.042 · built by eligrt</span>
+        <span id="versionTap" onclick="handleVersionTap()" style="cursor:default;">AirCheck+ · v2.08.043 · built by eligrt</span>
         <span style="width:40px;"></span>
       </div>
     </div>
@@ -833,7 +833,7 @@ html,body{height:100%;background:#1a1a1c;font-family:var(--font-ui);color:var(--
     <div class="tree-panel" id="treePanel"></div>
     <div class="footer-strip" style="display:flex;align-items:center;justify-content:space-between;padding:5px 14px 8px;">
       <span class="footer-refresh" onclick="reloadApp()">רענון</span>
-      <span id="versionTap" onclick="handleVersionTap()" style="cursor:default;">AirCheck+ · v2.08.042 · built by eligrt</span>
+      <span id="versionTap" onclick="handleVersionTap()" style="cursor:default;">AirCheck+ · v2.08.043 · built by eligrt</span>
       <span style="width:40px;"></span>
     </div>
   </div>
@@ -906,7 +906,7 @@ html,body{height:100%;background:#1a1a1c;font-family:var(--font-ui);color:var(--
 
     <div class="footer-strip" style="display:flex;align-items:center;justify-content:space-between;padding:5px 14px 8px;">
       <span style="width:40px;"></span>
-      <span id="versionTap" onclick="handleVersionTap()" style="cursor:default;">AirCheck+ · v2.08.042 · built by eligrt</span>
+      <span id="versionTap" onclick="handleVersionTap()" style="cursor:default;">AirCheck+ · v2.08.043 · built by eligrt</span>
       <span style="width:40px;"></span>
     </div>
   </div>
@@ -1016,7 +1016,7 @@ html,body{height:100%;background:#1a1a1c;font-family:var(--font-ui);color:var(--
     </div>
     <div class="footer-strip" style="display:flex;align-items:center;justify-content:space-between;padding:5px 14px 8px;">
       <span class="footer-refresh" onclick="reloadApp()">רענון</span>
-      <span id="versionTap" onclick="handleVersionTap()" style="cursor:default;">AirCheck+ · v2.08.042 · built by eligrt</span>
+      <span id="versionTap" onclick="handleVersionTap()" style="cursor:default;">AirCheck+ · v2.08.043 · built by eligrt</span>
       <span style="width:40px;"></span>
     </div>
   </div>
@@ -1035,7 +1035,7 @@ html,body{height:100%;background:#1a1a1c;font-family:var(--font-ui);color:var(--
     <div class="editor-list" id="editorList"></div>
     <div class="footer-strip" style="display:flex;align-items:center;justify-content:space-between;padding:5px 14px 8px;">
       <span class="footer-refresh" onclick="reloadApp()">רענון</span>
-      <span id="versionTap" onclick="handleVersionTap()" style="cursor:default;">AirCheck+ · v2.08.042 · built by eligrt</span>
+      <span id="versionTap" onclick="handleVersionTap()" style="cursor:default;">AirCheck+ · v2.08.043 · built by eligrt</span>
       <span style="width:40px;"></span>
     </div>
   </div>
@@ -1111,42 +1111,46 @@ const CL=[
   {phase:"יום לפני",group:"כשירות טיס ותעודות",main:"ודא שברשותך רישיון טיס ורישיון רדיו",sub:""},
   {phase:"יום לפני",group:"כשירות טיס ותעודות",main:"ודא מבחן רמה",sub:"בתוקף עד (dd.mm.yyyy)"},
   {phase:"יום לפני",group:"כשירות טיס ותעודות",main:"ודא תעודה רפואית",sub:"בתוקף עד (dd.mm.yyyy)"},
-  {phase:"יום לפני",group:"כשירות מטוס",main:"ודא יתרת שעות לטיפול קרוב",sub:""},
+  {phase:"יום לפני",group:"כשירות מטוס",main:"ודא יתרת שעות לטיפול קרוב",sub:"טיפול קרוב ב: HOBS #### או ב: dd.mm.yyyy"},
   {phase:"יום לפני",group:"כשירות מטוס",main:"ודא CofA",sub:"בתוקף עד (dd.mm.yyyy)"},
   {phase:"יום לפני",group:"כשירות מטוס",main:"ודא תעודת רדיו",sub:"בתוקף עד (dd.mm.yyyy)"},
   {phase:"יום לפני",group:"תכנון (ניווט ודלק)",main:"הכנת מפות וציר ניווט",sub:""},
   {phase:"יום לפני",group:"תכנון (ניווט ודלק)",main:"רישום כל תדרי הרדיו הנדרשים לנתיב",sub:""},
-  {phase:"יום לפני",group:"תכנון (ניווט ודלק)",main:"ודא כמות דלק נדרשת בהתאם למשך הטיסה",sub:""},
+  {phase:"יום לפני",group:"תכנון (ניווט ודלק)",main:"חשב כמות דלק נדרשת לטיסה",sub:"בתוספת '45 (הסעה '15 + ספייר '30)"},
   {phase:"יום לפני",group:"מנהלות",main:"ודא מטוס משוריין / מוזמן לטיסה",sub:""},
-  {phase:"יום לפני",group:"מנהלות",main:"תאום נחיתה בשדה יעד / עצירה",sub:""},
+  {phase:"יום לפני",group:"מנהלות",main:"תאום נחיתה בשדה יעד / עצירה (אם נדרש)",sub:""},
   {phase:"יום לפני",group:"בדיקת מז״א",main:"בדוק TAF בשדה המראה ושדה נחיתה",sub:""},
   {phase:"יום לפני",group:"בדיקת מז״א",main:"בדוק מפות רוח בנתיב",sub:""},
   {phase:"יום לפני",group:"בדיקת מז״א",main:"בדוק מפות SIG",sub:""},
   {phase:"יום לפני",group:"בדיקת מז״א",main:"אמת נתונים באפליקציית מז״א",sub:""},
-  {phase:"יום לפני",group:"מודיעין טיס",main:"בדוק NOTAM",sub:"",url:"https://notam.liorbenhorin.xyz/",urlLabel:"NOTAM IL"},
+  {phase:"יום לפני",group:"מודיעין טיס",main:"בדוק NOTAM",sub:"",url:"https://notam.liorbenhorin.xyz/",urlLabel:"NOTAM LL"},
   {phase:"יום לפני",group:"מודיעין טיס",main:"הגשת תוכנית טיסה",sub:"",url:"https://fpl.co.il/",urlLabel:"fpl.co.il"},
-  {phase:"הגעה למנחת ולמטוס",group:"הכנת קוקפיט",main:"תדרוך נוסע (אם נדרש)",sub:"",url:"https://eligrt.github.io/AirCheck/passenger-briefing.html",urlLabel:"Passenger Briefing"},
   {phase:"יום לפני",group:"מודיעין טיס",main:"קבלת מרשה טיסה",sub:""},
   {phase:"הגעה למנחת ולמטוס",group:"רישומים וניירת",main:"פתיחת טיסה במחשב המנחת (עודד)",sub:""},
-  {phase:"הגעה למנחת ולמטוס",group:"רישומים וניירת",main:"ודא המצאות תעודות המטוס בקוקפיט",sub:"בעלות, כושר טיסה ורדיו"},
+  {phase:"הגעה למנחת ולמטוס",group:"רישומים וניירת",main:"ודא המצאות תעודות המטוס בקוקפיט",sub:"בעלות, כושר טיסה (ודא תוקף) ורדיו (ודא תוקף)"},
+  {phase:"הגעה למנחת ולמטוס",group:"רישומים וניירת",main:"ודא אי חריגה מטיפול קרוב",sub:"טיפול קרוב ב: HOBS #### או ב: dd.mm.yyyy"},
+  {phase:"הגעה למנחת ולמטוס",group:"רישומים וניירת",main:"משקל ואיזון - ודא",sub:""},
   {phase:"הגעה למנחת ולמטוס",group:"רישומים וניירת",main:"בדיקת תקלות (אדומים)",sub:""},
+  {phase:"הגעה למנחת ולמטוס",group:"רישומים וניירת",main:"פתיחת שורה בספר",sub:""},
+  {phase:"הגעה למנחת ולמטוס",group:"הכנת קוקפיט",main:"בדיקות חיצוניות - הושלם",sub:""},
   {phase:"הגעה למנחת ולמטוס",group:"הכנת קוקפיט",main:"דפיות ומפות",sub:""},
   {phase:"הגעה למנחת ולמטוס",group:"הכנת קוקפיט",main:"מצלמות: מקם והפעל",sub:""},
-  {phase:"הגעה למנחת ולמטוס",group:"הכנת קוקפיט",main:"GPS: מקם והפעל",sub:""},
-  {phase:"הגעה למנחת ולמטוס",group:"הכנת קוקפיט",main:"אוזניות: בדוק סוללות",sub:""},
+  {phase:"הגעה למנחת ולמטוס",group:"הכנת קוקפיט",main:"GPS - מקם והפעל",sub:""},
+  {phase:"הגעה למנחת ולמטוס",group:"הכנת קוקפיט",main:"אוזניות - בדוק סוללות",sub:""},
+  {phase:"הגעה למנחת ולמטוס",group:"הכנת קוקפיט",main:"תדרוך נוסע (אם נדרש)",sub:"",url:"https://eligrt.github.io/AirCheck/passenger-briefing.html",urlLabel:"Passenger Briefing"},
   {phase:"הגעה למנחת ולמטוס",group:"כללי",main:"עדכון בקרה בהמראה (אם נדרש)",sub:""},
-  {phase:"הגעה למנחת ולמטוס",group:"כללי",main:"דאבל צ׳ק מז״א",sub:"בשדה המראה ובשדה נחיתה"},
-  {phase:"סגירת טיסה",group:"רישום וניירת",main:"ספר מטוס: סגירת שורה",sub:""},
-  {phase:"סגירת טיסה",group:"רישום וניירת",main:"רישום בלוגבוק (רגיל)",sub:""},
-  {phase:"סגירת טיסה",group:"רישום וניירת",main:"רישום בלוגבוק דיגיטלי",sub:""},
-  {phase:"סגירת טיסה",group:"קיפול ציוד אישי",main:"מצלמות: איפוד, טלפון",sub:""},
-  {phase:"סגירת טיסה",group:"קיפול ציוד אישי",main:"ארגז אוזניות אישיות ואוזניות נוסע",sub:""},
-  {phase:"סגירת טיסה",group:"קיפול ציוד אישי",main:"קשר ניד",sub:""},
+  {phase:"הגעה למנחת ולמטוס",group:"כללי",main:"דאבל צ׳ק מז״א",sub:"METAR בשדה המראה ובשדה נחיתה"},
+  {phase:"הגעה למנחת ולמטוס",group:"כללי",main:"בדיקה חוזרת ל NOTAM's בשדות ובנתיבים",sub:"",url:"https://notam.liorbenhorin.xyz/",urlLabel:"NOTAM LL"},
+  {phase:"סגירת טיסה",group:"ניירת",main:"ספר מטוס: סגירת שורה",sub:""},
+  {phase:"סגירת טיסה",group:"קיפול ציוד אישי",main:"מצלמות, IPAD, טלפון",sub:""},
+  {phase:"סגירת טיסה",group:"קיפול ציוד אישי",main:"אוזניות אישיות ואוזניות נוסע",sub:""},
   {phase:"סגירת טיסה",group:"קיפול ציוד אישי",main:"HardCopy",sub:""},
   {phase:"סגירת טיסה",group:"קיפול ציוד אישי",main:"ודא קוקפיט Cold & Dark",sub:""},
-  {phase:"סגירת טיסה",group:"זיכוי מטוס",main:"חניה וכיסוי",sub:""},
-  {phase:"סגירת טיסה",group:"זיכוי מטוס",main:"כיסוי פיטו: במקום",sub:""},
-  {phase:"סגירת טיסה",group:"עודד",main:"סגירת טיסה במחשב המנחת (עודד)",sub:""},
+  {phase:"סגירת טיסה",group:"מטוס האנגר ומנחת",main:"חניה וכיסוי",sub:""},
+  {phase:"סגירת טיסה",group:"מטוס האנגר ומנחת",main:"כיסוי פיטו: במקום",sub:""},
+  {phase:"סגירת טיסה",group:"מטוס האנגר ומנחת",main:"סגירת טיסה במחשב המנחת (עודד)",sub:""},
+  {phase:"סגירת טיסה",group:"רישום ותשלום",main:"רישום בלוגבוק (רגיל)",sub:""},
+  {phase:"סגירת טיסה",group:"רישום ותשלום",main:"רישום בלוגבוק דיגיטלי",sub:""},
 ];
 const CL_DEFAULT=CL.map(it=>({...it}));
 window.CL_DEFAULT_LIST=CL_DEFAULT;
@@ -1728,8 +1732,9 @@ function loadList(){
 }
 
 function patchDefaultLinks(){
+  // Legacy: kept for historical safety — new installs won't need this
   const LINK_PATCHES=[
-    {main:'בדוק NOTAM',url:'https://notam.liorbenhorin.xyz/',urlLabel:'NOTAM IL'},
+    {main:'בדוק NOTAM',url:'https://notam.liorbenhorin.xyz/',urlLabel:'NOTAM LL'},
     {main:'הגשת תוכנית טיסה',url:'https://fpl.co.il/',urlLabel:'fpl.co.il'},
     {main:'תדרוך נוסע (אם נדרש)',url:'https://eligrt.github.io/AirCheck/passenger-briefing.html',urlLabel:'Passenger Briefing'}
   ];
@@ -1746,6 +1751,32 @@ function patchDefaultLinks(){
     });
   });
   if(patched){
+    saveProfiles(p);
+    const prof=getActiveProfile();
+    if(prof&&prof.list)CL.length=0,prof.list.forEach(it=>CL.push(it)),buildIndex();
+  }
+}
+
+function migrateDefaultList(){
+  // If a profile's list is untouched (zero custom items, same length as old default)
+  // silently replace it with the new default.
+  // Detection: every item in the saved list matches a key in CL_DEFAULT — same logic as blue dot.
+  let migrated=false;
+  const p=getProfiles();
+  p.profiles.forEach(prof=>{
+    const list=prof.list||[];
+    if(!list.length)return;
+    const isUntouched=list.every(it=>{
+      const key=`${norm(it.main)}|${norm(it.group)}|${norm(it.phase)}|${norm(it.sub||'')}`;
+      return _defaultItemKeys.has(key);
+    })&&list.length===CL_DEFAULT.length;
+    if(isUntouched){
+      prof.list=CL_DEFAULT.map(it=>({...it}));
+      prof.type='default';
+      migrated=true;
+    }
+  });
+  if(migrated){
     saveProfiles(p);
     const prof=getActiveProfile();
     if(prof&&prof.list)CL.length=0,prof.list.forEach(it=>CL.push(it)),buildIndex();
@@ -3350,7 +3381,7 @@ function showScreen(id){
   document.getElementById(id).classList.add('active');
 }
 document.addEventListener('DOMContentLoaded',()=>{
-  loadSettings();loadList();patchDefaultLinks();loadState();loadReg();loadRoute();drawRings();initSplash();
+  loadSettings();loadList();patchDefaultLinks();migrateDefaultList();loadState();loadReg();loadRoute();drawRings();initSplash();
   if(FEATURES.WHATS_NEW)checkWhatsNew();
   if(FEATURES.METAR){const mb=document.getElementById('metarBtn');if(mb)mb.style.display='';}
   // Detect if already installed as PWA on this launch
