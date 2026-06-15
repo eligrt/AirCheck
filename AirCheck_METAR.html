@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<!-- AirCheck+ · AirCheck_METAR.html · v1.01 · built by eligrt -->
+<!-- AirCheck+ · AirCheck_METAR.html · v1.03 · built by eligrt -->
 <html lang="he" dir="rtl">
 <head>
 <meta charset="UTF-8">
@@ -17,65 +17,65 @@
 }
 *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent;}
 html,body{min-height:100%;background:var(--paper);font-family:var(--font-ui);color:var(--ink);}
-body{display:flex;flex-direction:column;min-height:100vh;}
+body{display:flex;flex-direction:column;height:100dvh;overflow:hidden;}
 
 /* ── HEADER ── */
 .header{
-  background:var(--ink);padding:10px 16px 8px;
+  background:var(--paper);padding:10px 16px 8px;
   display:flex;align-items:center;justify-content:space-between;
-  border-bottom:3px solid var(--gold);
+  border-bottom:1px solid var(--paper-edge);
   position:sticky;top:0;z-index:10;
 }
 .header-right{display:flex;flex-direction:column;}
-.header-title{font-size:18px;font-weight:700;color:#f4ecdc;}
-.header-sub{font-family:var(--font-mono);font-size:9px;color:rgba(244,236,220,.45);letter-spacing:.15em;text-transform:uppercase;margin-top:2px;}
-.back-btn{background:var(--gold);border:none;border-radius:6px;padding:8px 16px;font-family:var(--font-ui);font-size:13px;font-weight:700;color:var(--ink);cursor:pointer;white-space:nowrap;}
+.header-title{font-size:18px;font-weight:700;color:var(--ink);font-family:var(--font-mono);letter-spacing:.04em;}
+.header-sub{font-family:var(--font-ui);font-size:12px;color:var(--ink-muted);margin-top:3px;}
+.back-btn{background:var(--ink);border:none;border-radius:6px;padding:8px 16px;font-family:var(--font-ui);font-size:13px;font-weight:700;color:#f4ecdc;cursor:pointer;white-space:nowrap;}
 .back-btn:active{opacity:.8;}
 
 /* ── PILL STRIP ── */
-.pill-wrap{background:var(--ink);padding:0 16px 12px;}
+.pill-wrap{background:var(--paper);padding:8px 16px 12px;border-bottom:1px solid var(--paper-edge);}
 .metar-pill-strip{display:flex;gap:5px;direction:rtl;overflow-x:auto;scrollbar-width:none;padding-bottom:1px;}
 .metar-pill-strip::-webkit-scrollbar{display:none;}
-.metar-pill-btn{flex-shrink:0;padding:5px 10px;border-radius:20px;border:1.5px solid rgba(244,236,220,.25);background:transparent;color:rgba(244,236,220,.65);font-family:var(--font-mono);font-size:11px;font-weight:700;cursor:pointer;letter-spacing:.04em;transition:all .15s;}
+.metar-pill-btn{flex-shrink:0;padding:8px 16px;border-radius:20px;border:1.5px solid var(--paper-edge);background:transparent;color:var(--ink-muted);font-family:var(--font-mono);font-size:13px;font-weight:700;cursor:pointer;letter-spacing:.04em;transition:all .15s;}
 .metar-pill-btn:active{opacity:.7;}
-.metar-pill-btn.active{border:none;background:var(--paper);color:var(--ink);}
-.metar-pill-other{font-family:var(--font-ui);border-style:dashed;color:rgba(244,236,220,.4);}
+.metar-pill-btn.active{border:none;background:var(--ink);color:var(--paper);}
+.metar-pill-other{font-family:var(--font-ui);border-style:dashed;color:var(--ink-faint);}
 .metar-pill-other.active{background:rgba(200,160,74,.2);border:1.5px solid var(--gold);color:var(--gold-lite);border-style:solid;}
-.metar-pill-input-row{display:flex;align-items:center;gap:10px;background:rgba(244,236,220,.08);border:1px solid rgba(200,160,74,.3);border-radius:4px;padding:7px 12px;margin-top:8px;direction:ltr;}
-.metar-pill-input{background:transparent;border:none;border-bottom:1.5px dashed rgba(200,160,74,.5);outline:none;font-family:var(--font-mono);font-size:14px;font-weight:700;color:var(--paper);flex:1;padding:0 0 1px;text-transform:uppercase;caret-color:var(--gold);letter-spacing:.1em;direction:ltr;-webkit-appearance:none;}
-.metar-pill-input::placeholder{color:rgba(244,236,220,.2);}
+.metar-pill-input-row{display:flex;align-items:center;gap:10px;background:var(--paper-hi);border:1px solid var(--gold-lite);border-radius:4px;padding:7px 12px;margin-top:8px;direction:ltr;}
+.metar-pill-input{background:transparent;border:none;border-bottom:1.5px dashed var(--gold);outline:none;font-family:var(--font-mono);font-size:14px;font-weight:700;color:var(--ink);flex:1;padding:0 0 1px;text-transform:uppercase;caret-color:var(--gold);letter-spacing:.1em;direction:ltr;-webkit-appearance:none;}
+.metar-pill-input::placeholder{color:var(--ink-faint);}
 
 /* ── STATION LABEL ── */
 .station-label-bar{
   background:rgba(28,61,110,.06);border-bottom:1px solid var(--paper-edge);
-  padding:8px 16px;display:flex;align-items:center;justify-content:space-between;
+  padding:11px 16px;display:flex;align-items:center;justify-content:space-between;
   direction:rtl;
 }
-.metar-station-name{font-size:13px;color:var(--ink-muted);font-family:var(--font-ui);}
+.metar-station-name{font-size:15px;color:var(--ink-muted);font-family:var(--font-ui);}
 .metar-age{font-family:var(--font-mono);font-size:9px;color:rgba(100,210,160,.85);letter-spacing:.1em;border:1px solid rgba(100,210,160,.35);border-radius:3px;padding:2px 7px;direction:ltr;flex-shrink:0;}
 .metar-age.stale{color:var(--amber);border-color:rgba(245,158,11,.35);}
 
 /* ── TABS ── */
 .metar-tabs{display:flex;border-bottom:1px solid var(--paper-edge);background:var(--paper);}
-.metar-tab{flex:1;padding:8px;text-align:center;font-family:var(--font-mono);font-size:10px;font-weight:700;letter-spacing:.12em;color:var(--ink-muted);border:none;background:transparent;cursor:pointer;border-bottom:2px solid transparent;transition:all .15s;}
+.metar-tab{flex:1;padding:13px 8px;text-align:center;font-family:var(--font-mono);font-size:12px;font-weight:700;letter-spacing:.1em;color:var(--ink-muted);border:none;background:transparent;cursor:pointer;border-bottom:2px solid transparent;transition:all .15s;}
 .metar-tab.active{color:var(--ink);border-bottom-color:var(--gold);background:var(--paper-hi);}
 
 /* ── CONTENT ── */
-.metar-tab-content{flex:1;overflow-y:auto;-webkit-overflow-scrolling:touch;}
+.metar-tab-content{flex:1;overflow-y:auto;-webkit-overflow-scrolling:touch;min-height:0;}
 .metar-loading{padding:40px 16px;text-align:center;font-family:var(--font-mono);font-size:11px;color:var(--ink-muted);letter-spacing:.1em;direction:ltr;}
 .metar-error{padding:20px 16px;text-align:center;font-family:var(--font-ui);font-size:13px;color:var(--stamp-red);line-height:1.6;direction:rtl;}
 .metar-qnh-banner{background:rgba(31,111,63,.12);border-bottom:1px solid rgba(31,111,63,.25);padding:10px 16px;display:flex;align-items:baseline;gap:12px;direction:ltr;}
 .metar-qnh-label{font-family:var(--font-mono);font-size:9px;color:var(--cleared);letter-spacing:.2em;font-weight:700;text-transform:uppercase;}
-.metar-qnh-value{font-family:var(--font-mono);font-size:28px;font-weight:700;color:var(--cleared);letter-spacing:.04em;line-height:1;}
+.metar-qnh-value{font-family:var(--font-mono);font-size:36px;font-weight:700;color:var(--cleared);letter-spacing:.04em;line-height:1;}
 .metar-qnh-unit{font-family:var(--font-mono);font-size:11px;color:rgba(31,111,63,.7);letter-spacing:.1em;}
 .metar-qnh-hg{font-family:var(--font-mono);font-size:10px;color:rgba(31,111,63,.55);margin-right:auto;letter-spacing:.05em;}
 .metar-raw-wrap{padding:10px 14px 8px;}
 .metar-raw-label{font-family:var(--font-mono);font-size:8px;color:var(--ink-faint);letter-spacing:.15em;text-transform:uppercase;direction:ltr;margin-bottom:5px;}
-.metar-raw{font-family:var(--font-mono);font-size:10px;color:var(--ink-muted);direction:ltr;background:var(--paper);border:1px solid var(--paper-edge);border-radius:3px;padding:8px 10px;line-height:1.6;word-break:break-all;letter-spacing:.03em;}
+.metar-raw{font-family:var(--font-mono);font-size:12px;color:var(--ink-muted);direction:ltr;background:var(--paper);border:1px solid var(--paper-edge);border-radius:3px;padding:10px 12px;line-height:1.7;word-break:break-all;letter-spacing:.03em;}
 .metar-fields{display:grid;grid-template-columns:1fr 1fr 1fr;gap:1px;background:var(--paper-edge);border-bottom:1px solid var(--paper-edge);direction:ltr;}
 .metar-field{background:var(--paper-hi);padding:6px 12px;display:flex;flex-direction:column;gap:2px;}
-.metar-field-label{font-family:var(--font-mono);font-size:8px;letter-spacing:.15em;text-transform:uppercase;direction:ltr;}
-.metar-field-value{font-family:var(--font-mono);font-size:14px;font-weight:700;direction:ltr;line-height:1.2;}
+.metar-field-label{font-family:var(--font-mono);font-size:10px;letter-spacing:.12em;text-transform:uppercase;direction:ltr;}
+.metar-field-value{font-family:var(--font-mono);font-size:16px;font-weight:700;direction:ltr;line-height:1.2;}
 .metar-field-zulu{font-family:var(--font-mono);font-size:9px;color:var(--ink-faint);letter-spacing:.05em;direction:ltr;}
 .raw-hl-wind{color:#4a7ab5;font-weight:700;}
 .raw-hl-vis{color:#6a9a6a;font-weight:700;}
@@ -93,9 +93,9 @@ body{display:flex;flex-direction:column;min-height:100vh;}
 /* ── FOOTER ── */
 .metar-footer{
   padding:10px 14px 14px;display:flex;align-items:center;gap:10px;
-  border-top:1px dashed var(--gold-lite);direction:rtl;
+  border-top:1px dashed var(--gold-lite);direction:ltr;justify-content:flex-start;
 }
-.metar-refresh-btn{background:transparent;border:1px solid var(--gold-lite);border-radius:3px;padding:6px 12px;font-family:var(--font-ui);font-size:12px;font-weight:600;color:var(--ink-muted);cursor:pointer;}
+.metar-refresh-btn{background:transparent;border:1px solid var(--gold-lite);border-radius:4px;padding:8px 16px;font-family:var(--font-ui);font-size:14px;font-weight:600;color:var(--ink-muted);cursor:pointer;}
 .metar-refresh-btn:active{background:rgba(200,160,74,.1);}
 .metar-age-footer{font-family:var(--font-mono);font-size:9px;color:var(--ink-faint);letter-spacing:.06em;direction:ltr;}
 
@@ -131,7 +131,6 @@ body{display:flex;flex-direction:column;min-height:100vh;}
 
 <div class="station-label-bar">
   <div class="metar-station-name" id="metarStationLabel">טוען...</div>
-  <div class="metar-age" id="metarAgeLabel" style="display:none;">—</div>
 </div>
 
 <div class="metar-tabs">
@@ -149,7 +148,7 @@ body{display:flex;flex-direction:column;min-height:100vh;}
   <div class="metar-age-footer" id="metarAgeFooter">—</div>
 </div>
 
-<div class="page-footer" dir="ltr">METAR / TAF · V1.01 · BUILT BY ELIGRT</div>
+<div class="page-footer" dir="ltr">METAR / TAF · V1.03 · BUILT BY ELIGRT</div>
 
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/12.14.0/firebase-app.js";
@@ -357,7 +356,7 @@ function parseMetarRaw(raw,obsTimeStr,icao){
 
 function showMetarLoading(){
   document.getElementById('metarTabContent').innerHTML='<div class="metar-loading">FETCHING ...</div>';
-  document.getElementById('metarAgeLabel').style.display='none';
+  
   document.getElementById('metarAgeFooter').textContent='—';
 }
 
@@ -385,15 +384,14 @@ function zuluToLocal(zuluStr){
 
 function renderMetarContent(){
   const icao=_metarCache.icao||getMetarIcao();
-  const ageEl=document.getElementById('metarAgeLabel');
   const ageFooter=document.getElementById('metarAgeFooter');
   if(_metarCurrentTab==='metar'){
     const m=_metarCache.metar;
     if(!m){document.getElementById('metarTabContent').innerHTML='<div class="metar-error">אין METAR זמין עבור '+icao+'</div>';return;}
     const noMetarNote=m.noMetar?`<div style="background:rgba(245,158,11,.1);border:1px solid rgba(245,158,11,.3);border-radius:4px;padding:8px 12px;margin:8px 14px 0;font-size:11px;color:var(--amber);direction:rtl;font-family:var(--font-ui);">אין תחנת מדידה בהרצליה · QNH לפי LLBG</div>`:'';
     const ageStr=metarAgeStr(m.obsTime);
-    ageEl.textContent=ageStr;ageEl.style.display='';
-    ageEl.className='metar-age'+(ageStr.includes('H AGO')?' stale':'');
+    
+    
     ageFooter.textContent=ageStr;
     const raw=m.rawOb||m.rawMetar||'';
     const qnh=m.qnh?String(m.qnh):(()=>{const q=raw.match(/Q(\d{4})/);return q?q[1]:'—';})();
@@ -461,7 +459,7 @@ function renderMetarContent(){
   } else {
     const t=_metarCache.taf;
     const ageStr=t?metarAgeStr(t.issueTime):'—';
-    ageEl.textContent=ageStr;ageEl.style.display='';
+    
     ageFooter.textContent=ageStr;
     if(!t){document.getElementById('metarTabContent').innerHTML='<div class="metar-error">אין TAF זמין עבור '+icao+'</div>';return;}
     const rawTaf=t.rawTAF||t.rawTaf||'';
