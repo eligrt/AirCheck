@@ -24,15 +24,15 @@ body{display:flex;flex-direction:column;height:100svh;overflow:hidden;}
 
 /* ── HEADER ── */
 .header{
-  background:var(--paper);padding:10px 16px 8px;
+  background:var(--ink);padding:10px 16px 8px;
   display:flex;align-items:center;justify-content:space-between;
-  border-bottom:1px solid var(--paper-edge);
+  border-bottom:3px solid var(--gold);
   position:sticky;top:0;z-index:10;
 }
 .header-right{display:flex;flex-direction:column;}
-.header-title{font-size:18px;font-weight:700;color:var(--ink);font-family:var(--font-mono);letter-spacing:.04em;}
-.header-sub{font-family:var(--font-ui);font-size:12px;color:var(--ink-muted);margin-top:3px;}
-.back-btn{background:var(--ink);border:none;border-radius:6px;padding:8px 16px;font-family:var(--font-ui);font-size:13px;font-weight:700;color:#f4ecdc;cursor:pointer;white-space:nowrap;}
+.header-title{font-size:18px;font-weight:700;color:#f4ecdc;font-family:var(--font-mono);letter-spacing:.04em;}
+.header-sub{font-family:var(--font-ui);font-size:12px;color:rgba(244,236,220,.6);margin-top:3px;}
+.back-btn{background:transparent;border:1px solid rgba(244,236,220,.35);border-radius:6px;padding:8px 16px;font-family:var(--font-ui);font-size:13px;font-weight:600;color:rgba(244,236,220,.8);cursor:pointer;white-space:nowrap;}
 .back-btn:active{opacity:.8;}
 
 /* ── PILL STRIP ── */
@@ -152,7 +152,7 @@ body{display:flex;flex-direction:column;height:100svh;overflow:hidden;}
   <div class="metar-age-footer" id="metarAgeFooter">—</div>
 </div>
 
-<div class="page-footer" dir="ltr">METAR / TAF · V1.08 · BUILT BY ELIGRT</div>
+<div class="page-footer" dir="ltr">METAR / TAF · V1.09 · BUILT BY ELIGRT</div>
 
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/12.14.0/firebase-app.js";
@@ -524,7 +524,8 @@ async function renderTowerContent(){
 }
 
 function backToApp(){
-  window.location.href='AirCheck_RD.html?resume=1';
+  const from=new URLSearchParams(window.location.search).get('from')||'AirCheck_RD.html';
+  window.location.href=from+'?resume=1';
 }
 
 (function init(){
