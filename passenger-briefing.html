@@ -57,7 +57,8 @@ body{
 }
 
 /* Content */
-.content{padding:0 14px 16px;flex:1;overflow-y:auto;-webkit-overflow-scrolling:touch;}
+.content{padding:0 14px 16px;flex:1;overflow-y:auto;-webkit-overflow-scrolling:touch;scrollbar-width:none;}
+.content::-webkit-scrollbar{display:none;}
 
 /* Intro card */
 .intro-card{
@@ -144,12 +145,11 @@ body{
 
 
 
-<div class="content">
-
-  <div style="padding:10px 0 14px;direction:rtl;display:flex;justify-content:flex-end;">
+<!-- FROZEN UPPER AREA -->
+<div style="flex-shrink:0;padding:0 14px;border-bottom:1px solid var(--paper-edge);background:var(--paper);">
+  <div style="padding:10px 0 10px;direction:rtl;display:flex;justify-content:flex-end;">
     <button onclick="backToApp()" style="background:var(--ink);border:none;border-radius:6px;padding:7px 14px;font-family:var(--font-ui);font-size:13px;font-weight:700;color:#f4ecdc;cursor:pointer;">חזרה ל&nbsp;&nbsp;<span dir="ltr">AirCheck+</span></button>
   </div>
-
   <div class="intro-card" style="text-align:right;">
     <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:6px;direction:rtl;">
       <div style="font-size:16px;font-weight:700;color:var(--ink);">תדרוך נוסע ✈</div>
@@ -160,6 +160,10 @@ body{
     <div id="progressPct" style="font-family:var(--font-mono);font-size:10px;color:var(--ink-faint);min-width:28px;text-align:right;">0%</div>
     <div class="progress-bar" style="position:static;flex:1;border-radius:3px;overflow:hidden;height:4px;"><div class="progress-fill" id="progressFill"></div></div>
   </div>
+</div>
+
+<!-- SCROLLABLE SECTIONS -->
+<div class="content">
 
   <!-- SAFETY -->
   <div class="section">
@@ -246,7 +250,7 @@ body{
 
 </div>
 
-<div class="footer" dir="ltr">PASSENGER BRIEFING · V1.17 · BUILT BY ELIGRT</div>
+<div class="footer" dir="ltr">PASSENGER BRIEFING · V1.19 · BUILT BY ELIGRT</div>
 
 <script>
 const items = document.querySelectorAll('.item');
