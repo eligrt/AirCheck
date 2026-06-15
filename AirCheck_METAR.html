@@ -26,7 +26,6 @@ body{display:flex;flex-direction:column;height:100svh;overflow:hidden;}
 .header{
   background:var(--ink);padding:10px 16px 8px;
   display:flex;align-items:center;justify-content:space-between;
-  border-bottom:3px solid var(--gold);
   position:sticky;top:0;z-index:10;
 }
 .header-right{display:flex;flex-direction:column;}
@@ -112,7 +111,6 @@ body{display:flex;flex-direction:column;height:100svh;overflow:hidden;}
 <div class="header">
   <div class="header-right">
     <div class="header-title">METAR / TAF</div>
-    <div class="header-sub">מזג אוויר שדה</div>
   </div>
   <button class="back-btn" onclick="backToApp()">חזרה ל&nbsp;&nbsp;<span dir="ltr">AirCheck+</span></button>
 </div>
@@ -152,7 +150,7 @@ body{display:flex;flex-direction:column;height:100svh;overflow:hidden;}
   <div class="metar-age-footer" id="metarAgeFooter">—</div>
 </div>
 
-<div class="page-footer" dir="ltr">METAR / TAF · V1.09 · BUILT BY ELIGRT</div>
+<div class="page-footer" dir="ltr">METAR / TAF · V1.10 · BUILT BY ELIGRT</div>
 
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/12.14.0/firebase-app.js";
