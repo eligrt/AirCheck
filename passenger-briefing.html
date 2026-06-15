@@ -139,17 +139,17 @@ body{
 </head>
 <body>
 
-<div class="header-sub">Passenger Briefing</div>
-  </div>
-  <div style="display:flex;align-items:center;gap:10px;"><button class="reset-btn" onclick="resetAll()">↺ אפס</button><div class="header-logo" dir="ltr">AirCheck+</div></div>
-</div>
+
 
 <div class="content">
+
+  <div style="padding:10px 0 14px;direction:rtl;display:flex;justify-content:flex-end;">
+    <button onclick="backToApp()" style="background:var(--ink);border:none;border-radius:6px;padding:7px 14px;font-family:var(--font-ui);font-size:13px;font-weight:700;color:#f4ecdc;cursor:pointer;">חזרה ל&nbsp;&nbsp;<span dir="ltr">AirCheck+</span></button>
+  </div>
 
   <div class="intro-card" style="text-align:right;">
     <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:6px;direction:rtl;">
       <div style="font-size:16px;font-weight:700;color:var(--ink);">תדרוך נוסע ✈</div>
-      <button class="reset-btn" onclick="resetAll()">↺ אפס</button>
     </div>
     <p>עברו על הסעיפים הבאים עם הנוסע לפני הטיסה. <strong>סמנו כל סעיף לאחר הסבר.</strong></p>
   </div>
@@ -243,7 +243,7 @@ body{
 
 </div>
 
-<div class="footer" dir="ltr">PASSENGER BRIEFING · V1.11 · BUILT BY ELIGRT</div>
+<div class="footer" dir="ltr">PASSENGER BRIEFING · V1.15 · BUILT BY ELIGRT</div>
 
 <script>
 const items = document.querySelectorAll('.item');
@@ -294,7 +294,7 @@ function resetAll() {
     </div>
     <div style="padding:16px;display:flex;gap:8px;">
       <button onclick="closePopup()" style="flex:1;padding:10px;background:transparent;border:1.5px solid var(--paper-edge);border-radius:6px;font-family:var(--font-ui);font-size:12px;color:var(--ink-muted);cursor:pointer;">‹ חזור לתדרוך</button>
-      <button onclick="backToApp()" style="flex:1;padding:10px;background:var(--ink);border:none;border-radius:6px;font-family:var(--font-ui);font-size:12px;font-weight:700;color:#f4ecdc;cursor:pointer;">חזרה ל-<span dir="ltr">AirCheck+</span></button>
+      <button onclick="backToApp()" style="flex:1;padding:10px;background:var(--ink);border:none;border-radius:6px;font-family:var(--font-ui);font-size:12px;font-weight:700;color:#f4ecdc;cursor:pointer;">חזרה ל&nbsp;&nbsp;<span dir="ltr">AirCheck+</span></button>
     </div>
   </div>
 </div>
