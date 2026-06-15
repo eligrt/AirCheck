@@ -1,8 +1,11 @@
 <!DOCTYPE html>
-<!-- AirCheck+ · AirCheck_METAR.html · v1.05 · built by eligrt -->
+<!-- AirCheck+ · AirCheck_METAR.html · v1.06 · built by eligrt -->
 <html lang="he" dir="rtl">
 <head>
 <meta charset="UTF-8">
+<meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+<meta http-equiv="Pragma" content="no-cache">
+<meta http-equiv="Expires" content="0">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
 <title>METAR / TAF | AirCheck+</title>
 <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Hebrew:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
@@ -94,13 +97,14 @@ body{display:flex;flex-direction:column;height:100dvh;overflow:hidden;}
 .metar-footer{
   padding:10px 14px 14px;display:flex;align-items:center;gap:10px;
   border-top:1px dashed var(--gold-lite);direction:ltr;justify-content:flex-start;
+  flex-shrink:0;
 }
 .metar-refresh-btn{background:transparent;border:1px solid var(--gold-lite);border-radius:4px;padding:8px 16px;font-family:var(--font-ui);font-size:14px;font-weight:600;color:var(--ink-muted);cursor:pointer;}
 .metar-refresh-btn:active{background:rgba(200,160,74,.1);}
 .metar-age-footer{font-family:var(--font-mono);font-size:9px;color:var(--ink-faint);letter-spacing:.06em;direction:ltr;}
 
 /* ── PAGE FOOTER ── */
-.page-footer{text-align:center;padding:14px;font-family:var(--font-mono);font-size:9px;color:var(--ink-faint);letter-spacing:.1em;text-transform:uppercase;border-top:1px solid var(--paper-edge);}
+.page-footer{text-align:center;padding:10px;font-family:var(--font-mono);font-size:9px;color:var(--ink-faint);letter-spacing:.1em;text-transform:uppercase;border-top:1px solid var(--paper-edge);flex-shrink:0;}
 </style>
 </head>
 <body>
@@ -148,7 +152,7 @@ body{display:flex;flex-direction:column;height:100dvh;overflow:hidden;}
   <div class="metar-age-footer" id="metarAgeFooter">—</div>
 </div>
 
-<div class="page-footer" dir="ltr">METAR / TAF · V1.05 · BUILT BY ELIGRT</div>
+<div class="page-footer" dir="ltr">METAR / TAF · V1.07 · BUILT BY ELIGRT</div>
 
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/12.14.0/firebase-app.js";
