@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <!-- ═══════════════════════════════════════
-     AirCheck+ · v2.08.049 · built by eligrt
+     AirCheck+ · v2.08.050 · built by eligrt
      ═══════════════════════════════════════ -->
 <html lang="he" dir="rtl">
 <head>
@@ -659,7 +659,7 @@ html,body{height:100%;background:#1a1a1c;font-family:var(--font-ui);color:var(--
     <div class="splash-footer-wrap">
       <div class="footer-strip" style="display:flex;align-items:center;justify-content:space-between;padding:5px 14px 8px;">
         <span class="footer-refresh" onclick="reloadApp()">רענון</span>
-        <span id="versionTap" onclick="handleVersionTap()" style="cursor:default;">AirCheck+ · v2.08.049 · built by eligrt</span>
+        <span id="versionTap" onclick="handleVersionTap()" style="cursor:default;">AirCheck+ · v2.08.050 · built by eligrt</span>
         <span style="width:40px;"></span>
       </div>
     </div>
@@ -833,7 +833,7 @@ html,body{height:100%;background:#1a1a1c;font-family:var(--font-ui);color:var(--
     <div class="tree-panel" id="treePanel"></div>
     <div class="footer-strip" style="display:flex;align-items:center;justify-content:space-between;padding:5px 14px 8px;">
       <span class="footer-refresh" onclick="reloadApp()">רענון</span>
-      <span id="versionTap" onclick="handleVersionTap()" style="cursor:default;">AirCheck+ · v2.08.049 · built by eligrt</span>
+      <span id="versionTap" onclick="handleVersionTap()" style="cursor:default;">AirCheck+ · v2.08.050 · built by eligrt</span>
       <span style="width:40px;"></span>
     </div>
   </div>
@@ -906,7 +906,7 @@ html,body{height:100%;background:#1a1a1c;font-family:var(--font-ui);color:var(--
 
     <div class="footer-strip" style="display:flex;align-items:center;justify-content:space-between;padding:5px 14px 8px;">
       <span style="width:40px;"></span>
-      <span id="versionTap" onclick="handleVersionTap()" style="cursor:default;">AirCheck+ · v2.08.049 · built by eligrt</span>
+      <span id="versionTap" onclick="handleVersionTap()" style="cursor:default;">AirCheck+ · v2.08.050 · built by eligrt</span>
       <span style="width:40px;"></span>
     </div>
   </div>
@@ -1016,7 +1016,7 @@ html,body{height:100%;background:#1a1a1c;font-family:var(--font-ui);color:var(--
     </div>
     <div class="footer-strip" style="display:flex;align-items:center;justify-content:space-between;padding:5px 14px 8px;">
       <span class="footer-refresh" onclick="reloadApp()">רענון</span>
-      <span id="versionTap" onclick="handleVersionTap()" style="cursor:default;">AirCheck+ · v2.08.049 · built by eligrt</span>
+      <span id="versionTap" onclick="handleVersionTap()" style="cursor:default;">AirCheck+ · v2.08.050 · built by eligrt</span>
       <span style="width:40px;"></span>
     </div>
   </div>
@@ -1035,7 +1035,7 @@ html,body{height:100%;background:#1a1a1c;font-family:var(--font-ui);color:var(--
     <div class="editor-list" id="editorList"></div>
     <div class="footer-strip" style="display:flex;align-items:center;justify-content:space-between;padding:5px 14px 8px;">
       <span class="footer-refresh" onclick="reloadApp()">רענון</span>
-      <span id="versionTap" onclick="handleVersionTap()" style="cursor:default;">AirCheck+ · v2.08.049 · built by eligrt</span>
+      <span id="versionTap" onclick="handleVersionTap()" style="cursor:default;">AirCheck+ · v2.08.050 · built by eligrt</span>
       <span style="width:40px;"></span>
     </div>
   </div>
@@ -1195,6 +1195,11 @@ function trackExternalLinkTap(url,lbl){
     localStorage.setItem('aircheck_external_link_used','1');
     if(typeof syncToFirebase==='function')syncToFirebase();
   }catch(e){}
+  // Mark that we're leaving mid-flight for a reference link (in-app or
+  // external/third-party). On return — whether via our own ?resume= param
+  // or a plain native back from a site that doesn't round-trip it — we
+  // skip the splash resume-card and go straight back into the checklist.
+  try{sessionStorage.setItem('aircheck_pending_resume','1');}catch(e){}
   // Append ?from= so standalone pages can return to correct version
   let dest=url;
   if(url.includes('eligrt.github.io/AirCheck/')){
@@ -3490,11 +3495,16 @@ function buildRankStrip(n){
 }
 
 function initSplash(){
-  // If returning from a standalone page mid-flight, skip splash and resume
-  if(new URLSearchParams(window.location.search).get('resume')==='1'){
+  // If returning from a reference link (in-app standalone page, or an
+  // external/third-party site like NOTAM/FPL that won't round-trip our
+  // ?resume= param), skip splash and resume straight into the checklist.
+  let pendingResume=false;
+  try{pendingResume=sessionStorage.getItem('aircheck_pending_resume')==='1';}catch(e){}
+  if(pendingResume||new URLSearchParams(window.location.search).get('resume')==='1'){
+    try{sessionStorage.removeItem('aircheck_pending_resume');}catch(e){}
     const done=Object.values(status).filter(s=>s==='done').length;
     if(done>0){
-      history.replaceState(null,'',window.location.pathname);
+      if(window.location.search)history.replaceState(null,'',window.location.pathname);
       showScreen('screenChecklist');render();return;
     }
   }
