@@ -57,10 +57,41 @@ body{display:flex;flex-direction:column;height:100svh;overflow:hidden;}
 .metar-age{font-family:var(--font-mono);font-size:9px;color:rgba(100,210,160,.85);letter-spacing:.1em;border:1px solid rgba(100,210,160,.35);border-radius:3px;padding:2px 7px;direction:ltr;flex-shrink:0;}
 .metar-age.stale{color:var(--amber);border-color:rgba(245,158,11,.35);}
 
-/* ── TABS ── */
-.metar-tabs{display:flex;border-bottom:1px solid var(--paper-edge);background:var(--paper);}
-.metar-tab{flex:1;padding:13px 8px;text-align:center;font-family:var(--font-mono);font-size:12px;font-weight:700;letter-spacing:.1em;color:var(--ink-muted);border:none;background:transparent;cursor:pointer;border-bottom:2px solid transparent;transition:all .15s;}
-.metar-tab.active{color:var(--ink);border-bottom-color:var(--gold);background:var(--paper-hi);}
+/* ── TOWER BADGE ── */
+@keyframes border-fade{0%,100%{border-color:rgba(245,158,11,.7);}50%{border-color:rgba(245,158,11,.1);}}
+@keyframes dot-pulse{0%,100%{opacity:1;transform:scale(1);}50%{opacity:.3;transform:scale(1.5);}}
+.tower-bar{padding:9px 16px;border-bottom:1px solid var(--paper-edge);display:flex;align-items:center;justify-content:space-between;background:var(--paper);}
+.tower-bar-label{font-family:var(--font-ui);font-size:13px;font-weight:600;color:var(--ink-muted);direction:rtl;}
+.tower-btn{display:flex;align-items:center;gap:7px;border-radius:6px;padding:7px 13px;cursor:pointer;font-family:var(--font-ui);font-size:12px;border:1.5px solid transparent;min-width:180px;}
+.tower-btn-fresh{background:rgba(245,158,11,.12);animation:border-fade 1.8s ease-in-out infinite;font-weight:700;color:#7a5000;}
+.tower-btn-moderate{background:rgba(245,158,11,.07);border-color:rgba(245,158,11,.3)!important;font-weight:500;color:#b07a20;}
+.tower-btn-old{background:transparent;border-color:var(--paper-edge)!important;font-weight:400;color:var(--ink-faint);}
+.tower-btn-none{background:transparent;border-style:dashed!important;border-color:var(--paper-edge)!important;font-weight:400;color:var(--ink-faint);opacity:.55;cursor:default;}
+.tower-dot{width:7px;height:7px;border-radius:50%;flex-shrink:0;}
+.tower-dot-fresh{background:var(--amber);animation:dot-pulse 1.8s ease-in-out infinite;}
+.tower-dot-moderate{background:#d4a030;opacity:.6;}
+.tower-dot-old{background:var(--ink-faint);opacity:.35;}
+
+/* ── CARDS ── */
+.wx-card{background:var(--paper-hi);border:1px solid var(--paper-edge);border-radius:8px;overflow:hidden;margin-bottom:10px;}
+.wx-card-hdr{padding:7px 14px;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid var(--paper-edge);background:rgba(28,61,110,.04);}
+.wx-card-lbl{font-family:var(--font-mono);font-size:10px;font-weight:700;letter-spacing:.15em;color:var(--ink);direction:ltr;}
+.wx-card-time{font-family:var(--font-mono);font-size:10px;color:var(--ink-faint);direction:ltr;}
+.taf-body{padding:10px 14px;}
+.taf-raw{font-family:var(--font-mono);font-size:11px;color:var(--ink-muted);direction:ltr;line-height:1.9;white-space:pre-wrap;}
+
+/* ── TOWER POPUP ── */
+.tower-popup-overlay{display:none;position:fixed;inset:0;background:rgba(26,19,8,.65);z-index:100;align-items:center;justify-content:center;padding:20px;backdrop-filter:blur(3px);}
+.tower-popup-overlay.show{display:flex;}
+.tower-popup-box{background:var(--paper);border-radius:8px;width:100%;max-width:340px;overflow:hidden;direction:rtl;background-image:repeating-linear-gradient(0deg,transparent 0,transparent 27px,rgba(28,61,110,.04) 27px,rgba(28,61,110,.04) 28px);}
+.tower-popup-hdr{padding:12px 16px;display:flex;align-items:center;gap:10px;border-bottom:1px solid var(--paper-edge);}
+.tower-popup-title{font-size:15px;font-weight:700;}
+.tower-popup-disclaimer{font-size:9px;font-family:var(--font-mono);letter-spacing:.04em;margin-top:2px;direction:ltr;}
+.tower-popup-body{padding:14px 16px;}
+.tower-popup-text{font-size:13px;line-height:1.75;color:var(--ink-muted);}
+.tower-popup-stale{background:rgba(0,0,0,.04);border:1px solid var(--paper-edge);border-radius:4px;padding:6px 10px;margin-bottom:10px;font-family:var(--font-mono);font-size:9px;color:var(--ink-faint);direction:rtl;}
+.tower-popup-meta{font-family:var(--font-mono);font-size:9px;color:var(--ink-faint);margin-top:10px;padding-top:8px;border-top:1px dashed var(--paper-edge);direction:ltr;}
+.tower-popup-close{width:100%;padding:12px;background:var(--ink);border:none;font-family:var(--font-ui);font-size:13px;font-weight:700;color:#f4ecdc;cursor:pointer;}
 
 /* ── CONTENT ── */
 .metar-tab-content{flex:1;overflow-y:auto;-webkit-overflow-scrolling:touch;min-height:0;}
@@ -135,14 +166,37 @@ body{display:flex;flex-direction:column;height:100svh;overflow:hidden;}
   <div class="metar-station-name" id="metarStationLabel">טוען...</div>
 </div>
 
-<div class="metar-tabs">
-  <button class="metar-tab active" id="metarTabBtn" onclick="switchMetarTab('metar')">METAR</button>
-  <button class="metar-tab" id="tafTabBtn" onclick="switchMetarTab('taf')">TAF</button>
-  <button class="metar-tab" id="towerTabBtn" onclick="switchMetarTab('tower')" style="display:none;">עדכוני שדה</button>
-</div>
+
 
 <div class="metar-tab-content" id="metarTabContent">
-  <div class="metar-loading">FETCHING ...</div>
+  <div style="padding:12px 14px;" id="metarCardsWrap">
+    <div class="metar-loading">FETCHING ...</div>
+  </div>
+</div>
+
+<!-- Tower bar — always visible for LLHZ -->
+<div class="tower-bar" id="towerBar" style="display:none;">
+  <div class="tower-bar-label">עדכוני שדה</div>
+  <button id="towerBtn" class="tower-btn" onclick="openTowerPopup()"></button>
+</div>
+
+<!-- Tower popup -->
+<div class="tower-popup-overlay" id="towerPopup">
+  <div class="tower-popup-box" id="towerPopupBox">
+    <div class="tower-popup-hdr" id="towerPopupHdr">
+      <div style="font-size:22px;">📡</div>
+      <div>
+        <div class="tower-popup-title" id="towerPopupTitle">עדכון שדה · הרצליה</div>
+        <div class="tower-popup-disclaimer" id="towerPopupDisclaimer">COMMUNITY UPDATE · NOT OFFICIAL MET</div>
+      </div>
+    </div>
+    <div class="tower-popup-body">
+      <div class="tower-popup-stale" id="towerPopupStale" style="display:none;">⚠ עדכון ישן — המידע עשוי שלא לשקף את המצב הנוכחי</div>
+      <div class="tower-popup-text" id="towerPopupText">טוען...</div>
+      <div class="tower-popup-meta" id="towerPopupMeta"></div>
+    </div>
+    <button class="tower-popup-close" onclick="closeTowerPopup()">סגור</button>
+  </div>
 </div>
 
 <div class="metar-footer">
@@ -150,7 +204,7 @@ body{display:flex;flex-direction:column;height:100svh;overflow:hidden;}
   <div class="metar-age-footer" id="metarAgeFooter">—</div>
 </div>
 
-<div class="page-footer" dir="ltr">METAR / TAF · V1.10 · BUILT BY ELIGRT</div>
+<div class="page-footer" dir="ltr">METAR / TAF · V1.11 · BUILT BY ELIGRT</div>
 
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/12.14.0/firebase-app.js";
@@ -173,25 +227,25 @@ window._towerRead = async function(icao){
 </script>
 
 <script>
-const METAR_STATION_KEY = 'aircheck_metar_station';
-const METAR_CUSTOM_KEY  = 'aircheck_metar_custom';
-let _metarCache = {metar:null,taf:null,fetchedAt:null,icao:null};
-let _metarCurrentTab = 'metar';
-const TOWER_STATIONS = ['LLHZ'];
-const STATION_NAMES = {
+const METAR_STATION_KEY='aircheck_metar_station';
+const METAR_CUSTOM_KEY='aircheck_metar_custom';
+let _metarCache={metar:null,taf:null,fetchedAt:null,icao:null};
+const TOWER_STATIONS=['LLHZ'];
+const STATION_NAMES={
   LLBG:'נתב״ג · Ben Gurion',LLHA:'חיפה · Haifa',
   LLIB:'ראש פינה · Rosh Pina',LLER:'רמון · Ramon',LLHZ:'הרצליה · Herzliya'
 };
+let _towerData=null;
 
 function getMetarIcao(){
-  const sel = localStorage.getItem(METAR_STATION_KEY)||'LLBG';
+  const sel=localStorage.getItem(METAR_STATION_KEY)||'LLBG';
   if(sel==='custom'){return(localStorage.getItem(METAR_CUSTOM_KEY)||'LLBG').toUpperCase();}
   return sel;
 }
 
 function syncMetarPills(){
-  const sel = localStorage.getItem(METAR_STATION_KEY)||'LLBG';
-  const customIcao = localStorage.getItem(METAR_CUSTOM_KEY)||'';
+  const sel=localStorage.getItem(METAR_STATION_KEY)||'LLBG';
+  const customIcao=localStorage.getItem(METAR_CUSTOM_KEY)||'';
   ['LLBG','LLHA','LLIB','LLER','LLHZ'].forEach(s=>{
     const btn=document.getElementById('mpill-'+s);
     if(btn)btn.classList.toggle('active',sel===s);
@@ -207,8 +261,7 @@ function syncMetarPills(){
   const nameEl=document.getElementById('metarStationLabel');
   if(nameEl){
     if(sel==='custom'){
-      const cachedName=_metarCache&&_metarCache.icao===customIcao&&_metarCache.metar&&_metarCache.metar.name;
-      nameEl.textContent=cachedName?cachedName:(customIcao||'הזן קוד ICAO');
+      nameEl.textContent=customIcao||'הזן קוד ICAO';
     } else {
       nameEl.textContent=STATION_NAMES[sel]||sel;
     }
@@ -219,31 +272,12 @@ function metarPillSelect(icao){
   localStorage.setItem(METAR_STATION_KEY,icao);
   syncMetarPills();
   _metarCache={metar:null,taf:null,fetchedAt:null,icao:null};
-  const towerBtn=document.getElementById('towerTabBtn');
-  if(towerBtn){
-    towerBtn.style.display=TOWER_STATIONS.includes(icao)?'':'none';
-    if(!TOWER_STATIONS.includes(icao)&&_metarCurrentTab==='tower'){
-      _metarCurrentTab='metar';
-      document.getElementById('metarTabBtn').classList.add('active');
-      document.getElementById('tafTabBtn').classList.remove('active');
-      towerBtn.classList.remove('active');
-    }
-  }
   fetchMetar(false);
 }
 
 function metarPillOther(){
   localStorage.setItem(METAR_STATION_KEY,'custom');
   syncMetarPills();
-  const towerBtn=document.getElementById('towerTabBtn');
-  if(towerBtn){
-    towerBtn.style.display='none';
-    if(_metarCurrentTab==='tower'){
-      _metarCurrentTab='metar';
-      document.getElementById('metarTabBtn').classList.add('active');
-      document.getElementById('tafTabBtn').classList.remove('active');
-    }
-  }
   setTimeout(()=>{
     const inp=document.getElementById('metarPillInput');
     if(inp){
@@ -266,20 +300,79 @@ function onMetarPillInput(val){
   }
 }
 
-function switchMetarTab(tab){
-  _metarCurrentTab=tab;
-  document.getElementById('metarTabBtn').classList.toggle('active',tab==='metar');
-  document.getElementById('tafTabBtn').classList.toggle('active',tab==='taf');
-  const towerBtn=document.getElementById('towerTabBtn');
-  if(towerBtn)towerBtn.classList.toggle('active',tab==='tower');
-  if(tab==='tower'){renderTowerContent();}
-  else if(_metarCache.fetchedAt){renderMetarContent();}
+// ── TOWER ──
+function towerAgeClass(ts){
+  if(!ts)return'none';
+  const diffH=(Date.now()-ts)/3600000;
+  if(diffH<3)return'fresh';
+  if(diffH<9)return'moderate';
+  return'old';
 }
 
+function renderTowerBadge(data){
+  const bar=document.getElementById('towerBar');
+  if(!bar)return;
+  bar.style.display='';
+  const btn=document.getElementById('towerBtn');
+  const cls=data?towerAgeClass(data.timestamp):'none';
+  btn.className='tower-btn tower-btn-'+cls;
+  const dot=document.createElement('div');
+  dot.className='tower-dot tower-dot-'+cls;
+  btn.innerHTML='';
+  btn.appendChild(dot);
+  if(cls==='none'||!data){
+    btn.innerHTML+='לא התקבל עדכון שדה';
+    btn.style.cursor='default';
+    btn.onclick=null;
+  } else {
+    const diffMin=Math.round((Date.now()-data.timestamp)/60000);
+    const ageStr=diffMin<60?'לפני '+diffMin+' דק׳':'לפני '+Math.round(diffMin/60)+' שע׳';
+    btn.innerHTML+='עדכון אחרון: '+ageStr;
+    btn.onclick=openTowerPopup;
+  }
+}
+
+function openTowerPopup(){
+  if(!_towerData)return;
+  const diffMin=Math.round((Date.now()-_towerData.timestamp)/60000);
+  const diffH=diffMin/60;
+  const d=new Date(_towerData.timestamp);
+  const timeStr=String(d.getHours()).padStart(2,'0')+':'+String(d.getMinutes()).padStart(2,'0');
+  const day=String(d.getDate()).padStart(2,'0')+'/'+String(d.getMonth()+1).padStart(2,'0');
+  const ageStr=diffMin<60?'לפני '+diffMin+' דק׳':'לפני '+Math.round(diffH)+' שע׳';
+  const stale=document.getElementById('towerPopupStale');
+  const txt=document.getElementById('towerPopupText');
+  const meta=document.getElementById('towerPopupMeta');
+  const hdr=document.getElementById('towerPopupHdr');
+  const box=document.getElementById('towerPopupBox');
+  if(diffH>=9){
+    stale.style.display='';
+    box.style.borderColor='var(--paper-edge)';
+    hdr.style.background='rgba(0,0,0,.04)';
+    hdr.style.borderBottomColor='var(--paper-edge)';
+    txt.style.opacity='.7';
+  } else {
+    stale.style.display='none';
+    box.style.borderColor='rgba(245,158,11,.6)';
+    hdr.style.background='rgba(245,158,11,.12)';
+    hdr.style.borderBottomColor='rgba(245,158,11,.25)';
+    txt.style.opacity='1';
+  }
+  txt.textContent=_towerData.text||'';
+  meta.textContent='LLHZ · '+day+' · '+timeStr+' LT · '+ageStr;
+  document.getElementById('towerPopup').classList.add('show');
+}
+
+function closeTowerPopup(){
+  document.getElementById('towerPopup').classList.remove('show');
+}
+
+// ── FETCH ──
 async function fetchMetar(force){
   const icao=getMetarIcao();
-  if(!force&&_metarCache.icao===icao&&_metarCache.fetchedAt&&(Date.now()-_metarCache.fetchedAt)<600000){renderMetarContent();return;}
-  showMetarLoading();
+  if(!force&&_metarCache.icao===icao&&_metarCache.fetchedAt&&(Date.now()-_metarCache.fetchedAt)<600000){renderMetarCards();return;}
+  document.getElementById('metarCardsWrap').innerHTML='<div class="metar-loading">FETCHING ...</div>';
+  document.getElementById('metarAgeFooter').textContent='—';
   try{
     const res=await fetch('https://aircheck-metar.eligrt.workers.dev/?icao='+icao);
     const data=await res.json();
@@ -294,17 +387,15 @@ async function fetchMetar(force){
         const raw=metarArr[0].content.replace(/=$/,'').trim();
         const obsTime=metarArr[0].valid_from.replace(' ','T')+':00Z';
         _metarCache.metar=parseMetarRaw(raw,obsTime,icao);
-      } else {
-        if(icao==='LLHZ'){
-          const llbgArr=data.data&&data.data.metars&&data.data.metars['aid-1'];
-          if(llbgArr&&llbgArr.length){
-            const raw=llbgArr[0].content.replace(/=$/,'').trim();
-            const obsTime=llbgArr[0].valid_from.replace(' ','T')+':00Z';
-            const ref=parseMetarRaw(raw,obsTime,'LLBG');
-            ref.noMetar=true;_metarCache.metar=ref;
-          } else {_metarCache.metar=null;}
+      } else if(icao==='LLHZ'){
+        const llbgArr=data.data&&data.data.metars&&data.data.metars['aid-1'];
+        if(llbgArr&&llbgArr.length){
+          const raw=llbgArr[0].content.replace(/=$/,'').trim();
+          const obsTime=llbgArr[0].valid_from.replace(' ','T')+':00Z';
+          const ref=parseMetarRaw(raw,obsTime,'LLBG');
+          ref.noMetar=true;_metarCache.metar=ref;
         } else {_metarCache.metar=null;}
-      }
+      } else {_metarCache.metar=null;}
       if(tafArr&&tafArr.length){
         const tafLines=tafArr[0].lines.map(l=>l.content.replace(/=$/,'')).join('\n');
         _metarCache.taf={rawTAF:tafLines,icao:icao,issueTime:tafArr[0].issue_date};
@@ -328,38 +419,38 @@ async function fetchMetar(force){
         _metarCache.taf={rawTAF:tafArr[0].rawTAF||'',icao:icao,issueTime:tafArr[0].issueTime};
       } else {_metarCache.taf=null;}
     }
-    renderMetarContent();
+    // Always fetch tower for LLHZ
+    if(window._towerRead){
+      window._towerRead('LLHZ').then(d=>{
+        _towerData=d;
+        renderTowerBadge(d);
+      });
+    }
+    renderMetarCards();
     syncMetarPills();
-    if(_metarCurrentTab==='tower'){renderTowerContent();}
   } catch(e){
-    console.error('fetchMetar error:',e,icao);
-    document.getElementById('metarTabContent').innerHTML='<div class="metar-error">שגיאה בטעינת נתונים<br>בדוק חיבור לאינטרנט</div>';
+    console.error('fetchMetar error:',e);
+    document.getElementById('metarCardsWrap').innerHTML='<div class="metar-error">שגיאה בטעינת נתונים<br>בדוק חיבור לאינטרנט</div>';
   }
 }
 
 function parseMetarRaw(raw,obsTimeStr,icao){
   const m={rawOb:raw,obsTime:obsTimeStr,name:icao};
-  const wind=raw.match(/\b(\d{3}|VRB)(\d{2,3})(G\d{2,3})?KT\b/);
+  const wind=raw.match(/(\d{3}|VRB)(\d{2,3})(G\d{2,3})?KT/);
   if(wind){m.wdir=wind[1]==='VRB'?'VRB':parseInt(wind[1]);m.wspd=parseInt(wind[2]);}
-  const vis=raw.match(/\b(\d{4})\b(?!\s*FT)/);
+  const vis=raw.match(/(\d{4})(?!\s*FT)/);
   if(vis)m.visib=parseInt(vis[1]);
   if(raw.includes('CAVOK'))m.visib=9999;
-  const temp=raw.match(/\b(M?\d{2})\/(M?\d{2})\b/);
+  const temp=raw.match(/(M?\d{2})\/(M?\d{2})/);
   if(temp){m.temp=parseInt(temp[1].replace('M','-'));m.dewp=parseInt(temp[2].replace('M','-'));}
   const qnh=raw.match(/Q(\d{4})/);
   if(qnh){m.altimHg=parseInt(qnh[1])/33.8639;m.qnh=parseInt(qnh[1]);}
-  const clouds=[];const cloudRe=/\b(FEW|SCT|BKN|OVC)(\d{3})\b/g;let cm;
+  const clouds=[];const cloudRe=/(FEW|SCT|BKN|OVC)(\d{3})/g;let cm;
   while((cm=cloudRe.exec(raw))!==null){clouds.push({cover:cm[1],base:parseInt(cm[2])*100});}
   if(clouds.length)m.clouds=clouds;
-  const wxMatch=raw.match(/\b(CAVOK|NOSIG|TS\S*|\+?RA|\+?SN|FG|HZ|BR|DZ|GR|SQ)\b/);
+  const wxMatch=raw.match(/(CAVOK|NOSIG|TS\S*|\+?RA|\+?SN|FG|HZ|BR|DZ|GR|SQ)/);
   if(wxMatch)m.wxString=wxMatch[1];
   return m;
-}
-
-function showMetarLoading(){
-  document.getElementById('metarTabContent').innerHTML='<div class="metar-loading">FETCHING ...</div>';
-  
-  document.getElementById('metarAgeFooter').textContent='—';
 }
 
 function metarAgeStr(obsTimeStr){
@@ -376,149 +467,77 @@ function metarAgeStr(obsTimeStr){
 function zuluToLocal(zuluStr){
   try{
     const d=new Date(zuluStr);
-    const lh=String(d.getHours()).padStart(2,'0');
-    const lm=String(d.getMinutes()).padStart(2,'0');
-    const zh=String(d.getUTCHours()).padStart(2,'0');
-    const zm=String(d.getUTCMinutes()).padStart(2,'0');
-    return{local:lh+':'+lm,zulu:zh+':'+zm+'Z'};
+    return{local:String(d.getHours()).padStart(2,'0')+':'+String(d.getMinutes()).padStart(2,'0'),
+           zulu:String(d.getUTCHours()).padStart(2,'0')+':'+String(d.getUTCMinutes()).padStart(2,'0')+'Z'};
   }catch(e){return{local:'—',zulu:'—'};}
 }
 
-function renderMetarContent(){
+function colorRaw(raw){
+  return raw
+    .replace(/(\d{5}KT|\d{3}\d{2}(G\d{2})?KT|VRB\d{2}KT)/g,'<span class="raw-hl-wind">$&</span>')
+    .replace(/(9999|[0-9]{4})(?!Z)/g,'<span class="raw-hl-vis">$&</span>')
+    .replace(/(FEW|SCT|BKN|OVC|SKC|NCD|CAVOK)\d*/g,'<span class="raw-hl-cloud">$&</span>')
+    .replace(/(\d{1,2})\/(\d{1,2})/g,'<span class="raw-hl-temp">$&</span>')
+    .replace(/(NOSIG|TS\S*|\+?RA|\+?SN|FG|HZ|BR)/g,'<span class="raw-hl-wx">$&</span>');
+}
+
+function renderMetarCards(){
   const icao=_metarCache.icao||getMetarIcao();
+  const wrap=document.getElementById('metarCardsWrap');
   const ageFooter=document.getElementById('metarAgeFooter');
-  if(_metarCurrentTab==='metar'){
-    const m=_metarCache.metar;
-    if(!m){document.getElementById('metarTabContent').innerHTML='<div class="metar-error">אין METAR זמין עבור '+icao+'</div>';return;}
-    const noMetarNote=m.noMetar?`<div style="background:rgba(245,158,11,.1);border:1px solid rgba(245,158,11,.3);border-radius:4px;padding:8px 12px;margin:8px 14px 0;font-size:11px;color:var(--amber);direction:rtl;font-family:var(--font-ui);">אין תחנת מדידה בהרצליה · QNH לפי LLBG</div>`:'';
+  let html='';
+
+  // METAR card
+  const m=_metarCache.metar;
+  if(m){
+    const noMetarNote=m.noMetar?`<div style="background:rgba(245,158,11,.1);border:1px solid rgba(245,158,11,.3);border-radius:4px;padding:7px 10px;margin-bottom:8px;font-size:11px;color:var(--amber);direction:rtl;font-family:var(--font-ui);">אין תחנת מדידה בהרצליה · QNH לפי LLBG</div>`:'';
     const ageStr=metarAgeStr(m.obsTime);
-    
-    
     ageFooter.textContent=ageStr;
-    const raw=m.rawOb||m.rawMetar||'';
+    const raw=m.rawOb||'';
     const qnh=m.qnh?String(m.qnh):(()=>{const q=raw.match(/Q(\d{4})/);return q?q[1]:'—';})();
     const qnhHg=m.altimHg?m.altimHg.toFixed(2):'—';
     const times=zuluToLocal(m.obsTime);
-    const windDir=m.wdir!==undefined?m.wdir+'°':'—';
-    const windSpd=m.wspd!==undefined?m.wspd+'kt':'—';
-    const windStr=windDir+'/'+windSpd;
+    const windStr=(m.wdir!==undefined?m.wdir+'°':'—')+'/'+(m.wspd!==undefined?m.wspd+'kt':'—');
     const vis=m.visib!==undefined?(m.visib>=9999?'9999m':m.visib+'m'):'—';
     const visGood=m.visib===undefined||m.visib>=5000;
-    const clouds=(m.clouds&&m.clouds.length)?m.clouds.map(c=>(c.cover||'')+(c.base!==undefined?String(c.base).padStart(3,'0'):'')).join(' '):(raw.includes('CAVOK')?'CAVOK':'—');
-    const cloudsGood=clouds==='CAVOK'||!m.clouds||m.clouds.every(c=>!c.cover||c.cover==='FEW'||c.cover==='SKC'||c.cover==='NCD');
-    const temp=m.temp!==undefined?m.temp+'°':'—';
-    const dewp=m.dewp!==undefined?m.dewp+'°':'—';
-    const tempStr=temp+'/'+dewp;
-    const wx=m.wxString||raw.match(/(CAVOK|NOSIG|TS\S*|RA|SN|FG|HZ|BR|\+\S+|-\S+)/)?.[0]||'—';
+    const clouds=(m.clouds&&m.clouds.length)?m.clouds.map(c=>(c.cover||'')+(c.base!==undefined?String(c.base/100).padStart(3,'0'):'')).join(' '):(raw.includes('CAVOK')?'CAVOK':'—');
+    const cloudsGood=clouds==='CAVOK'||!m.clouds||m.clouds.every(c=>!c.cover||c.cover==='FEW'||c.cover==='SKC');
+    const temp=(m.temp!==undefined?m.temp+'°':'—')+'/'+(m.dewp!==undefined?m.dewp+'°':'—');
+    const wx=m.wxString||raw.match(/(CAVOK|NOSIG|TS\S*|RA|SN|FG|HZ|BR)/)?.[0]||'—';
     const wxGood=!wx||wx==='NOSIG'||wx==='CAVOK';
-    function colorRaw(raw){
-      return raw
-        .replace(/(\d{5}KT|\d{3}\d{2}(G\d{2})?KT|VRB\d{2}KT)/g,'<span class="raw-hl-wind">$&</span>')
-        .replace(/\b(9999|[0-9]{4})\b(?!Z)/g,'<span class="raw-hl-vis">$&</span>')
-        .replace(/\b(FEW|SCT|BKN|OVC|SKC|NCD|CAVOK)\d*/g,'<span class="raw-hl-cloud">$&</span>')
-        .replace(/\b(\d{1,2})\/(\d{1,2})\b/g,'<span class="raw-hl-temp">$&</span>')
-        .replace(/\b(NOSIG|TS\S*|\+?RA|\+?SN|FG|HZ|BR)\b/g,'<span class="raw-hl-wx">$&</span>');
-    }
-    document.getElementById('metarTabContent').innerHTML=`
-      ${noMetarNote}
-      <div class="metar-raw-wrap">
-        <div class="metar-raw-label">RAW METAR${m.noMetar?' · ref: LLBG':''}</div>
-        <div class="metar-raw">${colorRaw(raw)}</div>
-      </div>
-      <div class="metar-qnh-banner">
-        <div class="metar-qnh-label">QNH</div>
-        <div class="metar-qnh-value">${qnh}</div>
-        <div class="metar-qnh-unit">hPa</div>
-        <div class="metar-qnh-hg">${qnhHg} inHg</div>
-      </div>
+    html+=`${noMetarNote}
+    <div class="wx-card">
+      <div class="wx-card-hdr"><div class="wx-card-lbl">METAR</div><div class="wx-card-time">${times.zulu} · ${times.local} LT</div></div>
+      <div class="metar-qnh-banner"><div class="metar-qnh-label">QNH</div><div class="metar-qnh-value">${qnh}</div><div class="metar-qnh-unit">hPa</div><div class="metar-qnh-hg">${qnhHg} inHg</div></div>
       <div class="metar-fields">
-        <div class="metar-field">
-          <div class="metar-field-label" style="color:var(--ink-faint)">TIME</div>
-          <div class="metar-field-value">${times.local}</div>
-          <div class="metar-field-zulu">(${times.zulu})</div>
-        </div>
-        <div class="metar-field wind">
-          <div class="metar-field-label">WIND</div>
-          <div class="metar-field-value">${windStr}</div>
-        </div>
-        <div class="metar-field vis">
-          <div class="metar-field-label">VIS</div>
-          <div class="metar-field-value ${visGood?'good':''}">${vis}</div>
-        </div>
-        <div class="metar-field cloud">
-          <div class="metar-field-label">CLOUDS</div>
-          <div class="metar-field-value ${cloudsGood?'good':''}">${clouds}</div>
-        </div>
-        <div class="metar-field temp">
-          <div class="metar-field-label">TEMP/DP</div>
-          <div class="metar-field-value">${tempStr}</div>
-        </div>
-        <div class="metar-field wx">
-          <div class="metar-field-label">WX</div>
-          <div class="metar-field-value ${wxGood?'good':''}">${wx}</div>
-        </div>
-      </div>`;
-  } else {
-    const t=_metarCache.taf;
-    const ageStr=t?metarAgeStr(t.issueTime):'—';
-    
-    ageFooter.textContent=ageStr;
-    if(!t){document.getElementById('metarTabContent').innerHTML='<div class="metar-error">אין TAF זמין עבור '+icao+'</div>';return;}
-    const rawTaf=t.rawTAF||t.rawTaf||'';
-    const formatted=rawTaf
-      .replace(/\b(FM\d{6}|TEMPO|BECMG|PROB\d{2})\b/g,'\n$1')
-      .split('\n').map(l=>l.trim()).filter(Boolean).join('\n');
-    let validStr='';
-    if(t.validTimeFrom&&t.validTimeTo){
-      const f=new Date(t.validTimeFrom);const to=new Date(t.validTimeTo);
-      validStr=`VALID: ${String(f.getUTCDate()).padStart(2,'0')}/${String(f.getUTCHours()).padStart(2,'0')}Z → ${String(to.getUTCDate()).padStart(2,'0')}/${String(to.getUTCHours()).padStart(2,'0')}Z`;
-    }
-    document.getElementById('metarTabContent').innerHTML=`
-      <div class="metar-raw-wrap" style="padding-top:14px;">
-        <div class="metar-raw-label">TAF · ${icao}</div>
-        <div class="metar-raw" style="line-height:1.8;white-space:pre-wrap;">${formatted}</div>
+        <div class="metar-field wind"><div class="metar-field-label">WIND</div><div class="metar-field-value">${windStr}</div></div>
+        <div class="metar-field vis"><div class="metar-field-label">VIS</div><div class="metar-field-value ${visGood?'good':''}">${vis}</div></div>
+        <div class="metar-field cloud"><div class="metar-field-label">CLOUDS</div><div class="metar-field-value ${cloudsGood?'good':''}">${clouds}</div></div>
+        <div class="metar-field temp"><div class="metar-field-label">TEMP/DP</div><div class="metar-field-value">${temp}</div></div>
+        <div class="metar-field wx"><div class="metar-field-label">WX</div><div class="metar-field-value ${wxGood?'good':''}">${wx}</div></div>
+        <div class="metar-field"><div class="metar-field-label" style="color:var(--ink-faint)">TIME</div><div class="metar-field-value">${times.local}</div><div class="metar-field-zulu">(${times.zulu})</div></div>
       </div>
-      ${validStr?`<div class="metar-raw-wrap" style="padding-top:0;"><div style="font-size:10px;color:var(--ink-faint);font-family:var(--font-mono);direction:ltr;letter-spacing:.05em;">${validStr}</div></div>`:''}`;
+      <div class="metar-raw-wrap"><div class="metar-raw-label">RAW METAR${m.noMetar?' · ref: LLBG':''}</div><div class="metar-raw">${colorRaw(raw)}</div></div>
+    </div>`;
+  } else {
+    html+='<div class="metar-error">אין METAR זמין עבור '+icao+'</div>';
   }
-}
 
-async function renderTowerContent(){
-  const icao=getMetarIcao();
-  const el=document.getElementById('metarTabContent');
-  el.innerHTML='<div class="metar-loading">טוען עדכון שדה...</div>';
-  try{
-    if(!window._towerRead){el.innerHTML='<div class="metar-error">שירות עדכוני שדה לא זמין</div>';return;}
-    const data=await window._towerRead(icao);
-    if(!data){
-      el.innerHTML=`<div style="padding:20px 16px;text-align:center;direction:rtl;">
-        <div style="font-size:14px;font-family:var(--font-ui);color:var(--ink-muted);margin-bottom:8px;">אין עדכון שדה זמין</div>
-        <div style="font-size:11px;font-family:var(--font-ui);color:var(--ink-faint);">עדכון אחרון טרם התקבל</div>
-      </div>`;
-      return;
-    }
-    const d=new Date(data.timestamp);
-    const h=String(d.getHours()).padStart(2,'0');
-    const m=String(d.getMinutes()).padStart(2,'0');
-    const day=String(d.getDate()).padStart(2,'0');
-    const mo=String(d.getMonth()+1).padStart(2,'0');
-    const localTime=day+'/'+mo+' '+h+':'+m;
-    const zh=String(d.getUTCHours()).padStart(2,'0');
-    const zm=String(d.getUTCMinutes()).padStart(2,'0');
-    const zuluTime=zh+':'+zm+'Z';
-    const diffMin=Math.round((Date.now()-data.timestamp)/60000);
-    const age=diffMin<60?diffMin+' דק׳':Math.round(diffMin/60)+' שעות';
-    el.innerHTML=`
-      <div style="padding:10px 14px 8px;">
-        <div style="font-family:var(--font-mono);font-size:8px;color:var(--ink-faint);letter-spacing:.15em;text-transform:uppercase;direction:ltr;margin-bottom:6px;">FIELD UPDATE · ${icao}</div>
-        <div style="background:var(--paper);border:1px solid var(--paper-edge);border-radius:3px;padding:10px 12px;font-size:13px;line-height:1.7;font-family:var(--font-ui);color:var(--ink);direction:rtl;white-space:pre-wrap;">${data.text}</div>
-        <div style="display:flex;justify-content:space-between;align-items:center;margin-top:8px;">
-          <div style="font-family:var(--font-mono);font-size:9px;color:var(--ink-faint);direction:ltr;">${localTime} (${zuluTime})</div>
-          <div style="font-family:var(--font-mono);font-size:9px;color:var(--ink-faint);">לפני ${age}</div>
-        </div>
-      </div>`;
-  }catch(e){
-    el.innerHTML='<div class="metar-error">שגיאה בטעינת עדכון שדה</div>';
+  // TAF card
+  const t=_metarCache.taf;
+  if(t){
+    const rawTaf=t.rawTAF||'';
+    const formatted=rawTaf.split(/(?=TEMPO|BECMG|FM|PROB)/g).map(l=>l.trim()).filter(Boolean).join('\n');
+    const ageStr=metarAgeStr(t.issueTime);
+    html+=`<div class="wx-card">
+      <div class="wx-card-hdr"><div class="wx-card-lbl">TAF</div><div class="wx-card-time">${ageStr}</div></div>
+      <div class="taf-body"><div class="taf-raw">${formatted}</div></div>
+    </div>`;
+  } else {
+    html+='<div class="metar-error" style="margin-top:8px;">אין TAF זמין עבור '+icao+'</div>';
   }
+
+  wrap.innerHTML=html;
 }
 
 function backToApp(){
@@ -529,8 +548,6 @@ function backToApp(){
 (function init(){
   const sel=localStorage.getItem(METAR_STATION_KEY)||'LLBG';
   syncMetarPills();
-  const towerBtn=document.getElementById('towerTabBtn');
-  if(towerBtn)towerBtn.style.display=TOWER_STATIONS.includes(sel)?'':'none';
   fetchMetar(false);
 })();
 </script>
