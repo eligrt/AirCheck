@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<!-- AirCheck+ · AirCheck_METAR.html · v1.21 · built by eligrt -->
+<!-- AirCheck+ · AirCheck_METAR.html · v1.22 · built by eligrt -->
 <html lang="he" dir="rtl">
 <head>
 <meta charset="UTF-8">
@@ -207,7 +207,7 @@ body{display:flex;flex-direction:column;height:100svh;overflow:hidden;}
   <div class="metar-age-footer" id="metarAgeFooter">—</div>
 </div>
 
-<div class="page-footer" dir="ltr">METAR / TAF · V1.21 · BUILT BY ELIGRT</div>
+<div class="page-footer" dir="ltr">METAR / TAF · V1.22 · BUILT BY ELIGRT</div>
 
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/12.14.0/firebase-app.js";
@@ -456,6 +456,16 @@ async function fetchMetar(force){
     renderTowerBadge();
     renderMetarCards();
     syncMetarPills();
+    // Track usage in the same localStorage keys the main app reads for
+    // Firebase stats — main app's syncToFirebase() will pick these up on
+    // its next run (app load, new flight, etc).
+    try{
+      localStorage.setItem('aircheck_metar_used','1');
+      localStorage.setItem('aircheck_metar_station',icao);
+      const counts=JSON.parse(localStorage.getItem('aircheck_metar_station_counts')||'{}');
+      counts[icao]=(counts[icao]||0)+1;
+      localStorage.setItem('aircheck_metar_station_counts',JSON.stringify(counts));
+    }catch(ex){}
   } catch(e){
     console.error('fetchMetar error:',e);
     document.getElementById('metarCardsWrap').innerHTML='<div class="metar-error">שגיאה בטעינת נתונים<br>בדוק חיבור לאינטרנט</div>';
