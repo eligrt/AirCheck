@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <!-- ═══════════════════════════════════════
-     AirCheck+ · v2.08.051T · built by eligrt
+     AirCheck+ · v2.08.052T · built by eligrt
      ═══════════════════════════════════════ -->
 <html lang="he" dir="rtl">
 <head>
@@ -230,10 +230,12 @@ html,body{height:100%;background:#1a1a1c;font-family:var(--font-ui);color:var(--
 .tree-mark.cur{color:var(--ink);}
 .tree-mark.upcoming{color:rgba(90,74,58,.4);}
 .tree-mark.skipped{color:var(--amber);}
-.tree-item-text{flex:1;}
+.tree-item-text-wrap{flex:1;min-width:0;}
+.tree-item-text{flex:1;min-width:0;}
 .tree-item-text.done{color:var(--cleared);text-decoration:line-through;}
 .tree-item-text.cur{color:var(--ink);font-weight:700;}
 .tree-item-text.upcoming{color:var(--ink-muted);}
+.tree-item-link{font-size:10px;color:var(--ink-faint);font-family:var(--font-mono);margin-top:1px;direction:rtl;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
 .tree-item-text.skipped{color:var(--amber);opacity:.75;}
 
 /* ── FOOTER ── */
@@ -659,7 +661,7 @@ html,body{height:100%;background:#1a1a1c;font-family:var(--font-ui);color:var(--
     <div class="splash-footer-wrap">
       <div class="footer-strip" style="display:flex;align-items:center;justify-content:space-between;padding:5px 14px 8px;">
         <span class="footer-refresh" onclick="reloadApp()">רענון</span>
-        <span id="versionTap" onclick="handleVersionTap()" style="cursor:default;">AirCheck+ · v2.08.051T · built by eligrt</span>
+        <span id="versionTap" onclick="handleVersionTap()" style="cursor:default;">AirCheck+ · v2.08.052T · built by eligrt</span>
         <span style="width:40px;"></span>
       </div>
     </div>
@@ -833,7 +835,7 @@ html,body{height:100%;background:#1a1a1c;font-family:var(--font-ui);color:var(--
     <div class="tree-panel" id="treePanel"></div>
     <div class="footer-strip" style="display:flex;align-items:center;justify-content:space-between;padding:5px 14px 8px;">
       <span class="footer-refresh" onclick="reloadApp()">רענון</span>
-      <span id="versionTap" onclick="handleVersionTap()" style="cursor:default;">AirCheck+ · v2.08.051T · built by eligrt</span>
+      <span id="versionTap" onclick="handleVersionTap()" style="cursor:default;">AirCheck+ · v2.08.052T · built by eligrt</span>
       <span style="width:40px;"></span>
     </div>
   </div>
@@ -906,7 +908,7 @@ html,body{height:100%;background:#1a1a1c;font-family:var(--font-ui);color:var(--
 
     <div class="footer-strip" style="display:flex;align-items:center;justify-content:space-between;padding:5px 14px 8px;">
       <span style="width:40px;"></span>
-      <span id="versionTap" onclick="handleVersionTap()" style="cursor:default;">AirCheck+ · v2.08.051T · built by eligrt</span>
+      <span id="versionTap" onclick="handleVersionTap()" style="cursor:default;">AirCheck+ · v2.08.052T · built by eligrt</span>
       <span style="width:40px;"></span>
     </div>
   </div>
@@ -1016,7 +1018,7 @@ html,body{height:100%;background:#1a1a1c;font-family:var(--font-ui);color:var(--
     </div>
     <div class="footer-strip" style="display:flex;align-items:center;justify-content:space-between;padding:5px 14px 8px;">
       <span class="footer-refresh" onclick="reloadApp()">רענון</span>
-      <span id="versionTap" onclick="handleVersionTap()" style="cursor:default;">AirCheck+ · v2.08.051T · built by eligrt</span>
+      <span id="versionTap" onclick="handleVersionTap()" style="cursor:default;">AirCheck+ · v2.08.052T · built by eligrt</span>
       <span style="width:40px;"></span>
     </div>
   </div>
@@ -1035,7 +1037,7 @@ html,body{height:100%;background:#1a1a1c;font-family:var(--font-ui);color:var(--
     <div class="editor-list" id="editorList"></div>
     <div class="footer-strip" style="display:flex;align-items:center;justify-content:space-between;padding:5px 14px 8px;">
       <span class="footer-refresh" onclick="reloadApp()">רענון</span>
-      <span id="versionTap" onclick="handleVersionTap()" style="cursor:default;">AirCheck+ · v2.08.051T · built by eligrt</span>
+      <span id="versionTap" onclick="handleVersionTap()" style="cursor:default;">AirCheck+ · v2.08.052T · built by eligrt</span>
       <span style="width:40px;"></span>
     </div>
   </div>
@@ -1302,7 +1304,7 @@ function renderRunway(){
 }
 const expandedPhases={};
 function togglePhase(phaseName){expandedPhases[phaseName]=!expandedPhases[phaseName];renderTree();}
-function renderTree(){const panel=document.getElementById('treePanel');panel.innerHTML='';PHASES.forEach((p)=>{const pAllItems=p.groups.reduce((a,g)=>a.concat(g.items),[]);const pDone=pAllItems.filter(j=>status[j]==='done').length;const pTot=pAllItems.length;const isCurPhase=current>=p.start&&current<=p.end;const isDone=pAllItems.every(j=>status[j]==='done'||status[j]==='skipped');let isOpen;if(expandedPhases[p.name]===undefined){isOpen=isCurPhase;}else{isOpen=expandedPhases[p.name];}const phDiv=document.createElement('div');phDiv.className='tree-phase';const hdr=document.createElement('div');hdr.className='tree-phase-hdr';hdr.style.cursor='pointer';hdr.onclick=()=>togglePhase(p.name);const nm=document.createElement('span');nm.className='tree-ph-name '+(isDone?'done':isCurPhase?'cur':'upcoming');nm.textContent=p.name;const right=document.createElement('span');right.style.cssText='display:flex;align-items:center;gap:8px;direction:ltr;';const stat=document.createElement('span');stat.className='tree-ph-stat';stat.textContent=pDone+'/'+pTot;const chevron=document.createElement('span');chevron.style.cssText='font-size:10px;color:var(--ink-muted);font-family:var(--font-mono);display:inline-block;';chevron.textContent=isOpen?'▼':'►';right.appendChild(stat);right.appendChild(chevron);hdr.appendChild(nm);hdr.appendChild(right);phDiv.appendChild(hdr);if(isOpen){p.groups.forEach((g)=>{const gDiv=document.createElement('div');gDiv.className='tree-group';const gnm=document.createElement('div');gnm.className='tree-gr-name';gnm.textContent=g.name;gDiv.appendChild(gnm);g.items.forEach(ii=>{const s=status[ii]||'upcoming';const isCurItem=ii===current;const row=document.createElement('div');row.className='tree-item';row.onclick=(e)=>{e.stopPropagation();current=ii;holdState='idle';resetRunwayBtn();render();};const mark=document.createElement('span');mark.className='tree-mark '+(s==='done'?'done':isCurItem?'cur':s==='skipped'?'skipped':'upcoming');mark.textContent=s==='done'?'✓':isCurItem?'●':s==='skipped'?'~':'○';const txt=document.createElement('span');txt.className='tree-item-text '+(s==='done'?'done':isCurItem?'cur':s==='skipped'?'skipped':'upcoming');txt.textContent=CL[ii].main;row.appendChild(mark);row.appendChild(txt);gDiv.appendChild(row);});phDiv.appendChild(gDiv);});}panel.appendChild(phDiv);});}
+function renderTree(){const panel=document.getElementById('treePanel');panel.innerHTML='';PHASES.forEach((p)=>{const pAllItems=p.groups.reduce((a,g)=>a.concat(g.items),[]);const pDone=pAllItems.filter(j=>status[j]==='done').length;const pTot=pAllItems.length;const isCurPhase=current>=p.start&&current<=p.end;const isDone=pAllItems.every(j=>status[j]==='done'||status[j]==='skipped');let isOpen;if(expandedPhases[p.name]===undefined){isOpen=isCurPhase;}else{isOpen=expandedPhases[p.name];}const phDiv=document.createElement('div');phDiv.className='tree-phase';const hdr=document.createElement('div');hdr.className='tree-phase-hdr';hdr.style.cursor='pointer';hdr.onclick=()=>togglePhase(p.name);const nm=document.createElement('span');nm.className='tree-ph-name '+(isDone?'done':isCurPhase?'cur':'upcoming');nm.textContent=p.name;const right=document.createElement('span');right.style.cssText='display:flex;align-items:center;gap:8px;direction:ltr;';const stat=document.createElement('span');stat.className='tree-ph-stat';stat.textContent=pDone+'/'+pTot;const chevron=document.createElement('span');chevron.style.cssText='font-size:10px;color:var(--ink-muted);font-family:var(--font-mono);display:inline-block;';chevron.textContent=isOpen?'▼':'►';right.appendChild(stat);right.appendChild(chevron);hdr.appendChild(nm);hdr.appendChild(right);phDiv.appendChild(hdr);if(isOpen){p.groups.forEach((g)=>{const gDiv=document.createElement('div');gDiv.className='tree-group';const gnm=document.createElement('div');gnm.className='tree-gr-name';gnm.textContent=g.name;gDiv.appendChild(gnm);g.items.forEach(ii=>{const s=status[ii]||'upcoming';const isCurItem=ii===current;const row=document.createElement('div');row.className='tree-item';row.onclick=(e)=>{e.stopPropagation();current=ii;holdState='idle';resetRunwayBtn();render();};const mark=document.createElement('span');mark.className='tree-mark '+(s==='done'?'done':isCurItem?'cur':s==='skipped'?'skipped':'upcoming');mark.textContent=s==='done'?'✓':isCurItem?'●':s==='skipped'?'~':'○';const txtWrap=document.createElement('div');txtWrap.className='tree-item-text-wrap';const txt=document.createElement('div');txt.className='tree-item-text '+(s==='done'?'done':isCurItem?'cur':s==='skipped'?'skipped':'upcoming');txt.textContent=CL[ii].main;txtWrap.appendChild(txt);if(FEATURES.EXTERNAL_LINK&&CL[ii].url){const linkInd=document.createElement('div');linkInd.className='tree-item-link';linkInd.textContent='🔗 '+(CL[ii].urlLabel||CL[ii].url);txtWrap.appendChild(linkInd);}row.appendChild(mark);row.appendChild(txtWrap);gDiv.appendChild(row);});phDiv.appendChild(gDiv);});}panel.appendChild(phDiv);});}
 const HOLD_MS=300;const FLIP_MS=520;
 let holdState='idle';let holdTimer=null;
 function startHold(){if(holdState==='flipping'||holdState==='confirmed')return;if(status[current]==='done')return;holdState='holding';document.getElementById('confirmHint').textContent='מחזיק…';const hms=settings&&settings.holdMs?settings.holdMs:HOLD_MS;const fill=document.getElementById('runwayFill');const plane=document.getElementById('runwayPlane');// Set animation speed to match hold duration
