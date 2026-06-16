@@ -203,7 +203,7 @@ body{display:flex;flex-direction:column;height:100svh;overflow:hidden;}
   <div class="metar-age-footer" id="metarAgeFooter">—</div>
 </div>
 
-<div class="page-footer" dir="ltr">METAR / TAF · V1.13 · BUILT BY ELIGRT</div>
+<div class="page-footer" dir="ltr">METAR / TAF · V1.14 · BUILT BY ELIGRT</div>
 
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/12.14.0/firebase-app.js";
@@ -323,8 +323,8 @@ function renderTowerBadge(data){
   } else {
     const diffMin=Math.round((Date.now()-data.timestamp)/60000);
     const ageStr=diffMin<60?'לפני '+diffMin+' דק׳':'לפני '+Math.round(diffMin/60)+' שע׳';
-    const icon=cls==='fresh'?'🔔 ':'';
-    btn.innerHTML+=icon+'עדכון אחרון: '+ageStr;
+    const icon=cls==='fresh'?' 🔔':'';
+    btn.innerHTML+='עדכון אחרון: '+ageStr+icon;
     btn.onclick=openTowerPopup;
   }
 }
