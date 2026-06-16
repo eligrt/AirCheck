@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<!-- AirCheck+ · AirCheck_METAR.html · v1.17 · built by eligrt -->
+<!-- AirCheck+ · AirCheck_METAR.html · v1.21 · built by eligrt -->
 <html lang="he" dir="rtl">
 <head>
 <meta charset="UTF-8">
@@ -42,7 +42,7 @@ body{display:flex;flex-direction:column;height:100svh;overflow:hidden;}
 .metar-pill-btn:active{opacity:.7;}
 .metar-pill-btn.active{border:none;background:var(--ink);color:var(--paper);}
 .metar-pill-other{font-family:var(--font-ui);border-style:dashed;color:var(--ink-faint);}
-.metar-pill-custom{border-style:dashed;border-color:var(--gold-lite);color:var(--ink-faint);font-size:11px;}
+.metar-pill-custom{font-family:var(--font-ui);border-style:dashed;border-color:var(--gold-lite);color:var(--ink-faint);font-size:13px;}
 .metar-pill-custom.set{border-style:solid;border-color:var(--gold);color:var(--gold);background:rgba(200,160,74,.08);font-size:13px;}
 .metar-pill-custom.active{border-style:solid;border-color:var(--ink);background:var(--ink);color:#f4ecdc;font-size:13px;}
 .metar-pill-other.active{background:rgba(200,160,74,.2);border:1.5px solid var(--gold);color:var(--gold-lite);border-style:solid;}
@@ -63,13 +63,15 @@ body{display:flex;flex-direction:column;height:100svh;overflow:hidden;}
 /* ── TOWER BADGE ── */
 @keyframes border-fade{0%,100%{border-color:rgba(245,158,11,.7);}50%{border-color:rgba(245,158,11,.1);}}
 @keyframes dot-pulse{0%,100%{opacity:1;transform:scale(1);}50%{opacity:.3;transform:scale(1.5);}}
-.tower-bar{padding:9px 16px;border-bottom:1px solid var(--paper-edge);display:flex;align-items:center;justify-content:space-between;background:var(--paper);}
-.tower-bar-label{font-family:var(--font-ui);font-size:13px;font-weight:600;color:var(--ink-muted);direction:rtl;}
-.tower-btn{display:flex;align-items:center;gap:7px;border-radius:6px;padding:7px 13px;cursor:pointer;font-family:var(--font-ui);font-size:12px;border:1.5px solid transparent;min-width:180px;}
+.tower-bar{display:flex;flex-direction:column;align-items:center;gap:3px;}
+.tower-bar-label{font-family:var(--font-ui);font-size:11px;font-weight:600;color:var(--ink-muted);white-space:nowrap;}
+.tower-bar-row{display:flex;align-items:center;gap:6px;}
+.tower-bell{font-size:14px;line-height:1;}
+.tower-btn{display:flex;align-items:center;justify-content:center;gap:8px;border-radius:6px;padding:5px 9px;cursor:pointer;font-family:var(--font-ui);font-size:12px;border:1.5px solid transparent;white-space:normal;width:168px;min-height:28px;line-height:1.35;text-align:center;}
+.tower-btn-none{background:transparent;border-style:dashed!important;border-color:var(--paper-edge)!important;font-weight:400;color:var(--ink-faint);cursor:default;white-space:normal;font-size:11px;}
 .tower-btn-fresh{background:rgba(245,158,11,.12);animation:border-fade 1.8s ease-in-out infinite;font-weight:700;color:#7a5000;}
 .tower-btn-moderate{background:rgba(245,158,11,.07);border-color:rgba(245,158,11,.3)!important;font-weight:500;color:#b07a20;}
 .tower-btn-old{background:transparent;border-color:var(--paper-edge)!important;font-weight:400;color:var(--ink-faint);}
-.tower-btn-none{background:transparent;border-style:dashed!important;border-color:var(--paper-edge)!important;font-weight:400;color:var(--ink-faint);cursor:default;}
 .tower-dot{width:7px;height:7px;border-radius:50%;flex-shrink:0;}
 .tower-dot-fresh{background:var(--amber);animation:dot-pulse 1.8s ease-in-out infinite;}
 .tower-dot-moderate{background:#d4a030;opacity:.6;}
@@ -156,20 +158,22 @@ body{display:flex;flex-direction:column;height:100svh;overflow:hidden;}
     <button class="metar-pill-btn" id="mpill-LLHA" onclick="metarPillSelect('LLHA')">LLHA</button>
     <button class="metar-pill-btn" id="mpill-LLIB" onclick="metarPillSelect('LLIB')">LLIB</button>
     <button class="metar-pill-btn" id="mpill-LLER" onclick="metarPillSelect('LLER')">LLER</button>
-    <button class="metar-pill-btn metar-pill-custom" id="mpill-c1" onclick="customPillTap(1)" oncontextmenu="customPillEdit(1);return false;" id="mpill-c1">✏ הוסף</button>
-    <button class="metar-pill-btn metar-pill-custom" id="mpill-c2" onclick="customPillTap(2)" oncontextmenu="customPillEdit(2);return false;">✏ הוסף</button>
-    <button class="metar-pill-btn metar-pill-custom" id="mpill-c3" onclick="customPillTap(3)" oncontextmenu="customPillEdit(3);return false;">✏ הוסף</button>
+    <button class="metar-pill-btn metar-pill-custom" id="mpill-c1" onclick="customPillTap(1)" oncontextmenu="customPillEdit(1);return false;">✎ הוסף</button>
+    <button class="metar-pill-btn metar-pill-custom" id="mpill-c2" onclick="customPillTap(2)" oncontextmenu="customPillEdit(2);return false;">✎ הוסף</button>
+    <button class="metar-pill-btn metar-pill-custom" id="mpill-c3" onclick="customPillTap(3)" oncontextmenu="customPillEdit(3);return false;">✎ הוסף</button>
   </div>
   <div class="pill-hint" style="font-size:10px;color:var(--ink-faint);font-family:var(--font-mono);margin-top:5px;direction:rtl;">לחיצה ארוכה על שדה מותאם אישית — לעריכה</div>
 </div>
 
 <div class="station-label-bar">
   <div class="metar-station-name" id="metarStationLabel">טוען...</div>
-</div>
-
-<div class="tower-bar" id="towerBar" style="display:none;">
-  <div class="tower-bar-label"><span id="towerBarBell" style="display:none;">🔔 </span>עדכוני שדה</div>
-  <button id="towerBtn" class="tower-btn" onclick="openTowerPopup()"></button>
+  <div class="tower-bar" id="towerBar" style="display:none;">
+    <div class="tower-bar-label">עדכוני שדה</div>
+    <div class="tower-bar-row">
+      <span id="towerBarBell" class="tower-bell" style="display:none;">🔔</span>
+      <button id="towerBtn" class="tower-btn" onclick="openTowerPopup()"></button>
+    </div>
+  </div>
 </div>
 
 <div class="metar-tab-content" id="metarTabContent">
@@ -203,7 +207,7 @@ body{display:flex;flex-direction:column;height:100svh;overflow:hidden;}
   <div class="metar-age-footer" id="metarAgeFooter">—</div>
 </div>
 
-<div class="page-footer" dir="ltr">METAR / TAF · V1.17 · BUILT BY ELIGRT</div>
+<div class="page-footer" dir="ltr">METAR / TAF · V1.21 · BUILT BY ELIGRT</div>
 
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/12.14.0/firebase-app.js";
@@ -318,24 +322,26 @@ function renderTowerBadge(){
   const data=isLLHZ?_towerData:null;
   const cls=(isLLHZ&&data)?towerAgeClass(data.timestamp):'none';
   btn.className='tower-btn tower-btn-'+cls;
-  const dot=document.createElement('div');
-  dot.className='tower-dot tower-dot-'+cls;
   btn.innerHTML='';
-  btn.appendChild(dot);
   if(!isLLHZ){
-    btn.innerHTML+='לא רלוונטי לשדה זה';
+    btn.textContent='לא התקבלו עדכוני מגדל לשדה זה';
     btn.style.cursor='default';
     btn.onclick=null;
     if(bell)bell.style.display='none';
   } else if(cls==='none'||!data){
-    btn.innerHTML+='לא התקבל עדכון שדה';
+    btn.textContent='לא התקבל עדכון שדה';
     btn.style.cursor='default';
     btn.onclick=null;
     if(bell)bell.style.display='none';
   } else {
+    const dot=document.createElement('div');
+    dot.className='tower-dot tower-dot-'+cls;
+    btn.appendChild(dot);
     const diffMin=Math.round((Date.now()-data.timestamp)/60000);
     const ageStr=diffMin<60?'לפני '+diffMin+' דק׳':'לפני '+Math.round(diffMin/60)+' שע׳';
-    btn.innerHTML+='עדכון אחרון: '+ageStr;
+    const d=new Date(data.timestamp);
+    const timeStr=String(d.getHours()).padStart(2,'0')+':'+String(d.getMinutes()).padStart(2,'0');
+    btn.appendChild(document.createTextNode(ageStr+'\u00A0\u00A0('+timeStr+')'));
     btn.style.cursor='pointer';
     btn.onclick=openTowerPopup;
     if(bell)bell.style.display=cls==='fresh'?'':'none';
@@ -580,7 +586,7 @@ function syncCustomPills(){
       btn.classList.add('set');
       if(customIdx===i)btn.classList.add('active');
     } else {
-      btn.textContent='✏ הוסף';
+      btn.textContent='✎ הוסף';
     }
   });
 }
