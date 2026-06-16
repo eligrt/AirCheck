@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<!-- AirCheck+ · AirCheck_METAR.html · v1.06 · built by eligrt -->
+<!-- AirCheck+ · AirCheck_METAR.html · v1.17 · built by eligrt -->
 <html lang="he" dir="rtl">
 <head>
 <meta charset="UTF-8">
@@ -69,7 +69,7 @@ body{display:flex;flex-direction:column;height:100svh;overflow:hidden;}
 .tower-btn-fresh{background:rgba(245,158,11,.12);animation:border-fade 1.8s ease-in-out infinite;font-weight:700;color:#7a5000;}
 .tower-btn-moderate{background:rgba(245,158,11,.07);border-color:rgba(245,158,11,.3)!important;font-weight:500;color:#b07a20;}
 .tower-btn-old{background:transparent;border-color:var(--paper-edge)!important;font-weight:400;color:var(--ink-faint);}
-.tower-btn-none{background:transparent;border-style:dashed!important;border-color:var(--paper-edge)!important;font-weight:400;color:var(--ink-faint);opacity:.55;cursor:default;}
+.tower-btn-none{background:transparent;border-style:dashed!important;border-color:var(--paper-edge)!important;font-weight:400;color:var(--ink-faint);cursor:default;}
 .tower-dot{width:7px;height:7px;border-radius:50%;flex-shrink:0;}
 .tower-dot-fresh{background:var(--amber);animation:dot-pulse 1.8s ease-in-out infinite;}
 .tower-dot-moderate{background:#d4a030;opacity:.6;}
@@ -91,7 +91,7 @@ body{display:flex;flex-direction:column;height:100svh;overflow:hidden;}
 .tower-popup-title{font-size:15px;font-weight:700;}
 .tower-popup-disclaimer{font-size:9px;font-family:var(--font-mono);letter-spacing:.04em;margin-top:2px;direction:ltr;}
 .tower-popup-body{padding:14px 16px;}
-.tower-popup-text{font-size:13px;line-height:1.75;color:var(--ink-muted);}
+.tower-popup-text{font-size:13px;line-height:1.75;color:var(--ink-muted);white-space:pre-wrap;}
 .tower-popup-stale{background:rgba(0,0,0,.04);border:1px solid var(--paper-edge);border-radius:4px;padding:6px 10px;margin-bottom:10px;font-family:var(--font-mono);font-size:9px;color:var(--ink-faint);direction:rtl;}
 .tower-popup-meta{font-family:var(--font-mono);font-size:9px;color:var(--ink-faint);margin-top:10px;padding-top:8px;border-top:1px dashed var(--paper-edge);direction:ltr;}
 .tower-popup-close{width:100%;padding:12px;background:var(--ink);border:none;font-family:var(--font-ui);font-size:13px;font-weight:700;color:#f4ecdc;cursor:pointer;}
@@ -168,7 +168,7 @@ body{display:flex;flex-direction:column;height:100svh;overflow:hidden;}
 </div>
 
 <div class="tower-bar" id="towerBar" style="display:none;">
-  <div class="tower-bar-label">עדכוני שדה</div>
+  <div class="tower-bar-label"><span id="towerBarBell" style="display:none;">🔔 </span>עדכוני שדה</div>
   <button id="towerBtn" class="tower-btn" onclick="openTowerPopup()"></button>
 </div>
 
@@ -203,7 +203,7 @@ body{display:flex;flex-direction:column;height:100svh;overflow:hidden;}
   <div class="metar-age-footer" id="metarAgeFooter">—</div>
 </div>
 
-<div class="page-footer" dir="ltr">METAR / TAF · V1.14 · BUILT BY ELIGRT</div>
+<div class="page-footer" dir="ltr">METAR / TAF · V1.17 · BUILT BY ELIGRT</div>
 
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/12.14.0/firebase-app.js";
@@ -223,6 +223,8 @@ window._towerRead = async function(icao){
   try{ const snap = await get(ref(db,'tower/'+icao+'/latest')); return snap.val(); }
   catch(e){ return null; }
 };
+window._towerReady = true;
+document.dispatchEvent(new Event('towerReady'));
 </script>
 
 <script>
@@ -262,6 +264,7 @@ function syncMetarPills(){
       nameEl.textContent=STATION_NAMES[sel]||sel;
     }
   }
+  renderTowerBadge();
 }
 
 function metarPillSelect(icao){
@@ -305,27 +308,54 @@ function towerAgeClass(ts){
   return'old';
 }
 
-function renderTowerBadge(data){
+function renderTowerBadge(){
   const bar=document.getElementById('towerBar');
   if(!bar)return;
   bar.style.display='';
   const btn=document.getElementById('towerBtn');
-  const cls=data?towerAgeClass(data.timestamp):'none';
+  const bell=document.getElementById('towerBarBell');
+  const isLLHZ=getMetarIcao()==='LLHZ';
+  const data=isLLHZ?_towerData:null;
+  const cls=(isLLHZ&&data)?towerAgeClass(data.timestamp):'none';
   btn.className='tower-btn tower-btn-'+cls;
   const dot=document.createElement('div');
   dot.className='tower-dot tower-dot-'+cls;
   btn.innerHTML='';
   btn.appendChild(dot);
-  if(cls==='none'||!data){
+  if(!isLLHZ){
+    btn.innerHTML+='לא רלוונטי לשדה זה';
+    btn.style.cursor='default';
+    btn.onclick=null;
+    if(bell)bell.style.display='none';
+  } else if(cls==='none'||!data){
     btn.innerHTML+='לא התקבל עדכון שדה';
     btn.style.cursor='default';
     btn.onclick=null;
+    if(bell)bell.style.display='none';
   } else {
     const diffMin=Math.round((Date.now()-data.timestamp)/60000);
     const ageStr=diffMin<60?'לפני '+diffMin+' דק׳':'לפני '+Math.round(diffMin/60)+' שע׳';
-    const icon=cls==='fresh'?' 🔔':'';
-    btn.innerHTML+='עדכון אחרון: '+ageStr+icon;
+    btn.innerHTML+='עדכון אחרון: '+ageStr;
+    btn.style.cursor='pointer';
     btn.onclick=openTowerPopup;
+    if(bell)bell.style.display=cls==='fresh'?'':'none';
+  }
+}
+
+function prefetchTower(){
+  if(window._towerReady&&window._towerRead){
+    window._towerRead('LLHZ').then(d=>{
+      _towerData=d;
+      renderTowerBadge();
+    });
+  } else {
+    // Firebase module (deferred) hasn't finished loading yet — wait for it
+    document.addEventListener('towerReady',()=>{
+      window._towerRead('LLHZ').then(d=>{
+        _towerData=d;
+        renderTowerBadge();
+      });
+    },{once:true});
   }
 }
 
@@ -416,13 +446,8 @@ async function fetchMetar(force){
         _metarCache.taf={rawTAF:tafArr[0].rawTAF||'',icao:icao,issueTime:tafArr[0].issueTime};
       } else {_metarCache.taf=null;}
     }
-    // Always fetch tower for LLHZ
-    if(window._towerRead){
-      window._towerRead('LLHZ').then(d=>{
-        _towerData=d;
-        renderTowerBadge(d);
-      });
-    }
+    // Tower data is prefetched once at load; just re-render for current station
+    renderTowerBadge();
     renderMetarCards();
     syncMetarPills();
   } catch(e){
@@ -594,6 +619,7 @@ function backToApp(){
 (function init(){
   const sel=localStorage.getItem(METAR_STATION_KEY)||'LLBG';
   syncMetarPills();syncCustomPills();
+  prefetchTower();
   fetchMetar(false);
 })();
 </script>
