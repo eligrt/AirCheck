@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <!-- ═══════════════════════════════════════
-     AirCheck+ · v2.08.058T · built by eligrt
+     AirCheck+ · v2.08.059T · built by eligrt
      ═══════════════════════════════════════ -->
 <html lang="he" dir="rtl">
 <head>
@@ -581,7 +581,7 @@ html,body{height:100%;background:#1a1a1c;font-family:var(--font-ui);color:var(--
       var statusObj=d.status||{};
       var done=Object.values(statusObj).filter(function(s){return s==='done';}).length;
       if(done>0){
-        document.write('<style id="splashFlashGuard">#screenSplash{display:none!important;}#screenChecklist{display:flex!important;}</style>');
+        document.write('<style id="splashFlashGuard">#screenSplash,#screenChecklist{display:none!important;}</style>');
       }
     }catch(e){}
   })();
@@ -621,7 +621,7 @@ html,body{height:100%;background:#1a1a1c;font-family:var(--font-ui);color:var(--
     <div class="splash-footer-wrap">
       <div class="footer-strip" style="display:flex;align-items:center;justify-content:space-between;padding:5px 14px 8px;">
         <span class="footer-refresh" onclick="reloadApp()">רענון</span>
-        <span id="versionTap" onclick="handleVersionTap()" style="cursor:default;">AirCheck+ · v2.08.058T · built by eligrt</span>
+        <span id="versionTap" onclick="handleVersionTap()" style="cursor:default;">AirCheck+ · v2.08.059T · built by eligrt</span>
         <span style="width:40px;"></span>
       </div>
     </div>
@@ -794,7 +794,7 @@ html,body{height:100%;background:#1a1a1c;font-family:var(--font-ui);color:var(--
     <div class="tree-panel" id="treePanel"></div>
     <div class="footer-strip" style="display:flex;align-items:center;justify-content:space-between;padding:5px 14px 8px;">
       <span class="footer-refresh" onclick="reloadApp()">רענון</span>
-      <span id="versionTap" onclick="handleVersionTap()" style="cursor:default;">AirCheck+ · v2.08.058T · built by eligrt</span>
+      <span id="versionTap" onclick="handleVersionTap()" style="cursor:default;">AirCheck+ · v2.08.059T · built by eligrt</span>
       <span style="width:40px;"></span>
     </div>
   </div>
@@ -867,7 +867,7 @@ html,body{height:100%;background:#1a1a1c;font-family:var(--font-ui);color:var(--
 
     <div class="footer-strip" style="display:flex;align-items:center;justify-content:space-between;padding:5px 14px 8px;">
       <span style="width:40px;"></span>
-      <span id="versionTap" onclick="handleVersionTap()" style="cursor:default;">AirCheck+ · v2.08.058T · built by eligrt</span>
+      <span id="versionTap" onclick="handleVersionTap()" style="cursor:default;">AirCheck+ · v2.08.059T · built by eligrt</span>
       <span style="width:40px;"></span>
     </div>
   </div>
@@ -977,7 +977,7 @@ html,body{height:100%;background:#1a1a1c;font-family:var(--font-ui);color:var(--
     </div>
     <div class="footer-strip" style="display:flex;align-items:center;justify-content:space-between;padding:5px 14px 8px;">
       <span class="footer-refresh" onclick="reloadApp()">רענון</span>
-      <span id="versionTap" onclick="handleVersionTap()" style="cursor:default;">AirCheck+ · v2.08.058T · built by eligrt</span>
+      <span id="versionTap" onclick="handleVersionTap()" style="cursor:default;">AirCheck+ · v2.08.059T · built by eligrt</span>
       <span style="width:40px;"></span>
     </div>
   </div>
@@ -996,7 +996,7 @@ html,body{height:100%;background:#1a1a1c;font-family:var(--font-ui);color:var(--
     <div class="editor-list" id="editorList"></div>
     <div class="footer-strip" style="display:flex;align-items:center;justify-content:space-between;padding:5px 14px 8px;">
       <span class="footer-refresh" onclick="reloadApp()">רענון</span>
-      <span id="versionTap" onclick="handleVersionTap()" style="cursor:default;">AirCheck+ · v2.08.058T · built by eligrt</span>
+      <span id="versionTap" onclick="handleVersionTap()" style="cursor:default;">AirCheck+ · v2.08.059T · built by eligrt</span>
       <span style="width:40px;"></span>
     </div>
   </div>
@@ -3002,9 +3002,6 @@ function buildRankStrip(n){
 }
 
 function initSplash(){
-  // Clean up the temporary pre-paint flash guard (see inline script in
-  // <body>) now that the real screen-switching logic below takes over.
-  try{const guard=document.getElementById('splashFlashGuard');if(guard)guard.remove();}catch(e){}
   // If returning from a reference link (in-app standalone page, or an
   // external/third-party site like NOTAM/FPL that won't round-trip our
   // ?resume= param), skip splash and resume straight into the checklist.
@@ -3015,9 +3012,17 @@ function initSplash(){
     const done=Object.values(status).filter(s=>s==='done').length;
     if(done>0){
       if(window.location.search)history.replaceState(null,'',window.location.pathname);
-      showScreen('screenChecklist');render();return;
+      showScreen('screenChecklist');render();
+      // Content is now fully populated — safe to reveal, removing the
+      // pre-paint guard (see inline script in <body>) that kept both
+      // screens hidden until this point.
+      try{const guard=document.getElementById('splashFlashGuard');if(guard)guard.remove();}catch(e){}
+      return;
     }
   }
+  // No resume happened (or done was 0) — clean up the guard if present,
+  // so normal splash rendering below isn't blocked.
+  try{const guard=document.getElementById('splashFlashGuard');if(guard)guard.remove();}catch(e){}
   document.getElementById('app').addEventListener('click',e=>{
     if(window._bulkJustOpened){window._bulkJustOpened=false;return;}
     const popup=document.getElementById('bulkPopup');
