@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <!-- ═══════════════════════════════════════
-     AirCheck+ · v2.08.060T · built by eligrt
+     AirCheck+ · v2.08.062T · built by eligrt
      ═══════════════════════════════════════ -->
 <html lang="he" dir="rtl">
 <head>
@@ -545,21 +545,6 @@ html,body{height:100%;background:#1a1a1c;font-family:var(--font-ui);color:var(--
 
 .settings-row-sub{font-size:10px;color:var(--ink-muted);margin-top:2px;font-family:var(--font-mono);letter-spacing:.04em;}
 
-/* ── STATS POPUP ── */
-#statsPopup{display:none;position:absolute;inset:0;z-index:600;align-items:center;justify-content:center;background:rgba(26,19,8,.85);backdrop-filter:blur(3px);padding:24px;}
-#statsPopup.open{display:flex;}
-.stats-box{background:var(--paper-hi);border:2px solid var(--gold);border-radius:8px;padding:20px;width:100%;max-width:320px;max-height:85vh;display:flex;flex-direction:column;text-align:center;box-shadow:0 20px 60px rgba(0,0,0,.4);background-image:repeating-linear-gradient(0deg,transparent 0,transparent 27px,var(--paper-line) 27px,var(--paper-line) 28px);}
-#statsContent{overflow-y:auto;-webkit-overflow-scrolling:touch;flex:1;scrollbar-width:none;}
-#statsContent::-webkit-scrollbar{display:none;}
-.stats-title{font-family:var(--font-mono);font-size:11px;letter-spacing:.2em;color:var(--ink-muted);margin-bottom:16px;text-transform:uppercase;}
-.stats-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:16px;}
-.stats-cell{background:var(--paper);border:1px solid var(--gold-lite);border-radius:4px;padding:10px 8px;}
-.stats-cell-val{font-family:var(--font-mono);font-size:22px;font-weight:700;color:var(--ink);direction:ltr;}
-.stats-cell-lbl{font-size:9px;color:var(--ink-muted);letter-spacing:.08em;margin-top:2px;}
-.stats-os{display:flex;gap:6px;justify-content:center;margin-bottom:16px;flex-wrap:wrap;}
-.stats-os-pill{font-family:var(--font-mono);font-size:10px;background:var(--paper);border:1px solid var(--gold-lite);border-radius:10px;padding:3px 10px;color:var(--ink-muted);}
-.stats-loading{font-size:13px;color:var(--ink-muted);padding:20px 0;font-family:var(--font-mono);}
-
 </style>
 </head>
 <body>
@@ -621,7 +606,7 @@ html,body{height:100%;background:#1a1a1c;font-family:var(--font-ui);color:var(--
     <div class="splash-footer-wrap">
       <div class="footer-strip" style="display:flex;align-items:center;justify-content:space-between;padding:5px 14px 8px;">
         <span class="footer-refresh" onclick="reloadApp()">רענון</span>
-        <span id="versionTap" onclick="handleVersionTap()" style="cursor:default;">AirCheck+ · v2.08.060T · built by eligrt</span>
+        <span id="versionTap" onclick="handleVersionTap()" style="cursor:default;">AirCheck+ · v2.08.062T · built by eligrt</span>
         <span style="width:40px;"></span>
       </div>
     </div>
@@ -794,7 +779,7 @@ html,body{height:100%;background:#1a1a1c;font-family:var(--font-ui);color:var(--
     <div class="tree-panel" id="treePanel"></div>
     <div class="footer-strip" style="display:flex;align-items:center;justify-content:space-between;padding:5px 14px 8px;">
       <span class="footer-refresh" onclick="reloadApp()">רענון</span>
-      <span id="versionTap" onclick="handleVersionTap()" style="cursor:default;">AirCheck+ · v2.08.060T · built by eligrt</span>
+      <span id="versionTap" onclick="handleVersionTap()" style="cursor:default;">AirCheck+ · v2.08.062T · built by eligrt</span>
       <span style="width:40px;"></span>
     </div>
   </div>
@@ -867,7 +852,7 @@ html,body{height:100%;background:#1a1a1c;font-family:var(--font-ui);color:var(--
 
     <div class="footer-strip" style="display:flex;align-items:center;justify-content:space-between;padding:5px 14px 8px;">
       <span style="width:40px;"></span>
-      <span id="versionTap" onclick="handleVersionTap()" style="cursor:default;">AirCheck+ · v2.08.060T · built by eligrt</span>
+      <span id="versionTap" onclick="handleVersionTap()" style="cursor:default;">AirCheck+ · v2.08.062T · built by eligrt</span>
       <span style="width:40px;"></span>
     </div>
   </div>
@@ -977,7 +962,7 @@ html,body{height:100%;background:#1a1a1c;font-family:var(--font-ui);color:var(--
     </div>
     <div class="footer-strip" style="display:flex;align-items:center;justify-content:space-between;padding:5px 14px 8px;">
       <span class="footer-refresh" onclick="reloadApp()">רענון</span>
-      <span id="versionTap" onclick="handleVersionTap()" style="cursor:default;">AirCheck+ · v2.08.060T · built by eligrt</span>
+      <span id="versionTap" onclick="handleVersionTap()" style="cursor:default;">AirCheck+ · v2.08.062T · built by eligrt</span>
       <span style="width:40px;"></span>
     </div>
   </div>
@@ -996,7 +981,7 @@ html,body{height:100%;background:#1a1a1c;font-family:var(--font-ui);color:var(--
     <div class="editor-list" id="editorList"></div>
     <div class="footer-strip" style="display:flex;align-items:center;justify-content:space-between;padding:5px 14px 8px;">
       <span class="footer-refresh" onclick="reloadApp()">רענון</span>
-      <span id="versionTap" onclick="handleVersionTap()" style="cursor:default;">AirCheck+ · v2.08.060T · built by eligrt</span>
+      <span id="versionTap" onclick="handleVersionTap()" style="cursor:default;">AirCheck+ · v2.08.062T · built by eligrt</span>
       <span style="width:40px;"></span>
     </div>
   </div>
@@ -2930,14 +2915,11 @@ function handleVersionTap(){
   clearTimeout(_vTapTimer);
   if(_vTapCount>=5){
     _vTapCount=0;
-    document.getElementById('statsPopup').classList.add('open');
-    document.getElementById('statsContent').innerHTML='<div class="stats-loading">טוען נתונים...</div>';
-    if(window.loadStats)window.loadStats();
+    window.location.href='Admin-Stat.html?from=AirCheck_RD_test.html';
   }else{
     _vTapTimer=setTimeout(()=>{_vTapCount=0;},1500);
   }
 }
-function closeStats(){document.getElementById('statsPopup').classList.remove('open');}
 function showScreen(id){
   document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
   document.getElementById(id).classList.add('active');
@@ -3275,235 +3257,6 @@ function splashSecondaryAction(){
   // Update listType after editor DONE (lightweight wrapper)
   window.updateListTypeInFirebase=function(){syncToFirebase();};
 
-  // Fetch and display stats
-  window.loadStats=async function(){
-    try{
-      const pilotRef=ref(db,'pilots');
-      const snap=await get(pilotRef);
-      const data=snap.val();
-      if(!data){
-        document.getElementById('statsContent').innerHTML='<div class="stats-loading">אין נתונים עדיין</div>';
-        return;
-      }
-      const pilots=Object.values(data);
-      const total=pilots.length;
-      const now=Date.now();
-      const hours48=48*60*60*1000;
-      const sevenDays=7*24*60*60*1000;
-      const thirtyDays=30*24*60*60*1000;
-      const ninetyDays=90*24*60*60*1000;
-
-      const active48=pilots.filter(p=>now-p.lastSeen<hours48).length;
-      const active7=pilots.filter(p=>now-p.lastSeen<sevenDays).length;
-      const active30=pilots.filter(p=>now-p.lastSeen<thirtyDays).length;
-      const active90=pilots.filter(p=>now-p.lastSeen<ninetyDays).length;
-      const openedOnce=pilots.filter(p=>p.firstSeen&&p.lastSeen&&Math.abs(p.lastSeen-p.firstSeen)<60000).length;
-      const neverStarted=pilots.filter(p=>!p.flightCount||p.flightCount===0).length;
-
-      // Avg flights per pilot active in last 90 days
-      const active90pilots=pilots.filter(p=>now-p.lastSeen<ninetyDays);
-      const active90flights=active90pilots.reduce((s,p)=>s+(p.flightCount||0),0);
-      const avgFlights=active90pilots.length>0?(active90flights/active90pilots.length).toFixed(1):0;
-
-      const custom=pilots.filter(p=>p.listType==='modified').length;
-      const multiProfile=pilots.filter(p=>p.profileCount&&p.profileCount>1).length;
-      const profileDist={1:0,2:0,3:0,4:0,'5+':0};
-      pilots.forEach(p=>{
-        const c=p.profileCount||1;
-        if(c>=5)profileDist['5+']++;
-        else profileDist[c]=(profileDist[c]||0)+1;
-      });
-
-      const metarUsers=pilots.filter(p=>p.metarUsed).length;
-
-      // External links
-      const extLinkUsers=pilots.filter(p=>p.externalLinkUsed).length;
-      const extLinkTotals={};
-      const extLinkLabelsMap={};
-      let totalExtLinkTaps=0;
-      pilots.forEach(p=>{
-        if(!p.externalLinkCounts)return;
-        Object.entries(p.externalLinkCounts).forEach(([key,count])=>{
-          extLinkTotals[key]=(extLinkTotals[key]||0)+count;
-          totalExtLinkTaps+=count;
-        });
-        // Collect label mappings
-        if(p.externalLinkLabels){
-          Object.entries(p.externalLinkLabels).forEach(([key,lbl])=>{
-            if(!extLinkLabelsMap[key])extLinkLabelsMap[key]=lbl;
-          });
-        }
-      });
-      const stationTotals={LLBG:0,LLHA:0,LLIB:0,LLER:0,LLHZ:0,custom:0};
-      const knownStations=new Set(['LLBG','LLHA','LLIB','LLER','LLHZ']);
-      let totalMetarOpens=0;
-      pilots.forEach(p=>{
-        if(!p.metarStationCounts)return;
-        Object.entries(p.metarStationCounts).forEach(([station,count])=>{
-          totalMetarOpens+=count;
-          // Normalize: if station key is known, use it; otherwise custom
-          const key=knownStations.has(station)?station:'custom';
-          stationTotals[key]=(stationTotals[key]||0)+count;
-        });
-      });
-
-      const totalFlights=pilots.reduce((s,p)=>s+(p.flightCount||0),0);
-      const totalCompleted=pilots.reduce((s,p)=>s+(p.completedFlights||0),0);
-
-      const osCounts={iOS:0,Android:0,Desktop:0};
-      pilots.forEach(p=>{if(osCounts[p.os]!==undefined)osCounts[p.os]++;});
-
-      const pwaCounts={iOS:0,Android:0,Desktop:0};
-      pilots.forEach(p=>{if(p.pwaInstalled&&osCounts[p.os]!==undefined)pwaCounts[p.os]++;});
-      const pwaPromptShown=pilots.filter(p=>p.pwaPromptShown).length;
-      const pwaInstalled=pilots.filter(p=>p.pwaInstalled).length;
-
-      // Community pending + approved + rejected count
-      let communityPending=0, communityApproved=0, communityRejected=0;
-      try{
-        const pendingSnap=await get(ref(db,'community/pending'));
-        communityPending=pendingSnap.exists()?Object.keys(pendingSnap.val()).length:0;
-        const approvedSnap=await get(ref(db,'community/approved'));
-        communityApproved=approvedSnap.exists()?Object.keys(approvedSnap.val()).length:0;
-        const rejectedSnap=await get(ref(db,'community/rejected'));
-        communityRejected=rejectedSnap.exists()?Object.keys(rejectedSnap.val()).length:0;
-      }catch(e){}
-
-      function activeBar(label,count,tot){
-        const p=tot>0?Math.round(count/tot*100):0;
-        return `<div style="margin-bottom:7px;">
-          <div style="display:flex;justify-content:space-between;font-size:10px;font-family:var(--font-mono);color:var(--ink-muted);margin-bottom:3px;direction:ltr;">
-            <span style="color:var(--ink-body);">פעילים ${label}</span><span>${count} · ${p}%</span>
-          </div>
-          <div style="height:5px;background:var(--paper-edge);border-radius:3px;overflow:hidden;">
-            <div style="height:100%;width:${p}%;background:var(--ink);border-radius:3px;"></div>
-          </div>
-        </div>`;
-      }
-      function row(label,count,tot){
-        const p=tot>0?Math.round(count/tot*100):0;
-        return `<div style="display:flex;justify-content:space-between;align-items:baseline;padding:3px 0;border-bottom:1px dashed rgba(200,160,74,.15);">
-          <span style="font-size:11px;color:var(--ink-muted);direction:rtl;">${label}</span>
-          <span style="font-family:var(--font-mono);font-size:11px;color:var(--ink-body);direction:ltr;">${count} <span style="color:var(--ink-faint);font-size:10px;">(${p}%)</span></span>
-        </div>`;
-      }
-      function osBar(label,count,pwaCount,fill,fillLight,showPwa=true){
-        const p=total>0?Math.round(count/total*100):0;
-        const pp=count>0?Math.round(pwaCount/count*100):0;
-        return `<div style="margin-bottom:8px;">
-          <div style="display:flex;justify-content:space-between;font-size:10px;font-family:var(--font-mono);color:var(--ink-muted);margin-bottom:3px;direction:ltr;">
-            <span style="color:var(--ink-body);font-weight:700;">${label}</span><span>${count} · ${p}%</span>
-          </div>
-          <div style="height:5px;background:var(--paper-edge);border-radius:3px;overflow:hidden;margin-bottom:${showPwa?'3px':'0'};">
-            <div style="height:100%;width:${p}%;background:${fill};border-radius:3px;"></div>
-          </div>
-          ${showPwa?`<div style="display:flex;justify-content:space-between;font-size:9px;font-family:var(--font-mono);color:var(--ink-faint);margin-bottom:2px;direction:ltr;padding-right:8px;">
-            <span>PWA</span><span>${pwaCount} · ${pp}%</span>
-          </div>
-          <div style="height:3px;background:var(--paper-edge);border-radius:3px;overflow:hidden;margin-right:8px;">
-            <div style="height:100%;width:${pp}%;background:${fillLight};border-radius:3px;"></div>
-          </div>`:''}
-        </div>`;
-      }
-      function stationBar(label,count,fill,customPct){
-        const p=customPct!==undefined?customPct:(totalMetarOpens>0?Math.round(count/totalMetarOpens*100):0);
-        return `<div style="margin-bottom:7px;">
-          <div style="display:flex;justify-content:space-between;font-size:10px;font-family:var(--font-mono);color:var(--ink-muted);margin-bottom:3px;direction:ltr;">
-            <span style="color:var(--ink-body);">${label}</span><span>${count} · ${p}%</span>
-          </div>
-          <div style="height:5px;background:var(--paper-edge);border-radius:3px;overflow:hidden;">
-            <div style="height:100%;width:${p}%;background:${fill};border-radius:3px;"></div>
-          </div>
-        </div>`;
-      }
-      function adoptionBar(label,count,tot,fill){
-        const p=tot>0?Math.round(count/tot*100):0;
-        return `<div style="margin-bottom:7px;">
-          <div style="display:flex;justify-content:space-between;font-size:10px;font-family:var(--font-mono);color:var(--ink-muted);margin-bottom:3px;direction:ltr;">
-            <span style="color:var(--ink-body);">${label}</span><span>${count} · ${p}%</span>
-          </div>
-          <div style="height:5px;background:var(--paper-edge);border-radius:3px;overflow:hidden;">
-            <div style="height:100%;width:${p}%;background:${fill};border-radius:3px;"></div>
-          </div>
-        </div>`;
-      }
-      function section(title){
-        return `<div style="font-family:var(--font-mono);font-size:8px;color:var(--ink-faint);letter-spacing:.2em;text-transform:uppercase;margin:12px 0 6px;direction:ltr;">${title}</div>`;
-      }
-
-      document.getElementById('statsContent').innerHTML=`
-        <div style="background:var(--paper);border:1px solid var(--gold-lite);border-radius:4px;padding:10px 12px;margin-bottom:12px;">
-          <div style="display:flex;align-items:baseline;gap:8px;margin-bottom:10px;direction:rtl;">
-            <span style="font-family:var(--font-mono);font-size:32px;font-weight:700;color:var(--ink);direction:ltr;">${total}</span>
-            <span style="font-size:12px;color:var(--ink-muted);">טייסים רשומים</span>
-          </div>
-          ${activeBar('48 שעות',active48,total)}
-          ${activeBar('7 ימים',active7,total)}
-          ${activeBar('30 ימים',active30,total)}
-          ${activeBar('90 ימים',active90,total)}
-          ${row('פתחו פעם אחת בלבד',openedOnce,total)}
-          ${row('מעולם לא התחילו טיסה',neverStarted,total)}
-        </div>
-        <div style="background:var(--paper);border:1px solid var(--gold-lite);border-radius:4px;padding:10px 12px;">
-          ${section('Ranks')}
-          ${(()=>{
-            const rankDist={};
-            RANKS.forEach(r=>rankDist[r.name]=0);
-            pilots.forEach(p=>{
-              const n=p.completedFlights||0;
-              if(n<1)return;
-              const r=getRank(n);
-              if(r.current)rankDist[r.current.name]=(rankDist[r.current.name]||0)+1;
-            });
-            const maxVal=Math.max(...Object.values(rankDist),1);
-            return RANKS.map(r=>{
-              const count=rankDist[r.name]||0;
-              const pct=total>0?Math.round(count/total*100):0;
-              const barPct=Math.round(count/maxVal*100);
-              return stationBar(r.icon+' '+r.name,count,'var(--ink)',pct);
-            }).join('');
-          })()}
-          ${section('FLIGHTS')}
-          ${row('טיסות שהתחילו',totalFlights,totalFlights)}
-          ${row('טיסות שהושלמו',totalCompleted,totalFlights||1)}
-          <div style="display:flex;justify-content:space-between;align-items:baseline;padding:3px 0;">
-            <span style="font-size:11px;color:var(--ink-muted);direction:rtl;">ממוצע טיסות לטייס פעיל (90י)</span>
-            <span style="font-family:var(--font-mono);font-size:11px;color:var(--ink-body);">${avgFlights}</span>
-          </div>
-          ${section('CHECKLISTS')}
-          ${row('צ׳קליסט מותאם אישית',custom,total)}
-          ${row('עם רשימות מרובות',multiProfile,total)}
-          ${section('PROFILE DISTRIBUTION')}
-          ${Object.entries(profileDist).map(([k,v])=>row(k+' רשימות',v,total)).join('')}
-          ${section('COMMUNITY')}
-          ${row('סה״כ פריטים שנאספו',communityPending+communityApproved+communityRejected,communityPending+communityApproved+communityRejected)}
-          ${row('ממתינים לאישור',communityPending,communityPending+communityApproved+communityRejected)}
-          ${row('מאושרים',communityApproved,communityPending+communityApproved+communityRejected)}
-          ${section('External links')}
-          ${`<div style="display:flex;justify-content:space-between;align-items:baseline;padding:3px 0;border-bottom:1px dashed rgba(200,160,74,.15);"><span style="font-size:11px;color:var(--ink-muted);direction:rtl;">משתמשים בקישורים חיצוניים</span><span style="font-family:var(--font-mono);font-size:11px;color:var(--ink-body);direction:ltr;">${extLinkUsers}</span></div>`}
-          ${`<div style="display:flex;justify-content:space-between;align-items:baseline;padding:3px 0;border-bottom:1px dashed rgba(200,160,74,.15);"><span style="font-size:11px;color:var(--ink-muted);direction:rtl;">סה״כ לחיצות</span><span style="font-family:var(--font-mono);font-size:11px;color:var(--ink-body);direction:ltr;">${totalExtLinkTaps}</span></div>`}
-          ${Object.entries(extLinkTotals).sort((a,b)=>b[1]-a[1]).map(([key,count])=>{const displayLabel=extLinkLabelsMap[key]||key;const pct=totalExtLinkTaps>0?Math.round(count/totalExtLinkTaps*100):0;return stationBar(displayLabel,count,'var(--gold)',pct);}).join('')}
-          ${section('METAR')}
-          ${row('משתמשים ב־METAR',metarUsers,total)}
-          ${row('סה״כ פתיחות',totalMetarOpens,totalMetarOpens)}
-          ${stationBar('LLBG',stationTotals.LLBG,'var(--ink)')}
-          ${stationBar('LLHZ',stationTotals.LLHZ,'var(--stamp-red)')}
-          ${stationBar('LLHA',stationTotals.LLHA,'var(--amber)')}
-          ${stationBar('LLIB',stationTotals.LLIB,'var(--cleared)')}
-          ${stationBar('LLER',stationTotals.LLER,'#8a5a9a')}
-          ${stationBar('Custom',stationTotals.custom,'#5a7a9a')}
-          ${section('OS')}
-          ${osBar('iOS',osCounts.iOS,pwaCounts.iOS,'var(--ink)','rgba(28,61,110,.4)')}
-          ${osBar('Android',osCounts.Android,pwaCounts.Android,'var(--cleared)','rgba(31,111,63,.4)')}
-          ${osBar('Desktop',osCounts.Desktop,0,'var(--amber)','rgba(245,158,11,.4)',false)}
-          ${section('PWA ADOPTION')}
-          ${adoptionBar('ראו את ההודעה',pwaPromptShown,total,'var(--gold)')}
-          ${adoptionBar('התקינו',pwaInstalled,pwaPromptShown||1,'var(--cleared)')}
-        </div>`;
-    }catch(e){
-      document.getElementById('statsContent').innerHTML='<div class="stats-loading">שגיאה בטעינת נתונים</div>';
-    }
-  };
 
   // Silent community item collection — called on editor DONE
   window.collectCustomItems=async function(list){
@@ -3782,17 +3535,6 @@ function splashSecondaryAction(){
     </div>
   </div>
 
-  <div id="statsPopup">
-    <div class="stats-box">
-      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:4px;">
-        <div class="stats-title" style="margin-bottom:0;">✦ AirCheck+ · STATS</div>
-        <button onclick="document.getElementById('statsContent').innerHTML='<div class=\'stats-loading\'>טוען...</div>';if(window.loadStats)window.loadStats();"
-          style="background:transparent;border:1px solid var(--gold-lite);border-radius:3px;padding:3px 8px;font-family:var(--font-mono);font-size:11px;color:var(--ink-muted);cursor:pointer;">↻ רענן</button>
-      </div>
-      <div id="statsContent"><div class="stats-loading">טוען נתונים...</div></div>
-      <button class="btn btn-ghost" style="margin-top:4px;" onclick="closeStats()">סגור</button>
-    </div>
-  </div>
 
 </body>
 </html>
