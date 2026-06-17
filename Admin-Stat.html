@@ -1,0 +1,455 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+<meta http-equiv="Pragma" content="no-cache">
+<meta http-equiv="Expires" content="0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<title>Admin-Stat | AirCheck+</title>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Hebrew:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --paper:#f4ecdc;--paper-hi:#fbf6e8;--paper-edge:#e3d4ad;
+  --ink:#1c3d6e;--ink-muted:#5a4a3a;--ink-faint:#8a7a5a;--ink-body:#3a2f22;
+  --gold:#c8a04a;--gold-lite:#d4b878;
+  --cleared:#1f6f3f;--amber:#f59e0b;--stamp-red:#b94a3a;
+  --font-ui:'IBM Plex Sans Hebrew',sans-serif;
+  --font-mono:'JetBrains Mono',monospace;
+}
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent;}
+body{
+  background:var(--paper);
+  font-family:var(--font-ui);
+  height:100svh;
+  overflow:hidden;
+  display:flex;flex-direction:column;
+}
+.topfixed{flex-shrink:0;background:var(--paper);}
+.header{
+  background:var(--ink);
+  padding:10px 16px 8px;
+  display:flex;align-items:center;justify-content:space-between;
+  border-bottom:3px solid var(--gold);
+}
+.header-titles{direction:ltr;text-align:left;}
+.header-mono{font-family:var(--font-mono);font-size:9px;color:rgba(244,236,220,.45);letter-spacing:.15em;text-transform:uppercase;margin-bottom:3px;}
+.header-title{font-size:17px;font-weight:700;color:#f4ecdc;}
+.back-btn{background:transparent;border:1px solid rgba(244,236,220,.35);border-radius:6px;padding:7px 14px;font-family:var(--font-ui);font-size:13px;font-weight:600;color:rgba(244,236,220,.8);cursor:pointer;flex-shrink:0;}
+
+.headline{padding:14px 18px 4px;display:flex;align-items:baseline;gap:8px;direction:rtl;}
+.headline-num{font-family:var(--font-mono);font-size:34px;font-weight:700;color:var(--ink);direction:ltr;}
+.headline-label{font-size:13px;color:var(--ink-muted);}
+
+.tabbar{display:flex;background:var(--paper-hi);border-bottom:1px solid var(--paper-edge);margin-top:8px;}
+.tab-btn{flex:1;padding:10px 4px;background:transparent;border:none;border-bottom:2px solid transparent;font-family:var(--font-ui);font-size:13px;color:var(--ink-faint);cursor:pointer;}
+.tab-btn.active{background:var(--paper);border-bottom-color:var(--gold);color:var(--ink);font-weight:700;}
+.tab-btn-inner{position:relative;display:inline-block;}
+.tab-dot{position:absolute;top:-2px;right:-10px;width:6px;height:6px;border-radius:50%;background:var(--amber);}
+
+.content{padding:14px 16px 24px;flex:1;overflow-y:auto;-webkit-overflow-scrolling:touch;scrollbar-width:none;}
+.content::-webkit-scrollbar{display:none;}
+.section{margin-bottom:16px;}
+.section-title{font-family:var(--font-mono);font-size:8px;color:var(--ink-faint);letter-spacing:.2em;text-transform:uppercase;margin-bottom:8px;direction:ltr;}
+.section-box{background:#fff;border:1px solid var(--paper-edge);border-radius:6px;padding:10px 12px;}
+
+.bar-row{margin-bottom:8px;}
+.bar-labels{display:flex;justify-content:space-between;font-size:10px;font-family:var(--font-mono);color:var(--ink-muted);margin-bottom:3px;}
+.bar-labels .lbl{color:var(--ink-body);}
+.bar-labels .val{direction:ltr;}
+.bar-track{height:6px;background:var(--paper-edge);border-radius:3px;overflow:hidden;}
+.bar-fill{height:100%;border-radius:3px;margin-left:auto;}
+
+.lbl-wrap{display:flex;align-items:center;gap:5px;}
+.del-trigger{background:transparent;border:1px solid var(--paper-edge);border-radius:3px;color:var(--ink-faint);font-size:9px;line-height:1;padding:2px 5px;cursor:pointer;font-family:var(--font-mono);flex-shrink:0;}
+.del-trigger:active{background:var(--paper-edge);}
+
+.modal-overlay{display:none;position:fixed;inset:0;background:rgba(26,19,8,.8);z-index:200;align-items:center;justify-content:center;padding:24px;backdrop-filter:blur(3px);}
+.modal-overlay.open{display:flex;}
+.modal-box{background:var(--paper-hi);border:2px solid var(--stamp-red);border-radius:8px;padding:20px;width:100%;max-width:300px;text-align:center;direction:rtl;box-shadow:0 20px 60px rgba(0,0,0,.4);}
+.modal-icon{font-size:28px;margin-bottom:6px;}
+.modal-title{font-size:15px;font-weight:700;color:var(--ink);margin-bottom:8px;}
+.modal-text{font-size:12px;color:var(--ink-body);line-height:1.6;margin-bottom:16px;}
+.modal-btns{display:flex;gap:8px;}
+.del-btn-cancel{flex:1;padding:8px;background:transparent;border:1px solid var(--paper-edge);border-radius:5px;color:var(--ink-muted);font-size:12px;font-family:var(--font-ui);cursor:pointer;}
+.del-btn-confirm{flex:1;padding:8px;background:var(--stamp-red);border:none;border-radius:5px;color:#fff;font-size:12px;font-weight:700;font-family:var(--font-ui);cursor:pointer;}
+.del-btn-confirm:disabled{opacity:.5;cursor:default;}
+
+.bignum-row{display:flex;justify-content:space-between;align-items:baseline;padding:4px 0 10px;direction:rtl;}
+.bignum-row .lbl{font-size:12px;color:var(--ink-muted);}
+.bignum-row .val{font-family:var(--font-mono);font-size:20px;font-weight:700;color:var(--ink);direction:ltr;}
+
+.action-row{display:flex;justify-content:space-between;align-items:center;padding:4px 0 10px;direction:rtl;}
+.action-row .lbl{font-size:12px;color:var(--ink-muted);}
+.action-row-right{display:flex;align-items:center;gap:10px;}
+.action-row .val{font-family:var(--font-mono);font-size:28px;font-weight:700;direction:ltr;line-height:1;}
+.action-row .val.zero{color:var(--cleared);}
+.action-row .val.nonzero{color:var(--stamp-red);}
+.action-link{font-size:11px;font-family:var(--font-mono);color:var(--ink);background:var(--paper-hi);border:1px solid var(--gold);border-radius:4px;padding:4px 10px;text-decoration:none;}
+
+.loading{text-align:center;padding:40px 20px;color:var(--ink-muted);font-size:13px;}
+.footer{text-align:center;padding:12px;font-family:var(--font-mono);font-size:9px;color:var(--ink-faint);letter-spacing:.1em;text-transform:uppercase;border-top:1px solid var(--paper-edge);}
+</style>
+</head>
+<body>
+
+<div class="topfixed">
+  <div class="header">
+    <div class="header-titles">
+      <div class="header-mono">AirCheck+ &middot; Admin-Stat &middot; v1.04</div>
+      <div class="header-title">Statistics Dashboard</div>
+    </div>
+    <button class="back-btn" onclick="backToApp()">חזרה ל&nbsp;&nbsp;<span dir="ltr">AirCheck+</span></button>
+  </div>
+
+  <div id="headline" class="headline" style="display:none;">
+    <span class="headline-num" id="headlineNum">0</span>
+    <span class="headline-label">טייסים רשומים</span>
+  </div>
+
+  <div id="tabbar" class="tabbar" style="display:none;"></div>
+</div>
+
+<div class="content" id="content">
+  <div class="loading">טוען נתונים...</div>
+</div>
+
+<div class="footer" dir="ltr">ADMIN-STAT &middot; V1.04 &middot; BUILT BY ELIGRT</div>
+
+<div id="deleteModal" class="modal-overlay" onclick="handleDeleteModalClick(event)">
+  <div class="modal-box">
+    <div class="modal-icon">🗑</div>
+    <div class="modal-title">מחיקת רשומה</div>
+    <div class="modal-text">למחוק לצמיתות את <strong id="deleteModalLabel"></strong>?<br>הפעולה תמחק את הרשומה מכל הטייסים במסד הנתונים ולא ניתנת לביטול.</div>
+    <div class="modal-btns">
+      <button class="del-btn-cancel" onclick="closeDeleteModal()">ביטול</button>
+      <button class="del-btn-confirm" id="deleteModalConfirmBtn" onclick="confirmDeleteEntry()">מחק לצמיתות</button>
+    </div>
+  </div>
+</div>
+
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/12.14.0/firebase-app.js";
+import { getDatabase, ref, get, remove } from "https://www.gstatic.com/firebasejs/12.14.0/firebase-database.js";
+
+const firebaseConfig = {
+  apiKey: "AIzaSyBoW1O9dTanLUZW5Z8jswn3hxpfFSdmzm0",
+  authDomain: "aircheck-80530.firebaseapp.com",
+  databaseURL: "https://aircheck-80530-default-rtdb.europe-west1.firebasedatabase.app",
+  projectId: "aircheck-80530",
+  storageBucket: "aircheck-80530.firebasestorage.app",
+  messagingSenderId: "816746630548",
+  appId: "1:816746630548:web:dac8392deff9b96cc9d381"
+};
+
+const app = initializeApp(firebaseConfig);
+const db = getDatabase(app);
+
+const RANKS=[
+  {name:'Cadet',       icon:'🐣', min:1,   max:4},
+  {name:'2nd Officer', icon:'📋', min:5,   max:9},
+  {name:'1st Officer', icon:'🛩️', min:10,  max:19},
+  {name:'Captain',     icon:'👨‍✈️', min:20,  max:49},
+  {name:'Commander',   icon:'👑', min:50,  max:99},
+  {name:'Maverick',    icon:'🎯', min:100, max:Infinity}
+];
+
+function barRow(label,count,total,fill){
+  const pct=total>0?Math.round(count/total*100):0;
+  return `<div class="bar-row">
+    <div class="bar-labels"><span class="lbl">${label}</span><span class="val">${count} &middot; ${pct}%</span></div>
+    <div class="bar-track"><div class="bar-fill" style="width:${pct}%;background:${fill};"></div></div>
+  </div>`;
+}
+function barRowDeletable(label,count,total,fill,delType,delKey){
+  const pct=total>0?Math.round(count/total*100):0;
+  const safeLabel=label.replace(/'/g,"\\'").replace(/"/g,'&quot;');
+  const safeKey=delKey.replace(/'/g,"\\'");
+  return `<div class="bar-row">
+    <div class="bar-labels">
+      <span class="lbl-wrap"><button class="del-trigger" onclick="openDeleteModal('${delType}','${safeKey}','${safeLabel}')" aria-label="מחק">✕</button><span class="lbl">${label}</span></span>
+      <span class="val">${count} &middot; ${pct}%</span>
+    </div>
+    <div class="bar-track"><div class="bar-fill" style="width:${pct}%;background:${fill};"></div></div>
+  </div>`;
+}
+function bigNumRow(label,count){
+  return `<div class="bignum-row"><span class="lbl">${label}</span><span class="val">${count}</span></div>`;
+}
+function actionRow(label,count,link){
+  const cls=count>0?'nonzero':'zero';
+  return `<div class="action-row">
+    <span class="lbl">${label}</span>
+    <div class="action-row-right">
+      <span class="val ${cls}">${count}</span>
+      <a class="action-link" href="${link}">פתח &rsaquo;</a>
+    </div>
+  </div>`;
+}
+function section(title,inner){
+  return `<div class="section"><div class="section-title">${title}</div><div class="section-box">${inner}</div></div>`;
+}
+
+function getRank(n){
+  let current=null,next=null;
+  for(let i=0;i<RANKS.length;i++){
+    if(n>=RANKS[i].min){current=RANKS[i];next=RANKS[i+1]||null;}
+  }
+  return{current,next};
+}
+
+async function loadStats(){
+  try{
+    const pilotRef=ref(db,'pilots');
+    const snap=await get(pilotRef);
+    const data=snap.val();
+    if(!data){
+      document.getElementById('content').innerHTML='<div class="loading">אין נתונים עדיין</div>';
+      return;
+    }
+    const pilots=Object.values(data);
+    window._adminRawPilots=data;
+    const total=pilots.length;
+    const now=Date.now();
+    const hours48=48*60*60*1000;
+    const sevenDays=7*24*60*60*1000;
+    const thirtyDays=30*24*60*60*1000;
+    const ninetyDays=90*24*60*60*1000;
+
+    const active48=pilots.filter(p=>now-p.lastSeen<hours48).length;
+    const active7=pilots.filter(p=>now-p.lastSeen<sevenDays).length;
+    const active30=pilots.filter(p=>now-p.lastSeen<thirtyDays).length;
+    const active90=pilots.filter(p=>now-p.lastSeen<ninetyDays).length;
+    const openedOnce=pilots.filter(p=>p.firstSeen&&p.lastSeen&&Math.abs(p.lastSeen-p.firstSeen)<60000).length;
+    const neverStarted=pilots.filter(p=>!p.flightCount||p.flightCount===0).length;
+
+    const active90pilots=pilots.filter(p=>now-p.lastSeen<ninetyDays);
+    const active90flights=active90pilots.reduce((s,p)=>s+(p.flightCount||0),0);
+    const avgFlights=active90pilots.length>0?(active90flights/active90pilots.length).toFixed(1):0;
+
+    const custom=pilots.filter(p=>p.listType==='modified').length;
+    const multiProfile=pilots.filter(p=>p.profileCount&&p.profileCount>1).length;
+    const profileDist={1:0,2:0,3:0,4:0,'5+':0};
+    pilots.forEach(p=>{
+      const c=p.profileCount||1;
+      if(c>=5)profileDist['5+']++;
+      else profileDist[c]=(profileDist[c]||0)+1;
+    });
+
+    const metarUsers=pilots.filter(p=>p.metarUsed).length;
+
+    const extLinkUsers=pilots.filter(p=>p.externalLinkUsed).length;
+    const extLinkTotals={};
+    const extLinkLabelsMap={};
+    let totalExtLinkTaps=0;
+    pilots.forEach(p=>{
+      if(!p.externalLinkCounts)return;
+      Object.entries(p.externalLinkCounts).forEach(([key,count])=>{
+        extLinkTotals[key]=(extLinkTotals[key]||0)+count;
+        totalExtLinkTaps+=count;
+      });
+      if(p.externalLinkLabels){
+        Object.entries(p.externalLinkLabels).forEach(([key,lbl])=>{
+          if(!extLinkLabelsMap[key])extLinkLabelsMap[key]=lbl;
+        });
+      }
+    });
+
+    const stationTotals={LLBG:0,LLHA:0,LLIB:0,LLER:0,LLHZ:0};
+    let totalMetarOpens=0;
+    pilots.forEach(p=>{
+      if(!p.metarStationCounts)return;
+      Object.entries(p.metarStationCounts).forEach(([station,count])=>{
+        totalMetarOpens+=count;
+        stationTotals[station]=(stationTotals[station]||0)+count;
+      });
+    });
+
+    const totalFlights=pilots.reduce((s,p)=>s+(p.flightCount||0),0);
+    const totalCompleted=pilots.reduce((s,p)=>s+(p.completedFlights||0),0);
+
+    const osCounts={iOS:0,Android:0,Desktop:0};
+    pilots.forEach(p=>{if(osCounts[p.os]!==undefined)osCounts[p.os]++;});
+
+    const pwaCounts={iOS:0,Android:0,Desktop:0};
+    pilots.forEach(p=>{if(p.pwaInstalled&&osCounts[p.os]!==undefined)pwaCounts[p.os]++;});
+    const pwaPromptShown=pilots.filter(p=>p.pwaPromptShown).length;
+    const pwaInstalled=pilots.filter(p=>p.pwaInstalled).length;
+
+    let communityPending=0,communityApproved=0,communityRejected=0;
+    try{
+      const pendingSnap=await get(ref(db,'community/pending'));
+      communityPending=pendingSnap.exists()?Object.keys(pendingSnap.val()).length:0;
+      const approvedSnap=await get(ref(db,'community/approved'));
+      communityApproved=approvedSnap.exists()?Object.keys(approvedSnap.val()).length:0;
+      const rejectedSnap=await get(ref(db,'community/rejected'));
+      communityRejected=rejectedSnap.exists()?Object.keys(rejectedSnap.val()).length:0;
+    }catch(e){}
+
+    const rankDist={};
+    RANKS.forEach(r=>rankDist[r.name]=0);
+    pilots.forEach(p=>{
+      const n=p.completedFlights||0;
+      if(n<1)return;
+      const r=getRank(n);
+      if(r.current)rankDist[r.current.name]=(rankDist[r.current.name]||0)+1;
+    });
+
+    document.getElementById('headlineNum').textContent=total;
+    document.getElementById('headline').style.display='flex';
+
+    const tabs=[
+      {
+        id:'overview',label:'Overview',alert:false,
+        html:
+          section('ACTIVITY',
+            barRow('פעילים 48 שעות',active48,total,'var(--ink)')+
+            barRow('פעילים 7 ימים',active7,total,'var(--ink)')+
+            barRow('פעילים 30 יום',active30,total,'var(--ink)')+
+            barRow('פעילים 90 יום',active90,total,'var(--ink)')+
+            barRow('פתחו פעם אחת בלבד',openedOnce,total,'var(--amber)')+
+            barRow('מעולם לא התחילו טיסה',neverStarted,total,'var(--amber)')
+          )+
+          section('RANKS',
+            RANKS.map(r=>barRow(r.icon+' '+r.name,rankDist[r.name]||0,total,'var(--ink)')).join('')
+          )
+      },
+      {
+        id:'engagement',label:'Engagement',alert:false,
+        html:
+          section('FLIGHTS',
+            bigNumRow('טיסות שהתחילו',totalFlights)+
+            barRow('טיסות שהושלמו',totalCompleted,totalFlights||1,'var(--cleared)')+
+            `<div class="bignum-row"><span class="lbl">ממוצע טיסות לטייס פעיל (90י)</span><span class="val">${avgFlights}</span></div>`
+          )+
+          section('CHECKLISTS',
+            barRow('צ׳קליסט מותאם אישית',custom,total,'var(--ink)')+
+            barRow('עם רשימות מרובות',multiProfile,total,'var(--ink)')
+          )+
+          section('PROFILE DISTRIBUTION',
+            Object.entries(profileDist).map(([k,v])=>barRow(k+' רשימות',v,total,'var(--ink)')).join('')
+          )
+      },
+      {
+        id:'features',label:'Features',alert:communityPending>0,
+        html:
+          section('COMMUNITY',
+            actionRow('ממתינים לאישור',communityPending,'AirCheckCustomRep.html')+
+            barRow('מאושרים',communityApproved,(communityPending+communityApproved+communityRejected)||1,'var(--cleared)')
+          )+
+          section('EXTERNAL LINKS',
+            bigNumRow('משתמשים בקישורים חיצוניים',extLinkUsers)+
+            bigNumRow('סה״כ לחיצות',totalExtLinkTaps)+
+            Object.entries(extLinkTotals).sort((a,b)=>b[1]-a[1]).map(([key,count])=>{
+              const displayLabel=extLinkLabelsMap[key]||key;
+              return barRowDeletable(displayLabel,count,totalExtLinkTaps||1,'var(--gold)','link',key);
+            }).join('')
+          )+
+          section('METAR',
+            bigNumRow('משתמשים ב־METAR',metarUsers)+
+            bigNumRow('סה״כ פתיחות',totalMetarOpens)+
+            barRow('LLBG',stationTotals.LLBG,totalMetarOpens||1,'var(--ink)')+
+            barRow('LLHZ',stationTotals.LLHZ,totalMetarOpens||1,'var(--stamp-red)')+
+            barRow('LLHA',stationTotals.LLHA,totalMetarOpens||1,'var(--amber)')+
+            barRow('LLIB',stationTotals.LLIB,totalMetarOpens||1,'var(--cleared)')+
+            barRow('LLER',stationTotals.LLER,totalMetarOpens||1,'#8a5a9a')+
+            Object.entries(stationTotals).filter(([k])=>!['LLBG','LLHZ','LLHA','LLIB','LLER'].includes(k)).sort((a,b)=>b[1]-a[1]).map(([icao,count])=>barRowDeletable(icao,count,totalMetarOpens||1,'#5a7a9a','metar',icao)).join('')
+          )
+      },
+      {
+        id:'system',label:'System',alert:false,
+        html:
+          section('OS',
+            barRow('iOS',osCounts.iOS,total,'var(--ink)')+
+            barRow('Android',osCounts.Android,total,'var(--cleared)')+
+            barRow('Desktop',osCounts.Desktop,total,'var(--amber)')
+          )+
+          section('PWA ADOPTION',
+            barRow('ראו את ההודעה',pwaPromptShown,total,'var(--gold)')+
+            barRow('התקינו',pwaInstalled,pwaPromptShown||1,'var(--cleared)')
+          )
+      }
+    ];
+
+    window._adminTabs=tabs;
+    const tabToShow=tabs.some(t=>t.id===_activeTab)?_activeTab:'overview';
+    renderTabBar(tabToShow);
+    renderContent(tabToShow);
+
+  }catch(e){
+    document.getElementById('content').innerHTML='<div class="loading">שגיאה בטעינת נתונים</div>';
+  }
+}
+
+let _activeTab='overview';
+
+window.renderTabBar=function(activeId){
+  const tabs=window._adminTabs;
+  const bar=document.getElementById('tabbar');
+  bar.style.display='flex';
+  bar.innerHTML=tabs.map(t=>`
+    <button class="tab-btn${t.id===activeId?' active':''}" onclick="selectTab('${t.id}')">
+      <span class="tab-btn-inner">${t.label}${t.alert?'<span class="tab-dot"></span>':''}</span>
+    </button>
+  `).join('');
+};
+
+window.renderContent=function(activeId){
+  const tabs=window._adminTabs;
+  const tab=tabs.find(t=>t.id===activeId);
+  document.getElementById('content').innerHTML=tab.html;
+};
+
+window.selectTab=function(id){
+  _activeTab=id;
+  renderTabBar(id);
+  renderContent(id);
+};
+
+let _pendingDelete=null;
+window.openDeleteModal=function(delType,delKey,label){
+  _pendingDelete={delType,delKey};
+  document.getElementById('deleteModalLabel').textContent=label;
+  const btn=document.getElementById('deleteModalConfirmBtn');
+  btn.disabled=false;
+  btn.textContent='מחק לצמיתות';
+  document.getElementById('deleteModal').classList.add('open');
+};
+window.closeDeleteModal=function(){
+  document.getElementById('deleteModal').classList.remove('open');
+  _pendingDelete=null;
+};
+window.handleDeleteModalClick=function(e){
+  if(e.target===document.getElementById('deleteModal'))closeDeleteModal();
+};
+window.confirmDeleteEntry=async function(){
+  if(!_pendingDelete)return;
+  const{delType,delKey}=_pendingDelete;
+  const btn=document.getElementById('deleteModalConfirmBtn');
+  btn.disabled=true;
+  btn.textContent='מוחק...';
+  const field=delType==='metar'?'metarStationCounts':'externalLinkCounts';
+  const raw=window._adminRawPilots||{};
+  const ops=[];
+  Object.entries(raw).forEach(([deviceId,p])=>{
+    if(p&&p[field]&&Object.prototype.hasOwnProperty.call(p[field],delKey)){
+      ops.push(remove(ref(db,'pilots/'+deviceId+'/'+field+'/'+delKey)));
+    }
+  });
+  try{
+    await Promise.all(ops);
+  }catch(e){}
+  closeDeleteModal();
+  loadStats();
+};
+
+window.backToApp=function(){
+  const from=new URLSearchParams(window.location.search).get('from')||'AirCheck_RD_test.html';
+  window.location.href=from;
+};
+
+loadStats();
+</script>
+
+</body>
+</html>
