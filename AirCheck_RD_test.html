@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <!-- ═══════════════════════════════════════
-     AirCheck+ · v2.08.057T · built by eligrt
+     AirCheck+ · v2.08.058T · built by eligrt
      ═══════════════════════════════════════ -->
 <html lang="he" dir="rtl">
 <head>
@@ -563,6 +563,29 @@ html,body{height:100%;background:#1a1a1c;font-family:var(--font-ui);color:var(--
 </style>
 </head>
 <body>
+<script>
+  // Suppress the splash-screen flash when returning from an external
+  // reference link (NOTAM/FPL/standalone pages) or a same-session resume.
+  // This runs synchronously before the browser paints. It independently
+  // re-checks saved flight progress (mirroring loadState()/initSplash())
+  // rather than trusting the resume flag alone, so it never hides splash
+  // unless we're certain there's an active flight to resume into.
+  (function(){
+    try{
+      var pendingResume=sessionStorage.getItem('aircheck_pending_resume')==='1';
+      var resumeParam=new URLSearchParams(window.location.search).get('resume')==='1';
+      if(!pendingResume&&!resumeParam)return;
+      var raw=localStorage.getItem('aircheck_rd_v1');
+      if(!raw)return;
+      var d=JSON.parse(raw);
+      var statusObj=d.status||{};
+      var done=Object.values(statusObj).filter(function(s){return s==='done';}).length;
+      if(done>0){
+        document.write('<style id="splashFlashGuard">#screenSplash{display:none!important;}#screenChecklist{display:flex!important;}</style>');
+      }
+    }catch(e){}
+  })();
+</script>
 <div id="app">
   <!-- ══ SPLASH SCREEN ══ -->
   <div class="screen active" id="screenSplash">
@@ -598,7 +621,7 @@ html,body{height:100%;background:#1a1a1c;font-family:var(--font-ui);color:var(--
     <div class="splash-footer-wrap">
       <div class="footer-strip" style="display:flex;align-items:center;justify-content:space-between;padding:5px 14px 8px;">
         <span class="footer-refresh" onclick="reloadApp()">רענון</span>
-        <span id="versionTap" onclick="handleVersionTap()" style="cursor:default;">AirCheck+ · v2.08.057T · built by eligrt</span>
+        <span id="versionTap" onclick="handleVersionTap()" style="cursor:default;">AirCheck+ · v2.08.058T · built by eligrt</span>
         <span style="width:40px;"></span>
       </div>
     </div>
@@ -771,7 +794,7 @@ html,body{height:100%;background:#1a1a1c;font-family:var(--font-ui);color:var(--
     <div class="tree-panel" id="treePanel"></div>
     <div class="footer-strip" style="display:flex;align-items:center;justify-content:space-between;padding:5px 14px 8px;">
       <span class="footer-refresh" onclick="reloadApp()">רענון</span>
-      <span id="versionTap" onclick="handleVersionTap()" style="cursor:default;">AirCheck+ · v2.08.057T · built by eligrt</span>
+      <span id="versionTap" onclick="handleVersionTap()" style="cursor:default;">AirCheck+ · v2.08.058T · built by eligrt</span>
       <span style="width:40px;"></span>
     </div>
   </div>
@@ -844,7 +867,7 @@ html,body{height:100%;background:#1a1a1c;font-family:var(--font-ui);color:var(--
 
     <div class="footer-strip" style="display:flex;align-items:center;justify-content:space-between;padding:5px 14px 8px;">
       <span style="width:40px;"></span>
-      <span id="versionTap" onclick="handleVersionTap()" style="cursor:default;">AirCheck+ · v2.08.057T · built by eligrt</span>
+      <span id="versionTap" onclick="handleVersionTap()" style="cursor:default;">AirCheck+ · v2.08.058T · built by eligrt</span>
       <span style="width:40px;"></span>
     </div>
   </div>
@@ -954,7 +977,7 @@ html,body{height:100%;background:#1a1a1c;font-family:var(--font-ui);color:var(--
     </div>
     <div class="footer-strip" style="display:flex;align-items:center;justify-content:space-between;padding:5px 14px 8px;">
       <span class="footer-refresh" onclick="reloadApp()">רענון</span>
-      <span id="versionTap" onclick="handleVersionTap()" style="cursor:default;">AirCheck+ · v2.08.057T · built by eligrt</span>
+      <span id="versionTap" onclick="handleVersionTap()" style="cursor:default;">AirCheck+ · v2.08.058T · built by eligrt</span>
       <span style="width:40px;"></span>
     </div>
   </div>
@@ -973,7 +996,7 @@ html,body{height:100%;background:#1a1a1c;font-family:var(--font-ui);color:var(--
     <div class="editor-list" id="editorList"></div>
     <div class="footer-strip" style="display:flex;align-items:center;justify-content:space-between;padding:5px 14px 8px;">
       <span class="footer-refresh" onclick="reloadApp()">רענון</span>
-      <span id="versionTap" onclick="handleVersionTap()" style="cursor:default;">AirCheck+ · v2.08.057T · built by eligrt</span>
+      <span id="versionTap" onclick="handleVersionTap()" style="cursor:default;">AirCheck+ · v2.08.058T · built by eligrt</span>
       <span style="width:40px;"></span>
     </div>
   </div>
@@ -2979,6 +3002,9 @@ function buildRankStrip(n){
 }
 
 function initSplash(){
+  // Clean up the temporary pre-paint flash guard (see inline script in
+  // <body>) now that the real screen-switching logic below takes over.
+  try{const guard=document.getElementById('splashFlashGuard');if(guard)guard.remove();}catch(e){}
   // If returning from a reference link (in-app standalone page, or an
   // external/third-party site like NOTAM/FPL that won't round-trip our
   // ?resume= param), skip splash and resume straight into the checklist.
