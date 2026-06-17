@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <!-- ═══════════════════════════════════════
-     AirCheck+ · v2.08.057 · built by eligrt
+     AirCheck+ · v2.08.060 · built by eligrt
      ═══════════════════════════════════════ -->
 <html lang="he" dir="rtl">
 <head>
@@ -234,8 +234,8 @@ html,body{height:100%;background:#1a1a1c;font-family:var(--font-ui);color:var(--
 .tree-item-text.done{color:var(--cleared);text-decoration:line-through;}
 .tree-item-text.cur{color:var(--ink);font-weight:700;}
 .tree-item-text.upcoming{color:var(--ink-muted);}
-.tree-item-text.skipped{color:var(--amber);opacity:.75;}
 .tree-item-link{font-size:10px;color:var(--ink-faint);font-family:var(--font-mono);margin-top:1px;direction:rtl;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+.tree-item-text.skipped{color:var(--amber);opacity:.75;}
 
 /* ── FOOTER ── */
 .footer-strip{margin-top:auto;flex-shrink:0;font-size:9px;font-family:var(--font-mono);color:var(--ink-faint);letter-spacing:.1em;text-transform:uppercase;direction:rtl;border-top:1px solid var(--gold-lite);background:var(--paper-hi);}
@@ -563,6 +563,29 @@ html,body{height:100%;background:#1a1a1c;font-family:var(--font-ui);color:var(--
 </style>
 </head>
 <body>
+<script>
+  // Suppress the splash-screen flash when returning from an external
+  // reference link (NOTAM/FPL/standalone pages) or a same-session resume.
+  // This runs synchronously before the browser paints. It independently
+  // re-checks saved flight progress (mirroring loadState()/initSplash())
+  // rather than trusting the resume flag alone, so it never hides splash
+  // unless we're certain there's an active flight to resume into.
+  (function(){
+    try{
+      var pendingResume=sessionStorage.getItem('aircheck_pending_resume')==='1';
+      var resumeParam=new URLSearchParams(window.location.search).get('resume')==='1';
+      if(!pendingResume&&!resumeParam)return;
+      var raw=localStorage.getItem('aircheck_rd_v1');
+      if(!raw)return;
+      var d=JSON.parse(raw);
+      var statusObj=d.status||{};
+      var done=Object.values(statusObj).filter(function(s){return s==='done';}).length;
+      if(done>0){
+        document.write('<style id="splashFlashGuard">#screenSplash,#screenChecklist{display:none!important;}</style>');
+      }
+    }catch(e){}
+  })();
+</script>
 <div id="app">
   <!-- ══ SPLASH SCREEN ══ -->
   <div class="screen active" id="screenSplash">
@@ -598,7 +621,7 @@ html,body{height:100%;background:#1a1a1c;font-family:var(--font-ui);color:var(--
     <div class="splash-footer-wrap">
       <div class="footer-strip" style="display:flex;align-items:center;justify-content:space-between;padding:5px 14px 8px;">
         <span class="footer-refresh" onclick="reloadApp()">רענון</span>
-        <span id="versionTap" onclick="handleVersionTap()" style="cursor:default;">AirCheck+ · v2.08.057 · built by eligrt</span>
+        <span id="versionTap" onclick="handleVersionTap()" style="cursor:default;">AirCheck+ · v2.08.060 · built by eligrt</span>
         <span style="width:40px;"></span>
       </div>
     </div>
@@ -771,7 +794,7 @@ html,body{height:100%;background:#1a1a1c;font-family:var(--font-ui);color:var(--
     <div class="tree-panel" id="treePanel"></div>
     <div class="footer-strip" style="display:flex;align-items:center;justify-content:space-between;padding:5px 14px 8px;">
       <span class="footer-refresh" onclick="reloadApp()">רענון</span>
-      <span id="versionTap" onclick="handleVersionTap()" style="cursor:default;">AirCheck+ · v2.08.057 · built by eligrt</span>
+      <span id="versionTap" onclick="handleVersionTap()" style="cursor:default;">AirCheck+ · v2.08.060 · built by eligrt</span>
       <span style="width:40px;"></span>
     </div>
   </div>
@@ -844,7 +867,7 @@ html,body{height:100%;background:#1a1a1c;font-family:var(--font-ui);color:var(--
 
     <div class="footer-strip" style="display:flex;align-items:center;justify-content:space-between;padding:5px 14px 8px;">
       <span style="width:40px;"></span>
-      <span id="versionTap" onclick="handleVersionTap()" style="cursor:default;">AirCheck+ · v2.08.057 · built by eligrt</span>
+      <span id="versionTap" onclick="handleVersionTap()" style="cursor:default;">AirCheck+ · v2.08.060 · built by eligrt</span>
       <span style="width:40px;"></span>
     </div>
   </div>
@@ -954,7 +977,7 @@ html,body{height:100%;background:#1a1a1c;font-family:var(--font-ui);color:var(--
     </div>
     <div class="footer-strip" style="display:flex;align-items:center;justify-content:space-between;padding:5px 14px 8px;">
       <span class="footer-refresh" onclick="reloadApp()">רענון</span>
-      <span id="versionTap" onclick="handleVersionTap()" style="cursor:default;">AirCheck+ · v2.08.057 · built by eligrt</span>
+      <span id="versionTap" onclick="handleVersionTap()" style="cursor:default;">AirCheck+ · v2.08.060 · built by eligrt</span>
       <span style="width:40px;"></span>
     </div>
   </div>
@@ -973,7 +996,7 @@ html,body{height:100%;background:#1a1a1c;font-family:var(--font-ui);color:var(--
     <div class="editor-list" id="editorList"></div>
     <div class="footer-strip" style="display:flex;align-items:center;justify-content:space-between;padding:5px 14px 8px;">
       <span class="footer-refresh" onclick="reloadApp()">רענון</span>
-      <span id="versionTap" onclick="handleVersionTap()" style="cursor:default;">AirCheck+ · v2.08.057 · built by eligrt</span>
+      <span id="versionTap" onclick="handleVersionTap()" style="cursor:default;">AirCheck+ · v2.08.060 · built by eligrt</span>
       <span style="width:40px;"></span>
     </div>
   </div>
@@ -1341,7 +1364,24 @@ function uncheckCurrent(){status[current]='skipped';holdState='idle';resetRunway
 function goNext(){
   if(current<CL.length-1){
     if(status[current]!=='done')status[current]='skipped';
-    current++;holdState='idle';resetRunwayBtn();render();
+    const prevPhase=CL[current].phase;
+    const nextIdx=current+1;
+    const newPhase=CL[nextIdx].phase;
+    if(newPhase!==prevPhase){
+      // Crossing a phase boundary — check for skipped items left behind in prevPhase
+      const prevPhaseObj=PHASE_IDX[prevPhase];
+      if(prevPhaseObj){
+        const phAllItems=prevPhaseObj.groups.reduce((a,g)=>a.concat(g.items),[]);
+        const phSkippedCount=phAllItems.filter(j=>status[j]==='skipped').length;
+        if(phSkippedCount>0){
+          current=nextIdx;holdState='idle';resetRunwayBtn();
+          render(); // update runway bar first
+          showPhaseSkippedPopup(prevPhase,phSkippedCount);
+          return;
+        }
+      }
+    }
+    current=nextIdx;holdState='idle';resetRunwayBtn();render();
   } else {
     // Last item — mark as skipped if not done
     if(status[current]!=='done')status[current]='skipped';
@@ -2504,6 +2544,36 @@ function endOfListPark(){
   initSplash();
 }
 
+// ── PHASE SKIPPED POPUP (non-final phase boundary, skipped items left behind) ──
+let _phaseSkippedName=null;
+function showPhaseSkippedPopup(phaseName,skippedCount){
+  _phaseSkippedName=phaseName;
+  document.getElementById('phaseSkippedName').textContent=phaseName;
+  document.getElementById('phaseSkippedCount').textContent=skippedCount;
+  document.getElementById('phaseSkippedModal').style.display='flex';
+}
+function handlePhaseSkippedClick(e){if(e.target===document.getElementById('phaseSkippedModal'))closePhaseSkipped();}
+function closePhaseSkipped(){document.getElementById('phaseSkippedModal').style.display='none';_phaseSkippedName=null;}
+function phaseSkippedContinue(){
+  closePhaseSkipped();
+  render();
+}
+function phaseSkippedGoBack(){
+  const phaseObj=PHASE_IDX[_phaseSkippedName];
+  closePhaseSkipped();
+  if(phaseObj){
+    const phAllItems=phaseObj.groups.reduce((a,g)=>a.concat(g.items),[]);
+    const idx=phAllItems.find(j=>status[j]==='skipped');
+    if(idx!==undefined){current=idx;holdState='idle';resetRunwayBtn();render();}
+  }
+}
+function phaseSkippedPark(){
+  closePhaseSkipped();
+  saveState();
+  showScreen('screenSplash');
+  initSplash();
+}
+
 // ── MANY LISTS NUDGE ──
 function openManyListsNudge(){
   const count=getProfiles().profiles.length+1;
@@ -2989,9 +3059,17 @@ function initSplash(){
     const done=Object.values(status).filter(s=>s==='done').length;
     if(done>0){
       if(window.location.search)history.replaceState(null,'',window.location.pathname);
-      showScreen('screenChecklist');render();return;
+      showScreen('screenChecklist');render();
+      // Content is now fully populated — safe to reveal, removing the
+      // pre-paint guard (see inline script in <body>) that kept both
+      // screens hidden until this point.
+      try{const guard=document.getElementById('splashFlashGuard');if(guard)guard.remove();}catch(e){}
+      return;
     }
   }
+  // No resume happened (or done was 0) — clean up the guard if present,
+  // so normal splash rendering below isn't blocked.
+  try{const guard=document.getElementById('splashFlashGuard');if(guard)guard.remove();}catch(e){}
   document.getElementById('app').addEventListener('click',e=>{
     if(window._bulkJustOpened){window._bulkJustOpened=false;return;}
     const popup=document.getElementById('bulkPopup');
@@ -3546,6 +3624,26 @@ function splashSecondaryAction(){
       <div style="height:1px;background:var(--gold-lite);margin:0 0 14px;opacity:.7;"></div>
       <button class="btn btn-ink" onclick="endOfListGoBack()" style="margin-bottom:8px;">חזור לפריטים הפתוחים</button>
       <button class="btn btn-ghost" onclick="endOfListPark()">סיים לעכשיו, אמשיך מאוחר יותר</button>
+    </div>
+  </div>
+
+  <!-- ══ PHASE SKIPPED POPUP (non-final phase boundary, items skipped) ══ -->
+  <div id="phaseSkippedModal" onclick="handlePhaseSkippedClick(event)" style="display:none;position:absolute;inset:0;background:rgba(26,19,8,.8);z-index:520;align-items:center;justify-content:center;padding:24px;backdrop-filter:blur(3px);">
+    <div class="modal-box" style="text-align:center;padding-top:0;overflow:hidden;">
+      <div style="background:var(--ink);margin:0 -20px 16px;padding:14px 18px;text-align:center;">
+        <div style="font-size:20px;margin-bottom:4px;">📋</div>
+        <div style="font-size:16px;font-weight:700;color:var(--paper);direction:rtl;">סוף השלב</div>
+        <div style="font-family:var(--font-mono);font-size:10px;color:rgba(244,236,220,.5);letter-spacing:.1em;margin-top:3px;">END OF PHASE</div>
+      </div>
+      <div style="font-size:13px;color:var(--ink-body);line-height:1.7;margin-bottom:14px;direction:rtl;text-align:right;">
+        הגעת לסוף השלב <strong id="phaseSkippedName"></strong>.<br>
+        נשארו <strong id="phaseSkippedCount">0</strong> פריטים לא מסומנים בשלב זה.<br>
+        תוכל לחזור אליהם בכל עת.
+      </div>
+      <div style="height:1px;background:var(--gold-lite);margin:0 0 14px;opacity:.7;"></div>
+      <button class="btn btn-ink" onclick="phaseSkippedContinue()" style="margin-bottom:8px;">המשך לשלב הבא</button>
+      <button class="btn btn-ghost" onclick="phaseSkippedGoBack()" style="margin-bottom:8px;">חזור לפריטים הפתוחים</button>
+      <button class="btn btn-ghost" onclick="phaseSkippedPark()">סיים לעכשיו, אמשיך מאוחר יותר</button>
     </div>
   </div>
 

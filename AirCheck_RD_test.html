@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <!-- ═══════════════════════════════════════
-     AirCheck+ · v2.08.059T · built by eligrt
+     AirCheck+ · v2.08.060T · built by eligrt
      ═══════════════════════════════════════ -->
 <html lang="he" dir="rtl">
 <head>
@@ -621,7 +621,7 @@ html,body{height:100%;background:#1a1a1c;font-family:var(--font-ui);color:var(--
     <div class="splash-footer-wrap">
       <div class="footer-strip" style="display:flex;align-items:center;justify-content:space-between;padding:5px 14px 8px;">
         <span class="footer-refresh" onclick="reloadApp()">רענון</span>
-        <span id="versionTap" onclick="handleVersionTap()" style="cursor:default;">AirCheck+ · v2.08.059T · built by eligrt</span>
+        <span id="versionTap" onclick="handleVersionTap()" style="cursor:default;">AirCheck+ · v2.08.060T · built by eligrt</span>
         <span style="width:40px;"></span>
       </div>
     </div>
@@ -794,7 +794,7 @@ html,body{height:100%;background:#1a1a1c;font-family:var(--font-ui);color:var(--
     <div class="tree-panel" id="treePanel"></div>
     <div class="footer-strip" style="display:flex;align-items:center;justify-content:space-between;padding:5px 14px 8px;">
       <span class="footer-refresh" onclick="reloadApp()">רענון</span>
-      <span id="versionTap" onclick="handleVersionTap()" style="cursor:default;">AirCheck+ · v2.08.059T · built by eligrt</span>
+      <span id="versionTap" onclick="handleVersionTap()" style="cursor:default;">AirCheck+ · v2.08.060T · built by eligrt</span>
       <span style="width:40px;"></span>
     </div>
   </div>
@@ -867,7 +867,7 @@ html,body{height:100%;background:#1a1a1c;font-family:var(--font-ui);color:var(--
 
     <div class="footer-strip" style="display:flex;align-items:center;justify-content:space-between;padding:5px 14px 8px;">
       <span style="width:40px;"></span>
-      <span id="versionTap" onclick="handleVersionTap()" style="cursor:default;">AirCheck+ · v2.08.059T · built by eligrt</span>
+      <span id="versionTap" onclick="handleVersionTap()" style="cursor:default;">AirCheck+ · v2.08.060T · built by eligrt</span>
       <span style="width:40px;"></span>
     </div>
   </div>
@@ -977,7 +977,7 @@ html,body{height:100%;background:#1a1a1c;font-family:var(--font-ui);color:var(--
     </div>
     <div class="footer-strip" style="display:flex;align-items:center;justify-content:space-between;padding:5px 14px 8px;">
       <span class="footer-refresh" onclick="reloadApp()">רענון</span>
-      <span id="versionTap" onclick="handleVersionTap()" style="cursor:default;">AirCheck+ · v2.08.059T · built by eligrt</span>
+      <span id="versionTap" onclick="handleVersionTap()" style="cursor:default;">AirCheck+ · v2.08.060T · built by eligrt</span>
       <span style="width:40px;"></span>
     </div>
   </div>
@@ -996,7 +996,7 @@ html,body{height:100%;background:#1a1a1c;font-family:var(--font-ui);color:var(--
     <div class="editor-list" id="editorList"></div>
     <div class="footer-strip" style="display:flex;align-items:center;justify-content:space-between;padding:5px 14px 8px;">
       <span class="footer-refresh" onclick="reloadApp()">רענון</span>
-      <span id="versionTap" onclick="handleVersionTap()" style="cursor:default;">AirCheck+ · v2.08.059T · built by eligrt</span>
+      <span id="versionTap" onclick="handleVersionTap()" style="cursor:default;">AirCheck+ · v2.08.060T · built by eligrt</span>
       <span style="width:40px;"></span>
     </div>
   </div>
@@ -1364,7 +1364,24 @@ function uncheckCurrent(){status[current]='skipped';holdState='idle';resetRunway
 function goNext(){
   if(current<CL.length-1){
     if(status[current]!=='done')status[current]='skipped';
-    current++;holdState='idle';resetRunwayBtn();render();
+    const prevPhase=CL[current].phase;
+    const nextIdx=current+1;
+    const newPhase=CL[nextIdx].phase;
+    if(newPhase!==prevPhase){
+      // Crossing a phase boundary — check for skipped items left behind in prevPhase
+      const prevPhaseObj=PHASE_IDX[prevPhase];
+      if(prevPhaseObj){
+        const phAllItems=prevPhaseObj.groups.reduce((a,g)=>a.concat(g.items),[]);
+        const phSkippedCount=phAllItems.filter(j=>status[j]==='skipped').length;
+        if(phSkippedCount>0){
+          current=nextIdx;holdState='idle';resetRunwayBtn();
+          render(); // update runway bar first
+          showPhaseSkippedPopup(prevPhase,phSkippedCount);
+          return;
+        }
+      }
+    }
+    current=nextIdx;holdState='idle';resetRunwayBtn();render();
   } else {
     // Last item — mark as skipped if not done
     if(status[current]!=='done')status[current]='skipped';
@@ -2527,6 +2544,36 @@ function endOfListPark(){
   initSplash();
 }
 
+// ── PHASE SKIPPED POPUP (non-final phase boundary, skipped items left behind) ──
+let _phaseSkippedName=null;
+function showPhaseSkippedPopup(phaseName,skippedCount){
+  _phaseSkippedName=phaseName;
+  document.getElementById('phaseSkippedName').textContent=phaseName;
+  document.getElementById('phaseSkippedCount').textContent=skippedCount;
+  document.getElementById('phaseSkippedModal').style.display='flex';
+}
+function handlePhaseSkippedClick(e){if(e.target===document.getElementById('phaseSkippedModal'))closePhaseSkipped();}
+function closePhaseSkipped(){document.getElementById('phaseSkippedModal').style.display='none';_phaseSkippedName=null;}
+function phaseSkippedContinue(){
+  closePhaseSkipped();
+  render();
+}
+function phaseSkippedGoBack(){
+  const phaseObj=PHASE_IDX[_phaseSkippedName];
+  closePhaseSkipped();
+  if(phaseObj){
+    const phAllItems=phaseObj.groups.reduce((a,g)=>a.concat(g.items),[]);
+    const idx=phAllItems.find(j=>status[j]==='skipped');
+    if(idx!==undefined){current=idx;holdState='idle';resetRunwayBtn();render();}
+  }
+}
+function phaseSkippedPark(){
+  closePhaseSkipped();
+  saveState();
+  showScreen('screenSplash');
+  initSplash();
+}
+
 // ── MANY LISTS NUDGE ──
 function openManyListsNudge(){
   const count=getProfiles().profiles.length+1;
@@ -3577,6 +3624,26 @@ function splashSecondaryAction(){
       <div style="height:1px;background:var(--gold-lite);margin:0 0 14px;opacity:.7;"></div>
       <button class="btn btn-ink" onclick="endOfListGoBack()" style="margin-bottom:8px;">חזור לפריטים הפתוחים</button>
       <button class="btn btn-ghost" onclick="endOfListPark()">סיים לעכשיו, אמשיך מאוחר יותר</button>
+    </div>
+  </div>
+
+  <!-- ══ PHASE SKIPPED POPUP (non-final phase boundary, items skipped) ══ -->
+  <div id="phaseSkippedModal" onclick="handlePhaseSkippedClick(event)" style="display:none;position:absolute;inset:0;background:rgba(26,19,8,.8);z-index:520;align-items:center;justify-content:center;padding:24px;backdrop-filter:blur(3px);">
+    <div class="modal-box" style="text-align:center;padding-top:0;overflow:hidden;">
+      <div style="background:var(--ink);margin:0 -20px 16px;padding:14px 18px;text-align:center;">
+        <div style="font-size:20px;margin-bottom:4px;">📋</div>
+        <div style="font-size:16px;font-weight:700;color:var(--paper);direction:rtl;">סוף השלב</div>
+        <div style="font-family:var(--font-mono);font-size:10px;color:rgba(244,236,220,.5);letter-spacing:.1em;margin-top:3px;">END OF PHASE</div>
+      </div>
+      <div style="font-size:13px;color:var(--ink-body);line-height:1.7;margin-bottom:14px;direction:rtl;text-align:right;">
+        הגעת לסוף השלב <strong id="phaseSkippedName"></strong>.<br>
+        נשארו <strong id="phaseSkippedCount">0</strong> פריטים לא מסומנים בשלב זה.<br>
+        תוכל לחזור אליהם בכל עת.
+      </div>
+      <div style="height:1px;background:var(--gold-lite);margin:0 0 14px;opacity:.7;"></div>
+      <button class="btn btn-ink" onclick="phaseSkippedContinue()" style="margin-bottom:8px;">המשך לשלב הבא</button>
+      <button class="btn btn-ghost" onclick="phaseSkippedGoBack()" style="margin-bottom:8px;">חזור לפריטים הפתוחים</button>
+      <button class="btn btn-ghost" onclick="phaseSkippedPark()">סיים לעכשיו, אמשיך מאוחר יותר</button>
     </div>
   </div>
 
