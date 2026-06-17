@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <!-- ═══════════════════════════════════════
-     AirCheck+ · v2.08.053T · built by eligrt
+     AirCheck+ · v2.08.057T · built by eligrt
      ═══════════════════════════════════════ -->
 <html lang="he" dir="rtl">
 <head>
@@ -158,7 +158,7 @@ html,body{height:100%;background:#1a1a1c;font-family:var(--font-ui);color:var(--
 .card-item-num b{font-size:16px;font-weight:700;color:var(--ink);margin:0 3px;}
 .card-item-num span{color:var(--ink-faint);}
 .card-badge{font-size:10px;color:var(--ink-muted);background:var(--paper);padding:2px 8px;border-radius:10px;border:1px solid var(--gold-lite);font-family:var(--font-mono);}
-.card-main{font-size:24px;font-weight:700;line-height:1.3;color:var(--ink-body);margin-bottom:6px;direction:rtl;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;}
+.card-main{font-size:24px;font-weight:700;line-height:1.3;color:var(--ink-body);margin-bottom:4px;direction:rtl;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;}
 .card-sub{font-size:13px;color:var(--ink-muted);line-height:1.5;font-style:italic;direction:rtl;}
 .card-link-btn{display:inline-flex;align-items:center;gap:5px;background:transparent;color:var(--gold);border:1px solid rgba(200,160,74,.5);border-radius:6px;padding:5px 12px;font-family:var(--font-ui);font-size:12px;font-weight:400;cursor:pointer;text-decoration:none;direction:ltr;position:absolute;bottom:14px;left:18px;z-index:3;pointer-events:auto;}
 .card-link-btn:active{opacity:.7;}
@@ -332,11 +332,13 @@ html,body{height:100%;background:#1a1a1c;font-family:var(--font-ui);color:var(--
 .rp-line2{font-size:11px;color:var(--ink-muted);margin-top:2px;}
 .rp-bar{height:2px;background:var(--paper-edge);border-radius:2px;margin-top:5px;overflow:hidden;direction:ltr;}
 .rp-bar-fill{height:100%;background:var(--ink);border-radius:2px;opacity:.5;}
-.rankup-box{margin:8px 14px;background:linear-gradient(135deg,rgba(200,160,74,.12),rgba(200,160,74,.04));border:1.5px solid var(--gold);border-radius:8px;padding:12px 14px;text-align:center;}
-.rankup-icon{font-size:40px;margin-bottom:4px;}
-.rankup-title{font-size:8px;color:var(--ink-faint);font-family:var(--font-mono);letter-spacing:.12em;text-transform:uppercase;margin-bottom:3px;}
-.rankup-name{font-size:20px;font-weight:700;color:var(--ink);margin-bottom:4px;}
-.rankup-sub{font-size:10px;color:var(--ink-muted);line-height:1.55;}
+@keyframes rankupBorderFade{0%,100%{border-color:rgba(200,160,74,1);box-shadow:0 0 0 4px rgba(200,160,74,.18);}50%{border-color:rgba(200,160,74,.35);box-shadow:0 0 0 4px rgba(200,160,74,.05);}}
+.rankup-box{margin:8px 14px;background:linear-gradient(135deg,rgba(200,160,74,.16),rgba(200,160,74,.05));border:2px solid var(--gold);border-radius:10px;padding:22px 18px;text-align:center;animation:rankupBorderFade 1.4s ease-in-out 4;}
+.rankup-icon-wrap{width:96px;height:96px;border-radius:50%;background:radial-gradient(circle,rgba(200,160,74,.3),transparent 70%);display:flex;align-items:center;justify-content:center;margin:0 auto 10px;}
+.rankup-icon{font-size:60px;line-height:1;}
+.rankup-title{font-size:14px;color:var(--ink-muted);font-family:var(--font-ui);letter-spacing:.01em;margin-bottom:6px;line-height:1.4;font-weight:500;}
+.rankup-name{font-size:32px;font-weight:700;color:var(--ink);margin-bottom:8px;}
+.rankup-sub{font-size:14px;color:var(--ink-muted);line-height:1.55;}
 .summary-strip{flex-shrink:0;background:var(--asphalt);padding:8px 10px;display:flex;align-items:center;justify-content:space-between;direction:ltr;border-bottom:2px solid var(--gold);gap:0;}
 .summary-strip-col{display:flex;flex-direction:column;align-items:center;gap:2px;}
 .summary-strip-label{font-size:8px;color:rgba(244,236,220,.6);letter-spacing:.18em;text-transform:uppercase;font-family:var(--font-mono);}
@@ -596,7 +598,7 @@ html,body{height:100%;background:#1a1a1c;font-family:var(--font-ui);color:var(--
     <div class="splash-footer-wrap">
       <div class="footer-strip" style="display:flex;align-items:center;justify-content:space-between;padding:5px 14px 8px;">
         <span class="footer-refresh" onclick="reloadApp()">רענון</span>
-        <span id="versionTap" onclick="handleVersionTap()" style="cursor:default;">AirCheck+ · v2.08.053T · built by eligrt</span>
+        <span id="versionTap" onclick="handleVersionTap()" style="cursor:default;">AirCheck+ · v2.08.057T · built by eligrt</span>
         <span style="width:40px;"></span>
       </div>
     </div>
@@ -769,7 +771,7 @@ html,body{height:100%;background:#1a1a1c;font-family:var(--font-ui);color:var(--
     <div class="tree-panel" id="treePanel"></div>
     <div class="footer-strip" style="display:flex;align-items:center;justify-content:space-between;padding:5px 14px 8px;">
       <span class="footer-refresh" onclick="reloadApp()">רענון</span>
-      <span id="versionTap" onclick="handleVersionTap()" style="cursor:default;">AirCheck+ · v2.08.053T · built by eligrt</span>
+      <span id="versionTap" onclick="handleVersionTap()" style="cursor:default;">AirCheck+ · v2.08.057T · built by eligrt</span>
       <span style="width:40px;"></span>
     </div>
   </div>
@@ -842,7 +844,7 @@ html,body{height:100%;background:#1a1a1c;font-family:var(--font-ui);color:var(--
 
     <div class="footer-strip" style="display:flex;align-items:center;justify-content:space-between;padding:5px 14px 8px;">
       <span style="width:40px;"></span>
-      <span id="versionTap" onclick="handleVersionTap()" style="cursor:default;">AirCheck+ · v2.08.053T · built by eligrt</span>
+      <span id="versionTap" onclick="handleVersionTap()" style="cursor:default;">AirCheck+ · v2.08.057T · built by eligrt</span>
       <span style="width:40px;"></span>
     </div>
   </div>
@@ -952,7 +954,7 @@ html,body{height:100%;background:#1a1a1c;font-family:var(--font-ui);color:var(--
     </div>
     <div class="footer-strip" style="display:flex;align-items:center;justify-content:space-between;padding:5px 14px 8px;">
       <span class="footer-refresh" onclick="reloadApp()">רענון</span>
-      <span id="versionTap" onclick="handleVersionTap()" style="cursor:default;">AirCheck+ · v2.08.053T · built by eligrt</span>
+      <span id="versionTap" onclick="handleVersionTap()" style="cursor:default;">AirCheck+ · v2.08.057T · built by eligrt</span>
       <span style="width:40px;"></span>
     </div>
   </div>
@@ -971,7 +973,7 @@ html,body{height:100%;background:#1a1a1c;font-family:var(--font-ui);color:var(--
     <div class="editor-list" id="editorList"></div>
     <div class="footer-strip" style="display:flex;align-items:center;justify-content:space-between;padding:5px 14px 8px;">
       <span class="footer-refresh" onclick="reloadApp()">רענון</span>
-      <span id="versionTap" onclick="handleVersionTap()" style="cursor:default;">AirCheck+ · v2.08.053T · built by eligrt</span>
+      <span id="versionTap" onclick="handleVersionTap()" style="cursor:default;">AirCheck+ · v2.08.057T · built by eligrt</span>
       <span style="width:40px;"></span>
     </div>
   </div>
@@ -1147,9 +1149,9 @@ function render(){
   // Sync stamp tail from settings on every render
   const stampEl=document.getElementById('stampInit');
   if(stampEl){const t=settings&&settings.tail?settings.tail:(localStorage.getItem(REG_KEY)||'');stampEl.textContent='PIC · 4X-'+(t||'HHH');}
-  const item=CL[current];if(!item)return;const phase=PHASE_IDX[item.phase];const group=phase?phase.groups.find(g=>g.name===item.group):null;document.getElementById('crumbPhase').textContent=item.phase;document.getElementById('crumbGroup').textContent=item.group;const numEl=document.getElementById('cardItemNum');numEl.innerHTML='ITEM <b>'+(current+1).toString().padStart(2,'0')+'</b><span> / '+CL.length+'</span>';const badge=document.getElementById('cardBadge');if(group){const pos=group.items.indexOf(current)+1;badge.textContent=pos+'/'+group.items.length+' בקבוצה';badge.style.display='';}else{badge.style.display='none';}document.getElementById('cardMain').textContent=item.main;const subEl=document.getElementById('cardSub');subEl.textContent=item.sub||'';subEl.style.display=item.sub?'':'none';const linkEl=document.getElementById('cardLink');if(linkEl){if(FEATURES.EXTERNAL_LINK&&item.url){const lbl=item.urlLabel||'פתח קישור';linkEl.innerHTML='';const btn=document.createElement('button');btn.className='card-link-btn';btn.type='button';btn.innerHTML='<i class="ti ti-external-link" aria-hidden="true"></i> '+lbl;
+  const item=CL[current];if(!item)return;const phase=PHASE_IDX[item.phase];const group=phase?phase.groups.find(g=>g.name===item.group):null;document.getElementById('crumbPhase').textContent=item.phase;document.getElementById('crumbGroup').textContent=item.group;const numEl=document.getElementById('cardItemNum');numEl.innerHTML='ITEM <b>'+(current+1).toString().padStart(2,'0')+'</b><span> / '+CL.length+'</span>';const badge=document.getElementById('cardBadge');if(group){const pos=group.items.indexOf(current)+1;badge.textContent=pos+'/'+group.items.length+' בקבוצה';badge.style.display='';}else{badge.style.display='none';}document.getElementById('cardMain').textContent=item.main;const subEl=document.getElementById('cardSub');subEl.textContent=item.sub||'';subEl.style.display=item.sub?'':'none';const linkEl=document.getElementById('cardLink');if(linkEl){const lastEl=item.sub?subEl:document.getElementById('cardMain');document.getElementById('cardMain').style.paddingBottom='';subEl.style.paddingBottom='';if(FEATURES.EXTERNAL_LINK&&item.url){const lbl=item.urlLabel||'פתח קישור';linkEl.innerHTML='';const btn=document.createElement('button');btn.className='card-link-btn';btn.type='button';btn.innerHTML='<i class="ti ti-external-link" aria-hidden="true"></i> '+lbl;
       btn.setAttribute('onclick','trackExternalLinkTap('+JSON.stringify(item.url)+','+JSON.stringify(lbl)+')');
-      linkEl.appendChild(btn);linkEl.style.display='block';document.getElementById('cardMain').style.paddingBottom='36px';}else{linkEl.style.display='none';document.getElementById('cardMain').style.paddingBottom='';}}document.getElementById('cardStamp').classList.remove('visible');const next=CL[current+1];const under=document.getElementById('cardUnder');if(next){under.style.display='';document.getElementById('cardUnderNum').innerHTML='ITEM <b>'+(current+2).toString().padStart(2,'0')+'</b>';document.getElementById('cardUnderMain').textContent=next.main;}else{under.style.display='none';}renderRunway();if(treeOpen)renderTree();document.getElementById('confirmHint').classList.remove('confirmed','skipped-nudge');
+      linkEl.appendChild(btn);linkEl.style.display='block';lastEl.style.paddingBottom='36px';}else{linkEl.style.display='none';}}document.getElementById('cardStamp').classList.remove('visible');const next=CL[current+1];const under=document.getElementById('cardUnder');if(next){under.style.display='';document.getElementById('cardUnderNum').innerHTML='ITEM <b>'+(current+2).toString().padStart(2,'0')+'</b>';document.getElementById('cardUnderMain').textContent=next.main;}else{under.style.display='none';}renderRunway();if(treeOpen)renderTree();document.getElementById('confirmHint').classList.remove('confirmed','skipped-nudge');
   const hintEl=document.getElementById('confirmHint');
   hintEl.textContent='לחץ והחזק את המסלול לאישור';
   hintEl.onclick=null;
@@ -1514,7 +1516,7 @@ function showAllDoneOverlay(lastPhase){
   }
   if(isRankUp&&rankUp){
     rankUp.style.display='';
-    rankUp.innerHTML='<div class="rankup-icon">'+rankData.current.icon+'</div><div class="rankup-title" style="direction:rtl;">ברכות לרגל קבלת דרגת <span dir="ltr">AirCheck+</span> חדשה</div><div class="rankup-name">'+rankData.current.name+'</div><div class="rankup-sub" style="direction:rtl;">השלמת '+cc+' צ׳קליסטים מלאים. כל הכבוד!</div>';
+    rankUp.innerHTML='<div class="rankup-icon-wrap"><div class="rankup-icon">'+rankData.current.icon+'</div></div><div class="rankup-title" style="direction:rtl;">ברכות לרגל קבלת דרגת <span dir="ltr">AirCheck+</span> חדשה</div><div class="rankup-name">'+rankData.current.name+'</div><div class="rankup-sub" style="direction:rtl;">השלמת '+cc+' צ׳קליסטים מלאים. כל הכבוד!</div>';
   }else if(rankUp){rankUp.style.display='none';}
   showScreen('screenSummary');
   // Show donation popup after 3rd completed flight
