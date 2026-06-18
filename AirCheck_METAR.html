@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<!-- AirCheck+ · AirCheck_METAR.html · v1.26 · built by eligrt -->
+<!-- AirCheck+ · AirCheck_METAR.html · v1.27 · built by eligrt -->
 <html lang="he" dir="rtl">
 <head>
 <meta charset="UTF-8">
@@ -97,6 +97,19 @@ body{display:flex;flex-direction:column;height:100svh;overflow:hidden;}
 .tower-popup-stale{background:rgba(0,0,0,.04);border:1px solid var(--paper-edge);border-radius:4px;padding:6px 10px;margin-bottom:10px;font-family:var(--font-mono);font-size:9px;color:var(--ink-faint);direction:rtl;}
 .tower-popup-meta{font-family:var(--font-mono);font-size:9px;color:var(--ink-faint);margin-top:10px;padding-top:8px;border-top:1px dashed var(--paper-edge);direction:ltr;}
 .tower-popup-close{width:100%;padding:12px;background:var(--ink);border:none;font-family:var(--font-ui);font-size:13px;font-weight:700;color:#f4ecdc;cursor:pointer;}
+
+/* ── CUSTOM FIELD EDIT MODAL ── */
+.cf-modal-overlay{display:none;position:fixed;inset:0;background:rgba(26,19,8,.65);z-index:110;align-items:center;justify-content:center;padding:20px;backdrop-filter:blur(3px);}
+.cf-modal-overlay.show{display:flex;}
+.cf-modal-box{background:var(--paper);border-radius:8px;width:100%;max-width:300px;overflow:hidden;direction:rtl;background-image:repeating-linear-gradient(0deg,transparent 0,transparent 27px,rgba(28,61,110,.04) 27px,rgba(28,61,110,.04) 28px);}
+.cf-modal-hdr{padding:12px 16px;border-bottom:1px solid var(--paper-edge);font-size:15px;font-weight:700;color:var(--ink);}
+.cf-modal-body{padding:14px 16px;}
+.cf-modal-input{width:100%;padding:10px 12px;background:var(--paper-hi);border:1.5px solid var(--gold-lite);border-radius:4px;font-family:var(--font-mono);font-size:16px;font-weight:700;color:var(--ink);direction:ltr;text-align:center;text-transform:uppercase;outline:none;letter-spacing:.1em;}
+.cf-modal-input:focus{border-color:var(--ink);}
+.cf-modal-btns{display:flex;gap:8px;padding:0 16px 14px;}
+.cf-modal-btn{flex:1;padding:10px;border-radius:6px;font-family:var(--font-ui);font-size:13px;font-weight:700;cursor:pointer;}
+.cf-modal-btn-cancel{background:transparent;border:1.5px solid var(--paper-edge);color:var(--ink-muted);}
+.cf-modal-btn-save{background:var(--ink);border:none;color:#f4ecdc;}
 
 /* ── CONTENT ── */
 .metar-tab-content{flex:1;overflow-y:auto;-webkit-overflow-scrolling:touch;min-height:0;}
@@ -202,12 +215,26 @@ body{display:flex;flex-direction:column;height:100svh;overflow:hidden;}
   </div>
 </div>
 
+<!-- Custom field edit modal -->
+<div class="cf-modal-overlay" id="cfModal">
+  <div class="cf-modal-box">
+    <div class="cf-modal-hdr">הזן קוד ICAO</div>
+    <div class="cf-modal-body">
+      <input class="cf-modal-input" id="cfModalInput" maxlength="4" placeholder="LLXX" oninput="this.value=this.value.toUpperCase()" onkeydown="if(event.key==='Enter')saveCfModal()">
+    </div>
+    <div class="cf-modal-btns">
+      <button class="cf-modal-btn cf-modal-btn-cancel" onclick="closeCfModal()">ביטול</button>
+      <button class="cf-modal-btn cf-modal-btn-save" onclick="saveCfModal()">שמור</button>
+    </div>
+  </div>
+</div>
+
 <div class="metar-footer">
   <button class="metar-refresh-btn" onclick="fetchMetar(true)">↻ רענן</button>
   <div class="metar-age-footer" id="metarAgeFooter">—</div>
 </div>
 
-<div class="page-footer" dir="ltr">AirCheck+ · METAR / TAF · v1.26 · built by eligrt</div>
+<div class="page-footer" dir="ltr">AirCheck+ · METAR / TAF · v1.27 · built by eligrt</div>
 
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/12.14.0/firebase-app.js";
@@ -611,14 +638,31 @@ function customPillTap(n){
   fetchMetar(false);
 }
 
+let _cfModalSlot=null;
+
 function customPillEdit(n){
+  _cfModalSlot=n;
   const slots=getCustomSlots();
   const current=slots[n-1]||'';
-  // Use a simple inline prompt via modal-like approach
-  const icao=window.prompt('הזן קוד ICAO (4 אותיות):',current);
-  if(icao===null)return;
-  const val=icao.trim().toUpperCase().slice(0,4);
+  const input=document.getElementById('cfModalInput');
+  input.value=current;
+  document.getElementById('cfModal').classList.add('show');
+  setTimeout(()=>input.focus(),50);
+}
+
+function closeCfModal(){
+  document.getElementById('cfModal').classList.remove('show');
+  _cfModalSlot=null;
+}
+
+function saveCfModal(){
+  const n=_cfModalSlot;
+  if(!n)return;
+  const input=document.getElementById('cfModalInput');
+  const val=input.value.trim().toUpperCase().slice(0,4);
+  closeCfModal();
   if(val.length<2)return;
+  const slots=getCustomSlots();
   slots[n-1]=val;
   saveCustomSlots(slots);
   localStorage.setItem(METAR_STATION_KEY,'custom'+n);
