@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
-<title>AirCheck+ · מאגר קהילתי</title>
+<title>AirCheck+ · Repository</title>
 <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Hebrew:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
 <style>
 :root{
@@ -18,9 +18,7 @@
 html,body{height:100%;background:var(--paper);font-family:var(--font-ui);color:var(--ink);}
 body{display:flex;flex-direction:column;height:100svh;overflow:hidden;}
 .card{background:var(--paper);background-image:repeating-linear-gradient(0deg,transparent 0,transparent 27px,var(--paper-line) 27px,var(--paper-line) 28px);width:100%;flex:1;display:flex;flex-direction:column;min-height:0;overflow:hidden;}
-.header{background:var(--ink);padding:14px 18px;position:relative;flex-shrink:0;}
-.header-row1{display:flex;flex-direction:column;align-items:flex-start;gap:6px;direction:ltr;margin-bottom:6px;}
-.header-mono{font-family:var(--font-mono);font-size:9px;color:rgba(244,236,220,.45);letter-spacing:.2em;text-transform:uppercase;}
+.header{background:var(--ink);padding:14px 18px;position:relative;flex-shrink:0;display:flex;align-items:center;justify-content:space-between;gap:10px;}
 .header-title{font-size:18px;font-weight:700;color:#f4ecdc;direction:rtl;text-align:right;}
 .header-sub{font-size:11px;color:rgba(244,236,220,.5);margin-top:3px;direction:rtl;text-align:right;}
 .tabs{display:flex;background:var(--paper);border-bottom:2px solid var(--gold-lite);flex-shrink:0;}
@@ -105,12 +103,11 @@ body{display:flex;flex-direction:column;height:100svh;overflow:hidden;}
 <body>
 <div class="card">
   <div class="header">
-    <div class="header-row1">
-      <div class="header-mono">AirCheck+ · COMMUNITY REPOSITORY · v1.22</div>
-      <button onclick="backToApp()" style="background:transparent;border:1px solid rgba(244,236,220,.35);border-radius:6px;padding:6px 12px;font-family:var(--font-ui);font-size:11px;font-weight:600;color:rgba(244,236,220,.8);cursor:pointer;white-space:nowrap;">חזרה ל&nbsp;&nbsp;<span dir="ltr">AirCheck+</span></button>
+    <div>
+      <div class="header-title">ניהול מאגר קהילתי</div>
+      <div class="header-sub" id="headerSub">טוען...</div>
     </div>
-    <div class="header-title">ניהול מאגר קהילתי</div>
-    <div class="header-sub" id="headerSub">טוען...</div>
+    <button onclick="backToApp()" style="background:transparent;border:1px solid var(--stamp-red);border-radius:6px;padding:7px 14px;font-family:var(--font-ui);font-size:13px;font-weight:600;color:#e8847a;cursor:pointer;white-space:nowrap;flex-shrink:0;">חזרה ל&nbsp;&nbsp;<span dir="ltr">ADMIN</span></button>
   </div>
   <div class="tabs">
     <div class="tab active" id="tab-pending" onclick="switchTab('pending')">ממתינים</div>
@@ -121,7 +118,7 @@ body{display:flex;flex-direction:column;height:100svh;overflow:hidden;}
   <div class="pills" id="pillsRow" style="display:none;"></div>
   <div class="items-list" id="itemsList"><div class="loading">טוען נתונים...</div></div>
   <div class="footer" dir="ltr">
-    <div class="footer-txt">AirCheck+ · Repository · v1.22 · built by eligrt</div>
+    <div class="footer-txt">AirCheck+ · Repository · v1.26 · built by eligrt</div>
   </div>
 </div>
 
