@@ -21,15 +21,15 @@ body{display:flex;flex-direction:column;height:100svh;overflow:hidden;}
 .header{background:var(--ink);padding:14px 18px;position:relative;flex-shrink:0;display:flex;align-items:center;justify-content:space-between;gap:10px;}
 .header-title{font-size:18px;font-weight:700;color:#f4ecdc;direction:rtl;text-align:right;}
 .header-sub{font-size:11px;color:rgba(244,236,220,.5);margin-top:3px;direction:rtl;text-align:right;}
-.tabs{display:flex;background:var(--paper);border-bottom:2px solid var(--gold-lite);flex-shrink:0;}
-.tab{flex:1;padding:10px 4px;text-align:center;font-family:var(--font-ui);font-size:11px;font-weight:600;color:var(--ink-faint);cursor:pointer;border-bottom:3px solid transparent;margin-bottom:-2px;white-space:nowrap;}
-.tab.active{color:var(--ink);border-bottom-color:var(--gold);font-weight:700;}
+.tabs{display:flex;background:var(--paper-hi);border-bottom:1px solid var(--paper-edge);flex-shrink:0;}
+.tab{flex:1;padding:10px 4px;text-align:center;font-family:var(--font-ui);font-size:13px;font-weight:400;color:var(--ink-faint);cursor:pointer;border-bottom:2px solid transparent;white-space:nowrap;background:transparent;border-top:none;border-right:none;border-left:none;}
+.tab.active{background:var(--paper);border-bottom-color:var(--gold);color:var(--ink);font-weight:700;}
 .pills{padding:8px 14px;display:flex;gap:5px;flex-wrap:wrap;border-bottom:1px dashed var(--gold-lite);background:var(--paper-hi);flex-shrink:0;}
 .pill{padding:4px 10px;border-radius:20px;border:1.5px solid var(--paper-edge);background:var(--paper);font-size:10px;font-weight:600;color:var(--ink-muted);cursor:pointer;white-space:nowrap;}
 .pill.active{background:var(--ink);border-color:var(--ink);color:var(--paper);}
 .items-list{padding:10px 14px;display:flex;flex-direction:column;gap:8px;flex:1;overflow-y:auto;-webkit-overflow-scrolling:touch;}
 .empty{padding:20px;text-align:center;font-size:12px;color:var(--ink-faint);font-family:var(--font-ui);}
-.item-card{background:var(--paper-hi);border:1px solid var(--paper-edge);border-radius:6px;overflow:hidden;direction:rtl;}
+.item-card{background:var(--paper-hi);border:1px solid var(--paper-edge);border-radius:6px;overflow:hidden;direction:rtl;flex-shrink:0;}
 .item-body{padding:10px 12px;}
 .item-main{font-size:14px;color:var(--ink);font-weight:600;margin-bottom:4px;}
 .item-meta{font-family:var(--font-mono);font-size:8px;color:var(--ink-faint);letter-spacing:.04em;}
@@ -54,7 +54,7 @@ body{display:flex;flex-direction:column;height:100svh;overflow:hidden;}
 .act.reject{color:var(--stamp-red);}
 .act.back{color:var(--amber);}
 .act.confirm-reject{color:var(--paper);background:var(--stamp-red);}
-.appr-item{background:var(--paper-hi);border:1px solid rgba(31,111,63,.2);border-radius:6px;overflow:hidden;direction:rtl;}
+.appr-item{background:var(--paper-hi);border:1px solid rgba(31,111,63,.2);border-radius:6px;overflow:hidden;direction:rtl;flex-shrink:0;}
 .appr-body{padding:10px 12px;display:flex;align-items:center;gap:8px;}
 .appr-tag{flex-shrink:0;font-family:var(--font-mono);font-size:8px;background:rgba(31,111,63,.1);color:var(--cleared);padding:2px 7px;border-radius:3px;letter-spacing:.04em;}
 .rej-item{display:flex;align-items:flex-start;gap:8px;padding:10px 12px;background:var(--paper-hi);border:1px solid rgba(185,74,58,.15);border-radius:6px;direction:rtl;}
@@ -110,15 +110,15 @@ body{display:flex;flex-direction:column;height:100svh;overflow:hidden;}
     <button onclick="backToApp()" style="background:transparent;border:1px solid var(--stamp-red);border-radius:6px;padding:7px 14px;font-family:var(--font-ui);font-size:13px;font-weight:600;color:#e8847a;cursor:pointer;white-space:nowrap;flex-shrink:0;">חזרה ל&nbsp;&nbsp;<span dir="ltr">ADMIN</span></button>
   </div>
   <div class="tabs">
-    <div class="tab active" id="tab-pending" onclick="switchTab('pending')">ממתינים</div>
-    <div class="tab" id="tab-approved" onclick="switchTab('approved')">מאושרים</div>
-    <div class="tab" id="tab-rejected" onclick="switchTab('rejected')">נדחו</div>
-    <div class="tab" id="tab-tags" onclick="switchTab('tags')">תגיות</div>
+    <button class="tab active" id="tab-pending" onclick="switchTab('pending')">ממתינים</button>
+    <button class="tab" id="tab-approved" onclick="switchTab('approved')">מאושרים</button>
+    <button class="tab" id="tab-rejected" onclick="switchTab('rejected')">נדחו</button>
+    <button class="tab" id="tab-tags" onclick="switchTab('tags')">תגיות</button>
   </div>
   <div class="pills" id="pillsRow" style="display:none;"></div>
   <div class="items-list" id="itemsList"><div class="loading">טוען נתונים...</div></div>
   <div class="footer" dir="ltr">
-    <div class="footer-txt">AirCheck+ · Repository · v1.26 · built by eligrt</div>
+    <div class="footer-txt">AirCheck+ · Repository · v1.27 · built by eligrt</div>
   </div>
 </div>
 
