@@ -86,14 +86,14 @@ textarea::placeholder{color:rgba(28,61,110,.3);}
 .status.error{background:rgba(185,74,58,.08);border:1px solid rgba(185,74,58,.25);color:var(--stamp-red);}
 .status.show{display:block;}
 
-.footer{padding:10px 14px;border-top:1px dashed var(--gold-lite);text-align:center;}
-.footer-txt{font-family:var(--font-mono);font-size:9px;color:var(--ink-faint);letter-spacing:.1em;}
+.footer{padding:10px 14px;border-top:1px solid var(--gold-lite);text-align:center;}
+.footer-txt{font-family:var(--font-mono);font-size:9px;color:var(--ink-faint);letter-spacing:.1em;text-transform:uppercase;}
 </style>
 </head>
 <body>
 <div class="card">
   <div class="header">
-    <div class="header-mono">AirCheck+ · Tower · v1.01.004</div>
+    <div class="header-mono">AirCheck+ · Tower · v1.07</div>
     <div class="header-title">עדכון מצב שדה</div>
     <div class="header-station" id="headerStation">טוען...</div>
     <!-- Last update — read only, lives in header -->
@@ -110,8 +110,8 @@ textarea::placeholder{color:rgba(28,61,110,.3);}
     <button class="submit-btn" id="submitBtn" onclick="submitUpdate()" disabled>שלח עדכון ›</button>
   </div>
 
-  <div class="footer">
-    <div class="footer-txt" id="footerTxt">AirCheck+ · Tower · v1.01.004</div>
+  <div class="footer" dir="ltr">
+    <div class="footer-txt" id="footerTxt">AirCheck+ · Tower · v1.07</div>
   </div>
 </div>
 
@@ -145,7 +145,7 @@ const stationNames = {
 
 function init(){
   document.getElementById('headerStation').textContent = (stationNames[icao]||icao) + ' · ' + icao;
-  document.getElementById('footerTxt').textContent = 'AirCheck+ · Tower · v1.01.004 · ' + icao;
+  document.getElementById('footerTxt').textContent = 'AirCheck+ · Tower · v1.07 · ' + icao;
   loadLastUpdate();
 }
 
