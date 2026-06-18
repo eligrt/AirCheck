@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<!-- AirCheck+ · AirCheck_METAR.html · v1.31 · built by eligrt -->
+<!-- AirCheck+ · AirCheck_METAR.html · v1.32 · built by eligrt -->
 <html lang="he" dir="rtl">
 <head>
 <meta charset="UTF-8">
@@ -239,7 +239,7 @@ body{display:flex;flex-direction:column;height:100svh;overflow:hidden;}
   <div class="metar-age-footer" id="metarAgeFooter">—</div>
 </div>
 
-<div class="page-footer" dir="ltr">AirCheck+ · METAR / TAF · v1.31 · built by eligrt</div>
+<div class="page-footer" dir="ltr">AirCheck+ · METAR / TAF · v1.32 · built by eligrt</div>
 
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/12.14.0/firebase-app.js";
@@ -270,14 +270,21 @@ window._syncMetarToFirebase = async function(icao){
   try{
     const deviceId=getDeviceId();
     const pilotRef=ref(db,'pilots/'+deviceId);
-    let counts={};
-    try{counts=JSON.parse(localStorage.getItem('aircheck_metar_station_counts')||'{}');}catch(e){}
-    await update(pilotRef,{
-      metarUsed:true,
-      metarStation:icao,
-      metarStationCounts:counts,
-      lastSeen:Date.now()
-    });
+    // Read the current server-side count for just this station, so we
+    // increment from the real Firebase state (which may have been cleared
+    // by Admin) rather than resurrecting a stale local tally that could
+    // contain long-deleted/junk station codes.
+    let serverCount=0;
+    try{
+      const snap=await get(ref(db,'pilots/'+deviceId+'/metarStationCounts/'+icao));
+      serverCount=snap.val()||0;
+    }catch(e){}
+    const updates={};
+    updates['metarUsed']=true;
+    updates['metarStation']=icao;
+    updates['metarStationCounts/'+icao]=serverCount+1;
+    updates['lastSeen']=Date.now();
+    await update(pilotRef,updates);
   }catch(e){}
 };
 window._towerReady = true;
@@ -510,15 +517,11 @@ async function fetchMetar(force){
     renderTowerBadge();
     renderMetarCards();
     syncMetarPills();
-    // Track usage locally (kept for the main app's own syncToFirebase to
-    // pick up too), AND sync directly to Firebase here so usage is recorded
-    // even if the pilot never reopens the main AirCheck+ app afterward.
+    // Sync directly to Firebase so usage is recorded even if the pilot
+    // never reopens the main AirCheck+ app afterward.
     try{
       localStorage.setItem('aircheck_metar_used','1');
       localStorage.setItem('aircheck_metar_station',icao);
-      const counts=JSON.parse(localStorage.getItem('aircheck_metar_station_counts')||'{}');
-      counts[icao]=(counts[icao]||0)+1;
-      localStorage.setItem('aircheck_metar_station_counts',JSON.stringify(counts));
       if(window._syncMetarToFirebase)window._syncMetarToFirebase(icao);
     }catch(ex){}
   } catch(e){
