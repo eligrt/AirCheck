@@ -28,7 +28,6 @@ body{display:flex;align-items:flex-start;justify-content:center;padding:24px 16p
 
 /* header */
 .header{background:var(--ink);padding:16px 18px 14px;}
-.header-mono{font-family:var(--font-mono);font-size:9px;color:rgba(244,236,220,.45);letter-spacing:.2em;text-transform:uppercase;margin-bottom:5px;direction:ltr;unicode-bidi:bidi-override;}
 .header-title{font-size:18px;font-weight:700;color:#f4ecdc;direction:rtl;}
 .header-station{font-size:11px;color:rgba(244,236,220,.55);margin-top:3px;direction:rtl;}
 
@@ -93,7 +92,6 @@ textarea::placeholder{color:rgba(28,61,110,.3);}
 <body>
 <div class="card">
   <div class="header">
-    <div class="header-mono">AirCheck+ · Tower · v1.08</div>
     <div class="header-title">עדכון מצב שדה</div>
     <div class="header-station" id="headerStation">טוען...</div>
     <!-- Last update — read only, lives in header -->
@@ -111,7 +109,7 @@ textarea::placeholder{color:rgba(28,61,110,.3);}
   </div>
 
   <div class="footer" dir="ltr">
-    <div class="footer-txt" id="footerTxt">AirCheck+ · Tower · v1.08 · built by eligrt</div>
+    <div class="footer-txt" id="footerTxt">AirCheck+ · Tower · v1.09 · built by eligrt</div>
   </div>
 </div>
 
@@ -145,7 +143,7 @@ const stationNames = {
 
 function init(){
   document.getElementById('headerStation').textContent = (stationNames[icao]||icao) + ' · ' + icao;
-  document.getElementById('footerTxt').textContent = 'AirCheck+ · Tower · v1.08 · built by eligrt';
+  document.getElementById('footerTxt').textContent = 'AirCheck+ · Tower · v1.09 · built by eligrt';
   loadLastUpdate();
 }
 
