@@ -93,7 +93,7 @@ textarea::placeholder{color:rgba(28,61,110,.3);}
 <body>
 <div class="card">
   <div class="header">
-    <div class="header-mono">AirCheck+ · Tower · v1.07</div>
+    <div class="header-mono">AirCheck+ · Tower · v1.08</div>
     <div class="header-title">עדכון מצב שדה</div>
     <div class="header-station" id="headerStation">טוען...</div>
     <!-- Last update — read only, lives in header -->
@@ -111,7 +111,7 @@ textarea::placeholder{color:rgba(28,61,110,.3);}
   </div>
 
   <div class="footer" dir="ltr">
-    <div class="footer-txt" id="footerTxt">AirCheck+ · Tower · v1.07</div>
+    <div class="footer-txt" id="footerTxt">AirCheck+ · Tower · v1.08 · built by eligrt</div>
   </div>
 </div>
 
@@ -145,7 +145,7 @@ const stationNames = {
 
 function init(){
   document.getElementById('headerStation').textContent = (stationNames[icao]||icao) + ' · ' + icao;
-  document.getElementById('footerTxt').textContent = 'AirCheck+ · Tower · v1.07 · ' + icao;
+  document.getElementById('footerTxt').textContent = 'AirCheck+ · Tower · v1.08 · built by eligrt';
   loadLastUpdate();
 }
 
