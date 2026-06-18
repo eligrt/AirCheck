@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<!-- AirCheck+ · AirCheck_METAR.html · v1.27 · built by eligrt -->
+<!-- AirCheck+ · AirCheck_METAR.html · v1.31 · built by eligrt -->
 <html lang="he" dir="rtl">
 <head>
 <meta charset="UTF-8">
@@ -40,11 +40,11 @@ body{display:flex;flex-direction:column;height:100svh;overflow:hidden;}
 .metar-pill-strip::-webkit-scrollbar{display:none;}
 .metar-pill-btn{flex-shrink:0;padding:8px 16px;border-radius:20px;border:1.5px solid var(--paper-edge);background:transparent;color:var(--ink-muted);font-family:var(--font-mono);font-size:13px;font-weight:700;cursor:pointer;letter-spacing:.04em;transition:all .15s;}
 .metar-pill-btn:active{opacity:.7;}
-.metar-pill-btn.active{border:none;background:var(--ink);color:var(--paper);}
+.metar-pill-btn.active{border:1.5px solid transparent;background:var(--ink);color:var(--paper);}
 .metar-pill-other{font-family:var(--font-ui);border-style:dashed;color:var(--ink-faint);}
 .metar-pill-custom{font-family:var(--font-ui);border-style:dashed;border-color:var(--gold-lite);color:var(--ink-faint);font-size:13px;}
 .metar-pill-custom.set{border-style:solid;border-color:var(--gold);color:var(--gold);background:rgba(200,160,74,.08);font-size:13px;}
-.metar-pill-custom.active{border-style:solid;border-color:var(--ink);background:var(--ink);color:#f4ecdc;font-size:13px;}
+.metar-pill-custom.active{border-style:solid;border-color:#f4ecdc;background:var(--ink);color:#f4ecdc;font-size:13px;}
 .metar-pill-other.active{background:rgba(200,160,74,.2);border:1.5px solid var(--gold);color:var(--gold-lite);border-style:solid;}
 .metar-pill-input-row{display:flex;align-items:center;gap:10px;background:var(--paper-hi);border:1px solid var(--gold-lite);border-radius:4px;padding:7px 12px;margin-top:8px;direction:ltr;}
 .metar-pill-input{background:transparent;border:none;border-bottom:1.5px dashed var(--gold);outline:none;font-family:var(--font-mono);font-size:14px;font-weight:700;color:var(--ink);flex:1;padding:0 0 1px;text-transform:uppercase;caret-color:var(--gold);letter-spacing:.1em;direction:ltr;-webkit-appearance:none;}
@@ -110,6 +110,8 @@ body{display:flex;flex-direction:column;height:100svh;overflow:hidden;}
 .cf-modal-btn{flex:1;padding:10px;border-radius:6px;font-family:var(--font-ui);font-size:13px;font-weight:700;cursor:pointer;}
 .cf-modal-btn-cancel{background:transparent;border:1.5px solid var(--paper-edge);color:var(--ink-muted);}
 .cf-modal-btn-save{background:var(--ink);border:none;color:#f4ecdc;}
+.cf-modal-btn-delete{width:100%;padding:9px;border-radius:6px;font-family:var(--font-ui);font-size:12px;font-weight:600;cursor:pointer;background:transparent;border:1.5px solid var(--stamp-red);color:var(--stamp-red);}
+.cf-modal-btn-delete:active{background:rgba(185,74,58,.08);}
 
 /* ── CONTENT ── */
 .metar-tab-content{flex:1;overflow-y:auto;-webkit-overflow-scrolling:touch;min-height:0;}
@@ -171,11 +173,11 @@ body{display:flex;flex-direction:column;height:100svh;overflow:hidden;}
     <button class="metar-pill-btn" id="mpill-LLHA" onclick="metarPillSelect('LLHA')">LLHA</button>
     <button class="metar-pill-btn" id="mpill-LLIB" onclick="metarPillSelect('LLIB')">LLIB</button>
     <button class="metar-pill-btn" id="mpill-LLER" onclick="metarPillSelect('LLER')">LLER</button>
-    <button class="metar-pill-btn metar-pill-custom" id="mpill-c1" onclick="customPillTap(1)" oncontextmenu="customPillEdit(1);return false;">✎ הוסף</button>
-    <button class="metar-pill-btn metar-pill-custom" id="mpill-c2" onclick="customPillTap(2)" oncontextmenu="customPillEdit(2);return false;">✎ הוסף</button>
-    <button class="metar-pill-btn metar-pill-custom" id="mpill-c3" onclick="customPillTap(3)" oncontextmenu="customPillEdit(3);return false;">✎ הוסף</button>
+    <button class="metar-pill-btn metar-pill-custom" id="mpill-c1" onclick="customPillTap(1)" oncontextmenu="customPillEdit(1);return false;" onmousedown="startLongPress(1)" onmouseup="cancelLongPress()" onmouseleave="cancelLongPress()" ontouchstart="startLongPress(1)" ontouchend="cancelLongPress()" ontouchcancel="cancelLongPress()">✎ הוסף</button>
+    <button class="metar-pill-btn metar-pill-custom" id="mpill-c2" onclick="customPillTap(2)" oncontextmenu="customPillEdit(2);return false;" onmousedown="startLongPress(2)" onmouseup="cancelLongPress()" onmouseleave="cancelLongPress()" ontouchstart="startLongPress(2)" ontouchend="cancelLongPress()" ontouchcancel="cancelLongPress()">✎ הוסף</button>
+    <button class="metar-pill-btn metar-pill-custom" id="mpill-c3" onclick="customPillTap(3)" oncontextmenu="customPillEdit(3);return false;" onmousedown="startLongPress(3)" onmouseup="cancelLongPress()" onmouseleave="cancelLongPress()" ontouchstart="startLongPress(3)" ontouchend="cancelLongPress()" ontouchcancel="cancelLongPress()">✎ הוסף</button>
   </div>
-  <div class="pill-hint" style="font-size:10px;color:var(--ink-faint);font-family:var(--font-mono);margin-top:5px;direction:rtl;">לחיצה ארוכה על שדה מותאם אישית — לעריכה</div>
+  <div class="pill-hint" style="font-size:9px;color:var(--ink-faint);font-family:var(--font-mono);letter-spacing:.06em;margin-top:5px;direction:rtl;">✎ לחיצה ארוכה לעריכה</div>
 </div>
 
 <div class="station-label-bar">
@@ -226,6 +228,9 @@ body{display:flex;flex-direction:column;height:100svh;overflow:hidden;}
       <button class="cf-modal-btn cf-modal-btn-cancel" onclick="closeCfModal()">ביטול</button>
       <button class="cf-modal-btn cf-modal-btn-save" onclick="saveCfModal()">שמור</button>
     </div>
+    <div id="cfModalDeleteRow" style="padding:0 16px 14px;display:none;">
+      <button class="cf-modal-btn-delete" onclick="deleteCfModal()">✕ הסר שדה זה</button>
+    </div>
   </div>
 </div>
 
@@ -234,11 +239,11 @@ body{display:flex;flex-direction:column;height:100svh;overflow:hidden;}
   <div class="metar-age-footer" id="metarAgeFooter">—</div>
 </div>
 
-<div class="page-footer" dir="ltr">AirCheck+ · METAR / TAF · v1.27 · built by eligrt</div>
+<div class="page-footer" dir="ltr">AirCheck+ · METAR / TAF · v1.31 · built by eligrt</div>
 
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/12.14.0/firebase-app.js";
-import { getDatabase, ref, get } from "https://www.gstatic.com/firebasejs/12.14.0/firebase-database.js";
+import { getDatabase, ref, get, update } from "https://www.gstatic.com/firebasejs/12.14.0/firebase-database.js";
 const firebaseConfig = {
   apiKey: "AIzaSyBoW1O9dTanLUZW5Z8jswn3hxpfFSdmzm0",
   authDomain: "aircheck-80530.firebaseapp.com",
@@ -253,6 +258,27 @@ const db = getDatabase(app);
 window._towerRead = async function(icao){
   try{ const snap = await get(ref(db,'tower/'+icao+'/latest')); return snap.val(); }
   catch(e){ return null; }
+};
+
+function getDeviceId(){
+  let id=localStorage.getItem('aircheck_device_id');
+  if(!id){id='d_'+Date.now().toString(36)+Math.random().toString(36).slice(2,7);localStorage.setItem('aircheck_device_id',id);}
+  return id;
+}
+
+window._syncMetarToFirebase = async function(icao){
+  try{
+    const deviceId=getDeviceId();
+    const pilotRef=ref(db,'pilots/'+deviceId);
+    let counts={};
+    try{counts=JSON.parse(localStorage.getItem('aircheck_metar_station_counts')||'{}');}catch(e){}
+    await update(pilotRef,{
+      metarUsed:true,
+      metarStation:icao,
+      metarStationCounts:counts,
+      lastSeen:Date.now()
+    });
+  }catch(e){}
 };
 window._towerReady = true;
 document.dispatchEvent(new Event('towerReady'));
@@ -301,6 +327,7 @@ function syncMetarPills(){
 function metarPillSelect(icao){
   localStorage.setItem(METAR_STATION_KEY,icao);
   syncMetarPills();
+  syncCustomPills();
   _metarCache={metar:null,taf:null,fetchedAt:null,icao:null};
   fetchMetar(false);
 }
@@ -351,7 +378,7 @@ function renderTowerBadge(){
   btn.className='tower-btn tower-btn-'+cls;
   btn.innerHTML='';
   if(!isLLHZ){
-    btn.textContent='לא התקבלו עדכוני מגדל לשדה זה';
+    btn.textContent='לא התקבלו עדכונים לשדה זה';
     btn.style.cursor='default';
     btn.onclick=null;
     if(bell)bell.style.display='none';
@@ -483,15 +510,16 @@ async function fetchMetar(force){
     renderTowerBadge();
     renderMetarCards();
     syncMetarPills();
-    // Track usage in the same localStorage keys the main app reads for
-    // Firebase stats — main app's syncToFirebase() will pick these up on
-    // its next run (app load, new flight, etc).
+    // Track usage locally (kept for the main app's own syncToFirebase to
+    // pick up too), AND sync directly to Firebase here so usage is recorded
+    // even if the pilot never reopens the main AirCheck+ app afterward.
     try{
       localStorage.setItem('aircheck_metar_used','1');
       localStorage.setItem('aircheck_metar_station',icao);
       const counts=JSON.parse(localStorage.getItem('aircheck_metar_station_counts')||'{}');
       counts[icao]=(counts[icao]||0)+1;
       localStorage.setItem('aircheck_metar_station_counts',JSON.stringify(counts));
+      if(window._syncMetarToFirebase)window._syncMetarToFirebase(icao);
     }catch(ex){}
   } catch(e){
     console.error('fetchMetar error:',e);
@@ -619,7 +647,7 @@ function syncCustomPills(){
     if(!btn)return;
     btn.classList.remove('set','active');
     if(v){
-      btn.textContent=v;
+      btn.textContent='✎ '+v;
       btn.classList.add('set');
       if(customIdx===i)btn.classList.add('active');
     } else {
@@ -629,6 +657,7 @@ function syncCustomPills(){
 }
 
 function customPillTap(n){
+  if(_longPressFired){_longPressFired=false;return;}
   const slots=getCustomSlots();
   const v=slots[n-1];
   if(!v){customPillEdit(n);return;}
@@ -636,6 +665,20 @@ function customPillTap(n){
   syncMetarPills();syncCustomPills();
   _metarCache={metar:null,taf:null,fetchedAt:null,icao:null};
   fetchMetar(false);
+}
+
+let _longPressTimer=null;
+let _longPressFired=false;
+function startLongPress(n){
+  _longPressFired=false;
+  clearTimeout(_longPressTimer);
+  _longPressTimer=setTimeout(()=>{
+    _longPressFired=true;
+    customPillEdit(n);
+  },550);
+}
+function cancelLongPress(){
+  clearTimeout(_longPressTimer);
 }
 
 let _cfModalSlot=null;
@@ -646,6 +689,7 @@ function customPillEdit(n){
   const current=slots[n-1]||'';
   const input=document.getElementById('cfModalInput');
   input.value=current;
+  document.getElementById('cfModalDeleteRow').style.display=current?'block':'none';
   document.getElementById('cfModal').classList.add('show');
   setTimeout(()=>input.focus(),50);
 }
@@ -661,14 +705,36 @@ function saveCfModal(){
   const input=document.getElementById('cfModalInput');
   const val=input.value.trim().toUpperCase().slice(0,4);
   closeCfModal();
-  if(val.length<2)return;
   const slots=getCustomSlots();
+  const wasSelected=(localStorage.getItem(METAR_STATION_KEY)||'')==='custom'+n;
+  if(val.length<2){
+    // empty/too-short input clears this slot
+    slots[n-1]='';
+    saveCustomSlots(slots);
+    if(wasSelected)localStorage.setItem(METAR_STATION_KEY,'LLBG');
+    syncMetarPills();syncCustomPills();
+    if(wasSelected){_metarCache={metar:null,taf:null,fetchedAt:null,icao:null};fetchMetar(false);}
+    return;
+  }
   slots[n-1]=val;
   saveCustomSlots(slots);
   localStorage.setItem(METAR_STATION_KEY,'custom'+n);
   syncMetarPills();syncCustomPills();
   _metarCache={metar:null,taf:null,fetchedAt:null,icao:null};
   fetchMetar(false);
+}
+
+function deleteCfModal(){
+  const n=_cfModalSlot;
+  if(!n)return;
+  closeCfModal();
+  const slots=getCustomSlots();
+  const wasSelected=(localStorage.getItem(METAR_STATION_KEY)||'')==='custom'+n;
+  slots[n-1]='';
+  saveCustomSlots(slots);
+  if(wasSelected)localStorage.setItem(METAR_STATION_KEY,'LLBG');
+  syncMetarPills();syncCustomPills();
+  if(wasSelected){_metarCache={metar:null,taf:null,fetchedAt:null,icao:null};fetchMetar(false);}
 }
 
 function backToApp(){
