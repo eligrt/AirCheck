@@ -87,7 +87,7 @@ body{
 .action-link{font-size:11px;font-family:var(--font-mono);color:var(--ink);background:var(--paper-hi);border:1px solid var(--gold);border-radius:4px;padding:4px 10px;text-decoration:none;}
 
 .loading{text-align:center;padding:40px 20px;color:var(--ink-muted);font-size:13px;}
-.footer{text-align:center;padding:12px;font-family:var(--font-mono);font-size:9px;color:var(--ink-faint);letter-spacing:.1em;text-transform:uppercase;border-top:1px solid var(--paper-edge);}
+.footer{text-align:center;padding:12px;font-family:var(--font-mono);font-size:9px;color:var(--ink-faint);letter-spacing:.1em;text-transform:uppercase;border-top:1px solid var(--gold-lite);}
 </style>
 </head>
 <body>
@@ -95,7 +95,7 @@ body{
 <div class="topfixed">
   <div class="header">
     <div class="header-titles">
-      <div class="header-mono">AirCheck+ &middot; Admin-Stat &middot; v1.07</div>
+      <div class="header-mono">AirCheck+ &middot; Admin-Stat &middot; v1.09</div>
       <div class="header-title">Statistics Dashboard</div>
     </div>
     <button class="back-btn" onclick="backToApp()" style="margin-top:10px;display:block;width:fit-content;margin-right:auto;margin-left:0;">חזרה ל&nbsp;&nbsp;<span dir="ltr">AirCheck+</span></button>
@@ -113,7 +113,7 @@ body{
   <div class="loading">טוען נתונים...</div>
 </div>
 
-<div class="footer" dir="ltr">ADMIN-STAT &middot; V1.07 &middot; BUILT BY ELIGRT</div>
+<div class="footer" dir="ltr">ADMIN-STAT &middot; V1.09 &middot; BUILT BY ELIGRT</div>
 
 <div id="deleteModal" class="modal-overlay" onclick="handleDeleteModalClick(event)">
   <div class="modal-box">
@@ -333,7 +333,7 @@ async function loadStats(){
         id:'features',label:'Features',alert:communityPending>0,
         html:
           section('COMMUNITY',
-            actionRow('ממתינים לאישור',communityPending,'AirCheckCustomRep.html')+
+            actionRow('ממתינים לאישור',communityPending,'AirCheckCustomRep.html?from=Admin-Stat.html&tab=features')+
             barRow('מאושרים',communityApproved,(communityPending+communityApproved+communityRejected)||1,'var(--cleared)')
           )+
           section('EXTERNAL LINKS',
@@ -380,7 +380,7 @@ async function loadStats(){
   }
 }
 
-let _activeTab='overview';
+let _activeTab=new URLSearchParams(window.location.search).get('tab')||'overview';
 
 window.renderTabBar=function(activeId){
   const tabs=window._adminTabs;
