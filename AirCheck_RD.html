@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <!-- ═══════════════════════════════════════
-     AirCheck+ · v2.08.076 · built by eligrt
+     AirCheck+ · v2.08.077 · built by eligrt
      ═══════════════════════════════════════ -->
 <html lang="he" dir="rtl">
 <head>
@@ -608,7 +608,7 @@ html,body{height:100%;background:#1a1a1c;font-family:var(--font-ui);color:var(--
     <div class="splash-footer-wrap">
       <div class="footer-strip" style="display:flex;align-items:center;justify-content:space-between;padding:5px 14px 8px;">
         <span class="footer-refresh" onclick="reloadApp()">רענון</span>
-        <span id="versionTap" style="cursor:default;">AirCheck+ · v2.08.076 · built by eligrt</span>
+        <span id="versionTap" style="cursor:default;">AirCheck+ · v2.08.077 · built by eligrt</span>
         <span style="width:40px;"></span>
       </div>
     </div>
@@ -781,7 +781,7 @@ html,body{height:100%;background:#1a1a1c;font-family:var(--font-ui);color:var(--
     <div class="tree-panel" id="treePanel"></div>
     <div class="footer-strip" style="display:flex;align-items:center;justify-content:space-between;padding:5px 14px 8px;">
       <span class="footer-refresh" onclick="reloadApp()">רענון</span>
-      <span id="versionTap" style="cursor:default;">AirCheck+ · v2.08.076 · built by eligrt</span>
+      <span id="versionTap" style="cursor:default;">AirCheck+ · v2.08.077 · built by eligrt</span>
       <span style="width:40px;"></span>
     </div>
   </div>
@@ -854,7 +854,7 @@ html,body{height:100%;background:#1a1a1c;font-family:var(--font-ui);color:var(--
 
     <div class="footer-strip" style="display:flex;align-items:center;justify-content:space-between;padding:5px 14px 8px;">
       <span style="width:40px;"></span>
-      <span id="versionTap" style="cursor:default;">AirCheck+ · v2.08.076 · built by eligrt</span>
+      <span id="versionTap" style="cursor:default;">AirCheck+ · v2.08.077 · built by eligrt</span>
       <span style="width:40px;"></span>
     </div>
   </div>
@@ -964,7 +964,7 @@ html,body{height:100%;background:#1a1a1c;font-family:var(--font-ui);color:var(--
     </div>
     <div class="footer-strip" style="display:flex;align-items:center;justify-content:space-between;padding:5px 14px 8px;">
       <span class="footer-refresh" onclick="reloadApp()">רענון</span>
-      <span id="versionTap" style="cursor:default;">AirCheck+ · v2.08.076 · built by eligrt</span>
+      <span id="versionTap" style="cursor:default;">AirCheck+ · v2.08.077 · built by eligrt</span>
       <span style="width:40px;"></span>
     </div>
   </div>
@@ -983,7 +983,7 @@ html,body{height:100%;background:#1a1a1c;font-family:var(--font-ui);color:var(--
     <div class="editor-list" id="editorList"></div>
     <div class="footer-strip" style="display:flex;align-items:center;justify-content:space-between;padding:5px 14px 8px;">
       <span class="footer-refresh" onclick="reloadApp()">רענון</span>
-      <span id="versionTap" style="cursor:default;">AirCheck+ · v2.08.076 · built by eligrt</span>
+      <span id="versionTap" style="cursor:default;">AirCheck+ · v2.08.077 · built by eligrt</span>
       <span style="width:40px;"></span>
     </div>
   </div>
@@ -1129,18 +1129,8 @@ function drawRings(){const g=document.getElementById('ringCoils');g.innerHTML=''
 function trackExternalLinkTap(url,lbl){
   try{
     const key=lbl.replace(/[\.#$\/\[\] ]/g,'_');
-    // Store count
-    let counts={};
-    try{counts=JSON.parse(localStorage.getItem('aircheck_external_link_counts')||'{}');}catch(e){}
-    counts[key]=(counts[key]||0)+1;
-    localStorage.setItem('aircheck_external_link_counts',JSON.stringify(counts));
-    // Store label mapping key->original
-    let labels={};
-    try{labels=JSON.parse(localStorage.getItem('aircheck_external_link_labels')||'{}');}catch(e){}
-    labels[key]=lbl;
-    localStorage.setItem('aircheck_external_link_labels',JSON.stringify(labels));
     localStorage.setItem('aircheck_external_link_used','1');
-    if(typeof syncToFirebase==='function')syncToFirebase();
+    if(window._syncExternalLinkToFirebase)window._syncExternalLinkToFirebase(key,lbl);
   }catch(e){}
   // Mark that we're leaving mid-flight for a reference link (in-app or
   // external/third-party). On return — whether via our own ?resume= param
@@ -3149,7 +3139,7 @@ function splashSecondaryAction(){
 </script>
 <script type="module">
   import { initializeApp } from "https://www.gstatic.com/firebasejs/12.14.0/firebase-app.js";
-  import { getDatabase, ref, set, get } from "https://www.gstatic.com/firebasejs/12.14.0/firebase-database.js";
+  import { getDatabase, ref, set, get, update } from "https://www.gstatic.com/firebasejs/12.14.0/firebase-database.js";
 
   const firebaseConfig = {
     apiKey: "AIzaSyBoW1O9dTanLUZW5Z8jswn3hxpfFSdmzm0",
@@ -3185,6 +3175,29 @@ function splashSecondaryAction(){
     return prof?prof.type:'default';
   }
 
+  // Sync a single external-link tap directly to Firebase, incrementing only
+  // that one key server-side. This avoids the old behavior of overwriting
+  // the whole externalLinkCounts/Labels map from a local snapshot that
+  // never gets pruned (which could resurrect entries already deleted via
+  // Admin). Mirrors the same fix applied to METAR station tracking.
+  window._syncExternalLinkToFirebase = async function(safeKey,originalLabel){
+    try{
+      const deviceId=getDeviceId();
+      const pilotRef=ref(db,'pilots/'+deviceId);
+      let serverCount=0;
+      try{
+        const snap=await get(ref(db,'pilots/'+deviceId+'/externalLinkCounts/'+safeKey));
+        serverCount=snap.val()||0;
+      }catch(e){}
+      const updates={};
+      updates['externalLinkUsed']=true;
+      updates['externalLinkCounts/'+safeKey]=serverCount+1;
+      updates['externalLinkLabels/'+safeKey]=originalLabel;
+      updates['lastSeen']=Date.now();
+      await update(pilotRef,updates);
+    }catch(e){}
+  };
+
   // ── SINGLE SYNC FUNCTION ──
   // Called from: app open, station change, new flight, flight complete, editor save
   async function syncToFirebase(){
@@ -3213,21 +3226,13 @@ function splashSecondaryAction(){
       const metarCustomIcao=existing.metarCustomIcao||'';
       const metarStationCounts=existing.metarStationCounts||{};
 
-      // External links
-      const externalLinkUsed=localStorage.getItem('aircheck_external_link_used')==='1';
-      let externalLinkCounts={};
-      let externalLinkLabels={};
-      try{
-        const rawCounts=JSON.parse(localStorage.getItem('aircheck_external_link_counts')||'{}');
-        // Sanitize keys — Firebase keys cannot contain . # $ / [ ] or spaces
-        Object.entries(rawCounts).forEach(([k,v])=>{
-          const safeKey=k.replace(/[\.#$\/\[\] ]/g,'_');
-          externalLinkCounts[safeKey]=(externalLinkCounts[safeKey]||0)+v;
-        });
-        // Save sanitized counts back to localStorage
-        localStorage.setItem('aircheck_external_link_counts',JSON.stringify(externalLinkCounts));
-      }catch(e){}
-      try{externalLinkLabels=JSON.parse(localStorage.getItem('aircheck_external_link_labels')||'{}');}catch(e){}
+      // External links — tracked exclusively via trackExternalLinkTap's own
+      // direct per-key sync now (see _syncExternalLinkToFirebase above).
+      // Carry forward whatever's already in Firebase so this set() call
+      // doesn't wipe it out or resurrect stale local data.
+      const externalLinkUsed=existing.externalLinkUsed||false;
+      const externalLinkCounts=existing.externalLinkCounts||{};
+      const externalLinkLabels=existing.externalLinkLabels||{};
 
       // Flight counters — use max(local, firebase) to survive browser clears
       const localFlights=parseInt(localStorage.getItem('aircheck_flight_count')||'0');
