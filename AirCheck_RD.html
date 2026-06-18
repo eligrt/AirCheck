@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <!-- ═══════════════════════════════════════
-     AirCheck+ · v2.08.075 · built by eligrt
+     AirCheck+ · v2.08.076 · built by eligrt
      ═══════════════════════════════════════ -->
 <html lang="he" dir="rtl">
 <head>
@@ -608,7 +608,7 @@ html,body{height:100%;background:#1a1a1c;font-family:var(--font-ui);color:var(--
     <div class="splash-footer-wrap">
       <div class="footer-strip" style="display:flex;align-items:center;justify-content:space-between;padding:5px 14px 8px;">
         <span class="footer-refresh" onclick="reloadApp()">רענון</span>
-        <span id="versionTap" style="cursor:default;">AirCheck+ · v2.08.075 · built by eligrt</span>
+        <span id="versionTap" style="cursor:default;">AirCheck+ · v2.08.076 · built by eligrt</span>
         <span style="width:40px;"></span>
       </div>
     </div>
@@ -781,7 +781,7 @@ html,body{height:100%;background:#1a1a1c;font-family:var(--font-ui);color:var(--
     <div class="tree-panel" id="treePanel"></div>
     <div class="footer-strip" style="display:flex;align-items:center;justify-content:space-between;padding:5px 14px 8px;">
       <span class="footer-refresh" onclick="reloadApp()">רענון</span>
-      <span id="versionTap" style="cursor:default;">AirCheck+ · v2.08.075 · built by eligrt</span>
+      <span id="versionTap" style="cursor:default;">AirCheck+ · v2.08.076 · built by eligrt</span>
       <span style="width:40px;"></span>
     </div>
   </div>
@@ -854,7 +854,7 @@ html,body{height:100%;background:#1a1a1c;font-family:var(--font-ui);color:var(--
 
     <div class="footer-strip" style="display:flex;align-items:center;justify-content:space-between;padding:5px 14px 8px;">
       <span style="width:40px;"></span>
-      <span id="versionTap" style="cursor:default;">AirCheck+ · v2.08.075 · built by eligrt</span>
+      <span id="versionTap" style="cursor:default;">AirCheck+ · v2.08.076 · built by eligrt</span>
       <span style="width:40px;"></span>
     </div>
   </div>
@@ -964,7 +964,7 @@ html,body{height:100%;background:#1a1a1c;font-family:var(--font-ui);color:var(--
     </div>
     <div class="footer-strip" style="display:flex;align-items:center;justify-content:space-between;padding:5px 14px 8px;">
       <span class="footer-refresh" onclick="reloadApp()">רענון</span>
-      <span id="versionTap" style="cursor:default;">AirCheck+ · v2.08.075 · built by eligrt</span>
+      <span id="versionTap" style="cursor:default;">AirCheck+ · v2.08.076 · built by eligrt</span>
       <span style="width:40px;"></span>
     </div>
   </div>
@@ -983,7 +983,7 @@ html,body{height:100%;background:#1a1a1c;font-family:var(--font-ui);color:var(--
     <div class="editor-list" id="editorList"></div>
     <div class="footer-strip" style="display:flex;align-items:center;justify-content:space-between;padding:5px 14px 8px;">
       <span class="footer-refresh" onclick="reloadApp()">רענון</span>
-      <span id="versionTap" style="cursor:default;">AirCheck+ · v2.08.075 · built by eligrt</span>
+      <span id="versionTap" style="cursor:default;">AirCheck+ · v2.08.076 · built by eligrt</span>
       <span style="width:40px;"></span>
     </div>
   </div>
@@ -3203,19 +3203,15 @@ function splashSecondaryAction(){
       const profileCount=profiles.length||1;
       const listType=getListType();
 
-      // METAR
-      const metarUsed=localStorage.getItem('aircheck_metar_used')==='1';
-      const rawStation=localStorage.getItem('aircheck_metar_station')||'LLBG';
-      const knownStations=['LLBG','LLHA','LLIB','LLER','LLHZ'];
-      // If stored as 'custom' but customIcao is a known station, normalize it
-      const metarCustomIcao=rawStation==='custom'?(localStorage.getItem('aircheck_metar_custom')||'').toUpperCase():'';
-      const metarStation=(rawStation==='custom'&&knownStations.includes(metarCustomIcao))?metarCustomIcao:rawStation;
-      // If it was a known station stored as custom, fix localStorage too
-      if(rawStation==='custom'&&knownStations.includes(metarCustomIcao)){
-        localStorage.setItem('aircheck_metar_station',metarCustomIcao);
-      }
-      let metarStationCounts={};
-      try{metarStationCounts=JSON.parse(localStorage.getItem('aircheck_metar_station_counts')||'{}');}catch(e){}
+      // METAR — this app no longer reads/writes METAR usage data itself.
+      // The standalone AirCheck_METAR.html page is the sole owner of these
+      // fields now (it syncs directly per-station on each tap). We just
+      // carry forward whatever is already in Firebase so this set() call
+      // doesn't wipe it out.
+      const metarUsed=existing.metarUsed||false;
+      const metarStation=existing.metarStation||'LLBG';
+      const metarCustomIcao=existing.metarCustomIcao||'';
+      const metarStationCounts=existing.metarStationCounts||{};
 
       // External links
       const externalLinkUsed=localStorage.getItem('aircheck_external_link_used')==='1';
