@@ -18,9 +18,8 @@
 html,body{height:100%;background:var(--paper);font-family:var(--font-ui);color:var(--ink);}
 body{display:flex;flex-direction:column;height:100svh;overflow:hidden;}
 .card{background:var(--paper);background-image:repeating-linear-gradient(0deg,transparent 0,transparent 27px,var(--paper-line) 27px,var(--paper-line) 28px);width:100%;flex:1;display:flex;flex-direction:column;min-height:0;overflow:hidden;}
-.header{background:var(--ink);padding:14px 18px;position:relative;flex-shrink:0;display:flex;align-items:center;justify-content:space-between;gap:10px;}
-.header-title{font-size:18px;font-weight:700;color:#f4ecdc;direction:rtl;text-align:right;}
-.header-sub{font-size:11px;color:rgba(244,236,220,.5);margin-top:3px;direction:rtl;text-align:right;}
+.header{background:var(--ink);padding:10px 16px 8px;position:relative;flex-shrink:0;display:flex;align-items:center;justify-content:space-between;gap:10px;}
+.header-title{font-size:18px;font-weight:700;color:#f4ecdc;direction:rtl;text-align:right;text-transform:uppercase;letter-spacing:.02em;}
 .tabs{display:flex;background:var(--paper-hi);border-bottom:1px solid var(--paper-edge);flex-shrink:0;}
 .tab{flex:1;padding:10px 4px;text-align:center;font-family:var(--font-ui);font-size:13px;font-weight:400;color:var(--ink-faint);cursor:pointer;border-bottom:2px solid transparent;white-space:nowrap;background:transparent;border-top:none;border-right:none;border-left:none;}
 .tab.active{background:var(--paper);border-bottom-color:var(--gold);color:var(--ink);font-weight:700;}
@@ -104,8 +103,7 @@ body{display:flex;flex-direction:column;height:100svh;overflow:hidden;}
 <div class="card">
   <div class="header">
     <div>
-      <div class="header-title">ניהול מאגר קהילתי</div>
-      <div class="header-sub" id="headerSub">טוען...</div>
+      <div class="header-title">Repository</div>
     </div>
     <button onclick="backToApp()" style="background:transparent;border:1px solid var(--stamp-red);border-radius:6px;padding:7px 14px;font-family:var(--font-ui);font-size:13px;font-weight:600;color:#e8847a;cursor:pointer;white-space:nowrap;flex-shrink:0;">חזרה ל&nbsp;&nbsp;<span dir="ltr">ADMIN</span></button>
   </div>
@@ -118,7 +116,7 @@ body{display:flex;flex-direction:column;height:100svh;overflow:hidden;}
   <div class="pills" id="pillsRow" style="display:none;"></div>
   <div class="items-list" id="itemsList"><div class="loading">טוען נתונים...</div></div>
   <div class="footer" dir="ltr">
-    <div class="footer-txt">AirCheck+ · Repository · v1.27 · built by eligrt</div>
+    <div class="footer-txt">AirCheck+ · Repository · v1.29 · built by eligrt</div>
   </div>
 </div>
 
@@ -167,7 +165,6 @@ async function loadAll(){
 
 function updateHeader(){
   const p=Object.keys(allData.pending).length, a=Object.keys(allData.approved).length, r=Object.keys(allData.rejected).length;
-  document.getElementById('headerSub').textContent=`${p} ממתינים · ${a} מאושרים · ${r} נדחו`;
   document.getElementById('tab-pending').textContent=`ממתינים (${p})`;
   document.getElementById('tab-approved').textContent=`מאושרים (${a})`;
   document.getElementById('tab-rejected').textContent=`נדחו (${r})`;
