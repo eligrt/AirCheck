@@ -28,13 +28,15 @@ body{
 .topfixed{flex-shrink:0;background:var(--paper);}
 .header{
   background:var(--ink);
-  padding:10px 16px 10px;
-  border-bottom:3px solid var(--gold);
+  padding:10px 16px 8px;
+  display:flex;align-items:center;justify-content:space-between;
 }
-.header-titles{direction:ltr;text-align:left;}
-.header-title{font-size:17px;font-weight:700;color:#f4ecdc;}
+.header-title{font-size:17px;font-weight:700;color:#f4ecdc;text-transform:uppercase;letter-spacing:.02em;}
 .back-btn{background:transparent;border:1px solid rgba(244,236,220,.35);border-radius:6px;padding:7px 14px;font-family:var(--font-ui);font-size:13px;font-weight:600;color:rgba(244,236,220,.8);cursor:pointer;flex-shrink:0;}
-
+.metar-refresh-btn{background:transparent;border:1px solid var(--gold-lite);border-radius:4px;padding:8px 16px;font-family:var(--font-ui);font-size:14px;font-weight:600;color:var(--ink-muted);cursor:pointer;}
+.metar-refresh-btn:active{background:rgba(200,160,74,.1);}
+.metar-refresh-btn.spinning{animation:refreshSpin .6s linear;}
+@keyframes refreshSpin{0%{opacity:1;}50%{opacity:.5;}100%{opacity:1;}}
 .headline{padding:14px 18px 4px;display:flex;align-items:baseline;gap:8px;direction:rtl;}
 .headline-num{font-family:var(--font-mono);font-size:34px;font-weight:700;color:var(--ink);direction:ltr;}
 .headline-label{font-size:13px;color:var(--ink-muted);}
@@ -52,15 +54,18 @@ body{
 .section-box{background:#fff;border:1px solid var(--paper-edge);border-radius:6px;padding:10px 12px;}
 
 .bar-row{margin-bottom:8px;}
-.bar-labels{display:flex;justify-content:space-between;font-size:10px;font-family:var(--font-mono);color:var(--ink-muted);margin-bottom:3px;}
+.bar-labels{display:flex;justify-content:space-between;font-size:10px;font-family:var(--font-mono);color:var(--ink-muted);margin-bottom:2px;}
 .bar-labels .lbl{color:var(--ink-body);}
 .bar-labels .val{direction:ltr;}
 .bar-track{height:6px;background:var(--paper-edge);border-radius:3px;overflow:hidden;}
 .bar-fill{height:100%;border-radius:3px;margin-left:auto;}
 
-.lbl-wrap{display:flex;align-items:center;gap:5px;}
-.del-trigger{background:transparent;border:1px solid var(--paper-edge);border-radius:3px;color:var(--ink-faint);font-size:9px;line-height:1;padding:2px 5px;cursor:pointer;font-family:var(--font-mono);flex-shrink:0;}
-.del-trigger:active{background:var(--paper-edge);}
+.bar-row-deletable{display:flex;align-items:center;gap:8px;margin-bottom:8px;}
+.bar-row-content{flex:1;min-width:0;}
+.del-trigger{background:transparent;border:1.5px solid var(--paper-edge);border-radius:5px;color:var(--stamp-red);font-size:13px;line-height:1;width:26px;height:26px;display:flex;align-items:center;justify-content:center;cursor:pointer;font-family:var(--font-mono);flex-shrink:0;padding:0;}
+.del-trigger:active{background:rgba(185,74,58,.1);}
+.del-trigger.disabled{color:var(--paper-edge);border-color:var(--paper-edge);cursor:default;opacity:.6;}
+.del-trigger.disabled:active{background:transparent;}
 
 .modal-overlay{display:none;position:fixed;inset:0;background:rgba(26,19,8,.8);z-index:200;align-items:center;justify-content:center;padding:24px;backdrop-filter:blur(3px);}
 .modal-overlay.open{display:flex;}
@@ -77,13 +82,14 @@ body{
 .bignum-row .lbl{font-size:12px;color:var(--ink-muted);}
 .bignum-row .val{font-family:var(--font-mono);font-size:20px;font-weight:700;color:var(--ink);direction:ltr;}
 
-.action-row{display:flex;justify-content:space-between;align-items:center;padding:4px 0 10px;direction:rtl;}
+.action-row{display:flex;justify-content:space-between;align-items:center;padding:4px 0 10px;direction:rtl;text-decoration:none;border-radius:6px;margin:0 -8px;padding-right:8px;padding-left:8px;transition:background .12s;}
+.action-row:active{background:rgba(28,61,110,.06);}
 .action-row .lbl{font-size:12px;color:var(--ink-muted);}
-.action-row-right{display:flex;align-items:center;gap:10px;}
+.action-row-right{display:flex;align-items:center;gap:8px;}
 .action-row .val{font-family:var(--font-mono);font-size:28px;font-weight:700;direction:ltr;line-height:1;}
 .action-row .val.zero{color:var(--cleared);}
 .action-row .val.nonzero{color:var(--stamp-red);}
-.action-link{font-size:11px;font-family:var(--font-mono);color:var(--ink);background:var(--paper-hi);border:1px solid var(--gold);border-radius:4px;padding:4px 10px;text-decoration:none;}
+.action-chevron{font-size:20px;color:var(--ink-faint);line-height:1;}
 
 .loading{text-align:center;padding:40px 20px;color:var(--ink-muted);font-size:13px;}
 .footer{text-align:center;padding:12px;font-family:var(--font-mono);font-size:9px;color:var(--ink-faint);letter-spacing:.1em;text-transform:uppercase;border-top:1px solid var(--gold-lite);}
@@ -96,12 +102,18 @@ body{
     <div class="header-titles">
       <div class="header-title">Statistics Dashboard</div>
     </div>
-    <button class="back-btn" onclick="backToApp()" style="margin-top:10px;display:block;width:fit-content;margin-right:auto;margin-left:0;">חזרה ל&nbsp;&nbsp;<span dir="ltr">AirCheck+</span></button>
+    <button class="back-btn" onclick="backToApp()">חזרה ל&nbsp;&nbsp;<span dir="ltr">AirCheck+</span></button>
   </div>
 
-  <div id="headline" class="headline" style="display:none;">
-    <span class="headline-num" id="headlineNum">0</span>
-    <span class="headline-label">טייסים רשומים</span>
+  <div class="headline">
+    <span id="headlineCount" style="display:none;align-items:baseline;gap:8px;">
+      <span class="headline-num" id="headlineNum">0</span>
+      <span class="headline-label">טייסים רשומים</span>
+    </span>
+    <div style="margin-right:auto;display:flex;flex-direction:column;align-items:center;gap:3px;">
+      <button class="metar-refresh-btn" id="adminRefreshBtn" onclick="refreshStats()" style="padding:6px 13px;font-size:12px;">↻ רענן</button>
+      <div id="lastUpdateLabel" style="font-family:var(--font-mono);font-size:9px;color:var(--ink-faint);letter-spacing:.04em;white-space:nowrap;">—</div>
+    </div>
   </div>
 
   <div id="tabbar" class="tabbar" style="display:none;"></div>
@@ -111,7 +123,7 @@ body{
   <div class="loading">טוען נתונים...</div>
 </div>
 
-<div class="footer" dir="ltr">AirCheck+ · Admin · v1.12 · built by eligrt</div>
+<div class="footer" dir="ltr">AirCheck+ · Admin · v1.22 · built by eligrt</div>
 
 <div id="deleteModal" class="modal-overlay" onclick="handleDeleteModalClick(event)">
   <div class="modal-box">
@@ -158,16 +170,26 @@ function barRow(label,count,total,fill){
     <div class="bar-track"><div class="bar-fill" style="width:${pct}%;background:${fill};"></div></div>
   </div>`;
 }
+function barRowFixed(label,count,total,fill){
+  const pct=total>0?Math.round(count/total*100):0;
+  return `<div class="bar-row-deletable">
+    <button class="del-trigger disabled" disabled aria-label="קבוע — לא ניתן למחיקה" title="קבוע — לא ניתן למחיקה">✕</button>
+    <div class="bar-row-content">
+      <div class="bar-labels"><span class="lbl">${label}</span><span class="val">${count} &middot; ${pct}%</span></div>
+      <div class="bar-track"><div class="bar-fill" style="width:${pct}%;background:${fill};"></div></div>
+    </div>
+  </div>`;
+}
 function barRowDeletable(label,count,total,fill,delType,delKey){
   const pct=total>0?Math.round(count/total*100):0;
   const safeLabel=label.replace(/'/g,"\\'").replace(/"/g,'&quot;');
   const safeKey=delKey.replace(/'/g,"\\'");
-  return `<div class="bar-row">
-    <div class="bar-labels">
-      <span class="lbl-wrap"><button class="del-trigger" onclick="openDeleteModal('${delType}','${safeKey}','${safeLabel}')" aria-label="מחק">✕</button><span class="lbl">${label}</span></span>
-      <span class="val">${count} &middot; ${pct}%</span>
+  return `<div class="bar-row-deletable">
+    <button class="del-trigger" onclick="openDeleteModal('${delType}','${safeKey}','${safeLabel}')" aria-label="מחק">✕</button>
+    <div class="bar-row-content">
+      <div class="bar-labels"><span class="lbl">${label}</span><span class="val">${count} &middot; ${pct}%</span></div>
+      <div class="bar-track"><div class="bar-fill" style="width:${pct}%;background:${fill};"></div></div>
     </div>
-    <div class="bar-track"><div class="bar-fill" style="width:${pct}%;background:${fill};"></div></div>
   </div>`;
 }
 function bigNumRow(label,count){
@@ -175,13 +197,13 @@ function bigNumRow(label,count){
 }
 function actionRow(label,count,link){
   const cls=count>0?'nonzero':'zero';
-  return `<div class="action-row">
+  return `<a class="action-row" href="${link}">
     <span class="lbl">${label}</span>
     <div class="action-row-right">
       <span class="val ${cls}">${count}</span>
-      <a class="action-link" href="${link}">פתח &rsaquo;</a>
+      <span class="action-chevron">&rsaquo;</span>
     </div>
-  </div>`;
+  </a>`;
 }
 function section(title,inner){
   return `<div class="section"><div class="section-title">${title}</div><div class="section-box">${inner}</div></div>`;
@@ -195,11 +217,28 @@ function getRank(n){
   return{current,next};
 }
 
+window.refreshStats=function(){
+  const btn=document.getElementById('adminRefreshBtn');
+  btn.classList.add('spinning');
+  setTimeout(()=>btn.classList.remove('spinning'),600);
+  loadStats();
+};
+
+function updateLastUpdateLabel(){
+  const el=document.getElementById('lastUpdateLabel');
+  if(!el)return;
+  const now=new Date();
+  const h=String(now.getHours()).padStart(2,'0');
+  const m=String(now.getMinutes()).padStart(2,'0');
+  el.textContent='עודכן '+h+':'+m;
+}
+
 async function loadStats(){
   try{
     const pilotRef=ref(db,'pilots');
     const snap=await get(pilotRef);
     const data=snap.val();
+    updateLastUpdateLabel();
     if(!data){
       document.getElementById('content').innerHTML='<div class="loading">אין נתונים עדיין</div>';
       return;
@@ -293,7 +332,7 @@ async function loadStats(){
     });
 
     document.getElementById('headlineNum').textContent=total;
-    document.getElementById('headline').style.display='flex';
+    document.getElementById('headlineCount').style.display='inline-flex';
 
     const tabs=[
       {
@@ -345,11 +384,11 @@ async function loadStats(){
           section('METAR',
             bigNumRow('משתמשים ב־METAR',metarUsers)+
             bigNumRow('סה״כ פתיחות',totalMetarOpens)+
-            barRow('LLBG',stationTotals.LLBG,totalMetarOpens||1,'var(--ink)')+
-            barRow('LLHZ',stationTotals.LLHZ,totalMetarOpens||1,'var(--stamp-red)')+
-            barRow('LLHA',stationTotals.LLHA,totalMetarOpens||1,'var(--amber)')+
-            barRow('LLIB',stationTotals.LLIB,totalMetarOpens||1,'var(--cleared)')+
-            barRow('LLER',stationTotals.LLER,totalMetarOpens||1,'#8a5a9a')+
+            barRowFixed('LLBG',stationTotals.LLBG,totalMetarOpens||1,'var(--ink)')+
+            barRowFixed('LLHZ',stationTotals.LLHZ,totalMetarOpens||1,'var(--stamp-red)')+
+            barRowFixed('LLHA',stationTotals.LLHA,totalMetarOpens||1,'var(--amber)')+
+            barRowFixed('LLIB',stationTotals.LLIB,totalMetarOpens||1,'var(--cleared)')+
+            barRowFixed('LLER',stationTotals.LLER,totalMetarOpens||1,'#8a5a9a')+
             Object.entries(stationTotals).filter(([k])=>!['LLBG','LLHZ','LLHA','LLIB','LLER'].includes(k)).sort((a,b)=>b[1]-a[1]).map(([icao,count])=>barRowDeletable(icao,count,totalMetarOpens||1,'#5a7a9a','metar',icao)).join('')
           )
       },
