@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <!-- ═══════════════════════════════════════
-     AirCheck+ · v2.08.062 · built by eligrt
+     AirCheck+ · v2.08.072 · built by eligrt
      ═══════════════════════════════════════ -->
 <html lang="he" dir="rtl">
 <head>
@@ -110,7 +110,8 @@ html,body{height:100%;background:#1a1a1c;font-family:var(--font-ui);color:var(--
 .profile-select-list::-webkit-scrollbar{display:none;}
 .profile-select-list{scrollbar-width:none;-ms-overflow-style:none;}
 .profile-select-wrap{position:relative;margin-bottom:14px;}
-.profile-select-wrap::after{content:'';position:absolute;bottom:0;left:0;right:0;height:44px;background:linear-gradient(transparent,var(--paper-hi) 80%);pointer-events:none;border-radius:0 0 var(--r) var(--r);}
+.profile-select-fade{position:absolute;bottom:0;left:0;right:0;height:36px;background:linear-gradient(transparent,var(--paper-hi) 85%);pointer-events:none;border-radius:0 0 var(--r) var(--r);opacity:0;transition:opacity .15s;}
+.profile-select-fade.show{opacity:1;}
 .profile-select-row{width:100%;padding:12px 14px;border-radius:var(--r);border:1.5px solid var(--paper-edge);background:var(--paper);cursor:pointer;display:flex;align-items:center;justify-content:space-between;direction:rtl;transition:background .12s,border-color .12s;gap:10px;}
 .profile-select-row:active{background:rgba(200,160,74,.08);}
 .profile-select-row.selected{background:rgba(200,160,74,.12);border-color:var(--gold);border-width:2px;}
@@ -258,6 +259,7 @@ html,body{height:100%;background:#1a1a1c;font-family:var(--font-ui);color:var(--
 .btn-ink{background:var(--ink);color:var(--paper);}
 .btn-ink:disabled{opacity:.3;cursor:default;}
 .btn-ghost{background:transparent;color:var(--ink-muted);border:1px solid var(--gold-lite);font-size:14px;}
+.btn-amber-outline{background:rgba(245,158,11,.12);color:#92600a;border:1.5px solid var(--amber);}
 #phaseOverlay{display:none;position:absolute;inset:0;z-index:200;align-items:center;justify-content:center;background:rgba(26,19,8,.8);backdrop-filter:blur(3px);}
 #phaseOverlay.open{display:flex;}
 .phase-overlay-box{background:var(--paper-hi);border:2px solid var(--cleared);border-radius:8px;padding:24px 20px;text-align:center;max-width:300px;width:88%;background-image:repeating-linear-gradient(0deg,transparent 0,transparent 27px,var(--paper-line) 27px,var(--paper-line) 28px);box-shadow:0 0 0 1px rgba(31,111,63,.15),0 20px 40px rgba(0,0,0,.35);}
@@ -606,7 +608,7 @@ html,body{height:100%;background:#1a1a1c;font-family:var(--font-ui);color:var(--
     <div class="splash-footer-wrap">
       <div class="footer-strip" style="display:flex;align-items:center;justify-content:space-between;padding:5px 14px 8px;">
         <span class="footer-refresh" onclick="reloadApp()">רענון</span>
-        <span id="versionTap" onclick="handleVersionTap()" style="cursor:default;">AirCheck+ · v2.08.062 · built by eligrt</span>
+        <span id="versionTap" style="cursor:default;">AirCheck+ · v2.08.072 · built by eligrt</span>
         <span style="width:40px;"></span>
       </div>
     </div>
@@ -779,7 +781,7 @@ html,body{height:100%;background:#1a1a1c;font-family:var(--font-ui);color:var(--
     <div class="tree-panel" id="treePanel"></div>
     <div class="footer-strip" style="display:flex;align-items:center;justify-content:space-between;padding:5px 14px 8px;">
       <span class="footer-refresh" onclick="reloadApp()">רענון</span>
-      <span id="versionTap" onclick="handleVersionTap()" style="cursor:default;">AirCheck+ · v2.08.062 · built by eligrt</span>
+      <span id="versionTap" style="cursor:default;">AirCheck+ · v2.08.072 · built by eligrt</span>
       <span style="width:40px;"></span>
     </div>
   </div>
@@ -852,7 +854,7 @@ html,body{height:100%;background:#1a1a1c;font-family:var(--font-ui);color:var(--
 
     <div class="footer-strip" style="display:flex;align-items:center;justify-content:space-between;padding:5px 14px 8px;">
       <span style="width:40px;"></span>
-      <span id="versionTap" onclick="handleVersionTap()" style="cursor:default;">AirCheck+ · v2.08.062 · built by eligrt</span>
+      <span id="versionTap" style="cursor:default;">AirCheck+ · v2.08.072 · built by eligrt</span>
       <span style="width:40px;"></span>
     </div>
   </div>
@@ -962,7 +964,7 @@ html,body{height:100%;background:#1a1a1c;font-family:var(--font-ui);color:var(--
     </div>
     <div class="footer-strip" style="display:flex;align-items:center;justify-content:space-between;padding:5px 14px 8px;">
       <span class="footer-refresh" onclick="reloadApp()">רענון</span>
-      <span id="versionTap" onclick="handleVersionTap()" style="cursor:default;">AirCheck+ · v2.08.062 · built by eligrt</span>
+      <span id="versionTap" style="cursor:default;">AirCheck+ · v2.08.072 · built by eligrt</span>
       <span style="width:40px;"></span>
     </div>
   </div>
@@ -981,7 +983,7 @@ html,body{height:100%;background:#1a1a1c;font-family:var(--font-ui);color:var(--
     <div class="editor-list" id="editorList"></div>
     <div class="footer-strip" style="display:flex;align-items:center;justify-content:space-between;padding:5px 14px 8px;">
       <span class="footer-refresh" onclick="reloadApp()">רענון</span>
-      <span id="versionTap" onclick="handleVersionTap()" style="cursor:default;">AirCheck+ · v2.08.062 · built by eligrt</span>
+      <span id="versionTap" style="cursor:default;">AirCheck+ · v2.08.072 · built by eligrt</span>
       <span style="width:40px;"></span>
     </div>
   </div>
@@ -1956,11 +1958,28 @@ function openNewFlightModal(){
         _selectedProfileForFlight=prof.id;
         document.querySelectorAll('.profile-select-row').forEach(r=>r.classList.remove('selected'));
         row.classList.add('selected');
+        const fadeHeight=36;
+        const rowBottom=row.offsetTop+row.offsetHeight;
+        const visibleBottom=list.scrollTop+list.clientHeight-fadeHeight;
+        if(rowBottom>visibleBottom){
+          list.scrollTo({top:rowBottom-list.clientHeight+fadeHeight,behavior:'smooth'});
+        }
+        setTimeout(updateProfileSelectFade,350);
       };
       list.appendChild(row);
     });
+    document.getElementById('profileSelectCount').textContent='קיימות '+p.profiles.length+' רשימות';
     document.getElementById('profileSelectorModal').style.display='flex';
+    updateProfileSelectFade();
   }
+}
+function updateProfileSelectFade(){
+  const list=document.getElementById('profileSelectList');
+  const fade=document.getElementById('profileSelectFade');
+  if(!list||!fade)return;
+  const hasOverflow=list.scrollHeight>list.clientHeight+2;
+  const atBottom=list.scrollTop+list.clientHeight>=list.scrollHeight-2;
+  fade.classList.toggle('show',hasOverflow&&!atBottom);
 }
 function profileSelectClose(){document.getElementById('profileSelectorModal').style.display='none';}
 function handleProfileSelectorClick(e){if(e.target===document.getElementById('profileSelectorModal'))profileSelectClose();}
@@ -2909,7 +2928,6 @@ function doSettingsReset(){
 }
 function editRoute(){}
 
-function handleVersionTap(){}
 function showScreen(id){
   document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
   document.getElementById(id).classList.add('active');
@@ -2917,6 +2935,8 @@ function showScreen(id){
 document.addEventListener('DOMContentLoaded',()=>{
   loadSettings();loadList();patchDefaultLinks();migrateDefaultList();loadState();loadReg();loadRoute();drawRings();initSplash();
   if(FEATURES.WHATS_NEW)checkWhatsNew();
+  const profileSelectListEl=document.getElementById('profileSelectList');
+  if(profileSelectListEl)profileSelectListEl.addEventListener('scroll',updateProfileSelectFade);
   // Detect if already installed as PWA on this launch
   if(window.matchMedia('(display-mode: standalone)').matches){
     if(localStorage.getItem('aircheck_pwa_installed')!=='1'){
@@ -3298,9 +3318,11 @@ function splashSecondaryAction(){
   <div id="profileSelectorModal" onclick="handleProfileSelectorClick(event)" style="display:none;position:absolute;inset:0;background:rgba(26,19,8,.8);z-index:520;align-items:center;justify-content:center;padding:24px;backdrop-filter:blur(3px);">
     <div class="modal-box" style="text-align:center;">
       <div class="modal-title">טיסה חדשה</div>
-      <div class="modal-sub" style="margin-bottom:16px;">בחר רשימת טיסה</div>
+      <div id="profileSelectCount" class="modal-sub" style="font-size:12px;color:var(--ink-faint);margin-bottom:2px;"></div>
+      <div class="modal-sub" style="margin-bottom:16px;">בחר את הרשימה המתאימה לטיסה הקרובה</div>
       <div class="profile-select-wrap">
         <div class="profile-select-list" id="profileSelectList"></div>
+        <div class="profile-select-fade" id="profileSelectFade"></div>
       </div>
       <div style="height:1px;background:var(--gold-lite);margin:0 0 14px;opacity:.7;"></div>
       <button class="btn btn-ink" id="profileSelectConfirmBtn" onclick="profileSelectConfirm()" style="margin-bottom:8px;">התחל טיסה ›</button>
@@ -3365,7 +3387,7 @@ function splashSecondaryAction(){
         תוכל לחזור אליהם בכל עת.
       </div>
       <div style="height:1px;background:var(--gold-lite);margin:0 0 14px;opacity:.7;"></div>
-      <button class="btn btn-ink" onclick="endOfListGoBack()" style="margin-bottom:8px;">חזור לפריטים הפתוחים</button>
+      <button class="btn btn-amber-outline" onclick="endOfListGoBack()" style="margin-bottom:8px;">חזור לפריטים הפתוחים</button>
       <button class="btn btn-ghost" onclick="endOfListPark()">סיים לעכשיו, אמשיך מאוחר יותר</button>
     </div>
   </div>
@@ -3385,7 +3407,7 @@ function splashSecondaryAction(){
       </div>
       <div style="height:1px;background:var(--gold-lite);margin:0 0 14px;opacity:.7;"></div>
       <button class="btn btn-ink" onclick="phaseSkippedContinue()" style="margin-bottom:8px;">המשך לשלב הבא</button>
-      <button class="btn btn-ghost" onclick="phaseSkippedGoBack()" style="margin-bottom:8px;">חזור לפריטים הפתוחים</button>
+      <button class="btn btn-amber-outline" onclick="phaseSkippedGoBack()" style="margin-bottom:8px;">חזור לפריטים הפתוחים</button>
       <button class="btn btn-ghost" onclick="phaseSkippedPark()">סיים לעכשיו, אמשיך מאוחר יותר</button>
     </div>
   </div>
