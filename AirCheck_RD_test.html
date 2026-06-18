@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <!-- ═══════════════════════════════════════
-     AirCheck+ · v2.08.077T · built by eligrt
+     AirCheck+ · v2.08.079T · built by eligrt
      ═══════════════════════════════════════ -->
 <html lang="he" dir="rtl">
 <head>
@@ -610,7 +610,7 @@ html,body{height:100%;background:#1a1a1c;font-family:var(--font-ui);color:var(--
     <div class="splash-footer-wrap">
       <div class="footer-strip" style="display:flex;align-items:center;justify-content:space-between;padding:5px 14px 8px;">
         <span class="footer-refresh" onclick="reloadApp()">רענון</span>
-        <span id="versionTap" style="cursor:default;">AirCheck+ · v2.08.077T · built by eligrt</span>
+        <span id="versionTap" style="cursor:default;">AirCheck+ · v2.08.079T · built by eligrt</span>
         <span style="width:40px;"></span>
       </div>
     </div>
@@ -679,6 +679,7 @@ html,body{height:100%;background:#1a1a1c;font-family:var(--font-ui);color:var(--
           <span class="strip-label">UTC</span>
           <span class="strip-time" id="utcClock">--:--</span>
         </div>
+        <button class="strip-pill" onclick="parkFlight()" style="display:flex;align-items:center;gap:5px;direction:rtl;align-self:center;"><i class="ti ti-device-floppy" aria-hidden="true" style="font-size:13px;"></i> שמור</button>
       </div>
       <div class="strip-actions" style="margin-left:auto;align-self:center;">
         <button class="strip-pill strip-pill-admin" onclick="window.location.href='Admin-Stat.html?from=AirCheck_RD_test.html'"># ADMIN</button>
@@ -784,7 +785,7 @@ html,body{height:100%;background:#1a1a1c;font-family:var(--font-ui);color:var(--
     <div class="tree-panel" id="treePanel"></div>
     <div class="footer-strip" style="display:flex;align-items:center;justify-content:space-between;padding:5px 14px 8px;">
       <span class="footer-refresh" onclick="reloadApp()">רענון</span>
-      <span id="versionTap" style="cursor:default;">AirCheck+ · v2.08.077T · built by eligrt</span>
+      <span id="versionTap" style="cursor:default;">AirCheck+ · v2.08.079T · built by eligrt</span>
       <span style="width:40px;"></span>
     </div>
   </div>
@@ -857,7 +858,7 @@ html,body{height:100%;background:#1a1a1c;font-family:var(--font-ui);color:var(--
 
     <div class="footer-strip" style="display:flex;align-items:center;justify-content:space-between;padding:5px 14px 8px;">
       <span style="width:40px;"></span>
-      <span id="versionTap" style="cursor:default;">AirCheck+ · v2.08.077T · built by eligrt</span>
+      <span id="versionTap" style="cursor:default;">AirCheck+ · v2.08.079T · built by eligrt</span>
       <span style="width:40px;"></span>
     </div>
   </div>
@@ -967,7 +968,7 @@ html,body{height:100%;background:#1a1a1c;font-family:var(--font-ui);color:var(--
     </div>
     <div class="footer-strip" style="display:flex;align-items:center;justify-content:space-between;padding:5px 14px 8px;">
       <span class="footer-refresh" onclick="reloadApp()">רענון</span>
-      <span id="versionTap" style="cursor:default;">AirCheck+ · v2.08.077T · built by eligrt</span>
+      <span id="versionTap" style="cursor:default;">AirCheck+ · v2.08.079T · built by eligrt</span>
       <span style="width:40px;"></span>
     </div>
   </div>
@@ -986,7 +987,7 @@ html,body{height:100%;background:#1a1a1c;font-family:var(--font-ui);color:var(--
     <div class="editor-list" id="editorList"></div>
     <div class="footer-strip" style="display:flex;align-items:center;justify-content:space-between;padding:5px 14px 8px;">
       <span class="footer-refresh" onclick="reloadApp()">רענון</span>
-      <span id="versionTap" style="cursor:default;">AirCheck+ · v2.08.077T · built by eligrt</span>
+      <span id="versionTap" style="cursor:default;">AirCheck+ · v2.08.079T · built by eligrt</span>
       <span style="width:40px;"></span>
     </div>
   </div>
@@ -2815,6 +2816,20 @@ function showSettingsResetConfirm(){
   openModal();
 }
 
+function parkFlight(){
+  // Progress (status/current) is already persisted continuously as the
+  // pilot works through the checklist — there's nothing extra to save
+  // here. Parking simply takes them to the splash screen, where the
+  // existing hasProgress branch in initSplash() shows the resume card.
+  // Clear any pending-resume flag first so initSplash() doesn't take its
+  // "skip splash, jump straight back into the checklist" branch — Park
+  // means "I want to see the splash screen", not "send me right back in".
+  try{sessionStorage.removeItem('aircheck_pending_resume');}catch(e){}
+  if(window.location.search)history.replaceState(null,'',window.location.pathname);
+  initSplash();
+  showScreen('screenSplash');
+}
+
 function openSettings(){
   loadSettings();
   const tail=settings.tail||'';
@@ -3084,12 +3099,12 @@ function initSplash(){
   if(hasProgress){
     // Show resume card
     resumeCard.style.display='';
-    // Find last done item
-    let lastDone=-1;
-    Object.keys(status).forEach(k=>{if(status[k]==='done'&&+k>lastDone)lastDone=+k;});
-    if(lastDone>=0&&CL[lastDone]){
-      document.getElementById('splashResumePhase').textContent='LAST ITEM · '+CL[lastDone].phase;
-      document.getElementById('splashResumeItem').textContent=CL[lastDone].main;
+    // Describe the pilot's actual current position (where "המשך טיסה" will
+    // take them) — not the last *completed* item, which can sit well
+    // behind real progress once items have been skipped along the way.
+    if(CL[current]){
+      document.getElementById('splashResumePhase').textContent='NEXT ITEM · '+CL[current].phase;
+      document.getElementById('splashResumeItem').textContent=CL[current].main;
     }
     const pct=Math.round((done/CL.length)*100);
     document.getElementById('splashRunwayFill').style.width=pct+'%';
