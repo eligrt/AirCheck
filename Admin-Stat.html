@@ -28,8 +28,7 @@ body{
 .topfixed{flex-shrink:0;background:var(--paper);}
 .header{
   background:var(--ink);
-  padding:10px 16px 8px;
-  display:flex;align-items:center;justify-content:space-between;
+  padding:10px 16px 10px;
   border-bottom:3px solid var(--gold);
 }
 .header-titles{direction:ltr;text-align:left;}
@@ -96,10 +95,10 @@ body{
 <div class="topfixed">
   <div class="header">
     <div class="header-titles">
-      <div class="header-mono">AirCheck+ &middot; Admin-Stat &middot; v1.04</div>
+      <div class="header-mono">AirCheck+ &middot; Admin-Stat &middot; v1.07</div>
       <div class="header-title">Statistics Dashboard</div>
     </div>
-    <button class="back-btn" onclick="backToApp()">חזרה ל&nbsp;&nbsp;<span dir="ltr">AirCheck+</span></button>
+    <button class="back-btn" onclick="backToApp()" style="margin-top:10px;display:block;width:fit-content;margin-right:auto;margin-left:0;">חזרה ל&nbsp;&nbsp;<span dir="ltr">AirCheck+</span></button>
   </div>
 
   <div id="headline" class="headline" style="display:none;">
@@ -114,7 +113,7 @@ body{
   <div class="loading">טוען נתונים...</div>
 </div>
 
-<div class="footer" dir="ltr">ADMIN-STAT &middot; V1.04 &middot; BUILT BY ELIGRT</div>
+<div class="footer" dir="ltr">ADMIN-STAT &middot; V1.07 &middot; BUILT BY ELIGRT</div>
 
 <div id="deleteModal" class="modal-overlay" onclick="handleDeleteModalClick(event)">
   <div class="modal-box">
@@ -445,7 +444,7 @@ window.confirmDeleteEntry=async function(){
 
 window.backToApp=function(){
   const from=new URLSearchParams(window.location.search).get('from')||'AirCheck_RD_test.html';
-  window.location.href=from;
+  window.location.href=from+'?resume=1';
 };
 
 loadStats();
