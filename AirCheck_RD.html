@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <!-- ═══════════════════════════════════════
-     AirCheck+ · v2.08.072 · built by eligrt
+     AirCheck+ · v2.08.075 · built by eligrt
      ═══════════════════════════════════════ -->
 <html lang="he" dir="rtl">
 <head>
@@ -169,7 +169,7 @@ html,body{height:100%;background:#1a1a1c;font-family:var(--font-ui);color:var(--
 .ed-popup-link-label{font-size:10px;color:var(--ink-faint);font-family:var(--font-mono);letter-spacing:.06em;margin-bottom:6px;}
 .card-stamp{position:absolute;bottom:14px;left:18px;direction:ltr;transform-origin:left bottom;pointer-events:none;transform:rotate(-7deg) scale(.85);opacity:0;transition:opacity .14s ease-out,transform .18s ease-out;}
 .card-stamp.visible{opacity:1;transform:rotate(-7deg) scale(1);}
-.stamp-box{border:2.5px solid var(--stamp-red);padding:4px 12px 5px;text-align:center;color:var(--stamp-red);font-family:var(--font-mono);background:rgba(251,246,232,.6);}
+.stamp-box{border:2.5px solid var(--cleared);padding:4px 12px 5px;text-align:center;color:var(--cleared);font-family:var(--font-mono);background:rgba(251,246,232,.6);}
 .stamp-text{font-size:8px;letter-spacing:.28em;font-weight:700;margin-bottom:1px;}
 .stamp-init{font-size:12px;font-weight:700;letter-spacing:.12em;}
 .stamp-time{font-size:7px;letter-spacing:.15em;opacity:.7;margin-top:2px;}
@@ -347,7 +347,7 @@ html,body{height:100%;background:#1a1a1c;font-family:var(--font-ui);color:var(--
 .summary-strip-val{font-size:15px;font-weight:700;font-family:var(--font-mono);color:var(--paper);}
 .summary-strip-route{font-size:13px;font-weight:700;font-family:var(--font-mono);color:var(--paper);letter-spacing:.05em;}
 .summary-body{flex:1;overflow-y:auto;padding:10px 14px 8px;-webkit-overflow-scrolling:touch;}
-.summary-stamp-wrap{display:flex;justify-content:center;margin-bottom:14px;}
+.summary-stamp-wrap{display:flex;justify-content:center;margin-bottom:14px;margin-top:6px;}
 .summary-stamp{border:3px solid var(--cleared);padding:8px 20px 10px;text-align:center;color:var(--cleared);font-family:var(--font-mono);transform:rotate(-5deg);display:inline-block;}
 .summary-stamp-name{font-size:15px;font-weight:700;letter-spacing:.06em;margin-bottom:4px;}
 .summary-stamp-bottom{font-size:20px;font-weight:700;letter-spacing:.12em;direction:ltr;}
@@ -608,7 +608,7 @@ html,body{height:100%;background:#1a1a1c;font-family:var(--font-ui);color:var(--
     <div class="splash-footer-wrap">
       <div class="footer-strip" style="display:flex;align-items:center;justify-content:space-between;padding:5px 14px 8px;">
         <span class="footer-refresh" onclick="reloadApp()">רענון</span>
-        <span id="versionTap" style="cursor:default;">AirCheck+ · v2.08.072 · built by eligrt</span>
+        <span id="versionTap" style="cursor:default;">AirCheck+ · v2.08.075 · built by eligrt</span>
         <span style="width:40px;"></span>
       </div>
     </div>
@@ -781,7 +781,7 @@ html,body{height:100%;background:#1a1a1c;font-family:var(--font-ui);color:var(--
     <div class="tree-panel" id="treePanel"></div>
     <div class="footer-strip" style="display:flex;align-items:center;justify-content:space-between;padding:5px 14px 8px;">
       <span class="footer-refresh" onclick="reloadApp()">רענון</span>
-      <span id="versionTap" style="cursor:default;">AirCheck+ · v2.08.072 · built by eligrt</span>
+      <span id="versionTap" style="cursor:default;">AirCheck+ · v2.08.075 · built by eligrt</span>
       <span style="width:40px;"></span>
     </div>
   </div>
@@ -854,7 +854,7 @@ html,body{height:100%;background:#1a1a1c;font-family:var(--font-ui);color:var(--
 
     <div class="footer-strip" style="display:flex;align-items:center;justify-content:space-between;padding:5px 14px 8px;">
       <span style="width:40px;"></span>
-      <span id="versionTap" style="cursor:default;">AirCheck+ · v2.08.072 · built by eligrt</span>
+      <span id="versionTap" style="cursor:default;">AirCheck+ · v2.08.075 · built by eligrt</span>
       <span style="width:40px;"></span>
     </div>
   </div>
@@ -964,7 +964,7 @@ html,body{height:100%;background:#1a1a1c;font-family:var(--font-ui);color:var(--
     </div>
     <div class="footer-strip" style="display:flex;align-items:center;justify-content:space-between;padding:5px 14px 8px;">
       <span class="footer-refresh" onclick="reloadApp()">רענון</span>
-      <span id="versionTap" style="cursor:default;">AirCheck+ · v2.08.072 · built by eligrt</span>
+      <span id="versionTap" style="cursor:default;">AirCheck+ · v2.08.075 · built by eligrt</span>
       <span style="width:40px;"></span>
     </div>
   </div>
@@ -983,7 +983,7 @@ html,body{height:100%;background:#1a1a1c;font-family:var(--font-ui);color:var(--
     <div class="editor-list" id="editorList"></div>
     <div class="footer-strip" style="display:flex;align-items:center;justify-content:space-between;padding:5px 14px 8px;">
       <span class="footer-refresh" onclick="reloadApp()">רענון</span>
-      <span id="versionTap" style="cursor:default;">AirCheck+ · v2.08.072 · built by eligrt</span>
+      <span id="versionTap" style="cursor:default;">AirCheck+ · v2.08.075 · built by eligrt</span>
       <span style="width:40px;"></span>
     </div>
   </div>
@@ -1307,7 +1307,7 @@ function releaseHold(){
         const anyUpcoming=CL.some((_,j)=>!status[j]||status[j]==='upcoming');
         if(allDone&&!anySkipped&&!anyUpcoming){
           card.classList.remove('flipping');
-          showAllDoneOverlay(prevPhase);
+          showAllDoneOverlay(CL[CL.length-1].phase);
           return;
         }
         if(pAllGreen&&newPhase&&newPhase!==prevPhase){
