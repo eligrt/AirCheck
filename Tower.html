@@ -140,7 +140,7 @@ textarea::placeholder{color:rgba(28,61,110,.3);}
   </div>
 
   <div class="footer" dir="ltr">
-    <div class="footer-txt" id="footerTxt">AirCheck+ · Tower · v1.10 · built by eligrt</div>
+    <div class="footer-txt" id="footerTxt">AirCheck+ · Tower · v1.11 · built by eligrt</div>
   </div>
 </div>
 
@@ -174,7 +174,7 @@ const stationNames = {
 
 function init(){
   document.getElementById('headerStation').textContent = (stationNames[icao]||icao) + ' · ' + icao;
-  document.getElementById('footerTxt').textContent = 'AirCheck+ · Tower · v1.10 · built by eligrt';
+  document.getElementById('footerTxt').textContent = 'AirCheck+ · Tower · v1.11 · built by eligrt';
   loadLastUpdate();
 }
 
@@ -186,7 +186,7 @@ async function loadLastUpdate(){
     const data = snap.val();
     if(data){
       _lastTimestamp = data.timestamp;
-      document.getElementById('livePanel').style.display = '';
+      document.getElementById('livePanel').style.display = 'block';
       document.getElementById('lastUpdateText').textContent = data.text || '—';
       const d = new Date(data.timestamp);
       const h = String(d.getUTCHours()).padStart(2,'0');
