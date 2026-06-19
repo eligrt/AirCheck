@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <!-- ═══════════════════════════════════════
-     AirCheck+ · v2.08.083 · built by eligrt
+     AirCheck+ · v2.08.089 · built by eligrt
      ═══════════════════════════════════════ -->
 <html lang="he" dir="rtl">
 <head>
@@ -385,6 +385,10 @@ html,body{height:100%;background:#1a1a1c;font-family:var(--font-ui);color:var(--
 .editor-mode-label{font-family:var(--font-mono);font-size:11px;font-weight:700;letter-spacing:.2em;}
 .editor-save-btn{background:transparent;border:1px solid var(--paper);color:var(--paper);padding:5px 14px;border-radius:3px;font-family:var(--font-mono);font-size:10px;font-weight:700;letter-spacing:.15em;cursor:pointer;}
 .editor-save-btn:active{background:rgba(255,255,255,.15);}
+.editor-topbar-start{display:flex;align-items:center;gap:8px;}
+.editor-dirty-badge{display:flex;align-items:center;gap:6px;font-family:var(--font-mono);font-size:10px;letter-spacing:.06em;color:#fce3b5;background:rgba(245,158,11,.25);padding:3px 8px;border-radius:10px;animation:edDirtyBlink 1.4s infinite;}
+@keyframes edDirtyBlink{0%,100%{opacity:1;}50%{opacity:.55;}}
+.ed-item-touched-dot{width:6px;height:6px;border-radius:50%;background:var(--amber);flex-shrink:0;margin:0 2px;align-self:center;}
 .editor-list{flex:1;overflow-y:auto;padding:10px 14px 20px;-webkit-overflow-scrolling:touch;}
 .editor-list::-webkit-scrollbar{width:0;}
 /* Phase card */
@@ -615,7 +619,7 @@ html,body{height:100%;background:#1a1a1c;font-family:var(--font-ui);color:var(--
     <div class="splash-footer-wrap">
       <div class="footer-strip" style="display:flex;align-items:center;justify-content:space-between;padding:5px 14px 8px;">
         <span class="footer-refresh" onclick="reloadApp()">רענון</span>
-        <span id="versionTap" style="cursor:default;">AirCheck+ · v2.08.083 · built by eligrt</span>
+        <span id="versionTap" style="cursor:default;">AirCheck+ · v2.08.089 · built by eligrt</span>
         <span style="width:40px;"></span>
       </div>
     </div>
@@ -789,7 +793,7 @@ html,body{height:100%;background:#1a1a1c;font-family:var(--font-ui);color:var(--
     <div class="tree-panel" id="treePanel"></div>
     <div class="footer-strip" style="display:flex;align-items:center;justify-content:space-between;padding:5px 14px 8px;">
       <span class="footer-refresh" onclick="reloadApp()">רענון</span>
-      <span id="versionTap" style="cursor:default;">AirCheck+ · v2.08.083 · built by eligrt</span>
+      <span id="versionTap" style="cursor:default;">AirCheck+ · v2.08.089 · built by eligrt</span>
       <span style="width:40px;"></span>
     </div>
   </div>
@@ -862,7 +866,7 @@ html,body{height:100%;background:#1a1a1c;font-family:var(--font-ui);color:var(--
 
     <div class="footer-strip" style="display:flex;align-items:center;justify-content:space-between;padding:5px 14px 8px;">
       <span style="width:40px;"></span>
-      <span id="versionTap" style="cursor:default;">AirCheck+ · v2.08.083 · built by eligrt</span>
+      <span id="versionTap" style="cursor:default;">AirCheck+ · v2.08.089 · built by eligrt</span>
       <span style="width:40px;"></span>
     </div>
   </div>
@@ -933,6 +937,10 @@ html,body{height:100%;background:#1a1a1c;font-family:var(--font-ui);color:var(--
             <button class="tog off" id="togSounds" onclick="toggleSetting('sounds')"><div class="tog-knob"></div></button>
           </div>
           <div class="settings-row">
+            <span class="settings-row-label">רטט באישורי פעולה</span>
+            <button class="tog off" id="togHaptics" onclick="toggleSetting('haptics')"><div class="tog-knob"></div></button>
+          </div>
+          <div class="settings-row">
             <span class="settings-row-label">זמן החזקת המסלול לאישור</span>
             <div class="seg-ctrl" id="holdDurationCtrl">
               <button class="seg-btn inactive" onclick="setHoldDuration(200,'short')">קצר</button>
@@ -972,17 +980,20 @@ html,body{height:100%;background:#1a1a1c;font-family:var(--font-ui);color:var(--
     </div>
     <div class="footer-strip" style="display:flex;align-items:center;justify-content:space-between;padding:5px 14px 8px;">
       <span class="footer-refresh" onclick="reloadApp()">רענון</span>
-      <span id="versionTap" style="cursor:default;">AirCheck+ · v2.08.083 · built by eligrt</span>
+      <span id="versionTap" style="cursor:default;">AirCheck+ · v2.08.089 · built by eligrt</span>
       <span style="width:40px;"></span>
     </div>
   </div>
   <div class="screen" id="screenEditor">
     <div class="editor-topbar">
-      <div class="editor-mode-tag">
-        <div class="editor-blink"></div>
-        <span class="editor-mode-label">EDIT MODE</span>
+      <div class="editor-topbar-start">
+        <div class="editor-mode-tag">
+          <div class="editor-blink"></div>
+          <span class="editor-mode-label">EDIT MODE</span>
+        </div>
+        <span class="editor-dirty-badge" id="editorDirtyBadge" style="display:none;">שינויים לא נשמרו</span>
       </div>
-      <button class="editor-save-btn" onclick="saveEditor()">DONE ✓</button>
+      <button class="editor-save-btn" onclick="requestCloseEditor()">EXIT</button>
     </div>
     <!-- Profile tab strip -->
     <div class="profile-tab-strip" id="profileTabStrip" style="display:none;"></div>
@@ -991,7 +1002,7 @@ html,body{height:100%;background:#1a1a1c;font-family:var(--font-ui);color:var(--
     <div class="editor-list" id="editorList"></div>
     <div class="footer-strip" style="display:flex;align-items:center;justify-content:space-between;padding:5px 14px 8px;">
       <span class="footer-refresh" onclick="reloadApp()">רענון</span>
-      <span id="versionTap" style="cursor:default;">AirCheck+ · v2.08.083 · built by eligrt</span>
+      <span id="versionTap" style="cursor:default;">AirCheck+ · v2.08.089 · built by eligrt</span>
       <span style="width:40px;"></span>
     </div>
   </div>
@@ -1296,7 +1307,7 @@ function animHold(ts){
     document.getElementById('stampTime').textContent=_confirmedTimeStr+' UTC';
     document.getElementById('cardStamp').querySelector('.stamp-box').classList.remove('stale');
     document.getElementById('cardStamp').classList.add('visible');
-    if(navigator.vibrate){navigator.vibrate(40);}
+    hapticTap();
     if(settings&&settings.sounds){playConfirmSound();}
     document.getElementById('confirmHint').textContent='אושר — שחרר להמשך';
     document.getElementById('confirmHint').classList.add('confirmed');
@@ -1366,10 +1377,11 @@ function resetRunwayBtn(instant){
   btn.classList.add('idle');
 }
 function advanceToNext(){let n=current+1;while(n<CL.length&&status[n]==='done')n++;if(n<CL.length)current=n;else{current=CL.length-1;}}
-function goBack(){if(current>0){current--;holdState='idle';resetRunwayBtn();render();}}
+function goBack(){if(current>0){hapticTap();current--;holdState='idle';resetRunwayBtn();render();}}
 function skipItem(){status[current]='skipped';let n=current+1;while(n<CL.length&&status[n]==='done')n++;if(n<CL.length)current=n;holdState='idle';resetRunwayBtn();render();}
-function uncheckCurrent(){status[current]='skipped';holdState='idle';resetRunwayBtn();render();}
+function uncheckCurrent(){hapticTap();status[current]='skipped';holdState='idle';resetRunwayBtn();render();}
 function goNext(){
+  hapticTap();
   if(current<CL.length-1){
     if(status[current]!=='done')status[current]='skipped';
     const prevPhase=CL[current].phase;
@@ -1404,6 +1416,7 @@ function jumpToUnchecked(){
   // Find all skipped indices
   const skipped=CL.reduce((arr,_,i)=>{ if(status[i]==='skipped')arr.push(i); return arr; },[]);
   if(!skipped.length)return;
+  hapticTap();
   // Find next skipped after current position, wrap around
   const next=skipped.find(i=>i>current)??skipped[0];
   current=next;
@@ -1447,6 +1460,7 @@ function bulkConfirm(){
   closeBulkPopup();
   if(_bulkIsComplete){
     // uncheck all — mark as skipped
+    hapticTap();
     _bulkPhaseItems.forEach(ii=>{status[ii]='skipped';});
     current=_bulkPhaseItems[0];
   }else{
@@ -1575,12 +1589,15 @@ function dismissAllDone(){showScreen('screenChecklist');render();}
 
 
 function openModal(){
+  hapticTap();
   document.getElementById('modal').classList.add('open');
 }
 function closeModal(){
   document.getElementById('modal').classList.remove('open');
   const cb=document.getElementById('modalCancelBtn');
-  if(cb)cb.style.display='';
+  if(cb){cb.style.display='';cb.textContent='ביטול';}
+  const db=document.getElementById('edDiscardBtn');
+  if(db)db.style.display='none';
   document.querySelector('.modal-box').className='modal-box';
 }
 function startNew(){
@@ -1642,7 +1659,15 @@ function flightDetailsChangeReg(){
 // ── SETTINGS ──
 const SETTINGS_KEY='aircheck_rd_settings';
 const FLIGHT_DETAILS_KEY='aircheck_flight_details';
-let settings={tail:'',holdMs:300,sounds:false,theme:'day',homeBase:''};
+let settings={tail:'',holdMs:300,sounds:false,haptics:true,theme:'day',homeBase:''};
+// Single gate for all haptic feedback — respects the settings toggle.
+// Uniform short pulse used for confirm, navigation, and the moment any
+// destructive confirmation popup appears (not the destructive action
+// itself, which already happened by the time the popup would show again).
+function hapticTap(){
+  if(settings&&settings.haptics===false)return;
+  if(navigator.vibrate)navigator.vibrate(40);
+}
 
 function loadSettings(){
   // Hide profile name row if multi-profile not enabled
@@ -1829,10 +1854,16 @@ function renderProfileTabStrip(){
   strip.innerHTML='';
   p.profiles.forEach(prof=>{
     const tab=document.createElement('div');
-    tab.className='profile-tab'+(prof.id===_editorActiveProfileId?' active':'');
+    const isActiveTab=prof.id===_editorActiveProfileId;
+    tab.className='profile-tab'+(isActiveTab?' active':'');
     const itemCount=(prof.list||[]).length;
     tab.textContent=prof.name+' ('+itemCount+')';
-    tab.onclick=()=>{_editorActiveProfileId=prof.id;loadEditorForProfile(prof.id);};
+    if(isActiveTab&&edDirty){
+      const dot=document.createElement('span');
+      dot.className='profile-tab-dot';
+      tab.appendChild(dot);
+    }
+    tab.onclick=()=>requestSwitchProfile(prof.id);
     strip.appendChild(tab);
   });
   if(p.profiles.length<15){
@@ -1872,12 +1903,37 @@ function renderProfileTabStrip(){
   actions.appendChild(legend2);
 }
 
+function requestSwitchProfile(id){
+  if(id===_editorActiveProfileId)return;
+  if(!edDirty){_editorActiveProfileId=id;loadEditorForProfile(id);return;}
+  showConfirm(
+    'שינויים לא נשמרו',
+    'יש שינויים שלא נשמרו ברשימה הנוכחית. מה לעשות לפני המעבר?',
+    ()=>{persistEditorProfile();_editorActiveProfileId=id;loadEditorForProfile(id);},
+    'danger'
+  );
+  document.getElementById('modalConfirmBtn').textContent='שמור ועבור';
+  const btnsRow=document.querySelector('.modal-btns');
+  const cancelBtn=document.getElementById('modalCancelBtn');
+  let discardBtn=document.getElementById('edDiscardBtn');
+  if(!discardBtn){
+    discardBtn=document.createElement('button');
+    discardBtn.id='edDiscardBtn';
+    discardBtn.className='btn btn-danger-ghost';
+    btnsRow.insertBefore(discardBtn,cancelBtn);
+  }
+  discardBtn.textContent='עבור בלי לשמור';
+  discardBtn.style.display='block';
+  discardBtn.onclick=()=>{closeModal();_editorActiveProfileId=id;loadEditorForProfile(id);};
+  cancelBtn.textContent='ביטול - המשך לערוך';
+}
 function loadEditorForProfile(id){
   const p=getProfiles();
   const prof=p.profiles.find(pr=>pr.id===id);
   if(!prof)return;
   CL.length=0;prof.list.forEach(it=>CL.push(it));buildIndex();
   edData=clToEdData(CL);
+  resetEdDirty();
   renderProfileTabStrip();
   renderEditor();
 }
@@ -2021,15 +2077,28 @@ let edData=[];
 let edPopupCallback=null;
 let dragSrc=null;
 const edPhaseOpenState={};
+let edDirty=false;
+function markEdDirty(){
+  edDirty=true;
+  const badge=document.getElementById('editorDirtyBadge');
+  if(badge)badge.style.display='flex';
+}
+function resetEdDirty(){
+  edDirty=false;
+  const badge=document.getElementById('editorDirtyBadge');
+  if(badge)badge.style.display='none';
+}
 
 function safeDragMove(sp,sg,si,dp,dg,di){
   try{
     if(!edData[sp]||!edData[sp].groups[sg])return false;
+    markEdDirty();
     if(!edData[dp]||!edData[dp].groups[dg])return false;
     const srcItems=edData[sp].groups[sg].items;
     const dstItems=edData[dp].groups[dg].items;
     if(si<0||si>=srcItems.length)return false;
     const[moved]=srcItems.splice(si,1);
+    moved._edTouched=true;
     if(di===undefined||di<0||di>dstItems.length){dstItems.push(moved);}
     else{dstItems.splice(di,0,moved);}
     return true;
@@ -2058,12 +2127,38 @@ function openEditor(fromSettings){
   const p=getProfiles();
   _editorActiveProfileId=p.activeProfile;
   edData=clToEdData(CL);
+  resetEdDirty();
   renderProfileTabStrip();
   renderEditor();
   showScreen('screenEditor');
 }
 function closeEditor(){if(_editorFromSettings){openSettings();}else{showScreen('screenChecklist');}}
-function saveEditor(){
+function requestCloseEditor(){
+  if(!edDirty){closeEditor();return;}
+  // Reuses the shared confirm modal, but with three real choices instead
+  // of the usual single "אישור" — save & exit, discard, or stay editing.
+  showConfirm(
+    'שינויים לא נשמרו',
+    'ביצעת שינויים ברשימה שעדיין לא נשמרו. מה לעשות?',
+    ()=>{saveEditor();},
+    'danger'
+  );
+  document.getElementById('modalConfirmBtn').textContent='שמור וצא';
+  const btnsRow=document.querySelector('.modal-btns');
+  const cancelBtn=document.getElementById('modalCancelBtn');
+  let discardBtn=document.getElementById('edDiscardBtn');
+  if(!discardBtn){
+    discardBtn=document.createElement('button');
+    discardBtn.id='edDiscardBtn';
+    discardBtn.className='btn btn-danger-ghost';
+    btnsRow.insertBefore(discardBtn,cancelBtn);
+  }
+  discardBtn.textContent='צא בלי לשמור';
+  discardBtn.style.display='block';
+  discardBtn.onclick=()=>{closeModal();closeEditor();};
+  cancelBtn.textContent='ביטול - המשך לערוך';
+}
+function persistEditorProfile(){
   const statusByKey={};
   CL.forEach((item,i)=>{if(status[i])statusByKey[item.main]=status[i];});
   const newList=edDataToCL(edData);
@@ -2088,7 +2183,11 @@ function saveEditor(){
     // Silent collection — send new non-default items to Firebase /pending
     if(window.collectCustomItems)window.collectCustomItems(newList);
   }
+  resetEdDirty();
   updateRunwayProfileLabel();
+}
+function saveEditor(){
+  persistEditorProfile();
   if(_editorFromSettings){openSettings();}else{showScreen('screenChecklist');render();}
 }
 
@@ -2109,7 +2208,7 @@ function renderEditor(){
     const editBtn=document.createElement('button');editBtn.className='ed-icon';editBtn.textContent='✎';
     editBtn.onclick=e=>{e.stopPropagation();openEdPopup('שינוי שם שלב',ph.phase,'',false,val=>{ph.phase=val;renderEditor();});};
     const delBtn=document.createElement('button');delBtn.className='ed-icon del';delBtn.textContent='✕';
-    delBtn.onclick=e=>{e.stopPropagation();showConfirm('מחיקת שלב','למחוק את השלב "'+ph.phase+'"? כל הפריטים בו יימחקו.',()=>{edData.splice(pi,1);renderEditor();});};
+    delBtn.onclick=e=>{e.stopPropagation();showConfirm('מחיקת שלב','למחוק את השלב "'+ph.phase+'"? כל הפריטים בו יימחקו.',()=>{markEdDirty();edData.splice(pi,1);renderEditor();});};
     hdr.appendChild(arrow);hdr.appendChild(name);hdr.appendChild(count);hdr.appendChild(editBtn);hdr.appendChild(delBtn);
     const groups=document.createElement('div');groups.className='ed-groups';
     const phaseKey=pi+'_'+ph.phase;
@@ -2124,7 +2223,7 @@ function renderEditor(){
       const gedit=document.createElement('button');gedit.className='ed-icon on-paper';gedit.textContent='✎';
       gedit.onclick=e=>{e.stopPropagation();openEdPopup('שינוי שם קבוצה',g.name,'',false,val=>{g.name=val;renderEditor();});};
       const gdel=document.createElement('button');gdel.className='ed-icon del on-paper';gdel.textContent='✕';
-      gdel.onclick=e=>{e.stopPropagation();showConfirm('מחיקת קבוצה','למחוק את הקבוצה "'+g.name+'"?',()=>{ph.groups.splice(gi,1);renderEditor();},'danger');};
+      gdel.onclick=e=>{e.stopPropagation();showConfirm('מחיקת קבוצה','למחוק את הקבוצה "'+g.name+'"?',()=>{markEdDirty();ph.groups.splice(gi,1);renderEditor();},'danger');};
       ghdr.appendChild(gname);ghdr.appendChild(gedit);ghdr.appendChild(gdel);
       const itemsDiv=document.createElement('div');itemsDiv.className='ed-items';
       itemsDiv.dataset.pi=pi;itemsDiv.dataset.gi=gi;
@@ -2139,7 +2238,7 @@ function renderEditor(){
       g.items.forEach((it,ii)=>itemsDiv.appendChild(buildItemRow(it,ii,g,gi,ph,pi)));
 
       const addItem=document.createElement('button');addItem.className='ed-add';addItem.textContent='+ הוסף פריט';
-      addItem.onclick=()=>openEdPopup('הוסף פריט','','',true,(m,s,u,ul)=>{g.items.push({main:m,sub:s,url:u||'',urlLabel:ul||''});renderEditor();});
+      addItem.onclick=()=>openEdPopup('הוסף פריט','','',true,(m,s,u,ul)=>{g.items.push({main:m,sub:s,url:u||'',urlLabel:ul||'',_edTouched:true});renderEditor();});
       itemsDiv.appendChild(addItem);
       gDiv.appendChild(ghdr);gDiv.appendChild(itemsDiv);groups.appendChild(gDiv);
     });
@@ -2175,9 +2274,9 @@ function buildItemRow(it,ii,g,gi,ph,pi){
   if(it.sub){const sub=document.createElement('div');sub.className='ed-item-sub';sub.textContent=it.sub;txt.appendChild(sub);}
   if(FEATURES.EXTERNAL_LINK&&it.url){const linkInd=document.createElement('div');linkInd.className='ed-item-link';linkInd.textContent='🔗 '+(it.urlLabel||it.url);txt.appendChild(linkInd);}
   const editBtn=document.createElement('button');editBtn.className='ed-icon on-paper';editBtn.textContent='✎';
-  editBtn.onclick=e=>{e.stopPropagation();openEdPopup('עריכת פריט',it.main,it.sub,true,(m,s,u,ul)=>{it.main=m;it.sub=s;it.url=u||'';it.urlLabel=ul||'';renderEditor();},it.url||'',it.urlLabel||'');};
+  editBtn.onclick=e=>{e.stopPropagation();openEdPopup('עריכת פריט',it.main,it.sub,true,(m,s,u,ul)=>{it.main=m;it.sub=s;it.url=u||'';it.urlLabel=ul||'';it._edTouched=true;renderEditor();},it.url||'',it.urlLabel||'');};
   const delBtn=document.createElement('button');delBtn.className='ed-icon del on-paper';delBtn.textContent='✕';
-  delBtn.onclick=e=>{e.stopPropagation();showConfirm('מחיקת פריט','למחוק את הפריט "'+it.main+'"?',()=>{g.items.splice(ii,1);renderEditor();},'danger');};
+  delBtn.onclick=e=>{e.stopPropagation();showConfirm('מחיקת פריט','למחוק את הפריט "'+it.main+'"?',()=>{markEdDirty();g.items.splice(ii,1);renderEditor();},'danger');};
   // Desktop drag — on full row
   row.addEventListener('dragstart',e=>{dragSrc=row;row.classList.add('dragging');e.dataTransfer.effectAllowed='move';});
   row.addEventListener('dragend',()=>{row.classList.remove('dragging');document.querySelectorAll('.drag-over').forEach(r=>r.classList.remove('drag-over'));document.querySelectorAll('.drag-over-bottom').forEach(r=>r.classList.remove('drag-over-bottom'));dragSrc=null;});
@@ -2249,7 +2348,13 @@ function buildItemRow(it,ii,g,gi,ph,pi){
     document.addEventListener('touchmove',onMove,{passive:false});
     document.addEventListener('touchend',onEnd);
   },{passive:false});
-  row.appendChild(drag);row.appendChild(dot);row.appendChild(txt);row.appendChild(editBtn);row.appendChild(delBtn);
+  row.appendChild(drag);row.appendChild(dot);row.appendChild(txt);
+  if(it._edTouched){
+    const touchedDot=document.createElement('span');
+    touchedDot.className='ed-item-touched-dot';
+    row.appendChild(touchedDot);
+  }
+  row.appendChild(editBtn);row.appendChild(delBtn);
   return row;
 }
 
@@ -2301,6 +2406,7 @@ function confirmEdPopup(){
   const sub=document.getElementById('edInputSub').value.trim();
   const url=(document.getElementById('edInputUrl')?.value||'').trim();
   const urlLabel=(document.getElementById('edInputUrlLabel')?.value||'').trim();
+  markEdDirty();
   if(edPopupCallback){if(edPopupCallback.hasSub)edPopupCallback.cb(main,sub,url,urlLabel);else edPopupCallback.cb(main);}
   closeEdPopup();
 }
@@ -2864,6 +2970,7 @@ function openSettings(){
   document.getElementById('settingsTailInput').value=tail;
   updateStampPreview(tail||'HHH');
   updateTog('togSounds',settings.sounds);
+  updateTog('togHaptics',settings.haptics!==false);
   const hms=settings.holdMs||400;
   const hkey=hms<=200?'short':hms>=700?'long':'normal';
   updateHoldDurationCtrl(hkey);
@@ -2951,7 +3058,7 @@ function doSettingsReset(){
   // 1. Do the reset
   clearState();
   try{localStorage.removeItem(SETTINGS_KEY);localStorage.removeItem(REG_KEY);localStorage.removeItem(ROUTE_KEY);}catch(e){}
-  settings={tail:'',holdMs:300,sounds:false,theme:'day'};
+  settings={tail:'',holdMs:300,sounds:false,haptics:true,theme:'day'};
   // 2. Close confirm modal, then show success modal
   closeModal();
   setTimeout(()=>{
