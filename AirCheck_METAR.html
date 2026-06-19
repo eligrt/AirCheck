@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<!-- AirCheck+ · AirCheck_METAR.html · v1.35 · built by eligrt -->
+<!-- AirCheck+ · AirCheck_METAR.html · v1.41 · built by eligrt -->
 <html lang="he" dir="rtl">
 <head>
 <meta charset="UTF-8">
@@ -118,10 +118,12 @@ body{display:flex;flex-direction:column;height:100svh;overflow:hidden;}
 .metar-loading{padding:40px 16px;text-align:center;font-family:var(--font-mono);font-size:11px;color:var(--ink-muted);letter-spacing:.1em;direction:ltr;}
 .metar-error{padding:20px 16px;text-align:center;font-family:var(--font-ui);font-size:13px;color:var(--stamp-red);line-height:1.6;direction:rtl;}
 .metar-qnh-banner{background:rgba(31,111,63,.12);border-bottom:1px solid rgba(31,111,63,.25);padding:8px 16px;display:flex;align-items:baseline;gap:12px;direction:ltr;}
-.metar-qnh-label{font-family:var(--font-mono);font-size:9px;color:var(--cleared);letter-spacing:.2em;font-weight:700;text-transform:uppercase;}
+.metar-qnh-label{font-family:var(--font-mono);font-size:12px;color:var(--cleared);letter-spacing:.2em;font-weight:700;text-transform:uppercase;}
 .metar-qnh-value{font-family:var(--font-mono);font-size:36px;font-weight:700;color:var(--cleared);letter-spacing:.04em;line-height:1;}
-.metar-qnh-unit{font-family:var(--font-mono);font-size:11px;color:rgba(31,111,63,.7);letter-spacing:.1em;}
-.metar-qnh-hg{font-family:var(--font-mono);font-size:10px;color:rgba(31,111,63,.55);margin-right:auto;letter-spacing:.05em;}
+.metar-qnh-unit{font-family:var(--font-mono);font-size:13px;color:rgba(31,111,63,.7);letter-spacing:.1em;}
+.metar-qnh-hg{font-family:var(--font-mono);margin-right:auto;display:flex;align-items:baseline;gap:4px;}
+.metar-qnh-hg-value{font-size:22px;font-weight:700;color:rgba(31,111,63,.7);letter-spacing:.05em;}
+.metar-qnh-hg-unit{font-size:13px;color:rgba(31,111,63,.7);letter-spacing:.1em;}
 .metar-raw-wrap{padding:8px 14px 6px;}
 .metar-raw-label{font-family:var(--font-mono);font-size:8px;color:var(--ink-faint);letter-spacing:.15em;text-transform:uppercase;direction:ltr;margin-bottom:5px;}
 .metar-raw{font-family:var(--font-mono);font-size:12px;color:var(--ink-muted);direction:ltr;background:var(--paper);border:1px solid var(--paper-edge);border-radius:3px;padding:10px 12px;line-height:1.7;word-break:break-all;letter-spacing:.03em;}
@@ -130,18 +132,20 @@ body{display:flex;flex-direction:column;height:100svh;overflow:hidden;}
 .metar-field-label{font-family:var(--font-mono);font-size:10px;letter-spacing:.12em;text-transform:uppercase;direction:ltr;}
 .metar-field-value{font-family:var(--font-mono);font-size:16px;font-weight:700;direction:ltr;line-height:1.2;}
 .metar-field-zulu{font-family:var(--font-mono);font-size:9px;color:var(--ink-faint);letter-spacing:.05em;direction:ltr;}
-.raw-hl-wind{color:#4a7ab5;font-weight:700;}
-.raw-hl-vis{color:#6a9a6a;font-weight:700;}
-.raw-hl-cloud{color:#8a6a2a;font-weight:700;}
-.raw-hl-temp{color:#9a5a3a;font-weight:700;}
+.raw-hl-wind{color:#2563c2;font-weight:700;}
+.raw-hl-vis{color:#d4b800;font-weight:700;}
+.raw-hl-cloud{color:#d86ecc;font-weight:700;}
+.raw-hl-temp{color:#c99000;font-weight:700;}
 .raw-hl-wx{color:var(--ink-muted);font-weight:700;}
-.metar-field.wind .metar-field-label,.metar-field.wind .metar-field-value{color:#4a7ab5;}
-.metar-field.vis .metar-field-label,.metar-field.vis .metar-field-value{color:#6a9a6a;}
-.metar-field.cloud .metar-field-label,.metar-field.cloud .metar-field-value{color:#8a6a2a;}
-.metar-field.temp .metar-field-label,.metar-field.temp .metar-field-value{color:#9a5a3a;}
+.raw-hl-qnh{color:#1f6f3f;font-weight:700;}
+.raw-hl-time{color:#002060;font-weight:700;}
+.metar-field.wind .metar-field-label,.metar-field.wind .metar-field-value{color:#2563c2;}
+.metar-field.vis .metar-field-label,.metar-field.vis .metar-field-value{color:#d4b800;}
+.metar-field.cloud .metar-field-label,.metar-field.cloud .metar-field-value{color:#d86ecc;}
+.metar-field.temp .metar-field-label,.metar-field.temp .metar-field-value{color:#c99000;}
 .metar-field.wx .metar-field-label,.metar-field.wx .metar-field-value{color:var(--ink-muted);}
-.metar-field-value.good{color:var(--cleared)!important;}
-.metar-field-value.warn{color:var(--amber)!important;}
+.metar-field.time .metar-field-value{color:#002060;}
+/* good/warn classes reserved for future icon indicator, not used for text color */
 
 /* ── FOOTER ── */
 .metar-footer{
@@ -239,7 +243,7 @@ body{display:flex;flex-direction:column;height:100svh;overflow:hidden;}
   <div class="metar-age-footer" id="metarAgeFooter">—</div>
 </div>
 
-<div class="page-footer" dir="ltr">AirCheck+ · METAR / TAF · v1.35 · built by eligrt</div>
+<div class="page-footer" dir="ltr">AirCheck+ · METAR / TAF · v1.41 · built by eligrt</div>
 
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/12.14.0/firebase-app.js";
@@ -532,19 +536,19 @@ async function fetchMetar(force){
 
 function parseMetarRaw(raw,obsTimeStr,icao){
   const m={rawOb:raw,obsTime:obsTimeStr,name:icao};
-  const wind=raw.match(/(\d{3}|VRB)(\d{2,3})(G\d{2,3})?KT/);
+  const wind=raw.match(/\b(\d{3}|VRB)(\d{2,3})(G\d{2,3})?KT\b/);
   if(wind){m.wdir=wind[1]==='VRB'?'VRB':parseInt(wind[1]);m.wspd=parseInt(wind[2]);}
-  const vis=raw.match(/(\d{4})(?!\s*FT)/);
+  const vis=raw.match(/\b(\d{4})\b(?!\s*FT)/);
   if(vis)m.visib=parseInt(vis[1]);
   if(raw.includes('CAVOK'))m.visib=9999;
-  const temp=raw.match(/(M?\d{2})\/(M?\d{2})/);
+  const temp=raw.match(/\b(M?\d{2})\/(M?\d{2})\b/);
   if(temp){m.temp=parseInt(temp[1].replace('M','-'));m.dewp=parseInt(temp[2].replace('M','-'));}
   const qnh=raw.match(/Q(\d{4})/);
   if(qnh){m.altimHg=parseInt(qnh[1])/33.8639;m.qnh=parseInt(qnh[1]);}
-  const clouds=[];const cloudRe=/(FEW|SCT|BKN|OVC)(\d{3})/g;let cm;
+  const clouds=[];const cloudRe=/\b(FEW|SCT|BKN|OVC)(\d{3})\b/g;let cm;
   while((cm=cloudRe.exec(raw))!==null){clouds.push({cover:cm[1],base:parseInt(cm[2])*100});}
   if(clouds.length)m.clouds=clouds;
-  const wxMatch=raw.match(/(CAVOK|NOSIG|TS\S*|\+?RA|\+?SN|FG|HZ|BR|DZ|GR|SQ)/);
+  const wxMatch=raw.match(/\b(CAVOK|NOSIG|TS\S*|\+?RA|\+?SN|FG|HZ|BR|DZ|GR|SQ)\b/);
   if(wxMatch)m.wxString=wxMatch[1];
   return m;
 }
@@ -570,11 +574,13 @@ function zuluToLocal(zuluStr){
 
 function colorRaw(raw){
   return raw
+    .replace(/\b\d{6}Z\b/g,'<span class="raw-hl-time">$&</span>')
     .replace(/(\d{5}KT|\d{3}\d{2}(G\d{2})?KT|VRB\d{2}KT)/g,'<span class="raw-hl-wind">$&</span>')
-    .replace(/(9999|[0-9]{4})(?!Z)/g,'<span class="raw-hl-vis">$&</span>')
-    .replace(/(FEW|SCT|BKN|OVC|SKC|NCD|CAVOK)\d*/g,'<span class="raw-hl-cloud">$&</span>')
-    .replace(/(\d{1,2})\/(\d{1,2})/g,'<span class="raw-hl-temp">$&</span>')
-    .replace(/(NOSIG|TS\S*|\+?RA|\+?SN|FG|HZ|BR)/g,'<span class="raw-hl-wx">$&</span>');
+    .replace(/\b(9999|[0-9]{4})\b(?!Z)/g,'<span class="raw-hl-vis">$&</span>')
+    .replace(/\b(FEW|SCT|BKN|OVC|SKC|NCD|CAVOK)\d*/g,'<span class="raw-hl-cloud">$&</span>')
+    .replace(/\b(\d{1,2})\/(\d{1,2})\b/g,'<span class="raw-hl-temp">$&</span>')
+    .replace(/\b(NOSIG|TS\S*|\+?RA|\+?SN|FG|HZ|BR)\b/g,'<span class="raw-hl-wx">$&</span>')
+    .replace(/\bQ(\d{4})\b/g,'<span class="raw-hl-qnh">$&</span>');
 }
 
 function renderMetarCards(){
@@ -604,14 +610,14 @@ function renderMetarCards(){
     html+=`${noMetarNote}
     <div class="wx-card">
       <div class="wx-card-hdr"><div class="wx-card-lbl">METAR</div><div class="wx-card-time">${times.zulu} · ${times.local} LT</div></div>
-      <div class="metar-qnh-banner"><div class="metar-qnh-label">QNH</div><div class="metar-qnh-value">${qnh}</div><div class="metar-qnh-unit">hPa</div><div class="metar-qnh-hg">${qnhHg} inHg</div></div>
+      <div class="metar-qnh-banner"><div class="metar-qnh-label">QNH</div><div class="metar-qnh-value">${qnh}</div><div class="metar-qnh-unit">hPa</div><div class="metar-qnh-hg"><span class="metar-qnh-hg-value">${qnhHg}</span><span class="metar-qnh-hg-unit">inHg</span></div></div>
       <div class="metar-fields">
         <div class="metar-field wind"><div class="metar-field-label">WIND</div><div class="metar-field-value">${windStr}</div></div>
-        <div class="metar-field vis"><div class="metar-field-label">VIS</div><div class="metar-field-value ${visGood?'good':''}">${vis}</div></div>
-        <div class="metar-field cloud"><div class="metar-field-label">CLOUDS</div><div class="metar-field-value ${cloudsGood?'good':''}">${clouds}</div></div>
+        <div class="metar-field vis"><div class="metar-field-label">VIS</div><div class="metar-field-value">${vis}</div></div>
+        <div class="metar-field cloud"><div class="metar-field-label">CLOUDS</div><div class="metar-field-value">${clouds}</div></div>
         <div class="metar-field temp"><div class="metar-field-label">TEMP/DP</div><div class="metar-field-value">${temp}</div></div>
-        <div class="metar-field wx"><div class="metar-field-label">WX</div><div class="metar-field-value ${wxGood?'good':''}">${wx}</div></div>
-        <div class="metar-field"><div class="metar-field-label" style="color:var(--ink-faint)">TIME</div><div class="metar-field-value">${times.local}</div><div class="metar-field-zulu">(${times.zulu})</div></div>
+        <div class="metar-field wx"><div class="metar-field-label">WX</div><div class="metar-field-value">${wx}</div></div>
+        <div class="metar-field time"><div class="metar-field-label" style="color:var(--ink-faint)">TIME</div><div class="metar-field-value">${times.local}</div><div class="metar-field-zulu">(${times.zulu})</div></div>
       </div>
       <div class="metar-raw-wrap"><div class="metar-raw-label">RAW METAR${m.noMetar?' · ref: LLBG':''}</div><div class="metar-raw">${colorRaw(raw)}</div></div>
     </div>`;
