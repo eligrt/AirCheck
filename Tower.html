@@ -24,65 +24,84 @@ body{display:flex;align-items:flex-start;justify-content:center;padding:24px 16p
   border:2px solid var(--gold);border-radius:8px;
   width:100%;max-width:420px;overflow:hidden;
   box-shadow:0 20px 60px rgba(0,0,0,.5);
+  display:flex;flex-direction:column;
+  height:calc(100vh - 48px);max-height:760px;
 }
 
-/* header */
-.header{background:var(--ink);padding:16px 18px 14px;}
-.header-title{font-size:18px;font-weight:700;color:#f4ecdc;direction:rtl;}
-.header-station{font-size:11px;color:rgba(244,236,220,.55);margin-top:3px;direction:rtl;}
+/* header — plain navy, real splash wordmark treatment on top */
+.header{background:var(--ink);padding:18px 18px 14px;flex-shrink:0;}
+.fam-wordmark-row{display:flex;align-items:baseline;gap:8px;direction:ltr;}
+.fam-wordmark-main{font-family:var(--font-mono);font-size:26px;font-weight:700;color:var(--paper);letter-spacing:-.5px;}
+.fam-sub{font-size:14px;font-weight:600;color:rgba(244,236,220,.8);font-family:var(--font-mono);}
+.fam-tagline{font-size:10.5px;color:rgba(244,236,220,.62);letter-spacing:.03em;font-family:var(--font-mono);font-style:italic;margin-top:5px;direction:ltr;unicode-bidi:bidi-override;}
+.header-title{font-size:18px;font-weight:700;color:#f4ecdc;direction:rtl;margin-top:14px;}
+.header-station{font-size:13.5px;font-weight:600;color:rgba(244,236,220,.85);margin-top:4px;direction:rtl;}
 
-/* body */
-.body{padding:16px 18px;}
+/* body fills remaining height; box-stack holds the two symmetric boxes */
+.body{padding:16px 18px;flex:1;display:flex;flex-direction:column;min-height:0;}
+.box-stack{flex:1;display:flex;flex-direction:column;min-height:0;gap:14px;}
 
 /* live status panel — read-only echo of what's currently posted.
    Color carries age: green (fresh) -> amber (aging) -> gray (stale).
-   Text stays mono + faded at every stage so it never reads as editable. */
+   Text stays mono + faded at every stage so it never reads as editable.
+   Symmetric with compose-box: each gets an equal, fixed share of the
+   available height (flex:1 1 0) — content scrolls inside, box never grows. */
 .live-panel{
-  position:relative;padding:14px 14px 13px;border-radius:6px;border:1.5px solid var(--gold-lite);
-  margin-bottom:18px;transition:border-color .2s,background .2s;
-  display:none;
+  position:relative;padding:13px 14px 12px;border-radius:6px;border:1.5px solid var(--gold-lite);
+  background:var(--paper-hi);
+  transition:border-color .2s,background .2s;
+  display:flex;flex:1 1 0;min-height:0;flex-direction:column;
 }
-.live-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:8px;}
+.live-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:8px;flex-shrink:0;}
 .live-head-right{display:flex;align-items:center;gap:7px;}
 .live-dot{width:6px;height:6px;border-radius:50%;background:var(--gold-lite);transition:background .2s;}
 .live-label{font-size:11px;font-weight:600;color:var(--ink);letter-spacing:.01em;}
-.live-age-group{display:flex;align-items:center;gap:5px;}
-.live-hourglass{font-size:12px;line-height:1;opacity:0;transition:opacity .15s linear;}
-.live-hourglass.blink{animation:live-hg-blink 1.1s ease-in-out infinite;}
-@keyframes live-hg-blink{0%,100%{opacity:1;}50%{opacity:.25;}}
-.live-age{font-family:var(--font-mono);font-size:9.5px;color:var(--ink-faint);letter-spacing:.04em;direction:ltr;}
-
-.decay-bar-track{width:100%;height:3px;border-radius:2px;background:rgba(0,0,0,.07);margin:10px 0 11px;overflow:hidden;}
-.decay-bar-fill{height:100%;border-radius:2px;width:100%;background:var(--gold-lite);transition:width .2s linear,background .2s linear;}
 
 .live-text{
-  font-family:var(--font-mono);font-size:12px;line-height:1.75;color:var(--ink-faint);
-  direction:rtl;white-space:pre-wrap;letter-spacing:.01em;
-  max-height:96px;overflow-y:auto;scrollbar-width:none;
+  font-family:var(--font-ui);font-size:12.5px;line-height:1.7;color:var(--ink-faint);
+  direction:rtl;white-space:pre-wrap;letter-spacing:.005em;
+  flex:1;overflow-y:auto;min-height:0;scrollbar-width:none;
 }
 .live-text::-webkit-scrollbar{display:none;}
-.live-meta{
-  margin-top:9px;padding-top:9px;border-top:1px dashed var(--paper-edge);
-  font-family:var(--font-mono);font-size:8.5px;color:var(--ink-faint);
-  letter-spacing:.06em;direction:ltr;text-align:left;
-}
 
-.compose-label{font-size:12px;font-weight:600;color:var(--ink-muted);margin-bottom:8px;direction:rtl;}
+.live-meta-row{
+  margin-top:8px;padding-top:8px;border-top:1px dashed var(--paper-edge);
+  display:flex;align-items:center;justify-content:space-between;flex-shrink:0;
+}
+/* Hebrew portion (relative age) uses the UI font — JetBrains Mono has no
+   Hebrew glyphs and silently falls back to a mismatched system font.
+   The posted date/time is pure Latin+digits, so mono is correct there. */
+.live-meta-text{font-size:9px;color:var(--ink-faint);letter-spacing:.03em;direction:ltr;}
+.live-meta-text #lastUpdateTime{font-family:var(--font-ui);}
+.live-meta-text #liveMetaDate{font-family:var(--font-mono);letter-spacing:.06em;}
+
+.lives-row{display:flex;gap:3px;align-items:center;}
+.lives-row .life{width:13px;height:13px;opacity:.18;transition:opacity .15s linear;color:var(--ink-faint);}
+.lives-row .life svg{width:100%;height:100%;display:block;}
+.lives-row .life.lit{opacity:1;}
+.lives-row .life.blink{animation:live-life-blink 1.1s ease-in-out infinite;}
+@keyframes live-life-blink{0%,100%{opacity:1;}50%{opacity:.2;}}
+
+/* compose box — symmetric twin of live-panel */
+.compose-box{
+  flex:1 1 0;min-height:0;display:flex;flex-direction:column;
+  border-radius:6px;border:1.5px solid var(--gold-lite);
+  padding:13px 14px 12px;background:var(--paper-hi);
+}
+.compose-label{font-size:11px;font-weight:600;color:var(--ink-muted);margin-bottom:8px;direction:rtl;flex-shrink:0;}
 
 textarea{
-  width:100%;min-height:160px;padding:12px;
-  background:var(--paper-hi);border:1.5px solid var(--gold-lite);border-radius:4px;
+  width:100%;flex:1;min-height:0;padding:0;border:none;outline:none;
+  background:transparent;
   font-family:var(--font-ui);font-size:14px;line-height:1.6;color:var(--ink);
-  resize:vertical;outline:none;direction:rtl;
-  transition:border-color .15s;
+  resize:none;direction:rtl;overflow-y:auto;
 }
-textarea:focus{border-color:var(--ink);}
 textarea::placeholder{color:rgba(28,61,110,.3);}
 
-.char-count{font-family:var(--font-mono);font-size:9px;color:var(--ink-faint);text-align:left;margin-top:4px;letter-spacing:.06em;}
+.char-count{font-family:var(--font-mono);font-size:9px;color:var(--ink-faint);text-align:left;margin-top:6px;letter-spacing:.06em;flex-shrink:0;}
 
 .submit-btn{
-  width:100%;padding:14px;margin-top:12px;
+  width:100%;padding:14px;margin-top:12px;flex-shrink:0;
   background:var(--ink);border:none;border-radius:6px;
   color:#f4ecdc;font-family:var(--font-ui);font-size:15px;font-weight:700;
   cursor:pointer;transition:background .25s,opacity .15s;
@@ -104,43 +123,48 @@ textarea::placeholder{color:rgba(28,61,110,.3);}
 .status.error{background:rgba(185,74,58,.08);border:1px solid rgba(185,74,58,.25);color:var(--stamp-red);}
 .status.show{display:block;}
 
-.footer{padding:10px 14px;border-top:1px solid var(--gold-lite);text-align:center;}
+.footer{padding:10px 14px;border-top:1px solid var(--gold-lite);text-align:center;flex-shrink:0;}
 .footer-txt{font-family:var(--font-mono);font-size:9px;color:var(--ink-faint);letter-spacing:.1em;text-transform:uppercase;}
 </style>
 </head>
 <body>
 <div class="card">
   <div class="header">
-    <div class="header-title">עדכון מצב שדה</div>
+    <div class="fam-wordmark-row"><span class="fam-wordmark-main">AirCheck+</span><span class="fam-sub">· Tower</span></div>
+    <div class="fam-tagline">"the checklist on top of the checklist"</div>
+    <div class="header-title">עדכוני מגדל למצב שדה</div>
     <div class="header-station" id="headerStation">טוען...</div>
   </div>
 
   <div class="body">
-    <div class="live-panel" id="livePanel">
-      <div class="live-head">
-        <div class="live-head-right">
-          <div class="live-dot" id="liveDot"></div>
-          <div class="live-label">מה ששלחת לטייסים</div>
+    <div class="box-stack">
+      <div class="live-panel" id="livePanel">
+        <div class="live-head">
+          <div class="live-head-right">
+            <div class="live-dot" id="liveDot"></div>
+            <div class="live-label">העדכון האחרון שנשלח לטייסים:</div>
+          </div>
         </div>
-        <div class="live-age-group">
-          <div class="live-hourglass" id="liveHourglass">⏳</div>
-          <div class="live-age" id="lastUpdateTime">—</div>
+        <div class="live-text" id="lastUpdateText">טוען...</div>
+        <div class="live-meta-row" id="liveMetaRow" style="display:none;">
+          <div class="lives-row" id="livesRow"></div>
+          <div class="live-meta-text"><span id="lastUpdateTime">—</span> · <span id="liveMetaDate">—</span></div>
         </div>
       </div>
-      <div class="decay-bar-track"><div class="decay-bar-fill" id="liveBarFill"></div></div>
-      <div class="live-text" id="lastUpdateText">—</div>
-      <div class="live-meta" id="liveMetaDate">—</div>
+
+      <div class="compose-box">
+        <div class="compose-label">עדכון חדש</div>
+        <textarea id="msgInput" placeholder="הדבק כאן את הודעת מצב השדה מה-WhatsApp..." oninput="onInput()"></textarea>
+      </div>
     </div>
 
-    <div class="compose-label">עדכון חדש</div>
-    <textarea id="msgInput" placeholder="הדבק כאן את הודעת מצב השדה מה-WhatsApp..." oninput="onInput()"></textarea>
     <div class="char-count" id="charCount">0 תווים</div>
     <div class="status" id="statusMsg"></div>
     <button class="submit-btn" id="submitBtn" onclick="submitUpdate()" disabled>שלח עדכון ›</button>
   </div>
 
   <div class="footer" dir="ltr">
-    <div class="footer-txt" id="footerTxt">AirCheck+ · Tower · v1.11 · built by eligrt</div>
+    <div class="footer-txt" id="footerTxt">AirCheck+ · Tower · v1.18 · built by eligrt</div>
   </div>
 </div>
 
@@ -174,72 +198,115 @@ const stationNames = {
 
 function init(){
   document.getElementById('headerStation').textContent = (stationNames[icao]||icao) + ' · ' + icao;
-  document.getElementById('footerTxt').textContent = 'AirCheck+ · Tower · v1.11 · built by eligrt';
+  document.getElementById('footerTxt').textContent = 'AirCheck+ · Tower · v1.18 · built by eligrt';
+  buildLivesRow();
   loadLastUpdate();
+}
+
+const HOURGLASS_SVG='<svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M6 2h12M6 22h12M6 2c0 5 5 6 6 8 1-2 6-3 6-8M6 22c0-5 5-6 6-8 1 2 6 3 6 8" stroke="currentColor" stroke-width="2.2" stroke-linejoin="round" stroke-linecap="round"/></svg>';
+function buildLivesRow(){
+  const row=document.getElementById('livesRow');
+  row.innerHTML='';
+  for(let i=0;i<5;i++){
+    const s=document.createElement('span');
+    s.className='life';
+    s.innerHTML=HOURGLASS_SVG;
+    row.appendChild(s);
+  }
 }
 
 let _lastTimestamp = null;
 
 async function loadLastUpdate(){
+  const panel = document.getElementById('livePanel');
+  const textEl = document.getElementById('lastUpdateText');
+  const metaRow = document.getElementById('liveMetaRow');
   try{
     const snap = await get(ref(db, 'tower/' + icao + '/latest'));
     const data = snap.val();
     if(data){
       _lastTimestamp = data.timestamp;
-      document.getElementById('livePanel').style.display = 'block';
-      document.getElementById('lastUpdateText').textContent = data.text || '—';
+      textEl.textContent = data.text || '—';
       const d = new Date(data.timestamp);
       const h = String(d.getUTCHours()).padStart(2,'0');
       const m = String(d.getUTCMinutes()).padStart(2,'0');
       const day = String(d.getDate()).padStart(2,'0');
       const mo = String(d.getMonth()+1).padStart(2,'0');
-      document.getElementById('liveMetaDate').textContent = 'POSTED · ' + day+'/'+mo+' '+h+':'+m+'Z';
+      document.getElementById('liveMetaDate').textContent = 'POSTED ' + day+'/'+mo+' '+h+':'+m+'Z';
+      metaRow.style.display = '';
       renderLivePanelDecay();
+    } else {
+      // fetch succeeded, but this station has never posted — not an error
+      _lastTimestamp = null;
+      panel.style.borderColor = '';
+      panel.style.background = '';
+      document.getElementById('liveDot').style.background = 'var(--gold-lite)';
+      textEl.textContent = 'טרם נשלח עדכון לטייסים בתחנה זו';
+      metaRow.style.display = 'none';
     }
-  }catch(e){}
+  }catch(e){
+    _lastTimestamp = null;
+    panel.style.borderColor = '';
+    panel.style.background = '';
+    document.getElementById('liveDot').style.background = 'var(--gold-lite)';
+    textEl.textContent = 'לא ניתן לטעון את העדכון הקודם. בדוק חיבור לאינטרנט.';
+    metaRow.style.display = 'none';
+  }
 }
 
 // Color carries age: green (fresh, <3h) -> amber (aging, 3-9h) -> gray (stale, 9h+).
 // Deliberately distinct from עדכוני שדה's alert palette — this screen is a self-check
 // for the tower operator ("is my own post still relevant"), not a pilot-facing alert.
-const LIVE_GREEN={r:31,g:111,b:63}, LIVE_AMBER={r:245,g:158,b:11}, LIVE_GRAY={r:138,g:122,b:90};
+// Border gray is intentionally lighter than the body-text gray so it doesn't read as black.
+const LIVE_GREEN={r:31,g:111,b:63}, LIVE_AMBER={r:245,g:158,b:11}, LIVE_GRAY={r:168,g:158,b:138}, LIVE_RED={r:185,g:74,b:58};
+const LIVE_PAPER_HI={r:251,g:246,b:232};
 function liveLerp(a,b,t){return Math.round(a+(b-a)*t);}
 function liveMix(c1,c2,t){return 'rgb('+liveLerp(c1.r,c2.r,t)+','+liveLerp(c1.g,c2.g,t)+','+liveLerp(c1.b,c2.b,t)+')';}
+function liveMixObj(c1,c2,t){return {r:liveLerp(c1.r,c2.r,t),g:liveLerp(c1.g,c2.g,t),b:liveLerp(c1.b,c2.b,t)};}
 
 function renderLivePanelDecay(){
   if(_lastTimestamp == null) return;
   const hours = (Date.now() - _lastTimestamp) / 3600000;
 
-  let col;
-  if(hours<3){ col=liveMix(LIVE_GREEN,LIVE_AMBER,hours/3); }
-  else if(hours<9){ col='rgb('+LIVE_AMBER.r+','+LIVE_AMBER.g+','+LIVE_AMBER.b+')'; }
-  else { col=liveMix(LIVE_AMBER,LIVE_GRAY,Math.min(1,(hours-9)/3)); }
+  let colObj;
+  if(hours<3){ colObj=liveMixObj(LIVE_GREEN,LIVE_AMBER,hours/3); }
+  else if(hours<9){ colObj=LIVE_AMBER; }
+  else { colObj=liveMixObj(LIVE_AMBER,LIVE_GRAY,Math.min(1,(hours-9)/3)); }
+  const col='rgb('+colObj.r+','+colObj.g+','+colObj.b+')';
+
+  // Solid fill: blend the zone color into the opaque paper-hi base (not a
+  // translucent overlay) so the notebook lines don't show through and the
+  // box stays visually consistent with the solid compose box beside it.
+  const fillObj=liveMixObj(LIVE_PAPER_HI,colObj,0.12);
+  const fillCol='rgb('+fillObj.r+','+fillObj.g+','+fillObj.b+')';
 
   const panel=document.getElementById('livePanel');
   panel.style.borderColor=col;
-  panel.style.background=col.replace('rgb','rgba').replace(')',',.06)');
+  panel.style.background=fillCol;
   document.getElementById('liveDot').style.background=col;
-  const fill=document.getElementById('liveBarFill');
-  fill.style.background=col;
-  fill.style.width=Math.max(0,100-(hours/12*100))+'%';
 
   // age label
   const diffMin=Math.round((Date.now()-_lastTimestamp)/60000);
   document.getElementById('lastUpdateTime').textContent = diffMin<60 ? 'לפני '+diffMin+' דק׳' : 'לפני '+Math.round(hours)+' שע׳';
 
-  // hourglass: invisible through most of green, fades in late-green (2.4h-3h),
-  // static through amber (3h-9h), blinking once gray (9h+)
-  const FADE_START=2.4, GREEN_END=3;
-  const hg=document.getElementById('liveHourglass');
-  if(hours<FADE_START){
-    hg.style.opacity=0; hg.classList.remove('blink');
-  } else if(hours<GREEN_END){
-    hg.style.opacity=(hours-FADE_START)/(GREEN_END-FADE_START); hg.classList.remove('blink');
-  } else if(hours<9){
-    hg.style.opacity=1; hg.classList.remove('blink');
-  } else {
-    hg.style.opacity=1; hg.classList.add('blink');
-  }
+  // lives: lose one every 2.4h until exactly 1 remains (by 9.6h) — that last
+  // life PERSISTS (doesn't disappear) and stays steady gray until 12h, then
+  // turns red and blinks indefinitely — "expired," not just "almost gone."
+  const stage=Math.min(4,Math.floor(hours/2.4)); // 0..4 lost, caps at 4 so 1 always remains
+  const remaining=5-stage;
+  const expired = hours>=12;
+  const lives=document.querySelectorAll('#livesRow .life');
+  lives.forEach((el,i)=>{
+    el.classList.remove('lit','blink');
+    el.style.color='';
+    if(i<remaining){
+      el.classList.add('lit');
+      if(remaining===1 && expired){
+        el.classList.add('blink');
+        el.style.color='rgb('+LIVE_RED.r+','+LIVE_RED.g+','+LIVE_RED.b+')';
+      }
+    }
+  });
 }
 setInterval(renderLivePanelDecay, 60000);
 
@@ -256,15 +323,21 @@ window.submitUpdate = async function(){
   btn.disabled = true;
   btn.classList.add('sending');
   btn.innerHTML = '<span class="btn-spinner"></span> שולח לטייסים...';
+  const sendStarted = Date.now();
+  const MIN_SENDING_MS = 1100; // keep "שולח..." visible long enough to actually read it
   try{
     const now = Date.now();
     await set(ref(db, 'tower/' + icao + '/latest'), { text, timestamp: now, icao });
     await set(ref(db, 'tower/' + icao + '/history/' + now), { text, timestamp: now, icao });
+    const elapsed = Date.now() - sendStarted;
+    if(elapsed < MIN_SENDING_MS){
+      await new Promise(r => setTimeout(r, MIN_SENDING_MS - elapsed));
+    }
     document.getElementById('msgInput').value = '';
     document.getElementById('charCount').textContent = '0 תווים';
     btn.classList.remove('sending');
     btn.classList.add('sent');
-    btn.innerHTML = '<span>✓</span> עודכן — מוצג לטייסים';
+    btn.innerHTML = '<span>✓</span> עודכן - מוצג לטייסים';
     loadLastUpdate();
     setTimeout(() => {
       btn.classList.remove('sent');
