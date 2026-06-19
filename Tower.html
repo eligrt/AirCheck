@@ -31,29 +31,43 @@ body{display:flex;align-items:flex-start;justify-content:center;padding:24px 16p
 .header-title{font-size:18px;font-weight:700;color:#f4ecdc;direction:rtl;}
 .header-station{font-size:11px;color:rgba(244,236,220,.55);margin-top:3px;direction:rtl;}
 
-/* last update — inside header, clearly read-only */
-.last-update-strip{
-  margin-top:10px;
-  background:rgba(255,255,255,.07);
-  border-radius:4px;
-  padding:8px 12px;
-  border-right:3px solid var(--gold);
-}
-.last-update-strip-meta{
-  font-family:var(--font-mono);font-size:8px;
-  color:rgba(244,236,220,.45);letter-spacing:.12em;
-  text-transform:uppercase;margin-bottom:4px;direction:ltr;
-}
-.last-update-strip-text{
-  font-size:12px;color:rgba(244,236,220,.75);
-  line-height:1.55;direction:rtl;white-space:pre-wrap;
-  max-height:80px;overflow-y:auto;
-  scrollbar-width:none;
-}
-.last-update-strip-text::-webkit-scrollbar{display:none;}
-
 /* body */
 .body{padding:16px 18px;}
+
+/* live status panel — read-only echo of what's currently posted.
+   Color carries age: green (fresh) -> amber (aging) -> gray (stale).
+   Text stays mono + faded at every stage so it never reads as editable. */
+.live-panel{
+  position:relative;padding:14px 14px 13px;border-radius:6px;border:1.5px solid var(--gold-lite);
+  margin-bottom:18px;transition:border-color .2s,background .2s;
+  display:none;
+}
+.live-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:8px;}
+.live-head-right{display:flex;align-items:center;gap:7px;}
+.live-dot{width:6px;height:6px;border-radius:50%;background:var(--gold-lite);transition:background .2s;}
+.live-label{font-size:11px;font-weight:600;color:var(--ink);letter-spacing:.01em;}
+.live-age-group{display:flex;align-items:center;gap:5px;}
+.live-hourglass{font-size:12px;line-height:1;opacity:0;transition:opacity .15s linear;}
+.live-hourglass.blink{animation:live-hg-blink 1.1s ease-in-out infinite;}
+@keyframes live-hg-blink{0%,100%{opacity:1;}50%{opacity:.25;}}
+.live-age{font-family:var(--font-mono);font-size:9.5px;color:var(--ink-faint);letter-spacing:.04em;direction:ltr;}
+
+.decay-bar-track{width:100%;height:3px;border-radius:2px;background:rgba(0,0,0,.07);margin:10px 0 11px;overflow:hidden;}
+.decay-bar-fill{height:100%;border-radius:2px;width:100%;background:var(--gold-lite);transition:width .2s linear,background .2s linear;}
+
+.live-text{
+  font-family:var(--font-mono);font-size:12px;line-height:1.75;color:var(--ink-faint);
+  direction:rtl;white-space:pre-wrap;letter-spacing:.01em;
+  max-height:96px;overflow-y:auto;scrollbar-width:none;
+}
+.live-text::-webkit-scrollbar{display:none;}
+.live-meta{
+  margin-top:9px;padding-top:9px;border-top:1px dashed var(--paper-edge);
+  font-family:var(--font-mono);font-size:8.5px;color:var(--ink-faint);
+  letter-spacing:.06em;direction:ltr;text-align:left;
+}
+
+.compose-label{font-size:12px;font-weight:600;color:var(--ink-muted);margin-bottom:8px;direction:rtl;}
 
 textarea{
   width:100%;min-height:160px;padding:12px;
@@ -71,10 +85,15 @@ textarea::placeholder{color:rgba(28,61,110,.3);}
   width:100%;padding:14px;margin-top:12px;
   background:var(--ink);border:none;border-radius:6px;
   color:#f4ecdc;font-family:var(--font-ui);font-size:15px;font-weight:700;
-  cursor:pointer;transition:opacity .15s;
+  cursor:pointer;transition:background .25s,opacity .15s;
+  display:flex;align-items:center;justify-content:center;gap:8px;
 }
 .submit-btn:active{opacity:.8;}
 .submit-btn:disabled{opacity:.35;cursor:default;}
+.submit-btn.sending{background:#3a5a8a;opacity:1;}
+.submit-btn.sent{background:var(--cleared);opacity:1;}
+.btn-spinner{width:13px;height:13px;border-radius:50%;border:2px solid rgba(244,236,220,.3);border-top-color:#f4ecdc;animation:btn-spin .7s linear infinite;}
+@keyframes btn-spin{to{transform:rotate(360deg);}}
 
 .status{
   padding:10px 12px;border-radius:4px;
@@ -94,14 +113,26 @@ textarea::placeholder{color:rgba(28,61,110,.3);}
   <div class="header">
     <div class="header-title">עדכון מצב שדה</div>
     <div class="header-station" id="headerStation">טוען...</div>
-    <!-- Last update — read only, lives in header -->
-    <div class="last-update-strip" id="lastUpdateStrip" style="display:none;">
-      <div class="last-update-strip-meta">CURRENT · <span id="lastUpdateTime">—</span></div>
-      <div class="last-update-strip-text" id="lastUpdateText">—</div>
-    </div>
   </div>
 
   <div class="body">
+    <div class="live-panel" id="livePanel">
+      <div class="live-head">
+        <div class="live-head-right">
+          <div class="live-dot" id="liveDot"></div>
+          <div class="live-label">מה ששלחת לטייסים</div>
+        </div>
+        <div class="live-age-group">
+          <div class="live-hourglass" id="liveHourglass">⏳</div>
+          <div class="live-age" id="lastUpdateTime">—</div>
+        </div>
+      </div>
+      <div class="decay-bar-track"><div class="decay-bar-fill" id="liveBarFill"></div></div>
+      <div class="live-text" id="lastUpdateText">—</div>
+      <div class="live-meta" id="liveMetaDate">—</div>
+    </div>
+
+    <div class="compose-label">עדכון חדש</div>
     <textarea id="msgInput" placeholder="הדבק כאן את הודעת מצב השדה מה-WhatsApp..." oninput="onInput()"></textarea>
     <div class="char-count" id="charCount">0 תווים</div>
     <div class="status" id="statusMsg"></div>
@@ -109,7 +140,7 @@ textarea::placeholder{color:rgba(28,61,110,.3);}
   </div>
 
   <div class="footer" dir="ltr">
-    <div class="footer-txt" id="footerTxt">AirCheck+ · Tower · v1.09 · built by eligrt</div>
+    <div class="footer-txt" id="footerTxt">AirCheck+ · Tower · v1.10 · built by eligrt</div>
   </div>
 </div>
 
@@ -143,26 +174,74 @@ const stationNames = {
 
 function init(){
   document.getElementById('headerStation').textContent = (stationNames[icao]||icao) + ' · ' + icao;
-  document.getElementById('footerTxt').textContent = 'AirCheck+ · Tower · v1.09 · built by eligrt';
+  document.getElementById('footerTxt').textContent = 'AirCheck+ · Tower · v1.10 · built by eligrt';
   loadLastUpdate();
 }
+
+let _lastTimestamp = null;
 
 async function loadLastUpdate(){
   try{
     const snap = await get(ref(db, 'tower/' + icao + '/latest'));
     const data = snap.val();
     if(data){
-      document.getElementById('lastUpdateStrip').style.display = '';
+      _lastTimestamp = data.timestamp;
+      document.getElementById('livePanel').style.display = '';
       document.getElementById('lastUpdateText').textContent = data.text || '—';
       const d = new Date(data.timestamp);
       const h = String(d.getUTCHours()).padStart(2,'0');
       const m = String(d.getUTCMinutes()).padStart(2,'0');
       const day = String(d.getDate()).padStart(2,'0');
       const mo = String(d.getMonth()+1).padStart(2,'0');
-      document.getElementById('lastUpdateTime').textContent = day+'/'+mo+' '+h+':'+m+'Z';
+      document.getElementById('liveMetaDate').textContent = 'POSTED · ' + day+'/'+mo+' '+h+':'+m+'Z';
+      renderLivePanelDecay();
     }
   }catch(e){}
 }
+
+// Color carries age: green (fresh, <3h) -> amber (aging, 3-9h) -> gray (stale, 9h+).
+// Deliberately distinct from עדכוני שדה's alert palette — this screen is a self-check
+// for the tower operator ("is my own post still relevant"), not a pilot-facing alert.
+const LIVE_GREEN={r:31,g:111,b:63}, LIVE_AMBER={r:245,g:158,b:11}, LIVE_GRAY={r:138,g:122,b:90};
+function liveLerp(a,b,t){return Math.round(a+(b-a)*t);}
+function liveMix(c1,c2,t){return 'rgb('+liveLerp(c1.r,c2.r,t)+','+liveLerp(c1.g,c2.g,t)+','+liveLerp(c1.b,c2.b,t)+')';}
+
+function renderLivePanelDecay(){
+  if(_lastTimestamp == null) return;
+  const hours = (Date.now() - _lastTimestamp) / 3600000;
+
+  let col;
+  if(hours<3){ col=liveMix(LIVE_GREEN,LIVE_AMBER,hours/3); }
+  else if(hours<9){ col='rgb('+LIVE_AMBER.r+','+LIVE_AMBER.g+','+LIVE_AMBER.b+')'; }
+  else { col=liveMix(LIVE_AMBER,LIVE_GRAY,Math.min(1,(hours-9)/3)); }
+
+  const panel=document.getElementById('livePanel');
+  panel.style.borderColor=col;
+  panel.style.background=col.replace('rgb','rgba').replace(')',',.06)');
+  document.getElementById('liveDot').style.background=col;
+  const fill=document.getElementById('liveBarFill');
+  fill.style.background=col;
+  fill.style.width=Math.max(0,100-(hours/12*100))+'%';
+
+  // age label
+  const diffMin=Math.round((Date.now()-_lastTimestamp)/60000);
+  document.getElementById('lastUpdateTime').textContent = diffMin<60 ? 'לפני '+diffMin+' דק׳' : 'לפני '+Math.round(hours)+' שע׳';
+
+  // hourglass: invisible through most of green, fades in late-green (2.4h-3h),
+  // static through amber (3h-9h), blinking once gray (9h+)
+  const FADE_START=2.4, GREEN_END=3;
+  const hg=document.getElementById('liveHourglass');
+  if(hours<FADE_START){
+    hg.style.opacity=0; hg.classList.remove('blink');
+  } else if(hours<GREEN_END){
+    hg.style.opacity=(hours-FADE_START)/(GREEN_END-FADE_START); hg.classList.remove('blink');
+  } else if(hours<9){
+    hg.style.opacity=1; hg.classList.remove('blink');
+  } else {
+    hg.style.opacity=1; hg.classList.add('blink');
+  }
+}
+setInterval(renderLivePanelDecay, 60000);
 
 window.onInput = function(){
   const val = document.getElementById('msgInput').value;
@@ -175,20 +254,29 @@ window.submitUpdate = async function(){
   if(!text) return;
   const btn = document.getElementById('submitBtn');
   btn.disabled = true;
-  btn.textContent = 'שולח...';
+  btn.classList.add('sending');
+  btn.innerHTML = '<span class="btn-spinner"></span> שולח לטייסים...';
   try{
     const now = Date.now();
     await set(ref(db, 'tower/' + icao + '/latest'), { text, timestamp: now, icao });
     await set(ref(db, 'tower/' + icao + '/history/' + now), { text, timestamp: now, icao });
     document.getElementById('msgInput').value = '';
     document.getElementById('charCount').textContent = '0 תווים';
-    showStatus('success', '✓ העדכון נשלח בהצלחה');
+    btn.classList.remove('sending');
+    btn.classList.add('sent');
+    btn.innerHTML = '<span>✓</span> עודכן — מוצג לטייסים';
     loadLastUpdate();
+    setTimeout(() => {
+      btn.classList.remove('sent');
+      btn.textContent = 'שלח עדכון ›';
+      btn.disabled = true;
+    }, 1800);
   }catch(e){
+    btn.classList.remove('sending');
+    btn.textContent = 'שלח עדכון ›';
+    btn.disabled = false;
     showStatus('error', 'שגיאה בשליחה. בדוק חיבור לאינטרנט.');
   }
-  btn.disabled = false;
-  btn.textContent = 'שלח עדכון ›';
 };
 
 function showStatus(type, msg){
