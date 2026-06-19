@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <!-- ═══════════════════════════════════════
-     AirCheck+ · v2.08.079T · built by eligrt
+     AirCheck+ · v2.08.081T · built by eligrt
      ═══════════════════════════════════════ -->
 <html lang="he" dir="rtl">
 <head>
@@ -49,11 +49,16 @@ html,body{height:100%;background:#1a1a1c;font-family:var(--font-ui);color:var(--
 @keyframes twBlink{0%,100%{opacity:1;}50%{opacity:0;}}
 .splash-body{flex:1;padding:19px 18px 20px;display:flex;flex-direction:column;gap:10px;background:transparent;}
 .splash-resume-card{background:var(--paper-hi);border:1px solid var(--gold);border-radius:4px;padding:10px 12px;direction:rtl;}
-.splash-resume-lbl{font-size:8px;font-family:var(--font-mono);letter-spacing:.1em;color:var(--ink-faint);margin-bottom:3px;text-transform:uppercase;direction:ltr;}
-.splash-resume-val{font-size:13px;font-weight:700;color:var(--ink-body);margin-bottom:6px;}
-.splash-runway{height:8px;background:rgba(100,90,80,.45);border-radius:2px;overflow:hidden;}
+.splash-resume-lbl{font-size:8px;font-family:var(--font-mono);letter-spacing:.1em;color:var(--ink-faint);margin-bottom:3px;text-transform:uppercase;}
+.splash-resume-val{font-size:13px;font-weight:700;color:var(--ink-body);margin-bottom:8px;}
+.splash-runway-pct{font-size:9px;font-family:var(--font-mono);color:var(--ink-muted);letter-spacing:.02em;margin-bottom:5px;}
+.splash-runway{height:8px;background:rgba(100,90,80,.45);border-radius:2px;overflow:hidden;position:relative;}
 .splash-runway-fill{height:100%;border-radius:2px;background:var(--cleared);transition:width .4s ease;}
-.splash-runway-pct{font-size:8px;font-family:var(--font-mono);color:var(--ink-muted);margin-top:3px;direction:ltr;}
+.splash-runway-tick{position:absolute;top:0;bottom:0;width:1px;background:var(--paper-hi);opacity:.6;}
+.splash-runway-dot{position:absolute;top:50%;width:5px;height:5px;border-radius:50%;background:var(--amber);border:1px solid var(--paper-hi);transform:translate(50%,-50%);}
+.splash-skip-row{position:relative;height:12px;margin-top:3px;display:none;}
+.splash-skip-row.show{display:block;}
+.splash-skip-icon{position:absolute;top:0;font-size:9px;color:var(--gold-deep);transform:translateX(50%);}
 .splash-btn-primary{width:100%;padding:14px;background:var(--ink);color:var(--paper);border:none;border-radius:4px;font-family:var(--font-ui);font-size:15px;font-weight:700;cursor:pointer;text-align:center;transition:opacity .12s;}
 .splash-btn-primary:active{opacity:.85;}
 .splash-btn-secondary{width:100%;padding:13px;background:transparent;color:var(--ink);border:2px solid var(--ink);border-radius:4px;font-family:var(--font-ui);font-size:14px;font-weight:600;cursor:pointer;text-align:center;transition:background .12s;}
@@ -595,8 +600,9 @@ html,body{height:100%;background:#1a1a1c;font-family:var(--font-ui);color:var(--
       <div class="splash-resume-card" id="splashResumeCard" style="display:none;">
         <div class="splash-resume-lbl" id="splashResumePhase">—</div>
         <div class="splash-resume-val" id="splashResumeItem">—</div>
-        <div class="splash-runway"><div class="splash-runway-fill" id="splashRunwayFill" style="width:0%"></div></div>
         <div class="splash-runway-pct" id="splashRunwayPct"></div>
+        <div class="splash-runway" id="splashRunway"><div class="splash-runway-fill" id="splashRunwayFill" style="width:0%"></div></div>
+        <div class="splash-skip-row" id="splashSkipRow"></div>
       </div>
       <div id="splashBtnsWrap" style="display:flex;gap:8px;width:100%;">
         <button class="splash-btn-secondary" id="splashSecondaryBtn" onclick="splashSecondaryAction()" style="display:none;flex:1;font-size:12px;">
@@ -610,7 +616,7 @@ html,body{height:100%;background:#1a1a1c;font-family:var(--font-ui);color:var(--
     <div class="splash-footer-wrap">
       <div class="footer-strip" style="display:flex;align-items:center;justify-content:space-between;padding:5px 14px 8px;">
         <span class="footer-refresh" onclick="reloadApp()">רענון</span>
-        <span id="versionTap" style="cursor:default;">AirCheck+ · v2.08.079T · built by eligrt</span>
+        <span id="versionTap" style="cursor:default;">AirCheck+ · v2.08.081T · built by eligrt</span>
         <span style="width:40px;"></span>
       </div>
     </div>
@@ -785,7 +791,7 @@ html,body{height:100%;background:#1a1a1c;font-family:var(--font-ui);color:var(--
     <div class="tree-panel" id="treePanel"></div>
     <div class="footer-strip" style="display:flex;align-items:center;justify-content:space-between;padding:5px 14px 8px;">
       <span class="footer-refresh" onclick="reloadApp()">רענון</span>
-      <span id="versionTap" style="cursor:default;">AirCheck+ · v2.08.079T · built by eligrt</span>
+      <span id="versionTap" style="cursor:default;">AirCheck+ · v2.08.081T · built by eligrt</span>
       <span style="width:40px;"></span>
     </div>
   </div>
@@ -858,7 +864,7 @@ html,body{height:100%;background:#1a1a1c;font-family:var(--font-ui);color:var(--
 
     <div class="footer-strip" style="display:flex;align-items:center;justify-content:space-between;padding:5px 14px 8px;">
       <span style="width:40px;"></span>
-      <span id="versionTap" style="cursor:default;">AirCheck+ · v2.08.079T · built by eligrt</span>
+      <span id="versionTap" style="cursor:default;">AirCheck+ · v2.08.081T · built by eligrt</span>
       <span style="width:40px;"></span>
     </div>
   </div>
@@ -968,7 +974,7 @@ html,body{height:100%;background:#1a1a1c;font-family:var(--font-ui);color:var(--
     </div>
     <div class="footer-strip" style="display:flex;align-items:center;justify-content:space-between;padding:5px 14px 8px;">
       <span class="footer-refresh" onclick="reloadApp()">רענון</span>
-      <span id="versionTap" style="cursor:default;">AirCheck+ · v2.08.079T · built by eligrt</span>
+      <span id="versionTap" style="cursor:default;">AirCheck+ · v2.08.081T · built by eligrt</span>
       <span style="width:40px;"></span>
     </div>
   </div>
@@ -987,7 +993,7 @@ html,body{height:100%;background:#1a1a1c;font-family:var(--font-ui);color:var(--
     <div class="editor-list" id="editorList"></div>
     <div class="footer-strip" style="display:flex;align-items:center;justify-content:space-between;padding:5px 14px 8px;">
       <span class="footer-refresh" onclick="reloadApp()">רענון</span>
-      <span id="versionTap" style="cursor:default;">AirCheck+ · v2.08.079T · built by eligrt</span>
+      <span id="versionTap" style="cursor:default;">AirCheck+ · v2.08.081T · built by eligrt</span>
       <span style="width:40px;"></span>
     </div>
   </div>
@@ -3103,12 +3109,51 @@ function initSplash(){
     // take them) — not the last *completed* item, which can sit well
     // behind real progress once items have been skipped along the way.
     if(CL[current]){
-      document.getElementById('splashResumePhase').textContent='NEXT ITEM · '+CL[current].phase;
+      document.getElementById('splashResumePhase').textContent='CURRENT PHASE · '+CL[current].phase;
       document.getElementById('splashResumeItem').textContent=CL[current].main;
     }
-    const pct=Math.round((done/CL.length)*100);
-    document.getElementById('splashRunwayFill').style.width=pct+'%';
-    document.getElementById('splashRunwayPct').textContent=done+' / '+CL.length+' · '+pct+'%';
+    // Bar fill reflects actual position (current pointer), matching the
+    // phase ticks/dots below — not raw "done" count, which undercounts
+    // skipped items already passed and made the bar look behind where the
+    // pilot actually is. True completion is shown separately as text.
+    const posPct=Math.round((current/CL.length)*100);
+    const donePct=Math.round((done/CL.length)*100);
+    document.getElementById('splashRunwayFill').style.width=posPct+'%';
+    document.getElementById('splashRunwayPct').textContent=done+' / '+CL.length+' הושלם · '+donePct+'%';
+    // Phase boundary ticks + skipped-item markers — same PHASES/status
+    // data the in-card runway already uses, surfaced here so a resuming
+    // pilot can tell at a glance where they are and whether anything was
+    // skipped along the way.
+    const runwayEl=document.getElementById('splashRunway');
+    runwayEl.querySelectorAll('.splash-runway-tick,.splash-runway-dot').forEach(n=>n.remove());
+    PHASES.forEach((p,i)=>{
+      if(i<PHASES.length-1){
+        const tick=document.createElement('div');
+        tick.className='splash-runway-tick';
+        tick.style.right=(((p.end+1)/CL.length)*100)+'%';
+        runwayEl.appendChild(tick);
+      }
+    });
+    const skipRow=document.getElementById('splashSkipRow');
+    skipRow.innerHTML='';
+    let skippedCount=0;
+    Object.keys(status).forEach(k=>{
+      if(status[k]==='skipped'){
+        skippedCount++;
+        const idx=parseInt(k,10);
+        const skipPos=((idx+0.5)/CL.length)*100;
+        const dot=document.createElement('div');
+        dot.className='splash-runway-dot';
+        dot.style.right=skipPos+'%';
+        runwayEl.appendChild(dot);
+        const icon=document.createElement('i');
+        icon.className='ti ti-alert-triangle splash-skip-icon';
+        icon.style.right=skipPos+'%';
+        icon.setAttribute('aria-hidden','true');
+        skipRow.appendChild(icon);
+      }
+    });
+    skipRow.classList.toggle('show',skippedCount>0);
     // Primary = continue, secondary = new flight
     mainBtn.innerHTML='המשך טיסה ›';
     secBtn.style.display='';
