@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <!-- ═══════════════════════════════════════
-     AirCheck+ · v2.08.081 · built by eligrt
+     AirCheck+ · v2.08.083 · built by eligrt
      ═══════════════════════════════════════ -->
 <html lang="he" dir="rtl">
 <head>
@@ -172,9 +172,10 @@ html,body{height:100%;background:#1a1a1c;font-family:var(--font-ui);color:var(--
 .ed-item-link{font-size:10px;color:var(--ink-faint);font-family:var(--font-mono);margin-top:2px;direction:rtl;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
 .ed-popup-link-section{margin-top:10px;padding-top:10px;border-top:1px dashed var(--gold-lite);}
 .ed-popup-link-label{font-size:10px;color:var(--ink-faint);font-family:var(--font-mono);letter-spacing:.06em;margin-bottom:6px;}
-.card-stamp{position:absolute;bottom:14px;left:18px;direction:ltr;transform-origin:left bottom;pointer-events:none;transform:rotate(-7deg) scale(.85);opacity:0;transition:opacity .14s ease-out,transform .18s ease-out;}
-.card-stamp.visible{opacity:1;transform:rotate(-7deg) scale(1);}
-.stamp-box{border:2.5px solid var(--cleared);padding:4px 12px 5px;text-align:center;color:var(--cleared);font-family:var(--font-mono);background:rgba(251,246,232,.6);}
+.card-stamp{position:absolute;top:30px;left:50%;direction:ltr;transform-origin:center;pointer-events:none;transform:translateX(-50%) rotate(-8deg);display:none;z-index:4;}
+.card-stamp.visible{display:block;}
+.stamp-box{border:2.5px solid var(--cleared);padding:4px 12px 5px;text-align:center;color:var(--cleared);font-family:var(--font-mono);background:rgba(251,246,232,.88);}
+.stamp-box.stale{border-color:var(--ink-faint);color:var(--ink-faint);}
 .stamp-text{font-size:8px;letter-spacing:.28em;font-weight:700;margin-bottom:1px;}
 .stamp-init{font-size:12px;font-weight:700;letter-spacing:.12em;}
 .stamp-time{font-size:7px;letter-spacing:.15em;opacity:.7;margin-top:2px;}
@@ -614,7 +615,7 @@ html,body{height:100%;background:#1a1a1c;font-family:var(--font-ui);color:var(--
     <div class="splash-footer-wrap">
       <div class="footer-strip" style="display:flex;align-items:center;justify-content:space-between;padding:5px 14px 8px;">
         <span class="footer-refresh" onclick="reloadApp()">רענון</span>
-        <span id="versionTap" style="cursor:default;">AirCheck+ · v2.08.081 · built by eligrt</span>
+        <span id="versionTap" style="cursor:default;">AirCheck+ · v2.08.083 · built by eligrt</span>
         <span style="width:40px;"></span>
       </div>
     </div>
@@ -788,7 +789,7 @@ html,body{height:100%;background:#1a1a1c;font-family:var(--font-ui);color:var(--
     <div class="tree-panel" id="treePanel"></div>
     <div class="footer-strip" style="display:flex;align-items:center;justify-content:space-between;padding:5px 14px 8px;">
       <span class="footer-refresh" onclick="reloadApp()">רענון</span>
-      <span id="versionTap" style="cursor:default;">AirCheck+ · v2.08.081 · built by eligrt</span>
+      <span id="versionTap" style="cursor:default;">AirCheck+ · v2.08.083 · built by eligrt</span>
       <span style="width:40px;"></span>
     </div>
   </div>
@@ -861,7 +862,7 @@ html,body{height:100%;background:#1a1a1c;font-family:var(--font-ui);color:var(--
 
     <div class="footer-strip" style="display:flex;align-items:center;justify-content:space-between;padding:5px 14px 8px;">
       <span style="width:40px;"></span>
-      <span id="versionTap" style="cursor:default;">AirCheck+ · v2.08.081 · built by eligrt</span>
+      <span id="versionTap" style="cursor:default;">AirCheck+ · v2.08.083 · built by eligrt</span>
       <span style="width:40px;"></span>
     </div>
   </div>
@@ -971,7 +972,7 @@ html,body{height:100%;background:#1a1a1c;font-family:var(--font-ui);color:var(--
     </div>
     <div class="footer-strip" style="display:flex;align-items:center;justify-content:space-between;padding:5px 14px 8px;">
       <span class="footer-refresh" onclick="reloadApp()">רענון</span>
-      <span id="versionTap" style="cursor:default;">AirCheck+ · v2.08.081 · built by eligrt</span>
+      <span id="versionTap" style="cursor:default;">AirCheck+ · v2.08.083 · built by eligrt</span>
       <span style="width:40px;"></span>
     </div>
   </div>
@@ -990,7 +991,7 @@ html,body{height:100%;background:#1a1a1c;font-family:var(--font-ui);color:var(--
     <div class="editor-list" id="editorList"></div>
     <div class="footer-strip" style="display:flex;align-items:center;justify-content:space-between;padding:5px 14px 8px;">
       <span class="footer-refresh" onclick="reloadApp()">רענון</span>
-      <span id="versionTap" style="cursor:default;">AirCheck+ · v2.08.081 · built by eligrt</span>
+      <span id="versionTap" style="cursor:default;">AirCheck+ · v2.08.083 · built by eligrt</span>
       <span style="width:40px;"></span>
     </div>
   </div>
@@ -1119,18 +1120,18 @@ const PHASES=[];const PHASE_IDX={};
 function buildIndex(){PHASES.length=0;Object.keys(PHASE_IDX).forEach(k=>delete PHASE_IDX[k]);CL.forEach((item,i)=>{if(!PHASE_IDX[item.phase]){const p={name:item.phase,start:i,end:i,groups:[],gIdx:{}};PHASE_IDX[item.phase]=p;PHASES.push(p);}const p=PHASE_IDX[item.phase];p.end=i;if(!p.gIdx[item.group]){const g={name:item.group,start:i,end:i,items:[]};p.gIdx[item.group]=g;p.groups.push(g);}const g=p.gIdx[item.group];g.end=i;g.items.push(i);});}
 buildIndex();
 const KEY='aircheck_rd_v1';const REG_KEY='aircheck_rd_reg';const ROUTE_KEY='aircheck_rd_route';
-let current=0;let status={};let treeOpen=true;
-function saveState(){try{localStorage.setItem(KEY,JSON.stringify({current,status}));}catch(e){}}
-function loadState(){try{const raw=localStorage.getItem(KEY);if(raw){const d=JSON.parse(raw);current=d.current||0;status=d.status||{};}}catch(e){}}
+let current=0;let status={};let statusTime={};let treeOpen=true;let _confirmedTimeStr=null;
+function saveState(){try{localStorage.setItem(KEY,JSON.stringify({current,status,statusTime}));}catch(e){}}
+function loadState(){try{const raw=localStorage.getItem(KEY);if(raw){const d=JSON.parse(raw);current=d.current||0;status=d.status||{};statusTime=d.statusTime||{};}}catch(e){}}
 function clearState(){
-  current=0;status={};saveState();
+  current=0;status={};statusTime={};saveState();
   localStorage.removeItem('aircheck_rd_route');
 }
 function saveReg(val){try{localStorage.setItem(REG_KEY,val);}catch(e){}document.getElementById('stampInit').textContent='PIC · 4X-'+(val||'HHH');}
 function loadReg(){try{const v=localStorage.getItem(REG_KEY)||'';document.getElementById('stampInit').textContent='PIC · 4X-'+(v||'HHH');}catch(e){}}
 function saveRoute(){}
 function loadRoute(){}
-function updateClock(){const now=new Date();const h=String(now.getUTCHours()).padStart(2,'0');const m=String(now.getUTCMinutes()).padStart(2,'0');document.getElementById('utcClock').textContent=h+':'+m;document.getElementById('stampTime').textContent=h+':'+m+' UTC';}
+function updateClock(){const now=new Date();const h=String(now.getUTCHours()).padStart(2,'0');const m=String(now.getUTCMinutes()).padStart(2,'0');document.getElementById('utcClock').textContent=h+':'+m;}
 setInterval(updateClock,10000);updateClock();
 function drawRings(){const g=document.getElementById('ringCoils');g.innerHTML='';const n=8;for(let k=0;k<n;k++){const x=8+k*((352-8)/7);const ns='http://www.w3.org/2000/svg';const back=document.createElementNS(ns,'path');back.setAttribute('d',`M ${x-3} 30 Q ${x-5} 18 ${x+2} 8 Q ${x+5} 4 ${x+8} 6`);back.setAttribute('fill','none');back.setAttribute('stroke','url(#wireDark)');back.setAttribute('stroke-width','1.6');back.setAttribute('stroke-linecap','round');back.setAttribute('opacity','.9');g.appendChild(back);const hole=document.createElementNS(ns,'ellipse');hole.setAttribute('cx',x);hole.setAttribute('cy','30');hole.setAttribute('rx','5');hole.setAttribute('ry','2.2');hole.setAttribute('fill','url(#paperHole)');g.appendChild(hole);const hole2=document.createElementNS(ns,'ellipse');hole2.setAttribute('cx',x);hole2.setAttribute('cy','30.5');hole2.setAttribute('rx','4');hole2.setAttribute('ry','1.2');hole2.setAttribute('fill','#000');hole2.setAttribute('opacity','.55');g.appendChild(hole2);const front=document.createElementNS(ns,'path');front.setAttribute('d',`M ${x+8} 6 Q ${x+13} 9 ${x+12} 16 Q ${x+10} 24 ${x+5} 30`);front.setAttribute('fill','none');front.setAttribute('stroke','url(#wireGrad)');front.setAttribute('stroke-width','2.1');front.setAttribute('stroke-linecap','round');g.appendChild(front);const hl=document.createElementNS(ns,'circle');hl.setAttribute('cx',x+10);hl.setAttribute('cy','8');hl.setAttribute('r','.9');hl.setAttribute('fill','#fff');hl.setAttribute('opacity','.95');g.appendChild(hl);}}
 function trackExternalLinkTap(url,lbl){
@@ -1158,7 +1159,27 @@ function render(){
   if(stampEl){const t=settings&&settings.tail?settings.tail:(localStorage.getItem(REG_KEY)||'');stampEl.textContent='PIC · 4X-'+(t||'HHH');}
   const item=CL[current];if(!item)return;const phase=PHASE_IDX[item.phase];const group=phase?phase.groups.find(g=>g.name===item.group):null;document.getElementById('crumbPhase').textContent=item.phase;document.getElementById('crumbGroup').textContent=item.group;const numEl=document.getElementById('cardItemNum');numEl.innerHTML='ITEM <b>'+(current+1).toString().padStart(2,'0')+'</b><span> / '+CL.length+'</span>';const badge=document.getElementById('cardBadge');if(group){const pos=group.items.indexOf(current)+1;badge.textContent=pos+'/'+group.items.length+' בקבוצה';badge.style.display='';}else{badge.style.display='none';}document.getElementById('cardMain').textContent=item.main;const subEl=document.getElementById('cardSub');subEl.textContent=item.sub||'';subEl.style.display=item.sub?'':'none';const linkEl=document.getElementById('cardLink');if(linkEl){const lastEl=item.sub?subEl:document.getElementById('cardMain');document.getElementById('cardMain').style.paddingBottom='';subEl.style.paddingBottom='';if(FEATURES.EXTERNAL_LINK&&item.url){const lbl=item.urlLabel||'פתח קישור';linkEl.innerHTML='';const btn=document.createElement('button');btn.className='card-link-btn';btn.type='button';btn.innerHTML='<i class="ti ti-external-link" aria-hidden="true"></i> '+lbl;
       btn.setAttribute('onclick','trackExternalLinkTap('+JSON.stringify(item.url)+','+JSON.stringify(lbl)+')');
-      linkEl.appendChild(btn);linkEl.style.display='block';lastEl.style.paddingBottom='36px';}else{linkEl.style.display='none';}}document.getElementById('cardStamp').classList.remove('visible');const next=CL[current+1];const under=document.getElementById('cardUnder');if(next){under.style.display='';document.getElementById('cardUnderNum').innerHTML='ITEM <b>'+(current+2).toString().padStart(2,'0')+'</b>';document.getElementById('cardUnderMain').textContent=next.main;}else{under.style.display='none';}renderRunway();if(treeOpen)renderTree();document.getElementById('confirmHint').classList.remove('confirmed','skipped-nudge');
+      linkEl.appendChild(btn);linkEl.style.display='block';lastEl.style.paddingBottom='36px';}else{linkEl.style.display='none';}}
+  // Persistent stamp — if this item was already checked off, the stamp
+  // stays on the page (no fade-in), same as a real stamped form. If no
+  // time was captured for it (flights in progress before this feature
+  // shipped), show it in the neutral/"not logged" style instead.
+  const cardStampEl=document.getElementById('cardStamp');
+  if(status[current]==='done'){
+    cardStampEl.classList.add('visible');
+    const stampBoxEl=cardStampEl.querySelector('.stamp-box');
+    const t=statusTime[current];
+    if(t){
+      stampBoxEl.classList.remove('stale');
+      document.getElementById('stampTime').textContent=t+' UTC';
+    }else{
+      stampBoxEl.classList.add('stale');
+      document.getElementById('stampTime').textContent='— : — UTC';
+    }
+  }else{
+    cardStampEl.classList.remove('visible');
+  }
+  const next=CL[current+1];const under=document.getElementById('cardUnder');if(next){under.style.display='';document.getElementById('cardUnderNum').innerHTML='ITEM <b>'+(current+2).toString().padStart(2,'0')+'</b>';document.getElementById('cardUnderMain').textContent=next.main;}else{under.style.display='none';}renderRunway();if(treeOpen)renderTree();document.getElementById('confirmHint').classList.remove('confirmed','skipped-nudge');
   const hintEl=document.getElementById('confirmHint');
   hintEl.textContent='לחץ והחזק את המסלול לאישור';
   hintEl.onclick=null;
@@ -1271,7 +1292,9 @@ function animHold(ts){
     holdState='confirmed';
     fill.style.width='100%';
     const now=new Date();
-    document.getElementById('stampTime').textContent=String(now.getUTCHours()).padStart(2,'0')+':'+String(now.getUTCMinutes()).padStart(2,'0')+' UTC';
+    _confirmedTimeStr=String(now.getUTCHours()).padStart(2,'0')+':'+String(now.getUTCMinutes()).padStart(2,'0');
+    document.getElementById('stampTime').textContent=_confirmedTimeStr+' UTC';
+    document.getElementById('cardStamp').querySelector('.stamp-box').classList.remove('stale');
     document.getElementById('cardStamp').classList.add('visible');
     if(navigator.vibrate){navigator.vibrate(40);}
     if(settings&&settings.sounds){playConfirmSound();}
@@ -1290,6 +1313,7 @@ function releaseHold(){
     document.getElementById('cardStamp').classList.remove('visible');
     setTimeout(()=>{
       status[current]='done';
+      statusTime[current]=_confirmedTimeStr;
       const prevPhase=CL[current].phase;
       advanceToNext();
       holdState='idle';
@@ -1427,7 +1451,8 @@ function bulkConfirm(){
     current=_bulkPhaseItems[0];
   }else{
     // check all
-    _bulkPhaseItems.forEach(ii=>{status[ii]='done';});
+    const bulkTime=(()=>{const n=new Date();return String(n.getUTCHours()).padStart(2,'0')+':'+String(n.getUTCMinutes()).padStart(2,'0');})();
+    _bulkPhaseItems.forEach(ii=>{status[ii]='done';statusTime[ii]=bulkTime;});
     // advance current past this phase
     const lastInPhase=_bulkPhaseItems[_bulkPhaseItems.length-1];
     let n=lastInPhase+1;
