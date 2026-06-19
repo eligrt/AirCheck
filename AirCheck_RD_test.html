@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <!-- ═══════════════════════════════════════
-     AirCheck+ · v2.08.083T · built by eligrt
+     AirCheck+ · v2.08.084T · built by eligrt
      ═══════════════════════════════════════ -->
 <html lang="he" dir="rtl">
 <head>
@@ -617,7 +617,7 @@ html,body{height:100%;background:#1a1a1c;font-family:var(--font-ui);color:var(--
     <div class="splash-footer-wrap">
       <div class="footer-strip" style="display:flex;align-items:center;justify-content:space-between;padding:5px 14px 8px;">
         <span class="footer-refresh" onclick="reloadApp()">רענון</span>
-        <span id="versionTap" style="cursor:default;">AirCheck+ · v2.08.083T · built by eligrt</span>
+        <span id="versionTap" style="cursor:default;">AirCheck+ · v2.08.084T · built by eligrt</span>
         <span style="width:40px;"></span>
       </div>
     </div>
@@ -792,7 +792,7 @@ html,body{height:100%;background:#1a1a1c;font-family:var(--font-ui);color:var(--
     <div class="tree-panel" id="treePanel"></div>
     <div class="footer-strip" style="display:flex;align-items:center;justify-content:space-between;padding:5px 14px 8px;">
       <span class="footer-refresh" onclick="reloadApp()">רענון</span>
-      <span id="versionTap" style="cursor:default;">AirCheck+ · v2.08.083T · built by eligrt</span>
+      <span id="versionTap" style="cursor:default;">AirCheck+ · v2.08.084T · built by eligrt</span>
       <span style="width:40px;"></span>
     </div>
   </div>
@@ -865,7 +865,7 @@ html,body{height:100%;background:#1a1a1c;font-family:var(--font-ui);color:var(--
 
     <div class="footer-strip" style="display:flex;align-items:center;justify-content:space-between;padding:5px 14px 8px;">
       <span style="width:40px;"></span>
-      <span id="versionTap" style="cursor:default;">AirCheck+ · v2.08.083T · built by eligrt</span>
+      <span id="versionTap" style="cursor:default;">AirCheck+ · v2.08.084T · built by eligrt</span>
       <span style="width:40px;"></span>
     </div>
   </div>
@@ -936,6 +936,10 @@ html,body{height:100%;background:#1a1a1c;font-family:var(--font-ui);color:var(--
             <button class="tog off" id="togSounds" onclick="toggleSetting('sounds')"><div class="tog-knob"></div></button>
           </div>
           <div class="settings-row">
+            <span class="settings-row-label">רטט באישורי פעולה</span>
+            <button class="tog off" id="togHaptics" onclick="toggleSetting('haptics')"><div class="tog-knob"></div></button>
+          </div>
+          <div class="settings-row">
             <span class="settings-row-label">זמן החזקת המסלול לאישור</span>
             <div class="seg-ctrl" id="holdDurationCtrl">
               <button class="seg-btn inactive" onclick="setHoldDuration(200,'short')">קצר</button>
@@ -975,7 +979,7 @@ html,body{height:100%;background:#1a1a1c;font-family:var(--font-ui);color:var(--
     </div>
     <div class="footer-strip" style="display:flex;align-items:center;justify-content:space-between;padding:5px 14px 8px;">
       <span class="footer-refresh" onclick="reloadApp()">רענון</span>
-      <span id="versionTap" style="cursor:default;">AirCheck+ · v2.08.083T · built by eligrt</span>
+      <span id="versionTap" style="cursor:default;">AirCheck+ · v2.08.084T · built by eligrt</span>
       <span style="width:40px;"></span>
     </div>
   </div>
@@ -994,7 +998,7 @@ html,body{height:100%;background:#1a1a1c;font-family:var(--font-ui);color:var(--
     <div class="editor-list" id="editorList"></div>
     <div class="footer-strip" style="display:flex;align-items:center;justify-content:space-between;padding:5px 14px 8px;">
       <span class="footer-refresh" onclick="reloadApp()">רענון</span>
-      <span id="versionTap" style="cursor:default;">AirCheck+ · v2.08.083T · built by eligrt</span>
+      <span id="versionTap" style="cursor:default;">AirCheck+ · v2.08.084T · built by eligrt</span>
       <span style="width:40px;"></span>
     </div>
   </div>
@@ -1299,7 +1303,7 @@ function animHold(ts){
     document.getElementById('stampTime').textContent=_confirmedTimeStr+' UTC';
     document.getElementById('cardStamp').querySelector('.stamp-box').classList.remove('stale');
     document.getElementById('cardStamp').classList.add('visible');
-    if(navigator.vibrate){navigator.vibrate(40);}
+    hapticTap();
     if(settings&&settings.sounds){playConfirmSound();}
     document.getElementById('confirmHint').textContent='אושר — שחרר להמשך';
     document.getElementById('confirmHint').classList.add('confirmed');
@@ -1369,10 +1373,11 @@ function resetRunwayBtn(instant){
   btn.classList.add('idle');
 }
 function advanceToNext(){let n=current+1;while(n<CL.length&&status[n]==='done')n++;if(n<CL.length)current=n;else{current=CL.length-1;}}
-function goBack(){if(current>0){current--;holdState='idle';resetRunwayBtn();render();}}
+function goBack(){if(current>0){hapticTap();current--;holdState='idle';resetRunwayBtn();render();}}
 function skipItem(){status[current]='skipped';let n=current+1;while(n<CL.length&&status[n]==='done')n++;if(n<CL.length)current=n;holdState='idle';resetRunwayBtn();render();}
-function uncheckCurrent(){status[current]='skipped';holdState='idle';resetRunwayBtn();render();}
+function uncheckCurrent(){hapticTap();status[current]='skipped';holdState='idle';resetRunwayBtn();render();}
 function goNext(){
+  hapticTap();
   if(current<CL.length-1){
     if(status[current]!=='done')status[current]='skipped';
     const prevPhase=CL[current].phase;
@@ -1407,6 +1412,7 @@ function jumpToUnchecked(){
   // Find all skipped indices
   const skipped=CL.reduce((arr,_,i)=>{ if(status[i]==='skipped')arr.push(i); return arr; },[]);
   if(!skipped.length)return;
+  hapticTap();
   // Find next skipped after current position, wrap around
   const next=skipped.find(i=>i>current)??skipped[0];
   current=next;
@@ -1450,6 +1456,7 @@ function bulkConfirm(){
   closeBulkPopup();
   if(_bulkIsComplete){
     // uncheck all — mark as skipped
+    hapticTap();
     _bulkPhaseItems.forEach(ii=>{status[ii]='skipped';});
     current=_bulkPhaseItems[0];
   }else{
@@ -1578,6 +1585,7 @@ function dismissAllDone(){showScreen('screenChecklist');render();}
 
 
 function openModal(){
+  hapticTap();
   document.getElementById('modal').classList.add('open');
 }
 function closeModal(){
@@ -1645,7 +1653,15 @@ function flightDetailsChangeReg(){
 // ── SETTINGS ──
 const SETTINGS_KEY='aircheck_rd_settings';
 const FLIGHT_DETAILS_KEY='aircheck_flight_details';
-let settings={tail:'',holdMs:300,sounds:false,theme:'day',homeBase:''};
+let settings={tail:'',holdMs:300,sounds:false,haptics:true,theme:'day',homeBase:''};
+// Single gate for all haptic feedback — respects the settings toggle.
+// Uniform short pulse used for confirm, navigation, and the moment any
+// destructive confirmation popup appears (not the destructive action
+// itself, which already happened by the time the popup would show again).
+function hapticTap(){
+  if(settings&&settings.haptics===false)return;
+  if(navigator.vibrate)navigator.vibrate(40);
+}
 
 function loadSettings(){
   // Hide profile name row if multi-profile not enabled
@@ -2867,6 +2883,7 @@ function openSettings(){
   document.getElementById('settingsTailInput').value=tail;
   updateStampPreview(tail||'HHH');
   updateTog('togSounds',settings.sounds);
+  updateTog('togHaptics',settings.haptics!==false);
   const hms=settings.holdMs||400;
   const hkey=hms<=200?'short':hms>=700?'long':'normal';
   updateHoldDurationCtrl(hkey);
@@ -2954,7 +2971,7 @@ function doSettingsReset(){
   // 1. Do the reset
   clearState();
   try{localStorage.removeItem(SETTINGS_KEY);localStorage.removeItem(REG_KEY);localStorage.removeItem(ROUTE_KEY);}catch(e){}
-  settings={tail:'',holdMs:300,sounds:false,theme:'day'};
+  settings={tail:'',holdMs:300,sounds:false,haptics:true,theme:'day'};
   // 2. Close confirm modal, then show success modal
   closeModal();
   setTimeout(()=>{
