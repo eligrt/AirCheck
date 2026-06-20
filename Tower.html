@@ -38,8 +38,8 @@ body{display:flex;align-items:flex-start;justify-content:center;padding:24px 16p
 .header-station{font-size:13.5px;font-weight:600;color:rgba(244,236,220,.85);margin-top:4px;direction:rtl;}
 
 /* body fills remaining height; box-stack holds the two symmetric boxes */
-.body{padding:16px 18px;flex:1;display:flex;flex-direction:column;min-height:0;}
-.box-stack{flex:1;display:flex;flex-direction:column;min-height:0;gap:14px;}
+.body{padding:16px 18px;flex:1;display:flex;flex-direction:column;min-height:0;overflow-y:auto;}
+.box-stack{flex:1 1 auto;min-height:0;display:flex;flex-direction:column;gap:14px;}
 
 /* live status panel — read-only echo of what's currently posted.
    Color carries age: green (fresh) -> amber (aging) -> gray (stale).
@@ -133,6 +133,18 @@ textarea::placeholder{color:rgba(28,61,110,.3);}
 .footer{padding:10px 14px;border-top:1px solid var(--gold-lite);text-align:center;flex-shrink:0;}
 .footer-txt{font-family:var(--font-mono);font-size:9px;color:var(--ink-faint);letter-spacing:.1em;text-transform:uppercase;}
 
+/* app-themed scrollbars — replaces default OS scrollbar wherever content scrolls */
+.body,.history-list{
+  scrollbar-width:thin;scrollbar-color:var(--gold-lite) transparent;
+  scrollbar-gutter:stable;
+}
+.body::-webkit-scrollbar,.history-list::-webkit-scrollbar{width:6px;}
+.body::-webkit-scrollbar-track,.history-list::-webkit-scrollbar-track{background:transparent;}
+.body::-webkit-scrollbar-thumb,.history-list::-webkit-scrollbar-thumb{
+  background:var(--gold-lite);border-radius:3px;
+}
+.body::-webkit-scrollbar-thumb:hover,.history-list::-webkit-scrollbar-thumb:hover{background:var(--gold);}
+
 /* sender-only history (not pilot-facing) */
 .history-toggle{
   display:flex;align-items:center;justify-content:space-between;
@@ -149,7 +161,12 @@ textarea::placeholder{color:rgba(28,61,110,.3);}
   font-family:var(--font-mono);font-size:9.5px;color:var(--ink-faint);
   background:var(--paper-edge);padding:1px 6px;border-radius:8px;margin-right:6px;
 }
-.history-chevron{width:11px;height:11px;color:var(--ink-faint);transition:transform .2s;flex-shrink:0;}
+.history-toggle-right{display:flex;align-items:center;}
+.history-state-word{
+  font-size:10px;font-weight:600;color:var(--ink-faint);
+  margin-right:6px;padding-right:6px;border-right:1px dashed var(--paper-edge);
+}
+.history-chevron{width:11px;height:11px;color:var(--ink-faint);transition:transform .2s;flex-shrink:0;display:flex;align-items:center;justify-content:center;}
 .history-chevron.open{transform:rotate(180deg);}
 
 .history-panel{overflow:hidden;max-height:0;transition:max-height .25s ease;flex-shrink:0;}
@@ -225,7 +242,10 @@ textarea::placeholder{color:rgba(28,61,110,.3);}
         <div class="history-toggle-text">היסטוריית עדכונים שלי</div>
         <span class="history-count-badge" id="historyCount">—</span>
       </div>
-      <div class="history-chevron" id="historyChevron"><svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M6 9l6 6 6-6" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+      <div class="history-toggle-right">
+        <span class="history-state-word" id="historyStateWord">הצג</span>
+        <div class="history-chevron" id="historyChevron"><svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M6 9l6 6 6-6" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+      </div>
     </div>
     <div class="history-panel" id="historyPanel">
       <div class="history-list" id="historyList">
@@ -235,7 +255,7 @@ textarea::placeholder{color:rgba(28,61,110,.3);}
   </div>
 
   <div class="footer" dir="ltr">
-    <div class="footer-txt" id="footerTxt">AirCheck+ · Tower · v1.20 · built by eligrt</div>
+    <div class="footer-txt" id="footerTxt">AirCheck+ · Tower · v1.31 · built by eligrt</div>
   </div>
 </div>
 
@@ -269,10 +289,32 @@ const stationNames = {
 
 function init(){
   document.getElementById('headerStation').textContent = (stationNames[icao]||icao) + ' · ' + icao;
-  document.getElementById('footerTxt').textContent = 'AirCheck+ · Tower · v1.20 · built by eligrt';
+  document.getElementById('footerTxt').textContent = 'AirCheck+ · Tower · v1.31 · built by eligrt';
   buildLivesRow();
   loadLastUpdate();
+  lockBoxStackHeight();
 }
+
+// Measures the live-panel+compose-box pair at their natural "fill the
+// screen" size (while history is still closed) and locks that exact
+// pixel height permanently. This keeps the closed/default state visually
+// identical to before, while guaranteeing the boxes never resize again
+// once the history panel is opened/closed — only the page scrolls.
+function lockBoxStackHeight(){
+  requestAnimationFrame(() => {
+    const stack = document.querySelector('.box-stack');
+    stack.style.flex = '1 1 auto'; // unlock to measure true natural size
+    requestAnimationFrame(() => {
+      const h = stack.getBoundingClientRect().height;
+      stack.style.flex = '0 0 ' + h + 'px';
+    });
+  });
+}
+window.addEventListener('resize', () => {
+  if(!document.getElementById('historyPanel').classList.contains('open')){
+    lockBoxStackHeight();
+  }
+});
 
 const HOURGLASS_SVG='<svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M6 2h12M6 22h12M6 2c0 5 5 6 6 8 1-2 6-3 6-8M6 22c0-5 5-6 6-8 1 2 6 3 6 8" stroke="currentColor" stroke-width="2.2" stroke-linejoin="round" stroke-linecap="round"/></svg>';
 function buildLivesRow(){
@@ -454,12 +496,45 @@ let _historyOpen = false;
 
 window.toggleHistory = function(){
   _historyOpen = !_historyOpen;
-  document.getElementById('historyPanel').classList.toggle('open', _historyOpen);
+  const panel = document.getElementById('historyPanel');
+  panel.classList.toggle('open', _historyOpen);
   document.getElementById('historyChevron').classList.toggle('open', _historyOpen);
+  document.getElementById('historyStateWord').textContent = _historyOpen ? 'הסתר' : 'הצג';
   if(_historyOpen && !_historyLoaded){
     loadHistory();
   }
+  if(_historyOpen){
+    // wait for the panel's own max-height transition to finish growing —
+    // scrolling any earlier means the page doesn't have scroll room yet,
+    // so the browser silently clamps the scroll short of the target.
+    let done = false;
+    const fire = () => { if(done) return; done = true; scrollHistoryIntoView(); };
+    const onDone = (e) => {
+      if(e.propertyName !== 'max-height') return;
+      panel.removeEventListener('transitionend', onDone);
+      fire();
+    };
+    panel.addEventListener('transitionend', onDone);
+    setTimeout(() => { // fallback in case transitionend doesn't fire
+      panel.removeEventListener('transitionend', onDone);
+      fire();
+    }, 350);
+  }
 };
+
+// Scrolls the .body container directly so the history section sits near
+// the top of the visible area. Done manually (instead of scrollIntoView)
+// because scrollIntoView's automatic "nearest scrollable ancestor" search
+// can be unreliable across browsers when there are nested scroll/overflow
+// contexts like .card (overflow:hidden) wrapping .body (overflow-y:auto).
+function scrollHistoryIntoView(){
+  const bodyEl = document.querySelector('.body');
+  const toggleEl = document.getElementById('historyToggle');
+  const bodyRect = bodyEl.getBoundingClientRect();
+  const toggleRect = toggleEl.getBoundingClientRect();
+  const delta = toggleRect.top - bodyRect.top - 8;
+  bodyEl.scrollBy({top: delta, behavior:'smooth'});
+}
 
 async function loadHistory(){
   const listEl = document.getElementById('historyList');
