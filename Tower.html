@@ -114,6 +114,13 @@ textarea::placeholder{color:rgba(28,61,110,.3);}
 .btn-spinner{width:13px;height:13px;border-radius:50%;border:2px solid rgba(244,236,220,.3);border-top-color:#f4ecdc;animation:btn-spin .7s linear infinite;}
 @keyframes btn-spin{to{transform:rotate(360deg);}}
 
+.stuck-hint{
+  text-align:center;margin-top:8px;font-size:11.5px;color:var(--ink-muted);
+  opacity:0;max-height:0;overflow:hidden;transition:opacity .4s ease,max-height .4s ease;
+}
+.stuck-hint.show{opacity:1;max-height:30px;}
+.stuck-hint a{color:var(--ink);font-weight:700;text-decoration:underline;cursor:pointer;}
+
 .status{
   padding:10px 12px;border-radius:4px;
   font-size:13px;line-height:1.5;direction:rtl;
@@ -125,6 +132,55 @@ textarea::placeholder{color:rgba(28,61,110,.3);}
 
 .footer{padding:10px 14px;border-top:1px solid var(--gold-lite);text-align:center;flex-shrink:0;}
 .footer-txt{font-family:var(--font-mono);font-size:9px;color:var(--ink-faint);letter-spacing:.1em;text-transform:uppercase;}
+
+/* sender-only history (not pilot-facing) */
+.history-toggle{
+  display:flex;align-items:center;justify-content:space-between;
+  padding:11px 14px;border-radius:6px;border:1.5px solid var(--paper-edge);
+  background:rgba(28,61,110,.03);cursor:pointer;margin-top:12px;flex-shrink:0;
+  transition:background .15s;
+}
+.history-toggle:active{background:rgba(28,61,110,.07);}
+.history-toggle-left{display:flex;align-items:center;gap:8px;}
+.history-icon{width:15px;height:15px;color:var(--ink-faint);flex-shrink:0;}
+.history-icon svg{width:100%;height:100%;display:block;}
+.history-toggle-text{font-size:12px;font-weight:600;color:var(--ink-muted);}
+.history-count-badge{
+  font-family:var(--font-mono);font-size:9.5px;color:var(--ink-faint);
+  background:var(--paper-edge);padding:1px 6px;border-radius:8px;margin-right:6px;
+}
+.history-chevron{width:11px;height:11px;color:var(--ink-faint);transition:transform .2s;flex-shrink:0;}
+.history-chevron.open{transform:rotate(180deg);}
+
+.history-panel{overflow:hidden;max-height:0;transition:max-height .25s ease;flex-shrink:0;}
+.history-panel.open{max-height:340px;}
+.history-list{
+  border:1.5px solid var(--paper-edge);border-top:none;border-radius:0 0 6px 6px;
+  background:var(--paper-hi);padding:6px 0;max-height:340px;overflow-y:auto;
+}
+.history-item{
+  padding:9px 14px;border-bottom:1px dashed var(--paper-edge);
+  display:flex;flex-direction:column;gap:3px;cursor:pointer;
+}
+.history-item:last-child{border-bottom:none;}
+.history-item-meta{display:flex;align-items:center;justify-content:space-between;gap:8px;}
+.history-item-time{font-family:var(--font-mono);font-size:9.5px;color:var(--ink-faint);letter-spacing:.04em;direction:ltr;flex-shrink:0;}
+.history-item-relative{font-size:10px;color:var(--ink-faint);}
+.history-item-text{
+  font-size:12px;line-height:1.5;color:var(--ink);direction:rtl;white-space:pre-wrap;
+  display:-webkit-box;-webkit-line-clamp:1;-webkit-box-orient:vertical;overflow:hidden;
+}
+.history-item.itemopen .history-item-text{-webkit-line-clamp:unset;overflow:visible;}
+.history-item-more{font-size:9.5px;color:var(--ink-faint);margin-top:1px;direction:rtl;}
+.history-item.itemopen .history-item-more{display:none;}
+.history-item.flagged{background:rgba(185,74,58,.05);}
+.history-item.flagged .history-item-time{color:var(--stamp-red);}
+.flag-pill{
+  font-size:8.5px;font-weight:700;color:var(--stamp-red);
+  background:rgba(185,74,58,.12);padding:1px 5px;border-radius:4px;letter-spacing:.03em;flex-shrink:0;
+}
+.history-empty{padding:18px 14px;text-align:center;font-size:11.5px;color:var(--ink-faint);}
+.history-loading{padding:18px 14px;text-align:center;font-size:11px;color:var(--ink-faint);}
 </style>
 </head>
 <body>
@@ -161,10 +217,25 @@ textarea::placeholder{color:rgba(28,61,110,.3);}
     <div class="char-count" id="charCount">0 תווים</div>
     <div class="status" id="statusMsg"></div>
     <button class="submit-btn" id="submitBtn" onclick="submitUpdate()" disabled>שלח עדכון ›</button>
+    <div class="stuck-hint" id="stuckHint">מממ... זמן השליחה ארוך מהרגיל 🤔 <a onclick="resetStuckSend()">תרצה לנסות שוב?</a></div>
+
+    <div class="history-toggle" id="historyToggle" onclick="toggleHistory()">
+      <div class="history-toggle-left">
+        <div class="history-icon"><svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M12 8v4l3 2M21 12a9 9 0 1 1-9-9" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+        <div class="history-toggle-text">היסטוריית עדכונים שלי</div>
+        <span class="history-count-badge" id="historyCount">—</span>
+      </div>
+      <div class="history-chevron" id="historyChevron"><svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M6 9l6 6 6-6" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+    </div>
+    <div class="history-panel" id="historyPanel">
+      <div class="history-list" id="historyList">
+        <div class="history-loading">טוען...</div>
+      </div>
+    </div>
   </div>
 
   <div class="footer" dir="ltr">
-    <div class="footer-txt" id="footerTxt">AirCheck+ · Tower · v1.18 · built by eligrt</div>
+    <div class="footer-txt" id="footerTxt">AirCheck+ · Tower · v1.20 · built by eligrt</div>
   </div>
 </div>
 
@@ -198,7 +269,7 @@ const stationNames = {
 
 function init(){
   document.getElementById('headerStation').textContent = (stationNames[icao]||icao) + ' · ' + icao;
-  document.getElementById('footerTxt').textContent = 'AirCheck+ · Tower · v1.18 · built by eligrt';
+  document.getElementById('footerTxt').textContent = 'AirCheck+ · Tower · v1.20 · built by eligrt';
   buildLivesRow();
   loadLastUpdate();
 }
@@ -325,10 +396,16 @@ window.submitUpdate = async function(){
   btn.innerHTML = '<span class="btn-spinner"></span> שולח לטייסים...';
   const sendStarted = Date.now();
   const MIN_SENDING_MS = 1100; // keep "שולח..." visible long enough to actually read it
+  const STUCK_HINT_MS = 7000; // show "is this stuck?" hint if still sending after 7s
+  const stuckHint = document.getElementById('stuckHint');
+  const stuckTimer = setTimeout(() => stuckHint.classList.add('show'), STUCK_HINT_MS);
   try{
     const now = Date.now();
     await set(ref(db, 'tower/' + icao + '/latest'), { text, timestamp: now, icao });
     await set(ref(db, 'tower/' + icao + '/history/' + now), { text, timestamp: now, icao });
+    pruneHistory(now); // fire-and-forget, doesn't block the send confirmation
+    clearTimeout(stuckTimer);
+    stuckHint.classList.remove('show');
     const elapsed = Date.now() - sendStarted;
     if(elapsed < MIN_SENDING_MS){
       await new Promise(r => setTimeout(r, MIN_SENDING_MS - elapsed));
@@ -339,18 +416,122 @@ window.submitUpdate = async function(){
     btn.classList.add('sent');
     btn.innerHTML = '<span>✓</span> עודכן - מוצג לטייסים';
     loadLastUpdate();
+    if(_historyLoaded) loadHistory(); // refresh the list if it was already opened
     setTimeout(() => {
       btn.classList.remove('sent');
       btn.textContent = 'שלח עדכון ›';
       btn.disabled = true;
     }, 1800);
   }catch(e){
+    clearTimeout(stuckTimer);
+    stuckHint.classList.remove('show');
     btn.classList.remove('sending');
     btn.textContent = 'שלח עדכון ›';
     btn.disabled = false;
     showStatus('error', 'שגיאה בשליחה. בדוק חיבור לאינטרנט.');
   }
 };
+
+// Manual escape hatch for a send that's hanging with no network response.
+// Resets the button UI only — cannot cancel the original pending Firebase
+// write, which may still complete later (the 2-min duplicate-flag in
+// history is the safety net for that case).
+window.resetStuckSend = function(){
+  const btn = document.getElementById('submitBtn');
+  document.getElementById('stuckHint').classList.remove('show');
+  btn.classList.remove('sending');
+  btn.innerHTML = 'שלח עדכון ›';
+  btn.disabled = document.getElementById('msgInput').value.trim().length < 5;
+};
+
+// ---- sender-only history (not pilot-facing) ----
+const HISTORY_MAX_AGE_MS = 7 * 24 * 3600000; // 7 days
+const HISTORY_MAX_COUNT = 50;
+const DUPLICATE_FLAG_MS = 2 * 60000; // 2 minutes
+
+let _historyLoaded = false;
+let _historyOpen = false;
+
+window.toggleHistory = function(){
+  _historyOpen = !_historyOpen;
+  document.getElementById('historyPanel').classList.toggle('open', _historyOpen);
+  document.getElementById('historyChevron').classList.toggle('open', _historyOpen);
+  if(_historyOpen && !_historyLoaded){
+    loadHistory();
+  }
+};
+
+async function loadHistory(){
+  const listEl = document.getElementById('historyList');
+  const countEl = document.getElementById('historyCount');
+  try{
+    const snap = await get(ref(db, 'tower/' + icao + '/history'));
+    const data = snap.val() || {};
+    const entries = Object.values(data).sort((a,b) => b.timestamp - a.timestamp);
+    _historyLoaded = true;
+    countEl.textContent = entries.length;
+    if(entries.length === 0){
+      listEl.innerHTML = '<div class="history-empty">עדיין לא נשלחו עדכונים</div>';
+      return;
+    }
+    listEl.innerHTML = entries.map((entry, i) => {
+      const prev = entries[i+1]; // next-older entry (chronologically before this one)
+      const flagged = prev && (entry.timestamp - prev.timestamp) < DUPLICATE_FLAG_MS;
+      const d = new Date(entry.timestamp);
+      const h = String(d.getUTCHours()).padStart(2,'0');
+      const m = String(d.getUTCMinutes()).padStart(2,'0');
+      const day = String(d.getDate()).padStart(2,'0');
+      const mo = String(d.getMonth()+1).padStart(2,'0');
+      const timeStr = h+':'+m+'Z · '+day+'/'+mo;
+      const rel = relativeTime(entry.timestamp);
+      const metaRight = flagged
+        ? '<span class="flag-pill">נשלח שוב תוך 2 דק׳</span>'
+        : '<span class="history-item-relative">'+escapeHtml(rel)+'</span>';
+      return '<div class="history-item'+(flagged?' flagged':'')+'" onclick="this.classList.toggle(\'itemopen\')">'
+        + '<div class="history-item-meta"><span class="history-item-time">'+timeStr+'</span>'+metaRight+'</div>'
+        + '<div class="history-item-text">'+escapeHtml(entry.text||'')+'</div>'
+        + '<div class="history-item-more">הצג עוד...</div>'
+        + '</div>';
+    }).join('');
+  }catch(e){
+    listEl.innerHTML = '<div class="history-empty">שגיאה בטעינת היסטוריה. בדוק חיבור לאינטרנט.</div>';
+  }
+}
+
+function relativeTime(ts){
+  const diffMin = Math.round((Date.now()-ts)/60000);
+  if(diffMin < 60) return 'לפני '+diffMin+' דק׳';
+  const diffHr = Math.round(diffMin/60);
+  if(diffHr < 24) return 'לפני '+diffHr+' שע׳';
+  return 'לפני '+Math.round(diffHr/24)+' ימים';
+}
+
+function escapeHtml(s){
+  return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+}
+
+// Deletes entries older than HISTORY_MAX_AGE_MS, then if still over
+// HISTORY_MAX_COUNT, deletes the oldest excess on top. Best-effort:
+// failures here never block or alter the send confirmation flow.
+async function pruneHistory(nowTs){
+  try{
+    const snap = await get(ref(db, 'tower/' + icao + '/history'));
+    const data = snap.val() || {};
+    let entries = Object.keys(data).map(key => ({ key, timestamp: data[key].timestamp }));
+    const toDelete = [];
+    entries.forEach(e => {
+      if(nowTs - e.timestamp > HISTORY_MAX_AGE_MS) toDelete.push(e.key);
+    });
+    const remaining = entries.filter(e => !toDelete.includes(e.key))
+      .sort((a,b) => b.timestamp - a.timestamp);
+    if(remaining.length > HISTORY_MAX_COUNT){
+      remaining.slice(HISTORY_MAX_COUNT).forEach(e => toDelete.push(e.key));
+    }
+    await Promise.all(toDelete.map(key => set(ref(db, 'tower/' + icao + '/history/' + key), null)));
+  }catch(e){
+    // silent — pruning is best-effort housekeeping, not user-facing
+  }
+}
 
 function showStatus(type, msg){
   const el = document.getElementById('statusMsg');
