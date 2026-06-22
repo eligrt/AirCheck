@@ -29,7 +29,10 @@ body{display:flex;align-items:flex-start;justify-content:center;padding:24px 16p
 }
 
 /* header — plain navy, real splash wordmark treatment on top */
-.header{background:var(--ink);padding:18px 18px 14px;flex-shrink:0;}
+.header{background:var(--ink);padding:18px 18px 14px;flex-shrink:0;position:relative;}
+.contact-btn{position:absolute;top:14px;right:14px;display:flex;align-items:center;gap:4px;color:rgba(255,255,255,.55);font-family:var(--font-ui);font-size:10px;text-decoration:none;cursor:pointer;}
+.contact-btn:hover{color:rgba(255,255,255,.85);}
+.contact-btn svg{width:13px;height:13px;flex-shrink:0;}
 .fam-wordmark-row{display:flex;align-items:baseline;gap:8px;direction:ltr;}
 .fam-wordmark-main{font-family:var(--font-mono);font-size:26px;font-weight:700;color:var(--paper);letter-spacing:-.5px;}
 .fam-sub{font-size:14px;font-weight:600;color:rgba(244,236,220,.8);font-family:var(--font-mono);}
@@ -190,6 +193,8 @@ textarea::placeholder{color:rgba(28,61,110,.3);}
 .history-item.itemopen .history-item-text{-webkit-line-clamp:unset;overflow:visible;}
 .history-item-more{font-size:9.5px;color:var(--ink-faint);margin-top:1px;direction:rtl;}
 .history-item.itemopen .history-item-more{display:none;}
+.history-item-less{font-size:9.5px;color:var(--ink-faint);margin-top:4px;direction:rtl;display:none;}
+.history-item.itemopen .history-item-less{display:block;}
 .history-item.flagged{background:rgba(185,74,58,.05);}
 .history-item.flagged .history-item-time{color:var(--stamp-red);}
 .flag-pill{
@@ -203,6 +208,7 @@ textarea::placeholder{color:rgba(28,61,110,.3);}
 <body>
 <div class="card">
   <div class="header">
+    <a class="contact-btn" href="mailto:eligrt@gmail.com?subject=AirCheck%2B%20%C2%B7%20Tower%20%7C%20%D7%94%D7%95%D7%93%D7%A2%D7%94%20%D7%9C%D7%9E%D7%A4%D7%AA%D7%97" title="צור קשר עם המפתח"><svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><rect x="2" y="4" width="20" height="16" rx="2" stroke="currentColor" stroke-width="1.8"/><path d="M2 7l10 7 10-7" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>צור קשר</a>
     <div class="fam-wordmark-row"><span class="fam-wordmark-main">AirCheck+</span><span class="fam-sub">· Tower</span></div>
     <div class="fam-tagline">"the checklist on top of the checklist"</div>
     <div class="header-title">עדכוני מגדל למצב שדה</div>
@@ -255,7 +261,7 @@ textarea::placeholder{color:rgba(28,61,110,.3);}
   </div>
 
   <div class="footer" dir="ltr">
-    <div class="footer-txt" id="footerTxt">AirCheck+ · Tower · v1.31 · built by eligrt</div>
+    <div class="footer-txt" id="footerTxt">AirCheck+ · Tower · v1.33 · built by eligrt</div>
   </div>
 </div>
 
@@ -289,7 +295,7 @@ const stationNames = {
 
 function init(){
   document.getElementById('headerStation').textContent = (stationNames[icao]||icao) + ' · ' + icao;
-  document.getElementById('footerTxt').textContent = 'AirCheck+ · Tower · v1.31 · built by eligrt';
+  document.getElementById('footerTxt').textContent = 'AirCheck+ · Tower · v1.33 · built by eligrt';
   buildLivesRow();
   loadLastUpdate();
   lockBoxStackHeight();
@@ -566,6 +572,7 @@ async function loadHistory(){
         + '<div class="history-item-meta"><span class="history-item-time">'+timeStr+'</span>'+metaRight+'</div>'
         + '<div class="history-item-text">'+escapeHtml(entry.text||'')+'</div>'
         + '<div class="history-item-more">הצג עוד...</div>'
+        + '<div class="history-item-less">הסתר ∧</div>'
         + '</div>';
     }).join('');
   }catch(e){
