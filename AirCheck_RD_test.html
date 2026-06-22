@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <!-- ═══════════════════════════════════════
-     AirCheck+ · v2.09.015T · built by eligrt
+     AirCheck+ · v2.09.018T · built by eligrt
      ═══════════════════════════════════════ -->
 <html lang="he" dir="rtl">
 <head>
@@ -54,7 +54,7 @@ html,body{height:100%;background:#1a1a1c;font-family:var(--font-ui);color:var(--
 .splash-runway-pct{font-size:9px;font-family:var(--font-mono);color:var(--ink-muted);letter-spacing:.02em;margin-bottom:5px;}
 .splash-runway{height:8px;background:rgba(100,90,80,.45);border-radius:2px;overflow:hidden;position:relative;}
 .splash-runway-fill{height:100%;border-radius:2px;background:var(--cleared);transition:width .4s ease;}
-.splash-runway-tick{position:absolute;top:0;bottom:0;width:1px;background:var(--paper-hi);opacity:.6;}
+.splash-runway-tick{position:absolute;top:0;bottom:0;width:2px;background:var(--paper-hi);opacity:1;}
 .splash-runway-dot{position:absolute;top:50%;width:5px;height:5px;border-radius:50%;background:var(--amber);border:1px solid var(--paper-hi);transform:translate(50%,-50%);}
 .splash-skip-row{position:relative;height:12px;margin-top:3px;display:none;}
 .splash-skip-row.show{display:block;}
@@ -638,7 +638,7 @@ html,body{height:100%;background:#1a1a1c;font-family:var(--font-ui);color:var(--
     <div class="splash-footer-wrap">
       <div class="footer-strip" style="display:flex;align-items:center;justify-content:space-between;padding:5px 14px 8px;">
         <span class="footer-refresh" onclick="reloadApp()">רענון</span>
-        <span id="versionTap" style="cursor:default;">AirCheck+ · v2.09.015T · built by eligrt</span>
+        <span id="versionTap" style="cursor:default;">AirCheck+ · v2.09.018T · built by eligrt</span>
         <span style="width:40px;"></span>
       </div>
     </div>
@@ -813,7 +813,7 @@ html,body{height:100%;background:#1a1a1c;font-family:var(--font-ui);color:var(--
     <div class="tree-panel" id="treePanel"></div>
     <div class="footer-strip" style="display:flex;align-items:center;justify-content:space-between;padding:5px 14px 8px;">
       <span class="footer-refresh" onclick="reloadApp()">רענון</span>
-      <span id="versionTap" style="cursor:default;">AirCheck+ · v2.09.015T · built by eligrt</span>
+      <span id="versionTap" style="cursor:default;">AirCheck+ · v2.09.018T · built by eligrt</span>
       <span style="width:40px;"></span>
     </div>
   </div>
@@ -886,7 +886,7 @@ html,body{height:100%;background:#1a1a1c;font-family:var(--font-ui);color:var(--
 
     <div class="footer-strip" style="display:flex;align-items:center;justify-content:space-between;padding:5px 14px 8px;">
       <span style="width:40px;"></span>
-      <span id="versionTap" style="cursor:default;">AirCheck+ · v2.09.015T · built by eligrt</span>
+      <span id="versionTap" style="cursor:default;">AirCheck+ · v2.09.018T · built by eligrt</span>
       <span style="width:40px;"></span>
     </div>
   </div>
@@ -1000,7 +1000,7 @@ html,body{height:100%;background:#1a1a1c;font-family:var(--font-ui);color:var(--
     </div>
     <div class="footer-strip" style="display:flex;align-items:center;justify-content:space-between;padding:5px 14px 8px;">
       <span class="footer-refresh" onclick="reloadApp()">רענון</span>
-      <span id="versionTap" style="cursor:default;">AirCheck+ · v2.09.015T · built by eligrt</span>
+      <span id="versionTap" style="cursor:default;">AirCheck+ · v2.09.018T · built by eligrt</span>
       <span style="width:40px;"></span>
     </div>
   </div>
@@ -1024,7 +1024,7 @@ html,body{height:100%;background:#1a1a1c;font-family:var(--font-ui);color:var(--
     <div class="editor-list" id="editorList"></div>
     <div class="footer-strip" style="display:flex;align-items:center;justify-content:space-between;padding:5px 14px 8px;">
       <span class="footer-refresh" onclick="reloadApp()">רענון</span>
-      <span id="versionTap" style="cursor:default;">AirCheck+ · v2.09.015T · built by eligrt</span>
+      <span id="versionTap" style="cursor:default;">AirCheck+ · v2.09.018T · built by eligrt</span>
       <span style="width:40px;"></span>
     </div>
   </div>
@@ -1108,17 +1108,17 @@ const CL=[
   {defId:"d009",phase:"יום לפני",group:"תכנון (ניווט ודלק)",main:"חשב כמות דלק נדרשת לטיסה",sub:"בתוספת '45 (הסעה '15 + ספייר '30)"},
   {defId:"d010",phase:"יום לפני",group:"מנהלות",main:"ודא מטוס משוריין / מוזמן לטיסה",sub:""},
   {defId:"d011",phase:"יום לפני",group:"מנהלות",main:"תאום נחיתה בשדה יעד / עצירה (אם נדרש)",sub:""},
-  {defId:"d012",phase:"יום לפני",group:"בדיקת מז״א",main:"בדוק TAF בשדה המראה ושדה נחיתה",sub:""},
+  {defId:"d012",phase:"יום לפני",group:"בדיקת מז״א",main:"בדוק TAF בשדה המראה ושדה נחיתה",sub:"",url:"https://eligrt.github.io/AirCheck/AirCheck_METAR.html",urlLabel:"AirCheck+ METAR / TAF"},
   {defId:"d013",phase:"יום לפני",group:"בדיקת מז״א",main:"בדוק מפות רוח בנתיב",sub:""},
   {defId:"d014",phase:"יום לפני",group:"בדיקת מז״א",main:"בדוק מפות SIG",sub:""},
   {defId:"d015",phase:"יום לפני",group:"בדיקת מז״א",main:"אמת נתונים באפליקציית מז״א",sub:""},
   {defId:"d016",phase:"יום לפני",group:"מודיעין טיס",main:"בדוק NOTAM",sub:"",url:"https://notam.liorbenhorin.xyz/",urlLabel:"NOTAM LL"},
   {defId:"d017",phase:"יום לפני",group:"מודיעין טיס",main:"הגשת תוכנית טיסה",sub:"",url:"https://fpl.co.il/",urlLabel:"fpl.co.il"},
-  {defId:"d018",phase:"יום לפני",group:"מודיעין טיס",main:"קבלת מרשה טיסה",sub:""},
+  {defId:"d018",phase:"הגעה למנחת ולמטוס",group:"רישומים וניירת",main:"קבלת מרשה טיסה",sub:""},
   {defId:"d019",phase:"הגעה למנחת ולמטוס",group:"רישומים וניירת",main:"פתיחת טיסה במחשב המנחת (עודד)",sub:""},
   {defId:"d020",phase:"הגעה למנחת ולמטוס",group:"רישומים וניירת",main:"ודא המצאות תעודות המטוס בקוקפיט",sub:"בעלות, כושר טיסה (ודא תוקף) ורדיו (ודא תוקף)"},
   {defId:"d021",phase:"הגעה למנחת ולמטוס",group:"רישומים וניירת",main:"ודא אי חריגה מטיפול קרוב",sub:"טיפול קרוב ב: HOBS #### או ב: dd.mm.yyyy"},
-  {defId:"d022",phase:"הגעה למנחת ולמטוס",group:"רישומים וניירת",main:"משקל ואיזון - ודא",sub:""},
+  {defId:"d022",phase:"הגעה למנחת ולמטוס",group:"רישומים וניירת",main:"משקל ואיזון - ודא",sub:"",url:"https://eligrt.github.io/AirBalance/AirBalance.html",urlLabel:"AirBalance"},
   {defId:"d023",phase:"הגעה למנחת ולמטוס",group:"רישומים וניירת",main:"בדיקת תקלות (אדומים)",sub:""},
   {defId:"d024",phase:"הגעה למנחת ולמטוס",group:"רישומים וניירת",main:"פתיחת שורה בספר",sub:""},
   {defId:"d025",phase:"הגעה למנחת ולמטוס",group:"הכנת קוקפיט",main:"בדיקות חיצוניות - הושלם",sub:""},
@@ -1126,13 +1126,15 @@ const CL=[
   {defId:"d027",phase:"הגעה למנחת ולמטוס",group:"הכנת קוקפיט",main:"מצלמות: מקם והפעל",sub:""},
   {defId:"d028",phase:"הגעה למנחת ולמטוס",group:"הכנת קוקפיט",main:"GPS - מקם והפעל",sub:""},
   {defId:"d029",phase:"הגעה למנחת ולמטוס",group:"הכנת קוקפיט",main:"אוזניות - בדוק סוללות",sub:""},
-  {defId:"d030",phase:"הגעה למנחת ולמטוס",group:"הכנת קוקפיט",main:"תדרוך נוסע (אם נדרש)",sub:"",url:"https://eligrt.github.io/AirCheck/passenger-briefing.html",urlLabel:"Passenger Briefing"},
+  {defId:"d030",phase:"הגעה למנחת ולמטוס",group:"הכנת קוקפיט",main:"תדרוך נוסע (אם נדרש)",sub:"",url:"https://eligrt.github.io/AirCheck/passenger-briefing.html",urlLabel:"AirCheck+ Passenger Briefing"},
+  {defId:"d044",phase:"הגעה למנחת ולמטוס",group:"הכנת קוקפיט",main:"מכשיר קשר נייד טעון ובתיק",sub:""},
   {defId:"d031",phase:"הגעה למנחת ולמטוס",group:"כללי",main:"עדכון בקרה בהמראה (אם נדרש)",sub:""},
-  {defId:"d032",phase:"הגעה למנחת ולמטוס",group:"כללי",main:"דאבל צ׳ק מז״א",sub:"METAR בשדה המראה ובשדה נחיתה"},
+  {defId:"d032",phase:"הגעה למנחת ולמטוס",group:"כללי",main:"דאבל צ׳ק מז״א",sub:"METAR בשדה המראה ובשדה נחיתה",url:"https://eligrt.github.io/AirCheck/AirCheck_METAR.html",urlLabel:"AirCheck+ METAR / TAF"},
   {defId:"d033",phase:"הגעה למנחת ולמטוס",group:"כללי",main:"בדיקה חוזרת ל NOTAM's בשדות ובנתיבים",sub:"",url:"https://notam.liorbenhorin.xyz/",urlLabel:"NOTAM LL"},
   {defId:"d034",phase:"סגירת טיסה",group:"ניירת",main:"ספר מטוס: סגירת שורה",sub:""},
   {defId:"d035",phase:"סגירת טיסה",group:"קיפול ציוד אישי",main:"מצלמות, IPAD, טלפון",sub:""},
   {defId:"d036",phase:"סגירת טיסה",group:"קיפול ציוד אישי",main:"אוזניות אישיות ואוזניות נוסע",sub:""},
+  {defId:"d045",phase:"סגירת טיסה",group:"קיפול ציוד אישי",main:"קשר ניד",sub:""},
   {defId:"d037",phase:"סגירת טיסה",group:"קיפול ציוד אישי",main:"HardCopy",sub:""},
   {defId:"d038",phase:"סגירת טיסה",group:"קיפול ציוד אישי",main:"ודא קוקפיט Cold & Dark",sub:""},
   {defId:"d039",phase:"סגירת טיסה",group:"מטוס האנגר ומנחת",main:"חניה וכיסוי",sub:""},
@@ -3458,7 +3460,8 @@ function initSplash(){
     // phase ticks/dots below — not raw "done" count, which undercounts
     // skipped items already passed and made the bar look behind where the
     // pilot actually is. True completion is shown separately as text.
-    const posPct=Math.round((current/CL.length)*100);
+    const maxReached=Object.keys(status).reduce((m,k)=>{const i=parseInt(k,10);return i>m?i:m;},current);
+    const posPct=Math.min(100,Math.round(((maxReached+1)/CL.length)*100));
     const donePct=Math.round((done/CL.length)*100);
     document.getElementById('splashRunwayFill').style.width=posPct+'%';
     document.getElementById('splashRunwayPct').textContent=done+' / '+CL.length+' הושלם · '+donePct+'%';
