@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <!-- ═══════════════════════════════════════
-     AirCheck+ · v2.09.024T · built by eligrt
+     AirCheck+ · v2.09.025T · built by eligrt
      ═══════════════════════════════════════ -->
 <html lang="he" dir="rtl">
 <head>
@@ -639,7 +639,7 @@ html,body{height:100%;background:#1a1a1c;font-family:var(--font-ui);color:var(--
     <div class="splash-footer-wrap">
       <div class="footer-strip" style="display:flex;align-items:center;justify-content:space-between;padding:5px 14px 8px;">
         <span class="footer-refresh" onclick="reloadApp()">רענון</span>
-        <span id="versionTap" style="cursor:default;">AirCheck+ · v2.09.024T · built by eligrt</span>
+        <span id="versionTap" style="cursor:default;">AirCheck+ · v2.09.025T · built by eligrt</span>
         <span style="width:40px;"></span>
       </div>
     </div>
@@ -760,7 +760,7 @@ html,body{height:100%;background:#1a1a1c;font-family:var(--font-ui);color:var(--
     <div class="tree-panel" id="treePanel"></div>
     <div class="footer-strip" style="display:flex;align-items:center;justify-content:space-between;padding:5px 14px 8px;">
       <span class="footer-refresh" onclick="reloadApp()">רענון</span>
-      <span id="versionTap" style="cursor:default;">AirCheck+ · v2.09.024T · built by eligrt</span>
+      <span id="versionTap" style="cursor:default;">AirCheck+ · v2.09.025T · built by eligrt</span>
       <span style="width:40px;"></span>
     </div>
   </div>
@@ -881,7 +881,7 @@ html,body{height:100%;background:#1a1a1c;font-family:var(--font-ui);color:var(--
 
     <div class="footer-strip" style="display:flex;align-items:center;justify-content:space-between;padding:5px 14px 8px;">
       <span style="width:40px;"></span>
-      <span id="versionTap" style="cursor:default;">AirCheck+ · v2.09.024T · built by eligrt</span>
+      <span id="versionTap" style="cursor:default;">AirCheck+ · v2.09.025T · built by eligrt</span>
       <span style="width:40px;"></span>
     </div>
   </div>
@@ -995,7 +995,7 @@ html,body{height:100%;background:#1a1a1c;font-family:var(--font-ui);color:var(--
     </div>
     <div class="footer-strip" style="display:flex;align-items:center;justify-content:space-between;padding:5px 14px 8px;">
       <span class="footer-refresh" onclick="reloadApp()">רענון</span>
-      <span id="versionTap" style="cursor:default;">AirCheck+ · v2.09.024T · built by eligrt</span>
+      <span id="versionTap" style="cursor:default;">AirCheck+ · v2.09.025T · built by eligrt</span>
       <span style="width:40px;"></span>
     </div>
   </div>
@@ -1019,7 +1019,7 @@ html,body{height:100%;background:#1a1a1c;font-family:var(--font-ui);color:var(--
     <div class="editor-list" id="editorList"></div>
     <div class="footer-strip" style="display:flex;align-items:center;justify-content:space-between;padding:5px 14px 8px;">
       <span class="footer-refresh" onclick="reloadApp()">רענון</span>
-      <span id="versionTap" style="cursor:default;">AirCheck+ · v2.09.024T · built by eligrt</span>
+      <span id="versionTap" style="cursor:default;">AirCheck+ · v2.09.025T · built by eligrt</span>
       <span style="width:40px;"></span>
     </div>
   </div>
@@ -1618,9 +1618,9 @@ function closeShareModal(){
   if(el)el.style.display='none';
 }
 function doShare(){
-  const from=document.getElementById('shFrom').value.trim()||'[ לא הוזן ]';
-  const via=document.getElementById('shVia').value.trim()||'[ לא הוזן ]';
-  const to=document.getElementById('shTo').value.trim()||'[ לא הוזן ]';
+  const from=document.getElementById('shFrom').value.trim().toUpperCase()||'[ לא הוזן ]';
+  const via=document.getElementById('shVia').value.trim().toUpperCase()||'[ לא הוזן ]';
+  const to=document.getElementById('shTo').value.trim().toUpperCase()||'[ לא הוזן ]';
   const reg=document.getElementById('shReg').value.trim()||'[ לא הוזן ]';
   const regStr=reg==='[ לא הוזן ]'?'[ לא הוזן ]':'4X-'+reg;
   const now=new Date();
@@ -1637,7 +1637,7 @@ function doShare(){
   lines.push('✅ *AirCheck+ | סיכום טיסה*');
   lines.push('────────────────────');
   lines.push('✈️ '+regStr+'  '+route);
-  lines.push('🕐 '+localStr+' מקומי ('+utcStr+' UTC)');
+  lines.push('🕐 LT '+localStr+' (UTC '+utcStr+')');
   lines.push('────────────────────');
   lines.push('📋 *'+phaseName+'* — '+done+'/'+total+(skipped>0?' ('+skipped+' דולגו)':''));
   lines.push('');
