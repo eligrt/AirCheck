@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <!-- ═══════════════════════════════════════
-     AirCheck+ · v2.09.018T · built by eligrt
+     AirCheck+ · v2.09.023T · built by eligrt
      ═══════════════════════════════════════ -->
 <html lang="he" dir="rtl">
 <head>
@@ -576,6 +576,7 @@ html,body{height:100%;background:#1a1a1c;font-family:var(--font-ui);color:var(--
 
 .settings-row-sub{font-size:10px;color:var(--ink-muted);margin-top:2px;font-family:var(--font-mono);letter-spacing:.04em;}
 
+#shFrom::placeholder,#shVia::placeholder,#shTo::placeholder{font-family:var(--font-ui);font-size:12px;font-weight:400;color:var(--ink-faint);}
 </style>
 </head>
 <body>
@@ -638,67 +639,13 @@ html,body{height:100%;background:#1a1a1c;font-family:var(--font-ui);color:var(--
     <div class="splash-footer-wrap">
       <div class="footer-strip" style="display:flex;align-items:center;justify-content:space-between;padding:5px 14px 8px;">
         <span class="footer-refresh" onclick="reloadApp()">רענון</span>
-        <span id="versionTap" style="cursor:default;">AirCheck+ · v2.09.018T · built by eligrt</span>
+        <span id="versionTap" style="cursor:default;">AirCheck+ · v2.09.023T · built by eligrt</span>
         <span style="width:40px;"></span>
       </div>
     </div>
   </div>
 
   <!-- FLIGHT DETAILS POPUP -->
-  <div id="flightDetailsPopup" style="display:none;position:absolute;inset:0;background:rgba(26,19,8,.82);z-index:600;align-items:center;justify-content:center;padding:24px;backdrop-filter:blur(3px);">
-    <div style="background:var(--paper);background-image:repeating-linear-gradient(0deg,transparent 0,transparent 27px,rgba(28,61,110,.055) 27px,rgba(28,61,110,.055) 28px);border:2px solid var(--gold);border-radius:8px;width:100%;max-width:320px;overflow:hidden;direction:rtl;">
-      <div style="background:var(--ink);padding:12px 18px 10px;text-align:center;">
-        <div style="font-family:var(--font-mono);font-size:9px;color:rgba(244,236,220,.45);letter-spacing:.2em;text-transform:uppercase;margin-bottom:4px;">FLIGHT DETAILS</div>
-        <div style="font-size:17px;font-weight:700;color:var(--paper);">פרטי הטיסה</div>
-      </div>
-      <div style="padding:14px 16px 6px;display:flex;flex-direction:column;gap:10px;">
-        <div style="display:flex;gap:8px;align-items:flex-end;direction:ltr;text-align:center;">
-          <div style="flex:1;">
-            <div style="font-family:var(--font-mono);font-size:9px;color:var(--ink-faint);letter-spacing:.1em;margin-bottom:4px;text-align:center;">FROM</div>
-            <input id="fdFrom" type="text" maxlength="6" dir="auto" placeholder="LLHZ"
-              style="width:100%;background:var(--paper-hi);border:1.5px solid var(--gold-lite);border-radius:4px;padding:8px 10px;font-family:var(--font-mono);font-size:15px;font-weight:700;color:var(--ink);text-transform:uppercase;outline:none;text-align:center;"
-              autocomplete="off" autocorrect="off" spellcheck="false"
-              oninput="this.value=this.value.toUpperCase()">
-          </div>
-          <div style="font-size:18px;color:var(--ink-faint);padding-bottom:8px;">›</div>
-          <div style="flex:1;">
-            <div style="font-family:var(--font-mono);font-size:9px;color:var(--ink-faint);letter-spacing:.1em;margin-bottom:4px;text-align:center;">VIA</div>
-            <input id="fdVia" type="text" maxlength="6" dir="auto" placeholder="—"
-              style="width:100%;background:var(--paper-hi);border:1.5px solid var(--gold-lite);border-radius:4px;padding:8px 10px;font-family:var(--font-mono);font-size:15px;font-weight:700;color:var(--ink);text-transform:uppercase;outline:none;text-align:center;"
-              autocomplete="off" autocorrect="off" spellcheck="false"
-              oninput="this.value=this.value.toUpperCase()">
-          </div>
-          <div style="font-size:18px;color:var(--ink-faint);padding-bottom:8px;">›</div>
-          <div style="flex:1;">
-            <div style="font-family:var(--font-mono);font-size:9px;color:var(--ink-faint);letter-spacing:.1em;margin-bottom:4px;text-align:center;">TO</div>
-            <input id="fdTo" type="text" maxlength="6" dir="auto" placeholder="LLHZ"
-              style="width:100%;background:var(--paper-hi);border:1.5px solid var(--gold-lite);border-radius:4px;padding:8px 10px;font-family:var(--font-mono);font-size:15px;font-weight:700;color:var(--ink);text-transform:uppercase;outline:none;text-align:center;"
-              autocomplete="off" autocorrect="off" spellcheck="false"
-              oninput="this.value=this.value.toUpperCase()">
-          </div>
-        </div>
-        <div style="display:flex;gap:8px;align-items:flex-end;direction:ltr;text-align:center;">
-          <div style="flex:1;">
-            <div style="font-family:var(--font-mono);font-size:9px;color:var(--ink-faint);letter-spacing:.1em;margin-bottom:4px;text-align:center;">Aircraft Registration / Call-Sign</div>
-            <div style="background:var(--paper-hi);border:1.5px solid var(--gold-lite);border-radius:4px;padding:8px 10px;display:flex;align-items:center;justify-content:center;gap:2px;">
-              <span style="font-family:var(--font-mono);font-size:15px;font-weight:700;color:var(--ink-faint);">4X-</span>
-              <input id="fdReg" type="text" maxlength="3" dir="ltr"
-                style="background:transparent;border:none;outline:none;font-family:var(--font-mono);font-size:15px;font-weight:700;color:var(--ink);text-transform:uppercase;width:3ch;caret-color:var(--gold);padding:0;"
-                autocomplete="off" autocorrect="off" spellcheck="false"
-                oninput="this.value=this.value.toUpperCase().replace(/[^A-Z0-9]/g,'')">
-            </div>
-          </div>
-        </div>
-        <div style="text-align:center;">
-          <button onclick="flightDetailsChangeReg()" style="background:transparent;border:none;font-family:var(--font-ui);font-size:10px;color:var(--ink-faint);cursor:pointer;text-decoration:underline;padding:0;">עדכן נתוני ברירת מחדל ›</button>
-        </div>
-      </div>
-      <div style="padding:10px 16px 14px;">
-        <button onclick="confirmFlightDetails()" style="width:100%;padding:12px;background:var(--ink);border:none;border-radius:6px;font-family:var(--font-ui);font-size:14px;font-weight:700;color:var(--paper);cursor:pointer;">שמור והתחל ✈</button>
-      </div>
-    </div>
-  </div>
-
   <div class="screen" id="screenChecklist">
 
     <div class="flight-strip" style="direction:ltr;">
@@ -813,7 +760,7 @@ html,body{height:100%;background:#1a1a1c;font-family:var(--font-ui);color:var(--
     <div class="tree-panel" id="treePanel"></div>
     <div class="footer-strip" style="display:flex;align-items:center;justify-content:space-between;padding:5px 14px 8px;">
       <span class="footer-refresh" onclick="reloadApp()">רענון</span>
-      <span id="versionTap" style="cursor:default;">AirCheck+ · v2.09.018T · built by eligrt</span>
+      <span id="versionTap" style="cursor:default;">AirCheck+ · v2.09.023T · built by eligrt</span>
       <span style="width:40px;"></span>
     </div>
   </div>
@@ -841,25 +788,73 @@ html,body{height:100%;background:#1a1a1c;font-family:var(--font-ui);color:var(--
         <span class="summary-strip-label">UTC</span>
         <span class="summary-strip-val" id="summaryUtc">--:--</span>
       </div>
-      <div style="display:flex;align-items:center;gap:4px;flex:1;justify-content:center;">
-        <div class="summary-strip-col" id="summaryFromCol">
-          <span class="summary-strip-label">FROM</span>
-          <span class="summary-strip-val" id="summaryFrom">—</span>
+      <button class="strip-pill strip-pill-gold" onclick="openShareModal()" style="margin-left:auto;"><i class="ti ti-share" style="font-size:13px;"></i> שיתוף</button>
+    </div>
+
+    <!-- Share modal -->
+    <div id="shareModal" style="display:none;position:absolute;inset:0;background:rgba(26,19,8,.82);z-index:600;align-items:center;justify-content:center;padding:20px;backdrop-filter:blur(3px);">
+      <div style="background:var(--paper-hi);border:2px solid var(--gold);border-top:4px solid var(--amber);border-radius:8px;padding:20px 18px 16px;width:100%;max-width:340px;text-align:right;box-shadow:0 20px 60px rgba(0,0,0,.4);">
+        <div style="font-size:16px;font-weight:700;color:var(--ink);margin-bottom:14px;display:flex;align-items:center;gap:8px;direction:rtl;">
+          <span style="width:26px;height:26px;border-radius:50%;background:rgba(245,158,11,.15);border:1px solid var(--amber);display:inline-flex;align-items:center;justify-content:center;font-size:13px;flex-shrink:0;"><i class="ti ti-share" aria-hidden="true"></i></span>
+          שיתוף סיכום טיסה
         </div>
-        <div style="color:rgba(244,236,220,.5);font-size:16px;font-weight:300;line-height:1;margin-top:10px;padding:0 3px;">›</div>
-        <div class="summary-strip-col" id="summaryViaCol">
-          <span class="summary-strip-label">VIA</span>
-          <span class="summary-strip-val" id="summaryVia">—</span>
+        <div style="font-size:10px;color:var(--ink-muted);letter-spacing:.05em;margin-bottom:10px;">מסלול <span style="font-weight:400;color:var(--ink-faint);font-size:9px;">(אופציונלי · יופיע בשיתוף)</span></div>
+        <!-- vertical train-station route -->
+        <div style="display:flex;flex-direction:column;direction:ltr;margin-bottom:6px;">
+          <!-- FROM -->
+          <div style="display:flex;flex-direction:row;align-items:stretch;gap:12px;direction:ltr;">
+            <div style="display:flex;flex-direction:column;align-items:center;flex-shrink:0;width:14px;">
+              <div style="width:2px;flex:1;min-height:14px;background:transparent;"></div>
+              <div style="width:12px;height:12px;border-radius:50%;flex-shrink:0;background:var(--gold);box-shadow:0 0 0 2px var(--paper-hi),0 0 0 3.5px var(--gold);"></div>
+              <div style="width:2px;flex:1;min-height:14px;background:rgba(200,160,74,.45);"></div>
+            </div>
+            <div style="flex:1;padding:2px 0 10px;">
+              <div style="font-size:9px;color:var(--ink-muted);letter-spacing:.15em;text-transform:uppercase;font-family:var(--font-mono);margin-bottom:3px;direction:ltr;text-align:left;">FROM</div>
+              <input id="shFrom" type="text" maxlength="6" autocomplete="off" autocorrect="off" spellcheck="false"
+                style="background:var(--paper);border:1px solid var(--gold);border-radius:3px;font-family:var(--font-mono);font-size:14px;font-weight:700;color:var(--ink);padding:6px 10px;outline:none;width:100%;box-sizing:border-box;direction:ltr;text-transform:uppercase;">
+            </div>
+          </div>
+          <!-- VIA -->
+          <div style="display:flex;flex-direction:row;align-items:stretch;gap:12px;direction:ltr;">
+            <div style="display:flex;flex-direction:column;align-items:center;flex-shrink:0;width:14px;">
+              <div style="width:2px;flex:1;min-height:14px;background:rgba(200,160,74,.45);"></div>
+              <div style="width:9px;height:9px;border-radius:50%;flex-shrink:0;background:var(--paper-hi);border:2px solid rgba(200,160,74,.55);"></div>
+              <div style="width:2px;flex:1;min-height:14px;background:rgba(200,160,74,.45);"></div>
+            </div>
+            <div style="flex:1;padding:2px 0 10px;">
+              <div style="font-size:9px;color:var(--ink-muted);letter-spacing:.15em;text-transform:uppercase;font-family:var(--font-mono);margin-bottom:3px;direction:ltr;text-align:left;">VIA</div>
+              <input id="shVia" type="text" maxlength="6" autocomplete="off" autocorrect="off" spellcheck="false"
+                style="background:var(--paper);border:1px solid rgba(200,160,74,.4);border-radius:3px;font-family:var(--font-mono);font-size:14px;font-weight:700;color:var(--ink);padding:6px 10px;outline:none;width:100%;box-sizing:border-box;direction:ltr;text-transform:uppercase;">
+            </div>
+          </div>
+          <!-- TO -->
+          <div style="display:flex;flex-direction:row;align-items:stretch;gap:12px;direction:ltr;">
+            <div style="display:flex;flex-direction:column;align-items:center;flex-shrink:0;width:14px;">
+              <div style="width:2px;flex:1;min-height:14px;background:rgba(200,160,74,.45);"></div>
+              <div style="width:12px;height:12px;border-radius:50%;flex-shrink:0;background:var(--gold);box-shadow:0 0 0 2px var(--paper-hi),0 0 0 3.5px var(--gold);"></div>
+              <div style="width:2px;flex:1;min-height:14px;background:transparent;"></div>
+            </div>
+            <div style="flex:1;padding:2px 0 0;">
+              <div style="font-size:9px;color:var(--ink-muted);letter-spacing:.15em;text-transform:uppercase;font-family:var(--font-mono);margin-bottom:3px;direction:ltr;text-align:left;">TO</div>
+              <input id="shTo" type="text" maxlength="6" autocomplete="off" autocorrect="off" spellcheck="false"
+                style="background:var(--paper);border:1px solid rgba(200,160,74,.4);border-radius:3px;font-family:var(--font-mono);font-size:14px;font-weight:700;color:var(--ink);padding:6px 10px;outline:none;width:100%;box-sizing:border-box;direction:ltr;text-transform:uppercase;">
+            </div>
+          </div>
         </div>
-        <div id="summaryArrow2" style="color:rgba(244,236,220,.5);font-size:16px;font-weight:300;line-height:1;margin-top:10px;padding:0 3px;">›</div>
-        <div class="summary-strip-col" id="summaryToCol">
-          <span class="summary-strip-label">TO</span>
-          <span class="summary-strip-val" id="summaryTo">—</span>
+        <hr style="border:none;border-top:1px dashed rgba(200,160,74,.4);margin:8px 0 12px;">
+        <div style="font-size:10px;color:var(--ink-muted);letter-spacing:.05em;margin-bottom:6px;">זיהוי מטוס <span style="font-weight:400;color:var(--ink-faint);font-size:9px;">(אופציונלי)</span></div>
+        <div style="display:flex;align-items:center;margin-bottom:16px;direction:ltr;background:var(--paper);border:1px solid var(--gold);border-radius:3px;padding:0 10px;box-sizing:border-box;width:100%;">
+          <span style="font-family:var(--font-mono);font-size:14px;font-weight:700;color:var(--ink-faint);flex-shrink:0;padding:7px 8px 7px 0;margin-right:8px;">4X -</span>
+          <input id="shReg" type="text" maxlength="4" autocomplete="off" autocorrect="off" spellcheck="false" oninput="this.value=this.value.toUpperCase().replace(/[^A-Z0-9]/g,'')"
+            style="flex:1;background:transparent;border:none;outline:none;font-family:var(--font-mono);font-size:14px;font-weight:700;color:var(--ink);padding:7px 0;direction:ltr;min-width:0;">
         </div>
-      </div>
-      <div class="summary-strip-col">
-        <span class="summary-strip-label">REG</span>
-        <span class="summary-strip-val" id="summaryReg">—</span>
+        <hr style="border:none;border-top:1px dashed rgba(200,160,74,.4);margin:0 0 14px;">
+        <textarea id="shareFallbackText" rows="6" readonly
+          style="display:none;width:100%;box-sizing:border-box;background:var(--paper);border:1px solid var(--gold);border-radius:3px;font-family:var(--font-mono);font-size:11px;color:var(--ink);padding:8px 10px;resize:none;outline:none;direction:ltr;text-align:left;margin-bottom:10px;"></textarea>
+        <div style="display:flex;gap:8px;">
+          <button onclick="closeShareModal()" class="btn btn-ghost" style="flex:.8;height:44px;font-size:13px;">ביטול</button>
+          <button id="shareNowBtn" onclick="doShare()" class="btn btn-ink" style="flex:1.2;height:44px;font-size:13px;background:var(--gold);color:var(--asphalt);border:none;"><i class="ti ti-share" style="font-size:13px;"></i> שתף עכשיו</button>
+        </div>
       </div>
     </div>
 
@@ -886,7 +881,7 @@ html,body{height:100%;background:#1a1a1c;font-family:var(--font-ui);color:var(--
 
     <div class="footer-strip" style="display:flex;align-items:center;justify-content:space-between;padding:5px 14px 8px;">
       <span style="width:40px;"></span>
-      <span id="versionTap" style="cursor:default;">AirCheck+ · v2.09.018T · built by eligrt</span>
+      <span id="versionTap" style="cursor:default;">AirCheck+ · v2.09.023T · built by eligrt</span>
       <span style="width:40px;"></span>
     </div>
   </div>
@@ -1000,7 +995,7 @@ html,body{height:100%;background:#1a1a1c;font-family:var(--font-ui);color:var(--
     </div>
     <div class="footer-strip" style="display:flex;align-items:center;justify-content:space-between;padding:5px 14px 8px;">
       <span class="footer-refresh" onclick="reloadApp()">רענון</span>
-      <span id="versionTap" style="cursor:default;">AirCheck+ · v2.09.018T · built by eligrt</span>
+      <span id="versionTap" style="cursor:default;">AirCheck+ · v2.09.023T · built by eligrt</span>
       <span style="width:40px;"></span>
     </div>
   </div>
@@ -1024,7 +1019,7 @@ html,body{height:100%;background:#1a1a1c;font-family:var(--font-ui);color:var(--
     <div class="editor-list" id="editorList"></div>
     <div class="footer-strip" style="display:flex;align-items:center;justify-content:space-between;padding:5px 14px 8px;">
       <span class="footer-refresh" onclick="reloadApp()">רענון</span>
-      <span id="versionTap" style="cursor:default;">AirCheck+ · v2.09.018T · built by eligrt</span>
+      <span id="versionTap" style="cursor:default;">AirCheck+ · v2.09.023T · built by eligrt</span>
       <span style="width:40px;"></span>
     </div>
   </div>
@@ -1092,7 +1087,7 @@ const FEATURES={
   PWA_POPUP: true,
   DONATE: true,
   EXTERNAL_LINK: true,
-  FLIGHT_DETAILS: true,
+  FLIGHT_DETAILS: false,
   RANKING: true
 };
 
@@ -1519,30 +1514,8 @@ function showAllDoneOverlay(lastPhase){
   const skipped=Object.values(status).filter(s=>s==='skipped').length;
   const now=new Date();
   const utc=String(now.getUTCHours()).padStart(2,'0')+':'+String(now.getUTCMinutes()).padStart(2,'0');
-  let from='',via='',to='',tail=settings.tail?'4X-'+settings.tail:'—';
-  // If flight details has a reg, use that instead
-  if(FEATURES.FLIGHT_DETAILS){try{const fd=JSON.parse(localStorage.getItem(FLIGHT_DETAILS_KEY)||'{}');if(fd.reg)tail='4X-'+fd.reg;}catch(e){}}
-  try{
-    if(FEATURES.FLIGHT_DETAILS){
-      const d=JSON.parse(localStorage.getItem(FLIGHT_DETAILS_KEY)||'{}');
-      from=d.from||'';via=d.via||'';to=d.to||'';
-    }else{
-      const r=JSON.parse(localStorage.getItem('aircheck_rd_route')||'{}');from=r.from||'';to=r.to||'';
-    }
-  }catch(e){}
   // strip
   document.getElementById('summaryUtc').textContent=utc;
-  if(FEATURES.FLIGHT_DETAILS){
-    document.getElementById('summaryFrom').textContent=from||'—';
-    document.getElementById('summaryTo').textContent=to||'—';
-    const viaCol=document.getElementById('summaryViaCol');
-    if(viaCol){document.getElementById('summaryVia').textContent=via||'—';}
-  }else{
-    // legacy: update route display if element exists
-    const routeEl=document.getElementById('summaryRoute');
-    if(routeEl)routeEl.textContent=(from||'—')+' → '+(to||'—');
-  }
-  document.getElementById('summaryReg').textContent=tail;
   // stamp
   document.getElementById('summaryStampPhase').textContent=lastPhase||'הצ׳קליסט';
   // meta
@@ -1626,65 +1599,96 @@ function closeModal(){
   if(db)db.style.display='none';
   document.querySelector('.modal-box').className='modal-box';
 }
+// ── SHARE ──
+function openShareModal(){
+  const el=document.getElementById('shareModal');
+  if(!el)return;
+  document.getElementById('shFrom').value=settings.homeBase||'';
+  document.getElementById('shVia').value='';
+  document.getElementById('shTo').value='';
+  document.getElementById('shReg').value=settings.tail||'';
+  const ta=document.getElementById('shareFallbackText');
+  if(ta)ta.style.display='none';
+  const btn=document.getElementById('shareNowBtn');
+  if(btn){btn.innerHTML='<i class="ti ti-share" style="font-size:13px;"></i> שתף עכשיו';btn.style.background='var(--gold)';btn.style.color='var(--asphalt)';btn.onclick=doShare;}
+  el.style.display='flex';
+}
+function closeShareModal(){
+  const el=document.getElementById('shareModal');
+  if(el)el.style.display='none';
+}
+function doShare(){
+  const from=document.getElementById('shFrom').value.trim()||'[ לא הוזן ]';
+  const via=document.getElementById('shVia').value.trim()||'[ לא הוזן ]';
+  const to=document.getElementById('shTo').value.trim()||'[ לא הוזן ]';
+  const reg=document.getElementById('shReg').value.trim()||'[ לא הוזן ]';
+  const regStr=reg==='[ לא הוזן ]'?'[ לא הוזן ]':'4X-'+reg;
+  const now=new Date();
+  const utcStr=String(now.getUTCHours()).padStart(2,'0')+':'+String(now.getUTCMinutes()).padStart(2,'0');
+  const localStr=String(now.getHours()).padStart(2,'0')+':'+String(now.getMinutes()).padStart(2,'0');
+  const hasVia=document.getElementById('shVia').value.trim()!=='';
+  const route=hasVia?from+' › '+via+' › '+to:from+' › '+to;
+  const phaseName=document.getElementById('summaryStampPhase').textContent||'הצ׳קליסט';
+  const done=Object.values(status).filter(s=>s==='done').length;
+  const skipped=Object.values(status).filter(s=>s==='skipped').length;
+  const total=CL.length;
+  let lines=[];
+  lines.push('✅ *AirCheck+ | סיכום טיסה*');
+  lines.push('────────────────────');
+  lines.push('✈️ *'+regStr+'*  '+route);
+  lines.push('🕐 *'+localStr+'* מקומי *('+utcStr+' UTC)*');
+  lines.push('────────────────────');
+  lines.push('📋 *'+phaseName+'* — '+done+'/'+total+(skipped>0?' ('+skipped+' דולגו)':''));
+  lines.push('');
+  PHASES.forEach(ph=>{
+    const phItems=ph.groups.reduce((a,g)=>a.concat(g.items),[]);
+    const anyDone=phItems.some(j=>status[j]==='done'||status[j]==='skipped');
+    if(!anyDone)return;
+    lines.push('[ '+ph.name+' ]');
+    phItems.forEach(j=>{
+      const s=status[j];
+      if(s==='done')lines.push('☑ '+CL[j].main);
+      else if(s==='skipped')lines.push('⊘ '+CL[j].main+' (דולג)');
+    });
+    lines.push('');
+  });
+  lines.push('────────────────────');
+  lines.push('_נוצר באמצעות AirCheck+_');
+  const text=lines.join('\n');
+  const showFallback=()=>{
+    const ta=document.getElementById('shareFallbackText');
+    if(!ta)return;
+    ta.value=text;ta.style.display='block';
+    const btn=document.getElementById('shareNowBtn');
+    if(btn){
+      btn.innerHTML='📋 העתק';
+      btn.onclick=()=>{
+        ta.select();try{document.execCommand('copy');}catch(e){}
+        btn.innerHTML='✓ הועתק!';btn.style.background='var(--cleared)';btn.style.color='#fff';
+        setTimeout(()=>{
+          btn.innerHTML='<i class="ti ti-share" style="font-size:13px;"></i> שתף עכשיו';
+          btn.style.background='var(--gold)';btn.style.color='var(--asphalt)';btn.onclick=doShare;
+        },2500);
+      };
+    }
+    ta.focus();ta.select();
+  };
+  if(navigator.share){
+    navigator.share({title:'AirCheck+ | סיכום טיסה',text})
+      .then(()=>{closeShareModal();})
+      .catch(()=>{showFallback();});
+  }else{
+    showFallback();
+  }
+}
 function startNew(){
   const fc=parseInt(localStorage.getItem('aircheck_flight_count')||'0')+1;
   localStorage.setItem('aircheck_flight_count',fc);
   if(window.syncToFirebase)window.syncToFirebase();
   clearState();holdState='idle';resetRunwayBtn();showScreen('screenChecklist');render();
 }
-function openFlightDetailsPopup(){
-  const popup=document.getElementById('flightDetailsPopup');
-  if(!popup)return;
-  // Restore saved values if returning from settings, otherwise use defaults
-  let from='',via='',to='';
-  try{
-    const tmp=JSON.parse(sessionStorage.getItem('_fd_tmp')||'null');
-    if(tmp){from=tmp.from||'';via=tmp.via||'';to=tmp.to||'';}
-    else{const home=settings.homeBase||'';from=home;to=home;}
-  }catch(e){const home=settings.homeBase||'';from=home;to=home;}
-  document.getElementById('fdFrom').value=from;
-  document.getElementById('fdVia').value=via;
-  document.getElementById('fdTo').value=to;
-  let savedReg=settings.tail||'';
-  try{const tmp2=JSON.parse(sessionStorage.getItem('_fd_tmp')||'null');if(tmp2&&tmp2.reg!==undefined)savedReg=tmp2.reg;sessionStorage.removeItem('_fd_tmp');}catch(e){}
-  document.getElementById('fdReg').value=savedReg;
-  popup.style.display='flex';
-}
-function closeFlightDetails(){
-  const popup=document.getElementById('flightDetailsPopup');
-  if(popup)popup.style.display='none';
-  startNew();
-}
-function confirmFlightDetails(){
-  const from=document.getElementById('fdFrom').value.trim();
-  const via=document.getElementById('fdVia').value.trim();
-  const to=document.getElementById('fdTo').value.trim();
-  const regSuffix=(document.getElementById('fdReg').value||'').trim().toUpperCase().replace(/[^A-Z0-9]/g,'').substring(0,3);
-  if(regSuffix&&regSuffix!==settings.tail){settings.tail=regSuffix;saveSettings();}
-  try{
-    const details={from,via,to,reg:regSuffix||settings.tail||''};
-    localStorage.setItem(FLIGHT_DETAILS_KEY,JSON.stringify(details));
-    localStorage.setItem('aircheck_rd_route',JSON.stringify({from,to}));
-    if(!settings.homeBase&&from){settings.homeBase=from;saveSettings();}
-  }catch(e){}
-  const popup=document.getElementById('flightDetailsPopup');
-  if(popup)popup.style.display='none';
-  startNew();
-}
-function flightDetailsChangeReg(){
-  // Save current field values before leaving
-  try{
-    const tmp={from:document.getElementById('fdFrom').value,via:document.getElementById('fdVia').value,to:document.getElementById('fdTo').value,reg:document.getElementById('fdReg').value};
-    sessionStorage.setItem('_fd_tmp',JSON.stringify(tmp));
-  }catch(e){}
-  const popup=document.getElementById('flightDetailsPopup');
-  if(popup)popup.style.display='none';
-  _settingsFromFlightDetails=true;
-  showScreen('screenSettings');
-}
 // ── SETTINGS ──
 const SETTINGS_KEY='aircheck_rd_settings';
-const FLIGHT_DETAILS_KEY='aircheck_flight_details';
 let settings={tail:'',holdMs:300,sounds:false,haptics:true,theme:'day',homeBase:''};
 // Single gate for all haptic feedback — respects the settings toggle.
 // Uniform short pulse used for confirm, navigation, and the moment any
@@ -1714,11 +1718,9 @@ function loadSettings(){
     try{localStorage.setItem(REG_KEY,settings.tail);}catch(e){}
   }
   const hbRow=document.getElementById('homeBaseRow');
-  if(hbRow)hbRow.style.display=FEATURES.FLIGHT_DETAILS?'':'none';
-  if(FEATURES.FLIGHT_DETAILS){
-    const hbInput=document.getElementById('settingsHomeBaseInput');
-    if(hbInput)hbInput.value=settings.homeBase||'';
-  }
+  if(hbRow)hbRow.style.display='';
+  const hbInput=document.getElementById('settingsHomeBaseInput');
+  if(hbInput)hbInput.value=settings.homeBase||'';
 }
 function saveSettings(){
   try{localStorage.setItem(SETTINGS_KEY,JSON.stringify(settings));}catch(e){}
@@ -2125,7 +2127,7 @@ function openNewFlightModal(){
     document.getElementById('modalConfirmBtn').textContent='כן, אפס והתחל מחדש';
     document.getElementById('modalConfirmBtn').onclick=()=>{
       closeModal();
-      if(FEATURES.FLIGHT_DETAILS){openFlightDetailsPopup();}else{startNew();}
+      startNew();
     };
     openModal();
   } else {
@@ -2186,7 +2188,7 @@ function profileSelectConfirm(){
     localStorage.setItem('aircheck_flight_count',fc);
   }
   profileSelectClose();
-  if(FEATURES.FLIGHT_DETAILS){openFlightDetailsPopup();}else{holdState='idle';resetRunwayBtn();showScreen('screenChecklist');render();}
+  holdState='idle';resetRunwayBtn();showScreen('screenChecklist');render();
 }
 
 let edData=[];
@@ -2249,7 +2251,6 @@ function edDataToCL(data){
   return list;
 }
 let _editorFromSettings=false;
-let _settingsFromFlightDetails=false;
 function openEditor(fromSettings){
   _editorFromSettings=!!fromSettings;
   const p=getProfiles();
@@ -3221,11 +3222,6 @@ function updateListTypeIndicator(){
   }
 }
 function closeSettings(){
-  if(_settingsFromFlightDetails){
-    _settingsFromFlightDetails=false;
-    openFlightDetailsPopup();
-    return;
-  }
   showScreen('screenChecklist');
 }
 function setHoldDuration(ms, key){
@@ -3522,7 +3518,7 @@ function splashMainAction(){
     openNewFlightModal();
   } else {
     clearState();
-    if(FEATURES.FLIGHT_DETAILS){openFlightDetailsPopup();}else{showScreen('screenChecklist');render();}
+    showScreen('screenChecklist');render();
   }
 }
 
@@ -3531,7 +3527,7 @@ function splashSecondaryAction(){
   const p=getProfiles();
   const doStart=()=>{
     if(FEATURES.MULTI_PROFILE&&p.profiles.length>1){openNewFlightModal();}
-    else{clearState();if(FEATURES.FLIGHT_DETAILS){openFlightDetailsPopup();}else{showScreen('screenChecklist');render();}}
+    else{clearState();showScreen('screenChecklist');render();}
   };
   if(done>0){
     document.querySelector('.modal-box').className='modal-box danger';
