@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <!-- ═══════════════════════════════════════
-     AirCheck+ · v2.09.035T · built by eligrt
+     AirCheck+ · v2.09.038T · built by eligrt
      ═══════════════════════════════════════ -->
 <html lang="he" dir="rtl">
 <head>
@@ -72,8 +72,12 @@ html,body{height:100%;background:#1a1a1c;font-family:var(--font-ui);color:var(--
 .strip-pill:active{background:rgba(244,236,220,.12);}
 .strip-pill-gold{border-color:var(--gold);color:var(--gold-lite);}
 .strip-pill-gold:active{background:rgba(200,160,74,.15);}
-.wn-pill{padding:4px 10px;border-radius:16px;border:1px solid var(--gold-lite);background:var(--paper-hi);color:var(--ink-muted);cursor:pointer;font-size:11px;font-weight:600;font-family:var(--font-ui);}
-.wn-pill-active{background:var(--ink);color:#ffffff;border-color:var(--ink);}
+.wn-chip{flex-shrink:0;background:var(--paper-hi);border:1px solid var(--gold-lite);border-radius:8px;padding:6px 8px;display:flex;flex-direction:column;align-items:center;gap:3px;width:74px;cursor:pointer;font-family:var(--font-ui);}
+.wn-chip-active{background:var(--ink);border-color:var(--ink);}
+.wn-chip i{font-size:15px;color:var(--ink-muted);}
+.wn-chip-active i{color:var(--gold);}
+.wn-chip span{font-size:9px;font-weight:600;color:var(--ink-muted);white-space:nowrap;}
+.wn-chip-active span{color:#fff;}
 .strip-pill-admin{border-color:var(--stamp-red);color:#e8847a;}
 .strip-pill-admin:active{background:rgba(185,74,58,.18);}
 .strip-label{font-size:8px;opacity:.75;letter-spacing:.18em;text-transform:uppercase;line-height:1;text-align:center;}
@@ -641,7 +645,7 @@ html,body{height:100%;background:#1a1a1c;font-family:var(--font-ui);color:var(--
     <div class="splash-footer-wrap">
       <div class="footer-strip" style="display:flex;align-items:center;justify-content:space-between;padding:5px 14px 8px;">
         <span class="footer-refresh" onclick="reloadApp()">רענון</span>
-        <span id="versionTap" style="cursor:default;">AirCheck+ · v2.09.035T · built by eligrt</span>
+        <span id="versionTap" style="cursor:default;">AirCheck+ · v2.09.038T · built by eligrt</span>
         <span style="width:40px;"></span>
       </div>
     </div>
@@ -762,7 +766,7 @@ html,body{height:100%;background:#1a1a1c;font-family:var(--font-ui);color:var(--
     <div class="tree-panel" id="treePanel"></div>
     <div class="footer-strip" style="display:flex;align-items:center;justify-content:space-between;padding:5px 14px 8px;">
       <span class="footer-refresh" onclick="reloadApp()">רענון</span>
-      <span id="versionTap" style="cursor:default;">AirCheck+ · v2.09.035T · built by eligrt</span>
+      <span id="versionTap" style="cursor:default;">AirCheck+ · v2.09.038T · built by eligrt</span>
       <span style="width:40px;"></span>
     </div>
   </div>
@@ -888,7 +892,7 @@ html,body{height:100%;background:#1a1a1c;font-family:var(--font-ui);color:var(--
 
     <div class="footer-strip" style="display:flex;align-items:center;justify-content:space-between;padding:5px 14px 8px;">
       <span style="width:40px;"></span>
-      <span id="versionTap" style="cursor:default;">AirCheck+ · v2.09.035T · built by eligrt</span>
+      <span id="versionTap" style="cursor:default;">AirCheck+ · v2.09.038T · built by eligrt</span>
       <span style="width:40px;"></span>
     </div>
   </div>
@@ -1002,7 +1006,7 @@ html,body{height:100%;background:#1a1a1c;font-family:var(--font-ui);color:var(--
     </div>
     <div class="footer-strip" style="display:flex;align-items:center;justify-content:space-between;padding:5px 14px 8px;">
       <span class="footer-refresh" onclick="reloadApp()">רענון</span>
-      <span id="versionTap" style="cursor:default;">AirCheck+ · v2.09.035T · built by eligrt</span>
+      <span id="versionTap" style="cursor:default;">AirCheck+ · v2.09.038T · built by eligrt</span>
       <span style="width:40px;"></span>
     </div>
   </div>
@@ -1026,7 +1030,7 @@ html,body{height:100%;background:#1a1a1c;font-family:var(--font-ui);color:var(--
     <div class="editor-list" id="editorList"></div>
     <div class="footer-strip" style="display:flex;align-items:center;justify-content:space-between;padding:5px 14px 8px;">
       <span class="footer-refresh" onclick="reloadApp()">רענון</span>
-      <span id="versionTap" style="cursor:default;">AirCheck+ · v2.09.035T · built by eligrt</span>
+      <span id="versionTap" style="cursor:default;">AirCheck+ · v2.09.038T · built by eligrt</span>
       <span style="width:40px;"></span>
     </div>
   </div>
@@ -2965,8 +2969,8 @@ function reloadApp(){
 const WHATS_NEW_KEY='aircheck_whats_new_seen';
 const WHATS_NEW_VER='2.09';
 function wnPill(link,el){
-  document.querySelectorAll('.wn-pill').forEach(p=>p.classList.remove('wn-pill-active'));
-  el.classList.add('wn-pill-active');
+  document.querySelectorAll('.wn-chip').forEach(p=>p.classList.remove('wn-chip-active'));
+  el.classList.add('wn-chip-active');
   const fr=document.getElementById('wnIframe');
   const ld=document.getElementById('wnLoading');
   if(fr){fr.style.opacity=0;fr.src='https://eligrt.github.io/AirCheck/links-animation.html?link='+link;}
@@ -3941,13 +3945,13 @@ function splashSecondaryAction(){
         <div style="font-family:var(--font-mono);font-size:9px;color:rgba(244,236,220,.45);letter-spacing:.2em;text-transform:uppercase;margin-bottom:5px;" id="whatsNewVer">AirCheck+ · v2.09</div>
         <div style="font-size:17px;font-weight:700;color:var(--paper);line-height:1.2;">חדש! קישורים ישירים בצ׳קליסט</div>
       </div>
-      <div style="padding:8px 12px 4px;display:flex;flex-wrap:wrap;gap:5px;justify-content:center;">
-        <span onclick="wnPill('notam',this)" class="wn-pill wn-pill-active">NOTAM LL</span>
-        <span onclick="wnPill('metar',this)" class="wn-pill">METAR / TAF</span>
-        <span onclick="wnPill('fpl',this)" class="wn-pill">הגשת תוכנית טיסה</span>
-        <span onclick="wnPill('airbalance',this)" class="wn-pill">AirBalance - משקל ואיזון</span>
-        <span onclick="wnPill('briefing',this)" class="wn-pill">תדרוך נוסע</span>
-      </div>
+      <div style="padding:8px 12px 4px;overflow:hidden;"><div style="display:flex;gap:6px;overflow-x:auto;scrollbar-width:none;-webkit-overflow-scrolling:touch;">
+        <div onclick="wnPill('notam',this)" class="wn-chip wn-chip-active"><i class="ti ti-alert-triangle" aria-hidden="true"></i><span>NOTAM LL</span></div>
+        <div onclick="wnPill('metar',this)" class="wn-chip"><i class="ti ti-cloud" aria-hidden="true"></i><span>METAR / TAF</span></div>
+        <div onclick="wnPill('fpl',this)" class="wn-chip"><i class="ti ti-route" aria-hidden="true"></i><span>תוכנית טיסה</span></div>
+        <div onclick="wnPill('airbalance',this)" class="wn-chip"><i class="ti ti-scale" aria-hidden="true"></i><span>AirBalance</span></div>
+        <div onclick="wnPill('briefing',this)" class="wn-chip"><i class="ti ti-users" aria-hidden="true"></i><span>תדרוך נוסע</span></div>
+      </div></div>
       <div style="padding:0 12px 0;">
         <div style="width:100%;height:340px;border-radius:6px;overflow:hidden;border:1px solid var(--paper-edge);background:#1a1a1c;display:flex;align-items:flex-start;justify-content:center;position:relative;">
           <div id="wnLoading" style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;pointer-events:none;">
