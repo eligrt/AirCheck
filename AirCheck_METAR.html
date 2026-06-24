@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<!-- AirCheck+ · AirCheck_METAR.html · v1.45 · built by eligrt -->
+<!-- AirCheck+ · AirCheck_METAR.html · v1.52 · built by eligrt -->
 <html lang="he" dir="rtl">
 <head>
 <meta charset="UTF-8">
@@ -170,7 +170,22 @@ body{display:flex;flex-direction:column;height:100svh;overflow:hidden;}
 /* ── PAGE FOOTER ── */
 .page-footer{text-align:center;padding:10px;font-family:var(--font-mono);font-size:9px;color:var(--ink-faint);letter-spacing:.1em;text-transform:uppercase;border-top:1px solid var(--gold-lite);flex-shrink:0;}
 
-/* ── PC LAYOUT: constrain to centered card, dark surround ── */
+/* ── IMS DISCLAIMER POPUP ── */
+.ims-overlay{display:none;position:fixed;inset:0;background:rgba(26,19,8,.7);z-index:120;align-items:center;justify-content:center;padding:20px;backdrop-filter:blur(3px);}
+.ims-overlay.show{display:flex;}
+.ims-box{background:var(--paper);background-image:repeating-linear-gradient(0deg,transparent 0,transparent 27px,rgba(28,61,110,.04) 27px,rgba(28,61,110,.04) 28px);border-radius:8px;width:100%;max-width:320px;overflow:hidden;direction:rtl;border:1.5px solid var(--ink);}
+.ims-hdr{background:var(--ink);padding:12px 16px;display:flex;align-items:center;gap:10px;}
+.ims-hdr-icon{font-size:18px;line-height:1;flex-shrink:0;}
+.ims-hdr-titles{display:flex;flex-direction:column;gap:2px;}
+.ims-hdr-title{font-size:15px;font-weight:700;color:#f4ecdc;}
+.ims-hdr-sub{font-family:var(--font-mono);font-size:8px;color:rgba(244,236,220,.45);letter-spacing:.08em;direction:ltr;}
+.ims-body{padding:14px 16px;display:flex;flex-direction:column;gap:10px;}
+.ims-credit{font-family:var(--font-ui);font-size:12px;font-weight:600;letter-spacing:.01em;padding:8px 12px;background:var(--ink);border-radius:4px;direction:rtl;display:flex;align-items:center;gap:6px;}
+.ims-credit .credit-label{color:var(--gold);font-weight:700;}
+.ims-credit span{font-weight:400;color:rgba(244,236,220,.8);}
+.ims-text{font-family:var(--font-ui);font-size:13px;line-height:1.75;color:var(--ink-muted);direction:rtl;}
+.ims-text strong{color:var(--ink);}
+.ims-confirm{width:100%;padding:13px;background:var(--ink);border:none;font-family:var(--font-ui);font-size:14px;font-weight:700;color:#f4ecdc;cursor:pointer;}
 @media(min-width:600px){
   html{background:#1a1a1c;}
   body{max-width:430px;margin:0 auto;border-left:2px solid var(--gold);border-right:2px solid var(--gold);box-shadow:0 0 60px rgba(0,0,0,.6);}
@@ -274,7 +289,7 @@ body{display:flex;flex-direction:column;height:100svh;overflow:hidden;}
   <div class="metar-age-footer" id="metarAgeFooter">—</div>
 </div>
 
-<div class="page-footer" dir="ltr">AirCheck+ · METAR / TAF · v1.45 · built by eligrt</div>
+<div class="page-footer" dir="ltr">AirCheck+ · METAR / TAF · v1.52 · built by eligrt</div>
 
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/12.14.0/firebase-app.js";
@@ -792,6 +807,18 @@ function backToApp(){
   window.location.href=from+'?resume=1';
 }
 
+function dismissImsDisclaimer(){
+  sessionStorage.setItem('ims_disclaimer_shown','1');
+  document.getElementById('imsDisclaimer').classList.remove('show');
+}
+function maybeShowImsDisclaimer(){
+  if(sessionStorage.getItem('ims_disclaimer_shown'))return;
+  if(getMetarIcao().startsWith('LL')){
+    document.getElementById('imsDisclaimer').classList.add('show');
+  }
+}
+document.addEventListener('DOMContentLoaded', maybeShowImsDisclaimer);
+
 (function init(){
   const sel=localStorage.getItem(METAR_STATION_KEY)||'LLBG';
   syncMetarPills();syncCustomPills();
@@ -799,5 +826,23 @@ function backToApp(){
   fetchMetar(false);
 })();
 </script>
+<!-- IMS DISCLAIMER POPUP (IL stations, once per session) -->
+<div class="ims-overlay" id="imsDisclaimer">
+  <div class="ims-box">
+    <div class="ims-hdr">
+      <div class="ims-hdr-icon">⚠️</div>
+      <div class="ims-hdr-titles">
+        <div class="ims-hdr-title">מידע מטאורולוגי</div>
+        <div class="ims-hdr-sub">WEATHER DATA NOTICE</div>
+      </div>
+    </div>
+    <div class="ims-body">
+      <div class="ims-credit"><span class="credit-label">מקור נתונים:</span> <span>השירות המטאורולוגי הישראלי</span></div>
+      <div class="ims-text">המידע מוצג כפי שהתקבל <strong>ללא אחריות לדיוקו או שלמותו.</strong><br>האחריות לאימות מצב מזג האוויר ולבטיחות הטיסה היא על <strong>הטייס בלבד (PIC).</strong></div>
+    </div>
+    <button class="ims-confirm" onclick="dismissImsDisclaimer()">הבנתי ›</button>
+  </div>
+</div>
+
 </body>
 </html>
