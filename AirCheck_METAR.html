@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<!-- AirCheck+ · AirCheck_METAR.html · v1.41 · built by eligrt -->
+<!-- AirCheck+ · AirCheck_METAR.html · v1.44 · built by eligrt -->
 <html lang="he" dir="rtl">
 <head>
 <meta charset="UTF-8">
@@ -89,7 +89,17 @@ body{display:flex;flex-direction:column;height:100svh;overflow:hidden;}
 .tower-popup-overlay{display:none;position:fixed;inset:0;background:rgba(26,19,8,.65);z-index:100;align-items:center;justify-content:center;padding:20px;backdrop-filter:blur(3px);}
 .tower-popup-overlay.show{display:flex;}
 .tower-popup-box{background:var(--paper);border-radius:8px;width:100%;max-width:340px;overflow:hidden;direction:rtl;background-image:repeating-linear-gradient(0deg,transparent 0,transparent 27px,rgba(28,61,110,.04) 27px,rgba(28,61,110,.04) 28px);}
-.tower-popup-hdr{padding:12px 16px;display:flex;align-items:center;gap:10px;border-bottom:1px solid var(--paper-edge);}
+/* station bar — always dark, sits above the freshness-colored hdr */
+.tower-popup-station-bar{background:var(--ink);padding:8px 16px;display:flex;align-items:center;justify-content:space-between;direction:ltr;}
+.tower-popup-station-icao{font-family:var(--font-mono);font-size:12px;font-weight:700;color:var(--paper);letter-spacing:.08em;}
+.tower-popup-station-label{font-size:9px;color:rgba(244,236,220,.4);font-family:var(--font-mono);}
+/* freshness-colored hdr: badge row + title */
+.tower-popup-hdr{border-bottom:1px solid var(--paper-edge);}
+.tower-popup-badge-row{padding:7px 16px 7px;display:flex;align-items:center;gap:6px;direction:ltr;}
+.tower-popup-age-pill{display:flex;align-items:center;justify-content:center;gap:6px;border-radius:6px;padding:3px 9px;font-family:var(--font-ui);font-size:12px;font-weight:700;color:#7a5000;border:1.5px solid rgba(245,158,11,.5);background:rgba(245,158,11,.15);direction:ltr;white-space:nowrap;}
+.tower-popup-age-pill.stale{color:var(--ink-faint);border-color:var(--paper-edge);background:transparent;}
+.tower-popup-bell{font-size:15px;line-height:1;}
+.tower-popup-title-row{padding:0 16px 10px;display:flex;align-items:center;gap:10px;direction:rtl;}
 .tower-popup-title{font-size:15px;font-weight:700;}
 .tower-popup-disclaimer{font-size:9px;font-family:var(--font-mono);letter-spacing:.04em;margin-top:2px;direction:ltr;}
 .tower-popup-body{padding:14px 16px;}
@@ -159,6 +169,12 @@ body{display:flex;flex-direction:column;height:100svh;overflow:hidden;}
 
 /* ── PAGE FOOTER ── */
 .page-footer{text-align:center;padding:10px;font-family:var(--font-mono);font-size:9px;color:var(--ink-faint);letter-spacing:.1em;text-transform:uppercase;border-top:1px solid var(--gold-lite);flex-shrink:0;}
+
+/* ── PC LAYOUT: constrain to centered card, dark surround ── */
+@media(min-width:600px){
+  html{background:#1a1a1c;}
+  body{max-width:480px;margin:0 auto;border-left:2px solid var(--gold);border-right:2px solid var(--gold);box-shadow:0 0 60px rgba(0,0,0,.6);}
+}
 </style>
 </head>
 <body>
@@ -205,11 +221,26 @@ body{display:flex;flex-direction:column;height:100svh;overflow:hidden;}
 <!-- Tower popup -->
 <div class="tower-popup-overlay" id="towerPopup">
   <div class="tower-popup-box" id="towerPopupBox">
+    <!-- always-dark station bar -->
+    <div class="tower-popup-station-bar">
+      <span class="tower-popup-station-icao">LLHZ</span>
+      <span class="tower-popup-station-label">METAR PAGE</span>
+    </div>
+    <!-- freshness-colored section -->
     <div class="tower-popup-hdr" id="towerPopupHdr">
-      <div style="font-size:22px;">📡</div>
-      <div>
-        <div class="tower-popup-title" id="towerPopupTitle">עדכון שדה · הרצליה</div>
-        <div class="tower-popup-disclaimer" id="towerPopupDisclaimer">COMMUNITY UPDATE · NOT OFFICIAL MET</div>
+      <div class="tower-popup-badge-row">
+          <div class="tower-popup-age-pill" id="towerPopupAgePill">
+            <span id="towerPopupAgeStr"></span>
+            <div class="tower-dot" id="towerPopupDot"></div>
+          </div>
+          <span class="tower-popup-bell" id="towerPopupBell">🔔</span>
+      </div>
+      <div class="tower-popup-title-row">
+        <div style="font-size:20px;">📡</div>
+        <div>
+          <div class="tower-popup-title" id="towerPopupTitle">עדכון שדה · הרצליה</div>
+          <div class="tower-popup-disclaimer" id="towerPopupDisclaimer">COMMUNITY UPDATE · NOT OFFICIAL MET</div>
+        </div>
       </div>
     </div>
     <div class="tower-popup-body">
@@ -243,7 +274,7 @@ body{display:flex;flex-direction:column;height:100svh;overflow:hidden;}
   <div class="metar-age-footer" id="metarAgeFooter">—</div>
 </div>
 
-<div class="page-footer" dir="ltr">AirCheck+ · METAR / TAF · v1.41 · built by eligrt</div>
+<div class="page-footer" dir="ltr">AirCheck+ · METAR / TAF · v1.44 · built by eligrt</div>
 
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/12.14.0/firebase-app.js";
@@ -438,11 +469,21 @@ function openTowerPopup(){
   const timeStr=String(d.getHours()).padStart(2,'0')+':'+String(d.getMinutes()).padStart(2,'0');
   const day=String(d.getDate()).padStart(2,'0')+'/'+String(d.getMonth()+1).padStart(2,'0');
   const ageStr=diffMin<60?'לפני '+diffMin+' דק׳':'לפני '+Math.round(diffH)+' שע׳';
+  const cls=towerAgeClass(_towerData.timestamp);
   const stale=document.getElementById('towerPopupStale');
   const txt=document.getElementById('towerPopupText');
   const meta=document.getElementById('towerPopupMeta');
   const hdr=document.getElementById('towerPopupHdr');
   const box=document.getElementById('towerPopupBox');
+  const dot=document.getElementById('towerPopupDot');
+  const agePill=document.getElementById('towerPopupAgePill');
+  const ageStr2=document.getElementById('towerPopupAgeStr');
+  const bell=document.getElementById('towerPopupBell');
+  // populate badge row
+  dot.className='tower-dot tower-dot-'+cls;
+  ageStr2.textContent=ageStr+'\u00A0\u00A0('+timeStr+')';
+  agePill.className='tower-popup-age-pill'+(cls==='old'?' stale':'');
+  bell.style.display=cls==='fresh'?'':'none';
   if(diffH>=9){
     stale.style.display='';
     box.style.borderColor='var(--paper-edge)';
