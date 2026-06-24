@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <!-- ═══════════════════════════════════════
-     AirCheck+ · v2.09.025T · built by eligrt
+     AirCheck+ · v2.09.026T · built by eligrt
      ═══════════════════════════════════════ -->
 <html lang="he" dir="rtl">
 <head>
@@ -639,7 +639,7 @@ html,body{height:100%;background:#1a1a1c;font-family:var(--font-ui);color:var(--
     <div class="splash-footer-wrap">
       <div class="footer-strip" style="display:flex;align-items:center;justify-content:space-between;padding:5px 14px 8px;">
         <span class="footer-refresh" onclick="reloadApp()">רענון</span>
-        <span id="versionTap" style="cursor:default;">AirCheck+ · v2.09.025T · built by eligrt</span>
+        <span id="versionTap" style="cursor:default;">AirCheck+ · v2.09.026T · built by eligrt</span>
         <span style="width:40px;"></span>
       </div>
     </div>
@@ -760,7 +760,7 @@ html,body{height:100%;background:#1a1a1c;font-family:var(--font-ui);color:var(--
     <div class="tree-panel" id="treePanel"></div>
     <div class="footer-strip" style="display:flex;align-items:center;justify-content:space-between;padding:5px 14px 8px;">
       <span class="footer-refresh" onclick="reloadApp()">רענון</span>
-      <span id="versionTap" style="cursor:default;">AirCheck+ · v2.09.025T · built by eligrt</span>
+      <span id="versionTap" style="cursor:default;">AirCheck+ · v2.09.026T · built by eligrt</span>
       <span style="width:40px;"></span>
     </div>
   </div>
@@ -788,7 +788,7 @@ html,body{height:100%;background:#1a1a1c;font-family:var(--font-ui);color:var(--
         <span class="summary-strip-label">UTC</span>
         <span class="summary-strip-val" id="summaryUtc">--:--</span>
       </div>
-      <button class="strip-pill strip-pill-gold" onclick="openShareModal()" style="margin-left:auto;"><i class="ti ti-share" style="font-size:13px;"></i> שיתוף</button>
+
     </div>
 
     <!-- Share modal -->
@@ -874,14 +874,19 @@ html,body{height:100%;background:#1a1a1c;font-family:var(--font-ui);color:var(--
     </div>
 
     <div id="summaryRankUp" class="rankup-box" style="display:none;"></div>
-    <div class="summary-btns">
-      <button class="btn btn-ghost" style="flex:1" onclick="showScreen('screenChecklist');render()">‹ חזור לרשימה</button>
-      <button class="btn btn-ink" style="flex:1" onclick="openNewFlightModal()">✦ טיסה חדשה</button>
+    <div class="summary-btns" style="flex-direction:column;">
+      <div style="display:flex;gap:8px;">
+        <button class="btn btn-ghost" style="flex:1" onclick="showScreen('screenChecklist');render()">‹ חזור לרשימה</button>
+        <button class="btn btn-ink" style="flex:1" onclick="openNewFlightModal()">✦ טיסה חדשה</button>
+      </div>
+      <div style="text-align:center;padding-top:2px;">
+        <span onclick="openShareModal()" style="font-size:13px;color:var(--asphalt);opacity:.6;cursor:pointer;display:inline-flex;align-items:center;gap:5px;border-bottom:1px dashed currentColor;padding-bottom:1px;"><i class="ti ti-share" style="font-size:13px;"></i> שתף סיכום טיסה</span>
+      </div>
     </div>
 
     <div class="footer-strip" style="display:flex;align-items:center;justify-content:space-between;padding:5px 14px 8px;">
       <span style="width:40px;"></span>
-      <span id="versionTap" style="cursor:default;">AirCheck+ · v2.09.025T · built by eligrt</span>
+      <span id="versionTap" style="cursor:default;">AirCheck+ · v2.09.026T · built by eligrt</span>
       <span style="width:40px;"></span>
     </div>
   </div>
@@ -995,7 +1000,7 @@ html,body{height:100%;background:#1a1a1c;font-family:var(--font-ui);color:var(--
     </div>
     <div class="footer-strip" style="display:flex;align-items:center;justify-content:space-between;padding:5px 14px 8px;">
       <span class="footer-refresh" onclick="reloadApp()">רענון</span>
-      <span id="versionTap" style="cursor:default;">AirCheck+ · v2.09.025T · built by eligrt</span>
+      <span id="versionTap" style="cursor:default;">AirCheck+ · v2.09.026T · built by eligrt</span>
       <span style="width:40px;"></span>
     </div>
   </div>
@@ -1019,7 +1024,7 @@ html,body{height:100%;background:#1a1a1c;font-family:var(--font-ui);color:var(--
     <div class="editor-list" id="editorList"></div>
     <div class="footer-strip" style="display:flex;align-items:center;justify-content:space-between;padding:5px 14px 8px;">
       <span class="footer-refresh" onclick="reloadApp()">רענון</span>
-      <span id="versionTap" style="cursor:default;">AirCheck+ · v2.09.025T · built by eligrt</span>
+      <span id="versionTap" style="cursor:default;">AirCheck+ · v2.09.026T · built by eligrt</span>
       <span style="width:40px;"></span>
     </div>
   </div>
