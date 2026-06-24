@@ -96,6 +96,12 @@ body{display:flex;flex-direction:column;height:100svh;overflow:hidden;}
 .act.back{color:var(--amber);}
 .loading{padding:30px;text-align:center;font-family:var(--font-ui);font-size:12px;color:var(--ink-faint);}
 .footer{padding:10px 14px;border-top:1px solid var(--gold-lite);text-align:center;flex-shrink:0;}
+
+/* ── PC LAYOUT: constrain to centered card, dark surround ── */
+@media(min-width:600px){
+  html{background:#1a1a1c;}
+  body{max-width:480px;margin:0 auto;border-left:2px solid var(--gold);border-right:2px solid var(--gold);box-shadow:0 0 60px rgba(0,0,0,.6);}
+}
 .footer-txt{font-family:var(--font-mono);font-size:9px;color:var(--ink-faint);letter-spacing:.1em;text-transform:uppercase;}
 </style>
 </head>
@@ -116,7 +122,7 @@ body{display:flex;flex-direction:column;height:100svh;overflow:hidden;}
   <div class="pills" id="pillsRow" style="display:none;"></div>
   <div class="items-list" id="itemsList"><div class="loading">טוען נתונים...</div></div>
   <div class="footer" dir="ltr">
-    <div class="footer-txt">AirCheck+ · Repository · v1.29 · built by eligrt</div>
+    <div class="footer-txt">AirCheck+ · Repository · v1.30 · built by eligrt</div>
   </div>
 </div>
 
