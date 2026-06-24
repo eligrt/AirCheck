@@ -93,6 +93,12 @@ body{
 
 .loading{text-align:center;padding:40px 20px;color:var(--ink-muted);font-size:13px;}
 .footer{text-align:center;padding:12px;font-family:var(--font-mono);font-size:9px;color:var(--ink-faint);letter-spacing:.1em;text-transform:uppercase;border-top:1px solid var(--gold-lite);}
+
+/* ── PC LAYOUT: constrain to centered card, dark surround ── */
+@media(min-width:600px){
+  html{background:#1a1a1c;}
+  body{max-width:480px;margin:0 auto;border-left:2px solid var(--gold);border-right:2px solid var(--gold);box-shadow:0 0 60px rgba(0,0,0,.6);}
+}
 </style>
 </head>
 <body>
@@ -123,7 +129,7 @@ body{
   <div class="loading">טוען נתונים...</div>
 </div>
 
-<div class="footer" dir="ltr">AirCheck+ · Admin · v1.22 · built by eligrt</div>
+<div class="footer" dir="ltr">AirCheck+ · Admin · v1.23 · built by eligrt</div>
 
 <div id="deleteModal" class="modal-overlay" onclick="handleDeleteModalClick(event)">
   <div class="modal-box">
