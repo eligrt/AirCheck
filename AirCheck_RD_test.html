@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <!-- ═══════════════════════════════════════
-     AirCheck+ · v2.09.034T · built by eligrt
+     AirCheck+ · v2.09.035T · built by eligrt
      ═══════════════════════════════════════ -->
 <html lang="he" dir="rtl">
 <head>
@@ -641,7 +641,7 @@ html,body{height:100%;background:#1a1a1c;font-family:var(--font-ui);color:var(--
     <div class="splash-footer-wrap">
       <div class="footer-strip" style="display:flex;align-items:center;justify-content:space-between;padding:5px 14px 8px;">
         <span class="footer-refresh" onclick="reloadApp()">רענון</span>
-        <span id="versionTap" style="cursor:default;">AirCheck+ · v2.09.034T · built by eligrt</span>
+        <span id="versionTap" style="cursor:default;">AirCheck+ · v2.09.035T · built by eligrt</span>
         <span style="width:40px;"></span>
       </div>
     </div>
@@ -762,7 +762,7 @@ html,body{height:100%;background:#1a1a1c;font-family:var(--font-ui);color:var(--
     <div class="tree-panel" id="treePanel"></div>
     <div class="footer-strip" style="display:flex;align-items:center;justify-content:space-between;padding:5px 14px 8px;">
       <span class="footer-refresh" onclick="reloadApp()">רענון</span>
-      <span id="versionTap" style="cursor:default;">AirCheck+ · v2.09.034T · built by eligrt</span>
+      <span id="versionTap" style="cursor:default;">AirCheck+ · v2.09.035T · built by eligrt</span>
       <span style="width:40px;"></span>
     </div>
   </div>
@@ -888,7 +888,7 @@ html,body{height:100%;background:#1a1a1c;font-family:var(--font-ui);color:var(--
 
     <div class="footer-strip" style="display:flex;align-items:center;justify-content:space-between;padding:5px 14px 8px;">
       <span style="width:40px;"></span>
-      <span id="versionTap" style="cursor:default;">AirCheck+ · v2.09.034T · built by eligrt</span>
+      <span id="versionTap" style="cursor:default;">AirCheck+ · v2.09.035T · built by eligrt</span>
       <span style="width:40px;"></span>
     </div>
   </div>
@@ -1002,7 +1002,7 @@ html,body{height:100%;background:#1a1a1c;font-family:var(--font-ui);color:var(--
     </div>
     <div class="footer-strip" style="display:flex;align-items:center;justify-content:space-between;padding:5px 14px 8px;">
       <span class="footer-refresh" onclick="reloadApp()">רענון</span>
-      <span id="versionTap" style="cursor:default;">AirCheck+ · v2.09.034T · built by eligrt</span>
+      <span id="versionTap" style="cursor:default;">AirCheck+ · v2.09.035T · built by eligrt</span>
       <span style="width:40px;"></span>
     </div>
   </div>
@@ -1026,7 +1026,7 @@ html,body{height:100%;background:#1a1a1c;font-family:var(--font-ui);color:var(--
     <div class="editor-list" id="editorList"></div>
     <div class="footer-strip" style="display:flex;align-items:center;justify-content:space-between;padding:5px 14px 8px;">
       <span class="footer-refresh" onclick="reloadApp()">רענון</span>
-      <span id="versionTap" style="cursor:default;">AirCheck+ · v2.09.034T · built by eligrt</span>
+      <span id="versionTap" style="cursor:default;">AirCheck+ · v2.09.035T · built by eligrt</span>
       <span style="width:40px;"></span>
     </div>
   </div>
@@ -2968,8 +2968,11 @@ function wnPill(link,el){
   document.querySelectorAll('.wn-pill').forEach(p=>p.classList.remove('wn-pill-active'));
   el.classList.add('wn-pill-active');
   const fr=document.getElementById('wnIframe');
-  if(fr)fr.src='https://eligrt.github.io/AirCheck/links-animation.html?link='+link;
+  const ld=document.getElementById('wnLoading');
+  if(fr){fr.style.opacity=0;fr.src='https://eligrt.github.io/AirCheck/links-animation.html?link='+link;}
+  if(ld)ld.style.display='flex';
 }
+(function(){let d=0;setInterval(()=>{const el=document.getElementById('wnDots');if(el)el.textContent=['.','..','...'][d++%3];},500);})();
 function checkWhatsNew(){
   const seen=localStorage.getItem(WHATS_NEW_KEY);
   if(seen===WHATS_NEW_VER)return;
@@ -3946,8 +3949,11 @@ function splashSecondaryAction(){
         <span onclick="wnPill('briefing',this)" class="wn-pill">תדרוך נוסע</span>
       </div>
       <div style="padding:0 12px 0;">
-        <div style="width:100%;height:340px;border-radius:6px;overflow:hidden;border:1px solid var(--paper-edge);background:#1a1a1c;display:flex;align-items:flex-start;justify-content:center;">
-          <iframe id="wnIframe" src="https://eligrt.github.io/AirCheck/links-animation.html?link=notam" scrolling="no" style="width:240px;height:432px;border:none;display:block;flex-shrink:0;"></iframe>
+        <div style="width:100%;height:340px;border-radius:6px;overflow:hidden;border:1px solid var(--paper-edge);background:#1a1a1c;display:flex;align-items:flex-start;justify-content:center;position:relative;">
+          <div id="wnLoading" style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;pointer-events:none;">
+            <span style="font-family:var(--font-mono);font-size:11px;color:rgba(200,160,74,.6);letter-spacing:.1em;">טוען<span id="wnDots"></span></span>
+          </div>
+          <iframe id="wnIframe" src="https://eligrt.github.io/AirCheck/links-animation.html?link=notam" scrolling="no" style="width:240px;height:432px;border:none;display:block;flex-shrink:0;opacity:0;transition:opacity .3s;" onload="this.style.opacity=1;document.getElementById('wnLoading').style.display='none';"></iframe>
         </div>
       </div>
       <div style="padding:8px 12px 6px;">
