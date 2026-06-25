@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <!-- ═══════════════════════════════════════
-     AirCheck+ · v2.09.040T · built by eligrt
+     AirCheck+ · v2.09.041T · built by eligrt
      ═══════════════════════════════════════ -->
 <html lang="he" dir="rtl">
 <head>
@@ -645,7 +645,7 @@ html,body{height:100%;background:#1a1a1c;font-family:var(--font-ui);color:var(--
     <div class="splash-footer-wrap">
       <div class="footer-strip" style="display:flex;align-items:center;justify-content:space-between;padding:5px 14px 8px;">
         <span class="footer-refresh" onclick="reloadApp()">רענון</span>
-        <span id="versionTap" style="cursor:default;">AirCheck+ · v2.09.040T · built by eligrt</span>
+        <span id="versionTap" style="cursor:default;">AirCheck+ · v2.09.041T · built by eligrt</span>
         <span style="width:40px;"></span>
       </div>
     </div>
@@ -766,7 +766,7 @@ html,body{height:100%;background:#1a1a1c;font-family:var(--font-ui);color:var(--
     <div class="tree-panel" id="treePanel"></div>
     <div class="footer-strip" style="display:flex;align-items:center;justify-content:space-between;padding:5px 14px 8px;">
       <span class="footer-refresh" onclick="reloadApp()">רענון</span>
-      <span id="versionTap" style="cursor:default;">AirCheck+ · v2.09.040T · built by eligrt</span>
+      <span id="versionTap" style="cursor:default;">AirCheck+ · v2.09.041T · built by eligrt</span>
       <span style="width:40px;"></span>
     </div>
   </div>
@@ -782,6 +782,7 @@ html,body{height:100%;background:#1a1a1c;font-family:var(--font-ui);color:var(--
       <div class="phase-overlay-next" id="phaseOverlayNext"></div>
       <button class="btn btn-ink" style="margin-bottom:8px" onclick="continuePhaseNow()">המשך עכשיו ›</button>
       <button class="btn btn-ghost" onclick="parkPhaseAndExit()">סגור — אמשיך מאוחר יותר</button>
+      <div style="margin-top:10px;text-align:center;"><button onclick="openShareModalPhase()" style="background:none;border:none;cursor:pointer;font-family:var(--font-ui);font-size:12px;color:var(--ink-muted);text-decoration:underline;padding:4px 8px;">שתף סיכום שלב ›</button></div>
     </div>
   </div>
 
@@ -892,7 +893,7 @@ html,body{height:100%;background:#1a1a1c;font-family:var(--font-ui);color:var(--
 
     <div class="footer-strip" style="display:flex;align-items:center;justify-content:space-between;padding:5px 14px 8px;">
       <span style="width:40px;"></span>
-      <span id="versionTap" style="cursor:default;">AirCheck+ · v2.09.040T · built by eligrt</span>
+      <span id="versionTap" style="cursor:default;">AirCheck+ · v2.09.041T · built by eligrt</span>
       <span style="width:40px;"></span>
     </div>
   </div>
@@ -1006,7 +1007,7 @@ html,body{height:100%;background:#1a1a1c;font-family:var(--font-ui);color:var(--
     </div>
     <div class="footer-strip" style="display:flex;align-items:center;justify-content:space-between;padding:5px 14px 8px;">
       <span class="footer-refresh" onclick="reloadApp()">רענון</span>
-      <span id="versionTap" style="cursor:default;">AirCheck+ · v2.09.040T · built by eligrt</span>
+      <span id="versionTap" style="cursor:default;">AirCheck+ · v2.09.041T · built by eligrt</span>
       <span style="width:40px;"></span>
     </div>
   </div>
@@ -1030,7 +1031,7 @@ html,body{height:100%;background:#1a1a1c;font-family:var(--font-ui);color:var(--
     <div class="editor-list" id="editorList"></div>
     <div class="footer-strip" style="display:flex;align-items:center;justify-content:space-between;padding:5px 14px 8px;">
       <span class="footer-refresh" onclick="reloadApp()">רענון</span>
-      <span id="versionTap" style="cursor:default;">AirCheck+ · v2.09.040T · built by eligrt</span>
+      <span id="versionTap" style="cursor:default;">AirCheck+ · v2.09.041T · built by eligrt</span>
       <span style="width:40px;"></span>
     </div>
   </div>
@@ -1510,7 +1511,19 @@ function bulkConfirm(){
   }
   holdState='idle';resetRunwayBtn();render();
 }
-function showPhaseOverlay(donePhaseName,nextPhaseName){document.getElementById('phaseOverlayTitle').textContent=donePhaseName;document.getElementById('phaseOverlayNext').textContent=nextPhaseName?'השלב הבא: '+nextPhaseName:'כל השלבים הושלמו!';document.getElementById('phaseOverlay').classList.add('open');}
+let _phaseOverlayIdx=-1;
+function showPhaseOverlay(donePhaseName,nextPhaseName){
+  _phaseOverlayIdx=PHASES.findIndex(p=>p.name===donePhaseName);
+  document.getElementById('phaseOverlayTitle').textContent=donePhaseName;
+  document.getElementById('phaseOverlayNext').textContent=nextPhaseName?'השלב הבא: '+nextPhaseName:'כל השלבים הושלמו!';
+  document.getElementById('phaseOverlay').classList.add('open');
+}
+function openShareModalPhase(){
+  const idx=document.getElementById('phaseSkippedModal').style.display==='flex'
+    ?PHASES.findIndex(p=>p.name===_phaseSkippedName)
+    :_phaseOverlayIdx;
+  openShareModal(idx);
+}
 function dismissPhaseOverlay(){document.getElementById('phaseOverlay').classList.remove('open');}
 function continuePhaseNow(){
   dismissPhaseOverlay();
@@ -1611,7 +1624,7 @@ function closeModal(){
   document.querySelector('.modal-box').className='modal-box';
 }
 // ── SHARE ──
-function openShareModal(){
+function openShareModal(upToPhaseIdx){
   const el=document.getElementById('shareModal');
   if(!el)return;
   document.getElementById('shFrom').value=settings.homeBase||'';
@@ -1621,14 +1634,15 @@ function openShareModal(){
   const ta=document.getElementById('shareFallbackText');
   if(ta)ta.style.display='none';
   const btn=document.getElementById('shareNowBtn');
-  if(btn){btn.innerHTML='<i class="ti ti-share" style="font-size:13px;"></i> שתף עכשיו';btn.style.background='var(--gold)';btn.style.color='var(--asphalt)';btn.onclick=doShare;}
+  const scope=(typeof upToPhaseIdx==='number'&&upToPhaseIdx>=0)?upToPhaseIdx:null;
+  if(btn){btn.innerHTML='<i class="ti ti-share" style="font-size:13px;"></i> שתף עכשיו';btn.style.background='var(--gold)';btn.style.color='var(--asphalt)';btn.onclick=()=>doShare(scope);}
   el.style.display='flex';
 }
 function closeShareModal(){
   const el=document.getElementById('shareModal');
   if(el)el.style.display='none';
 }
-function doShare(){
+function doShare(upToPhaseIdx){
   const from=document.getElementById('shFrom').value.trim().toUpperCase()||'[ לא הוזן ]';
   const via=document.getElementById('shVia').value.trim().toUpperCase()||'[ לא הוזן ]';
   const to=document.getElementById('shTo').value.trim().toUpperCase()||'[ לא הוזן ]';
@@ -1639,20 +1653,23 @@ function doShare(){
   const localStr=String(now.getHours()).padStart(2,'0')+':'+String(now.getMinutes()).padStart(2,'0');
   const hasVia=document.getElementById('shVia').value.trim()!=='';
   const route=hasVia?from+' › '+via+' › '+to:from+' › '+to;
-  const phaseName=document.getElementById('summaryStampPhase').textContent||'הצ׳קליסט';
-  const done=Object.values(status).filter(s=>s==='done').length;
-  const skipped=Object.values(status).filter(s=>s==='skipped').length;
-  const total=CL.length;
+  const isPhaseShare=typeof upToPhaseIdx==='number'&&upToPhaseIdx>=0;
+  const scopedPhases=isPhaseShare?PHASES.slice(0,upToPhaseIdx+1):PHASES;
+  const scopedItems=scopedPhases.reduce((a,ph)=>a.concat(ph.groups.reduce((b,g)=>b.concat(g.items),[])),[] );
+  const done=scopedItems.filter(j=>status[j]==='done').length;
+  const skipped=scopedItems.filter(j=>status[j]==='skipped').length;
+  const total=scopedItems.length;
+  const phaseName=isPhaseShare?PHASES[upToPhaseIdx].name:(document.getElementById('summaryStampPhase').textContent||'הצ׳קליסט');
   let lines=[];
   const ver=(document.getElementById('versionTap')?.textContent||'').replace('AirCheck+ · ','').replace(' · built by eligrt','');
-  lines.push('✅ *AirCheck+ | סיכום טיסה*');
+  lines.push((skipped>0?'🟡':'✅')+' *AirCheck+ | סיכום'+(isPhaseShare?' שלב':'טיסה')+'*');
   lines.push('────────────────────');
   lines.push('✈️ '+regStr+'  '+route);
   lines.push('🕐 LT '+localStr+' (UTC '+utcStr+')');
   lines.push('────────────────────');
   lines.push('📋 *'+phaseName+'* — '+done+'/'+total+(skipped>0?' ('+skipped+' דולגו)':''));
   lines.push('');
-  PHASES.forEach(ph=>{
+  scopedPhases.forEach(ph=>{
     const phItems=ph.groups.reduce((a,g)=>a.concat(g.items),[]);
     const anyDone=phItems.some(j=>status[j]==='done'||status[j]==='skipped');
     if(!anyDone)return;
@@ -1660,7 +1677,7 @@ function doShare(){
     phItems.forEach(j=>{
       const s=status[j];
       if(s==='done')lines.push('✅ '+CL[j].main);
-      else if(s==='skipped')lines.push('⊘ '+CL[j].main+' (דולג)');
+      else if(s==='skipped')lines.push('🟡 '+CL[j].main+' (דולג)');
     });
     lines.push('');
   });
@@ -3837,6 +3854,7 @@ function splashSecondaryAction(){
       <button class="btn btn-ink" onclick="phaseSkippedContinue()" style="margin-bottom:8px;">המשך לשלב הבא</button>
       <button class="btn btn-amber-outline" onclick="phaseSkippedGoBack()" style="margin-bottom:8px;">חזור לפריטים הפתוחים</button>
       <button class="btn btn-ghost" onclick="phaseSkippedPark()">סיים לעכשיו, אמשיך מאוחר יותר</button>
+      <div style="margin-top:10px;text-align:center;"><button onclick="openShareModalPhase()" style="background:none;border:none;cursor:pointer;font-family:var(--font-ui);font-size:12px;color:var(--ink-muted);text-decoration:underline;padding:4px 8px;">שתף סיכום שלב ›</button></div>
     </div>
   </div>
 
