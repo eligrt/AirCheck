@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <!-- ═══════════════════════════════════════
-     AirCheck+ · v2.09.038 · built by eligrt
+     AirCheck+ · v2.09.040 · built by eligrt
      ═══════════════════════════════════════ -->
 <html lang="he" dir="rtl">
 <head>
@@ -643,7 +643,7 @@ html,body{height:100%;background:#1a1a1c;font-family:var(--font-ui);color:var(--
     <div class="splash-footer-wrap">
       <div class="footer-strip" style="display:flex;align-items:center;justify-content:space-between;padding:5px 14px 8px;">
         <span class="footer-refresh" onclick="reloadApp()">רענון</span>
-        <span id="versionTap" style="cursor:default;">AirCheck+ · v2.09.038 · built by eligrt</span>
+        <span id="versionTap" style="cursor:default;">AirCheck+ · v2.09.040 · built by eligrt</span>
         <span style="width:40px;"></span>
       </div>
     </div>
@@ -763,7 +763,7 @@ html,body{height:100%;background:#1a1a1c;font-family:var(--font-ui);color:var(--
     <div class="tree-panel" id="treePanel"></div>
     <div class="footer-strip" style="display:flex;align-items:center;justify-content:space-between;padding:5px 14px 8px;">
       <span class="footer-refresh" onclick="reloadApp()">רענון</span>
-      <span id="versionTap" style="cursor:default;">AirCheck+ · v2.09.038 · built by eligrt</span>
+      <span id="versionTap" style="cursor:default;">AirCheck+ · v2.09.040 · built by eligrt</span>
       <span style="width:40px;"></span>
     </div>
   </div>
@@ -889,7 +889,7 @@ html,body{height:100%;background:#1a1a1c;font-family:var(--font-ui);color:var(--
 
     <div class="footer-strip" style="display:flex;align-items:center;justify-content:space-between;padding:5px 14px 8px;">
       <span style="width:40px;"></span>
-      <span id="versionTap" style="cursor:default;">AirCheck+ · v2.09.038 · built by eligrt</span>
+      <span id="versionTap" style="cursor:default;">AirCheck+ · v2.09.040 · built by eligrt</span>
       <span style="width:40px;"></span>
     </div>
   </div>
@@ -1003,7 +1003,7 @@ html,body{height:100%;background:#1a1a1c;font-family:var(--font-ui);color:var(--
     </div>
     <div class="footer-strip" style="display:flex;align-items:center;justify-content:space-between;padding:5px 14px 8px;">
       <span class="footer-refresh" onclick="reloadApp()">רענון</span>
-      <span id="versionTap" style="cursor:default;">AirCheck+ · v2.09.038 · built by eligrt</span>
+      <span id="versionTap" style="cursor:default;">AirCheck+ · v2.09.040 · built by eligrt</span>
       <span style="width:40px;"></span>
     </div>
   </div>
@@ -1027,7 +1027,7 @@ html,body{height:100%;background:#1a1a1c;font-family:var(--font-ui);color:var(--
     <div class="editor-list" id="editorList"></div>
     <div class="footer-strip" style="display:flex;align-items:center;justify-content:space-between;padding:5px 14px 8px;">
       <span class="footer-refresh" onclick="reloadApp()">רענון</span>
-      <span id="versionTap" style="cursor:default;">AirCheck+ · v2.09.038 · built by eligrt</span>
+      <span id="versionTap" style="cursor:default;">AirCheck+ · v2.09.040 · built by eligrt</span>
       <span style="width:40px;"></span>
     </div>
   </div>
@@ -1101,11 +1101,11 @@ const FEATURES={
 
 const CL=[
   {defId:"d001",phase:"יום לפני",group:"כשירות טיס ותעודות",main:"ודא שברשותך רישיון טיס ורישיון רדיו",sub:""},
-  {defId:"d002",phase:"יום לפני",group:"כשירות טיס ותעודות",main:"ודא מבחן רמה",sub:"בתוקף עד (dd.mm.yyyy)"},
-  {defId:"d003",phase:"יום לפני",group:"כשירות טיס ותעודות",main:"ודא תעודה רפואית",sub:"בתוקף עד (dd.mm.yyyy)"},
-  {defId:"d004",phase:"יום לפני",group:"כשירות מטוס",main:"ודא יתרת שעות לטיפול קרוב",sub:"טיפול קרוב ב: HOBS #### או ב: dd.mm.yyyy"},
-  {defId:"d005",phase:"יום לפני",group:"כשירות מטוס",main:"ודא CofA",sub:"בתוקף עד (dd.mm.yyyy)"},
-  {defId:"d006",phase:"יום לפני",group:"כשירות מטוס",main:"ודא תעודת רדיו",sub:"בתוקף עד (dd.mm.yyyy)"},
+  {defId:"d002",phase:"יום לפני",group:"כשירות טיס ותעודות",main:"ודא מבחן רמה",sub:"בתוקף עד [טרם הוזן - ניתן לעריכה בתפריט \"הגדרות\" > \"עריכת הצ'קליסט\"]"},
+  {defId:"d003",phase:"יום לפני",group:"כשירות טיס ותעודות",main:"ודא תעודה רפואית",sub:"בתוקף עד [טרם הוזן - ניתן לעריכה בתפריט \"הגדרות\" > \"עריכת הצ'קליסט\"]"},
+  {defId:"d004",phase:"יום לפני",group:"כשירות מטוס",main:"ודא יתרת שעות לטיפול קרוב",sub:"טיפול קרוב ב: HOBS #### או ב: [טרם הוזן - ניתן לעריכה בתפריט \"הגדרות\" > \"עריכת הצ'קליסט\"]"},
+  {defId:"d005",phase:"יום לפני",group:"כשירות מטוס",main:"ודא CofA",sub:"בתוקף עד [טרם הוזן - ניתן לעריכה בתפריט \"הגדרות\" > \"עריכת הצ'קליסט\"]"},
+  {defId:"d006",phase:"יום לפני",group:"כשירות מטוס",main:"ודא תעודת רדיו",sub:"בתוקף עד [טרם הוזן - ניתן לעריכה בתפריט \"הגדרות\" > \"עריכת הצ'קליסט\"]"},
   {defId:"d007",phase:"יום לפני",group:"תכנון (ניווט ודלק)",main:"הכנת מפות וציר ניווט",sub:""},
   {defId:"d008",phase:"יום לפני",group:"תכנון (ניווט ודלק)",main:"רישום כל תדרי הרדיו הנדרשים לנתיב",sub:""},
   {defId:"d009",phase:"יום לפני",group:"תכנון (ניווט ודלק)",main:"חשב כמות דלק נדרשת לטיסה",sub:"בתוספת '45 (הסעה '15 + ספייר '30)"},
@@ -1117,10 +1117,10 @@ const CL=[
   {defId:"d015",phase:"יום לפני",group:"בדיקת מז״א",main:"אמת נתונים באפליקציית מז״א",sub:""},
   {defId:"d016",phase:"יום לפני",group:"מודיעין טיס",main:"בדוק NOTAM",sub:"",url:"https://notam.liorbenhorin.xyz/",urlLabel:"NOTAM LL"},
   {defId:"d017",phase:"יום לפני",group:"מודיעין טיס",main:"הגשת תוכנית טיסה",sub:"",url:"https://fpl.co.il/",urlLabel:"fpl.co.il"},
-  {defId:"d018",phase:"הגעה למנחת ולמטוס",group:"רישומים וניירת",main:"קבלת מרשה טיסה",sub:""},
   {defId:"d019",phase:"הגעה למנחת ולמטוס",group:"רישומים וניירת",main:"פתיחת טיסה במחשב המנחת (עודד)",sub:""},
+  {defId:"d018",phase:"הגעה למנחת ולמטוס",group:"רישומים וניירת",main:"קבלת מרשה טיסה",sub:""},
   {defId:"d020",phase:"הגעה למנחת ולמטוס",group:"רישומים וניירת",main:"ודא המצאות תעודות המטוס בקוקפיט",sub:"בעלות, כושר טיסה (ודא תוקף) ורדיו (ודא תוקף)"},
-  {defId:"d021",phase:"הגעה למנחת ולמטוס",group:"רישומים וניירת",main:"ודא אי חריגה מטיפול קרוב",sub:"טיפול קרוב ב: HOBS #### או ב: dd.mm.yyyy"},
+  {defId:"d021",phase:"הגעה למנחת ולמטוס",group:"רישומים וניירת",main:"ודא אי חריגה מטיפול קרוב",sub:"טיפול קרוב ב: HOBS #### או ב: [טרם הוזן - ניתן לעריכה בתפריט \"הגדרות\" > \"עריכת הצ'קליסט\"]"},
   {defId:"d022",phase:"הגעה למנחת ולמטוס",group:"רישומים וניירת",main:"משקל ואיזון - ודא",sub:"",url:"https://eligrt.github.io/AirBalance/AirBalance.html",urlLabel:"AirBalance"},
   {defId:"d023",phase:"הגעה למנחת ולמטוס",group:"רישומים וניירת",main:"בדיקת תקלות (אדומים)",sub:""},
   {defId:"d024",phase:"הגעה למנחת ולמטוס",group:"רישומים וניירת",main:"פתיחת שורה בספר",sub:""},
@@ -1850,7 +1850,7 @@ function migrateDefaultList(){
 // "untouched". Items that don't match stay as plain custom items (no defId).
 function backfillDefIds(){
   // Match on main+group+phase only — NOT sub, since many default items ship
-  // with a fill-in-the-blank sub (e.g. "בתוקף עד (dd.mm.yyyy)") that pilots
+  // with a fill-in-the-blank sub (e.g. "טרם הוזן - ניתן לעריכה בתפריט ״הגדרות״ > ״עריכת הצ'קליסט״") that pilots
   // overwrite with a real value, which would never key-match if included.
   // If the pilot's sub/url/urlLabel already differs from the shipped default
   // (e.g. they filled in a real date), mark touched=true so the upcoming
