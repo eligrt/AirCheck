@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <!-- ═══════════════════════════════════════
-     AirCheck+ · v2.09.065T · built by eligrt
+     AirCheck+ · v2.09.066T · built by eligrt
      ═══════════════════════════════════════ -->
 <html lang="he" dir="rtl">
 <head>
@@ -31,7 +31,7 @@
   --font-mono:'JetBrains Mono','Menlo','Courier New',monospace;
   --r:6px;
 }
-*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent;user-select:none;-webkit-user-select:none;-webkit-touch-callout:none;}
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent;user-select:none;-webkit-user-select:none;-webkit-touch-callout:none;touch-action:manipulation;}
 html,body{height:100%;background:#1a1a1c;font-family:var(--font-ui);color:var(--ink-body);overflow:hidden;}
 #app{height:100%;display:flex;flex-direction:column;max-width:430px;margin:0 auto;position:relative;background:var(--paper);background-image:repeating-linear-gradient(0deg,transparent 0,transparent 27px,var(--paper-line) 27px,var(--paper-line) 28px);overflow:hidden;}
 .screen{display:none;flex-direction:column;flex:1;overflow:hidden;}
@@ -646,7 +646,7 @@ html,body{height:100%;background:#1a1a1c;font-family:var(--font-ui);color:var(--
     <div class="splash-footer-wrap">
       <div class="footer-strip" style="display:flex;align-items:center;justify-content:space-between;padding:5px 14px 8px;">
         <span class="footer-refresh" onclick="reloadApp()">רענון</span>
-        <span id="versionTap" style="cursor:default;">AirCheck+ · v2.09.065T · built by eligrt</span>
+        <span id="versionTap" style="cursor:default;">AirCheck+ · v2.09.066T · built by eligrt</span>
         <span style="width:40px;"></span>
       </div>
     </div>
@@ -767,7 +767,7 @@ html,body{height:100%;background:#1a1a1c;font-family:var(--font-ui);color:var(--
     <div class="tree-panel" id="treePanel"></div>
     <div class="footer-strip" style="display:flex;align-items:center;justify-content:space-between;padding:5px 14px 8px;">
       <span class="footer-refresh" onclick="reloadApp()">רענון</span>
-      <span id="versionTap" style="cursor:default;">AirCheck+ · v2.09.065T · built by eligrt</span>
+      <span id="versionTap" style="cursor:default;">AirCheck+ · v2.09.066T · built by eligrt</span>
       <span style="width:40px;"></span>
     </div>
   </div>
@@ -828,7 +828,7 @@ html,body{height:100%;background:#1a1a1c;font-family:var(--font-ui);color:var(--
 
     <div class="footer-strip" style="display:flex;align-items:center;justify-content:space-between;padding:5px 14px 8px;">
       <span style="width:40px;"></span>
-      <span id="versionTap" style="cursor:default;">AirCheck+ · v2.09.065T · built by eligrt</span>
+      <span id="versionTap" style="cursor:default;">AirCheck+ · v2.09.066T · built by eligrt</span>
       <span style="width:40px;"></span>
     </div>
   </div>
@@ -942,7 +942,7 @@ html,body{height:100%;background:#1a1a1c;font-family:var(--font-ui);color:var(--
     </div>
     <div class="footer-strip" style="display:flex;align-items:center;justify-content:space-between;padding:5px 14px 8px;">
       <span class="footer-refresh" onclick="reloadApp()">רענון</span>
-      <span id="versionTap" style="cursor:default;">AirCheck+ · v2.09.065T · built by eligrt</span>
+      <span id="versionTap" style="cursor:default;">AirCheck+ · v2.09.066T · built by eligrt</span>
       <span style="width:40px;"></span>
     </div>
   </div>
@@ -966,7 +966,7 @@ html,body{height:100%;background:#1a1a1c;font-family:var(--font-ui);color:var(--
     <div class="editor-list" id="editorList"></div>
     <div class="footer-strip" style="display:flex;align-items:center;justify-content:space-between;padding:5px 14px 8px;">
       <span class="footer-refresh" onclick="reloadApp()">רענון</span>
-      <span id="versionTap" style="cursor:default;">AirCheck+ · v2.09.065T · built by eligrt</span>
+      <span id="versionTap" style="cursor:default;">AirCheck+ · v2.09.066T · built by eligrt</span>
       <span style="width:40px;"></span>
     </div>
   </div>
@@ -1308,6 +1308,12 @@ function releaseHold(){
         if(allDone&&!anySkipped&&!anyUpcoming){
           card.classList.remove('flipping');
           showAllDoneOverlay(CL[CL.length-1].phase);
+          return;
+        }
+        const phSkippedCount=phAllItems.filter(j=>status[j]==='skipped').length;
+        if(phSkippedCount>0&&newPhase&&newPhase!==prevPhase){
+          card.classList.remove('flipping');
+          showPhaseSkippedPopup(prevPhase,phSkippedCount);
           return;
         }
         if(pAllGreen&&newPhase&&newPhase!==prevPhase){
