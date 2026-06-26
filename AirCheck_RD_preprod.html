@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <!-- ═══════════════════════════════════════
-     AirCheck+ · v2.09.061 · built by eligrt
+     AirCheck+ · v2.09.064 · built by eligrt
      ═══════════════════════════════════════ -->
 <html lang="he" dir="rtl">
 <head>
@@ -72,6 +72,7 @@ html,body{height:100%;background:#1a1a1c;font-family:var(--font-ui);color:var(--
 .strip-pill:active{background:rgba(244,236,220,.12);}
 .strip-pill-gold{border-color:var(--gold);color:var(--gold-lite);}
 .strip-pill-gold:active{background:rgba(200,160,74,.15);}
+#whatsNewOverlay>div::-webkit-scrollbar{display:none;}
 .wn-chip{flex-shrink:0;background:var(--paper-hi);border:1px solid var(--gold-lite);border-radius:8px;padding:6px 8px;display:flex;flex-direction:column;align-items:center;gap:3px;width:74px;cursor:pointer;font-family:var(--font-ui);}
 .wn-chip-active{background:var(--ink);border-color:var(--ink);}
 .wn-chip i{font-size:15px;color:var(--ink-muted);}
@@ -645,7 +646,7 @@ html,body{height:100%;background:#1a1a1c;font-family:var(--font-ui);color:var(--
     <div class="splash-footer-wrap">
       <div class="footer-strip" style="display:flex;align-items:center;justify-content:space-between;padding:5px 14px 8px;">
         <span class="footer-refresh" onclick="reloadApp()">רענון</span>
-        <span id="versionTap" style="cursor:default;">AirCheck+ · v2.09.061 · built by eligrt</span>
+        <span id="versionTap" style="cursor:default;">AirCheck+ · v2.09.064 · built by eligrt</span>
         <span style="width:40px;"></span>
       </div>
     </div>
@@ -765,7 +766,7 @@ html,body{height:100%;background:#1a1a1c;font-family:var(--font-ui);color:var(--
     <div class="tree-panel" id="treePanel"></div>
     <div class="footer-strip" style="display:flex;align-items:center;justify-content:space-between;padding:5px 14px 8px;">
       <span class="footer-refresh" onclick="reloadApp()">רענון</span>
-      <span id="versionTap" style="cursor:default;">AirCheck+ · v2.09.061 · built by eligrt</span>
+      <span id="versionTap" style="cursor:default;">AirCheck+ · v2.09.064 · built by eligrt</span>
       <span style="width:40px;"></span>
     </div>
   </div>
@@ -826,7 +827,7 @@ html,body{height:100%;background:#1a1a1c;font-family:var(--font-ui);color:var(--
 
     <div class="footer-strip" style="display:flex;align-items:center;justify-content:space-between;padding:5px 14px 8px;">
       <span style="width:40px;"></span>
-      <span id="versionTap" style="cursor:default;">AirCheck+ · v2.09.061 · built by eligrt</span>
+      <span id="versionTap" style="cursor:default;">AirCheck+ · v2.09.064 · built by eligrt</span>
       <span style="width:40px;"></span>
     </div>
   </div>
@@ -940,7 +941,7 @@ html,body{height:100%;background:#1a1a1c;font-family:var(--font-ui);color:var(--
     </div>
     <div class="footer-strip" style="display:flex;align-items:center;justify-content:space-between;padding:5px 14px 8px;">
       <span class="footer-refresh" onclick="reloadApp()">רענון</span>
-      <span id="versionTap" style="cursor:default;">AirCheck+ · v2.09.061 · built by eligrt</span>
+      <span id="versionTap" style="cursor:default;">AirCheck+ · v2.09.064 · built by eligrt</span>
       <span style="width:40px;"></span>
     </div>
   </div>
@@ -964,7 +965,7 @@ html,body{height:100%;background:#1a1a1c;font-family:var(--font-ui);color:var(--
     <div class="editor-list" id="editorList"></div>
     <div class="footer-strip" style="display:flex;align-items:center;justify-content:space-between;padding:5px 14px 8px;">
       <span class="footer-refresh" onclick="reloadApp()">רענון</span>
-      <span id="versionTap" style="cursor:default;">AirCheck+ · v2.09.061 · built by eligrt</span>
+      <span id="versionTap" style="cursor:default;">AirCheck+ · v2.09.064 · built by eligrt</span>
       <span style="width:40px;"></span>
     </div>
   </div>
@@ -2955,7 +2956,14 @@ function checkWhatsNew(){
   const el=document.getElementById('whatsNewOverlay');
   const verEl=document.getElementById('whatsNewVer');
   if(verEl)verEl.textContent='AirCheck+ · v'+WHATS_NEW_VER;
-  if(el)el.style.display='flex';
+  if(el)el.style.display='flex';setTimeout(wnCheckScroll,100);
+}
+function wnCheckScroll(){
+  var p=document.getElementById('whatsNewOverlay');
+  var inner=p?p.querySelector('[style*="max-height:88vh"]'):null;
+  var fade=document.getElementById('wnScrollFade');
+  if(!inner||!fade)return;
+  fade.style.display=(inner.scrollHeight>inner.clientHeight+4)?'block':'none';
 }
 function closeWhatsNew(){
   localStorage.setItem(WHATS_NEW_KEY,WHATS_NEW_VER);
@@ -3912,10 +3920,10 @@ function splashSecondaryAction(){
   </div>
 
   <div id="whatsNewOverlay" style="display:none;position:absolute;inset:0;background:rgba(26,19,8,.82);z-index:700;align-items:center;justify-content:center;padding:20px;backdrop-filter:blur(3px);overflow-y:auto;">
-    <div style="background:var(--paper);background-image:repeating-linear-gradient(0deg,transparent 0,transparent 27px,rgba(28,61,110,.055) 27px,rgba(28,61,110,.055) 28px);border:2px solid var(--gold);border-radius:8px;width:100%;max-width:320px;overflow:hidden;box-shadow:0 20px 60px rgba(0,0,0,.4);animation:popupFadeIn .25s cubic-bezier(.34,1.2,.64,1);direction:rtl;">
+    <div style="background:var(--paper);background-image:repeating-linear-gradient(0deg,transparent 0,transparent 27px,rgba(28,61,110,.055) 27px,rgba(28,61,110,.055) 28px);border:2px solid var(--gold);border-radius:8px;width:100%;max-width:320px;max-height:88vh;overflow-y:auto;overflow-x:hidden;scrollbar-width:none;box-shadow:0 20px 60px rgba(0,0,0,.4);animation:popupFadeIn .25s cubic-bezier(.34,1.2,.64,1);direction:rtl;">
       <div style="background:var(--ink);padding:12px 18px 10px;text-align:center;">
         <div style="font-family:var(--font-mono);font-size:9px;color:rgba(244,236,220,.45);letter-spacing:.2em;text-transform:uppercase;margin-bottom:5px;" id="whatsNewVer">AirCheck+ · v2.09</div>
-        <div style="font-size:15px;font-weight:700;color:var(--paper);line-height:1.3;">יצאה מהתנור! 🔥</div>
+        <div style="font-size:15px;font-weight:700;color:var(--paper);line-height:1.3;">עדכון גרסה יצא מהתנור 🔥</div>
         <div style="font-size:11px;color:rgba(244,236,220,.6);margin-top:3px;">רגע לפני שמתחילים, בואו תכירו מה חדש</div>
       </div>
       <div style="padding:8px 10px 6px;">
@@ -3954,6 +3962,7 @@ function splashSecondaryAction(){
           </div>
         </div>
       </div>
+      <div id="wnScrollFade" style="display:none;position:sticky;bottom:0;height:56px;background:linear-gradient(transparent,var(--paper));pointer-events:none;margin-top:-56px;"></div>
       <div style="padding:6px 10px 14px;">
         <div style="display:flex;gap:8px;">
           <button onclick="snoozeWhatsNew()" style="flex:1;padding:10px;background:transparent;border:1px dashed var(--gold-lite);border-radius:6px;color:var(--ink-faint);font-size:11px;cursor:pointer;font-family:var(--font-ui);">תזכיר לי בפעם הבאה</button>
