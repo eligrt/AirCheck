@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <!-- ═══════════════════════════════════════
-     AirCheck+ · v2.09.066T · built by eligrt
+     AirCheck+ · v2.09.072T · built by eligrt
      ═══════════════════════════════════════ -->
 <html lang="he" dir="rtl">
 <head>
@@ -385,6 +385,18 @@ html,body{height:100%;background:#1a1a1c;font-family:var(--font-ui);color:var(--
 .summary-group-hdr{font-size:11px;color:var(--ink-muted);font-weight:600;padding:4px 0 2px;letter-spacing:.03em;border-bottom:1px dotted rgba(200,160,74,.2);margin-bottom:2px;}
 .summary-item{display:flex;align-items:center;gap:8px;padding:3px 0 3px 4px;font-size:12px;}
 .summary-btns{flex-shrink:0;padding:10px 14px 14px;display:flex;flex-direction:row;gap:8px;border-top:1px dashed var(--gold-lite);background:var(--paper-hi);}
+.share-split{width:100%;border-radius:var(--r);border:1px solid var(--gold-lite);background:var(--paper-hi);overflow:hidden;cursor:pointer;}
+.share-split-top{display:flex;align-items:stretch;}
+.share-split-main{flex:1;padding:12px;display:flex;align-items:center;gap:8px;font-size:13px;font-weight:600;color:var(--ink-muted);border-left:1px solid var(--gold-lite);user-select:none;}
+.share-split-change{flex-shrink:0;padding:12px 13px;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:600;color:var(--ink-faint);background:var(--paper-hi);user-select:none;}
+.share-mode-tag{color:var(--ink);font-size:13px;font-weight:700;border-bottom:2px solid var(--ink);padding-bottom:1px;white-space:nowrap;}
+.share-picker-inner{overflow:hidden;transition:max-height .28s ease,opacity .2s ease;max-height:0;opacity:0;}
+.share-picker-inner.open{max-height:60px;opacity:1;}
+.share-picker-label{padding:6px 12px 5px;font-size:9px;font-family:var(--font-mono);letter-spacing:.14em;color:var(--ink-faint);text-transform:uppercase;border-top:1px solid var(--gold-lite);}
+.share-picker-opts{display:flex;align-items:center;padding:0 12px 10px;gap:0;}
+.share-opt-btn{font-size:13px;font-weight:600;color:var(--ink-muted);cursor:pointer;white-space:nowrap;border-bottom:1px dotted var(--ink-faint);padding-bottom:1px;background:none;border-top:none;border-left:none;border-right:none;font-family:var(--font-ui);}
+.share-opt-btn.cur{color:var(--ink);font-weight:700;border-bottom:2px solid var(--ink);padding-bottom:0;}
+.share-opt-sep{color:var(--gold-lite);margin:0 10px;font-size:13px;}
 
 
 /* ── BULK PHASE POPUP ── */
@@ -646,7 +658,7 @@ html,body{height:100%;background:#1a1a1c;font-family:var(--font-ui);color:var(--
     <div class="splash-footer-wrap">
       <div class="footer-strip" style="display:flex;align-items:center;justify-content:space-between;padding:5px 14px 8px;">
         <span class="footer-refresh" onclick="reloadApp()">רענון</span>
-        <span id="versionTap" style="cursor:default;">AirCheck+ · v2.09.066T · built by eligrt</span>
+        <span id="versionTap" style="cursor:default;">AirCheck+ · v2.09.072T · built by eligrt</span>
         <span style="width:40px;"></span>
       </div>
     </div>
@@ -767,7 +779,7 @@ html,body{height:100%;background:#1a1a1c;font-family:var(--font-ui);color:var(--
     <div class="tree-panel" id="treePanel"></div>
     <div class="footer-strip" style="display:flex;align-items:center;justify-content:space-between;padding:5px 14px 8px;">
       <span class="footer-refresh" onclick="reloadApp()">רענון</span>
-      <span id="versionTap" style="cursor:default;">AirCheck+ · v2.09.066T · built by eligrt</span>
+      <span id="versionTap" style="cursor:default;">AirCheck+ · v2.09.072T · built by eligrt</span>
       <span style="width:40px;"></span>
     </div>
   </div>
@@ -821,14 +833,30 @@ html,body{height:100%;background:#1a1a1c;font-family:var(--font-ui);color:var(--
         <button class="btn btn-ghost" style="flex:1" onclick="showScreen('screenChecklist');render()">‹ חזור לרשימה</button>
         <button class="btn btn-ink" style="flex:1" onclick="openNewFlightModal()">✦ טיסה חדשה</button>
       </div>
-      <div style="text-align:center;padding-top:2px;">
-        <span onclick="openShareModal()" style="font-size:13px;color:var(--asphalt);opacity:.6;cursor:pointer;display:inline-flex;align-items:center;gap:5px;border-bottom:1px dashed currentColor;padding-bottom:1px;"><i class="ti ti-share" style="font-size:13px;"></i> שתף סיכום טיסה</span>
+      <div class="share-split" id="shareSplitBtn">
+        <div class="share-split-top">
+          <div class="share-split-main" onclick="doShareDirect()">
+            <i class="ti ti-share" style="font-size:13px;flex-shrink:0;"></i>
+            שתף <span class="share-mode-tag" id="shareModeTag">דיווח נחיתה</span>
+          </div>
+          <div class="share-split-change" id="shareChangeBtn" onclick="toggleSharePicker()">שנה ›</div>
+        </div>
+        <div class="share-picker-inner" id="sharePickerInner">
+          <div class="share-picker-label">בחר מה לשתף</div>
+          <div class="share-picker-opts">
+            <button class="share-opt-btn cur" id="shareOptLean" onclick="pickShareMode('lean','דיווח נחיתה',this)">דיווח נחיתה</button>
+            <span class="share-opt-sep">·</span>
+            <button class="share-opt-btn" id="shareOptPhase" onclick="pickShareMode('phase','שלב אחרון',this)">שלב אחרון</button>
+            <span class="share-opt-sep">·</span>
+            <button class="share-opt-btn" id="shareOptFull" onclick="pickShareMode('full','צ׳קליסט מלא',this)">צ׳קליסט מלא</button>
+          </div>
+        </div>
       </div>
     </div>
 
     <div class="footer-strip" style="display:flex;align-items:center;justify-content:space-between;padding:5px 14px 8px;">
       <span style="width:40px;"></span>
-      <span id="versionTap" style="cursor:default;">AirCheck+ · v2.09.066T · built by eligrt</span>
+      <span id="versionTap" style="cursor:default;">AirCheck+ · v2.09.072T · built by eligrt</span>
       <span style="width:40px;"></span>
     </div>
   </div>
@@ -942,7 +970,7 @@ html,body{height:100%;background:#1a1a1c;font-family:var(--font-ui);color:var(--
     </div>
     <div class="footer-strip" style="display:flex;align-items:center;justify-content:space-between;padding:5px 14px 8px;">
       <span class="footer-refresh" onclick="reloadApp()">רענון</span>
-      <span id="versionTap" style="cursor:default;">AirCheck+ · v2.09.066T · built by eligrt</span>
+      <span id="versionTap" style="cursor:default;">AirCheck+ · v2.09.072T · built by eligrt</span>
       <span style="width:40px;"></span>
     </div>
   </div>
@@ -966,7 +994,7 @@ html,body{height:100%;background:#1a1a1c;font-family:var(--font-ui);color:var(--
     <div class="editor-list" id="editorList"></div>
     <div class="footer-strip" style="display:flex;align-items:center;justify-content:space-between;padding:5px 14px 8px;">
       <span class="footer-refresh" onclick="reloadApp()">רענון</span>
-      <span id="versionTap" style="cursor:default;">AirCheck+ · v2.09.066T · built by eligrt</span>
+      <span id="versionTap" style="cursor:default;">AirCheck+ · v2.09.072T · built by eligrt</span>
       <span style="width:40px;"></span>
     </div>
   </div>
@@ -1073,14 +1101,14 @@ const CL=[
   {defId:"d031",phase:"הגעה למנחת ולמטוס",group:"כללי",main:"עדכון בקרה בהמראה (אם נדרש)",sub:""},
   {defId:"d032",phase:"הגעה למנחת ולמטוס",group:"כללי",main:"דאבל צ׳ק מז״א",sub:"METAR בשדה המראה ובשדה נחיתה",url:"https://eligrt.github.io/AirCheck/AirCheck_METAR.html",urlLabel:"AirCheck+ METAR / TAF"},
   {defId:"d033",phase:"הגעה למנחת ולמטוס",group:"כללי",main:"בדיקה חוזרת ל NOTAM's בשדות ובנתיבים",sub:"",url:"https://notam.liorbenhorin.xyz/",urlLabel:"NOTAM LL"},
-  {defId:"d034",phase:"סגירת טיסה",group:"ניירת",main:"ספר מטוס: סגירת שורה",sub:""},
+  {defId:"d034",lean:true,phase:"סגירת טיסה",group:"ניירת",main:"ספר מטוס: סגירת שורה",sub:""},
   {defId:"d035",phase:"סגירת טיסה",group:"קיפול ציוד אישי",main:"מצלמות, IPAD, טלפון",sub:""},
   {defId:"d036",phase:"סגירת טיסה",group:"קיפול ציוד אישי",main:"אוזניות אישיות ואוזניות נוסע",sub:""},
   {defId:"d045",phase:"סגירת טיסה",group:"קיפול ציוד אישי",main:"קשר ניד",sub:""},
   {defId:"d037",phase:"סגירת טיסה",group:"קיפול ציוד אישי",main:"HardCopy",sub:""},
-  {defId:"d038",phase:"סגירת טיסה",group:"קיפול ציוד אישי",main:"ודא קוקפיט Cold & Dark",sub:""},
-  {defId:"d039",phase:"סגירת טיסה",group:"מטוס האנגר ומנחת",main:"חניה וכיסוי",sub:""},
-  {defId:"d040",phase:"סגירת טיסה",group:"מטוס האנגר ומנחת",main:"כיסוי פיטו: במקום",sub:""},
+  {defId:"d038",lean:true,phase:"סגירת טיסה",group:"קיפול ציוד אישי",main:"ודא קוקפיט Cold & Dark",sub:""},
+  {defId:"d039",lean:true,phase:"סגירת טיסה",group:"מטוס האנגר ומנחת",main:"חניה וכיסוי",sub:""},
+  {defId:"d040",lean:true,phase:"סגירת טיסה",group:"מטוס האנגר ומנחת",main:"כיסוי פיטו: במקום",sub:""},
   {defId:"d041",phase:"סגירת טיסה",group:"מטוס האנגר ומנחת",main:"סגירת טיסה במחשב המנחת (עודד)",sub:""},
   {defId:"d042",phase:"סגירת טיסה",group:"רישום ותשלום",main:"רישום בלוגבוק (רגיל)",sub:""},
   {defId:"d043",phase:"סגירת טיסה",group:"רישום ותשלום",main:"רישום בלוגבוק דיגיטלי",sub:""},
@@ -1383,6 +1411,9 @@ function goNext(){
     if(skippedCount>0){
       render(); // update runway bar first
       showEndOfListPopup(skippedCount);
+    } else {
+      // All done, no skipped — re-show end of flight overlay
+      showAllDoneOverlay(CL[CL.length-1].phase);
     }
   }
 }
@@ -1404,7 +1435,7 @@ function updateNavBtns(){
   const hasSkippedAnywhere=CL.some((_,i)=>status[i]==='skipped');
   const lastItemNotDone=isLast&&status[current]!=='done';
   document.getElementById('navBack').disabled=isFirst;
-  document.getElementById('navNext').disabled=isLast&&!hasSkippedAnywhere&&!lastItemNotDone;
+  document.getElementById('navNext').disabled=false;
   document.getElementById('navUncheck').disabled=!isDone;
   const jumpBtn=document.getElementById('navSkipJump');
   jumpBtn.disabled=!skippedCount;
@@ -1459,6 +1490,64 @@ function showPhaseOverlay(donePhaseName,nextPhaseName){
   document.getElementById('phaseOverlayNext').textContent=nextPhaseName?'השלב הבא: '+nextPhaseName:'כל השלבים הושלמו!';
   document.getElementById('phaseOverlay').classList.add('open');
 }
+let _shareMode='lean';
+function toggleSharePicker(){
+  const picker=document.getElementById('sharePickerInner');
+  const btn=document.getElementById('shareChangeBtn');
+  const isOpen=picker.classList.contains('open');
+  if(isOpen){picker.classList.remove('open');btn.textContent='שנה ›';}
+  else{picker.classList.add('open');btn.textContent='סגור ↑';}
+}
+function pickShareMode(mode,label,el){
+  _shareMode=mode;
+  document.getElementById('shareModeTag').textContent=label;
+  document.querySelectorAll('.share-opt-btn').forEach(b=>b.classList.remove('cur'));
+  el.classList.add('cur');
+  const picker=document.getElementById('sharePickerInner');
+  picker.classList.remove('open');
+  document.getElementById('shareChangeBtn').textContent='שנה ›';
+}
+function doShareDirect(){
+  if(_shareMode==='lean') doShareLean();
+  else if(_shareMode==='phase') doShareLastPhase();
+  else doShare();
+}
+function doShareLean(){
+  const leanItems=CL.filter((_,i)=>CL[i].lean&&(status[i]==='done'||status[i]==='skipped'));
+  if(!leanItems.length){showToast('אין פריטי דיווח נחיתה מסומנים');return;}
+  const now=new Date();
+  const utcStr=String(now.getUTCHours()).padStart(2,'0')+':'+String(now.getUTCMinutes()).padStart(2,'0');
+  const ver=(document.getElementById('versionTap')?.textContent||'').replace('AirCheck+ · ','').replace(' · built by eligrt','');
+  const reg=settings&&settings.tail?('4X-'+settings.tail):'';
+  const now2=new Date();
+  const ltStr=String(now2.getHours()).padStart(2,'0')+':'+String(now2.getMinutes()).padStart(2,'0');
+  let lines=[];
+  lines.push('📤 *AirCheck+ | דיווח נחיתה*');
+  lines.push('🕐 UTC '+utcStr+' (LT '+ltStr+')');
+  lines.push('────────────────────');
+  leanItems.forEach(it=>{
+    const i=CL.indexOf(it);
+    lines.push((status[i]==='done'?'✅':'🟡')+' '+it.main);
+  });
+  lines.push('────────────────────');
+  lines.push('Generated by AirCheck+');
+  lines.push('Personal Flight Checklist · '+ver);
+  const text=lines.join('\n');
+  if(navigator.share){navigator.share({title:'AirCheck+ | דיווח נחיתה',text}).catch(()=>showShareFallback(text));}
+  else{showShareFallback(text);}
+}
+function doShareLastPhase(){
+  const lastPhaseIdx=PHASES.length-1;
+  openShareModal(lastPhaseIdx);
+}
+function showShareFallback(text){
+  const ta=document.getElementById('shareFallbackText');
+  if(!ta)return;
+  ta.value=text;ta.style.display='block';
+  document.getElementById('shareModal').style.display='flex';
+  const btn=document.getElementById('shareNowBtn');
+  if(btn){btn.innerHTML='📋 העתק';btn.onclick=()=>{ta.select();try{document.execCommand('copy');}catch(e){}btn.innerHTML='✓ הועתק!';setTimeout(()=>{btn.innerHTML='<i class="ti ti-share"></i> שתף עכשיו';btn.onclick=doShare;},2500);};}
+}
 function openShareModalPhase(){
   const idx=document.getElementById('phaseSkippedModal').style.display==='flex'
     ?PHASES.findIndex(p=>p.name===_phaseSkippedName)
@@ -1484,7 +1573,7 @@ function showAllDoneOverlay(lastPhase){
   // stamp
   document.getElementById('summaryStampPhase').textContent=lastPhase||'הצ׳קליסט';
   // meta
-  const ccForMeta=parseInt(localStorage.getItem('aircheck_completed_count')||'0')+1;
+  const ccForMeta=parseInt(localStorage.getItem('aircheck_completed_count')||'0')+(window._flightCounted?0:1);
   let meta='<span>טיסה מספר '+ccForMeta+'</span> &nbsp;·&nbsp; <span>'+done+'</span> פריטים אושרו';
   if(skipped>0)meta+=' &nbsp;·&nbsp; <span>'+skipped+'</span> דולגו';
   document.getElementById('summaryMeta').innerHTML=meta;
@@ -1517,11 +1606,15 @@ function showAllDoneOverlay(lastPhase){
       });
     });
   });
-  // Increment completed counter
-  const cc=parseInt(localStorage.getItem('aircheck_completed_count')||'0')+1;
+  // Increment completed counter — only once per flight
+  if(!window._flightCounted){
+    window._flightCounted=true;
+    const _newCc=parseInt(localStorage.getItem('aircheck_completed_count')||'0')+1;
+    localStorage.setItem('aircheck_completed_count',_newCc);
+    if(window.syncToFirebase)window.syncToFirebase();
+  }
+  const cc=parseInt(localStorage.getItem('aircheck_completed_count')||'0');
   const prevCc=cc-1;
-  localStorage.setItem('aircheck_completed_count',cc);
-  if(window.syncToFirebase)window.syncToFirebase();
   // Rank
   const rankData=getRank(cc);
   const prevRankData=getRank(prevCc);
@@ -1559,9 +1652,11 @@ function openModal(){
 function closeModal(){
   document.getElementById('modal').classList.remove('open');
   const cb=document.getElementById('modalCancelBtn');
-  if(cb){cb.style.display='';cb.textContent='ביטול';}
+  if(cb){cb.style.cssText='';cb.style.display='';cb.textContent='ביטול';}
   const db=document.getElementById('edDiscardBtn');
   if(db)db.style.display='none';
+  const conf=document.getElementById('modalConfirmBtn');
+  if(conf){conf.style.display='';}
   document.querySelector('.modal-box').className='modal-box';
 }
 // ── SHARE ──
@@ -1653,7 +1748,47 @@ function doShare(upToPhaseIdx){
     showFallback();
   }
 }
-function startNew(){
+function showEditorLegend(){
+  document.getElementById('modalTitle').textContent='מקרא סמלים';
+  document.getElementById('modalSub').innerHTML=
+    '<div style="text-align:right;direction:rtl;">' +
+    '<div style="display:flex;align-items:center;gap:10px;padding:8px 0;border-bottom:1px dotted rgba(200,160,74,.3);">' +
+      '<span style="display:inline-block;width:10px;height:10px;border-radius:50%;background:var(--ink);flex-shrink:0;"></span>' +
+      '<span style="font-size:13px;color:var(--ink-body);">נקודה כהה - פריט מותאם אישית</span>' +
+    '</div>' +
+    '<div style="display:flex;align-items:center;gap:10px;padding:8px 0;border-bottom:1px dotted rgba(200,160,74,.3);">' +
+      '<span style="display:inline-block;width:10px;height:10px;border-radius:50%;background:var(--cleared);flex-shrink:0;"></span>' +
+      '<span style="font-size:13px;color:var(--ink-body);">נקודה ירוקה - יופיע בדיווח נחיתה</span>' +
+    '</div>' +
+    '<div style="display:flex;align-items:center;gap:10px;padding:8px 0;border-bottom:1px dotted rgba(200,160,74,.3);">' +
+      '<span style="display:inline-block;width:10px;height:10px;border-radius:50%;border:1.5px solid var(--ink-faint);flex-shrink:0;"></span>' +
+      '<span style="font-size:13px;color:var(--ink-body);">נקודה ריקה - לא יופיע בדיווח נחיתה</span>' +
+    '</div>' +
+    '<div style="display:flex;align-items:center;gap:10px;padding:8px 0;border-bottom:1px dotted rgba(200,160,74,.3);">' +
+      '<span style="display:inline-block;width:10px;height:10px;border-radius:50%;background:var(--amber);flex-shrink:0;"></span>' +
+      '<span style="font-size:13px;color:var(--ink-body);">נקודה צהובה - שינוי שטרם נשמר</span>' +
+    '</div>' +
+    '<div style="display:flex;align-items:center;gap:10px;padding:8px 0;border-bottom:1px dotted rgba(200,160,74,.3);">' +
+      '<span style="font-size:15px;color:var(--ink-muted);width:10px;text-align:center;flex-shrink:0;">✎</span>' +
+      '<span style="font-size:13px;color:var(--ink-body);">עריכת טקסט הפריט</span>' +
+    '</div>' +
+    '<div style="display:flex;align-items:center;gap:10px;padding:8px 0;border-bottom:1px dotted rgba(200,160,74,.3);">' +
+      '<span style="font-size:15px;color:var(--ink-muted);width:10px;text-align:center;flex-shrink:0;">↺</span>' +
+      '<span style="font-size:13px;color:var(--ink-body);">איפוס לערך ברירת מחדל</span>' +
+    '</div>' +
+    '<div style="display:flex;align-items:center;gap:10px;padding:8px 0;">' +
+      '<span style="font-size:15px;color:rgba(185,74,58,.8);width:10px;text-align:center;flex-shrink:0;">✕</span>' +
+      '<span style="font-size:13px;color:var(--ink-body);">מחיקת פריט</span>' +
+    '</div>' +
+    '</div>';
+  document.getElementById('modalConfirmBtn').style.display='none';
+  const cb=document.getElementById('modalCancelBtn');
+  cb.style.cssText='background:var(--ink);color:var(--paper);border:none;font-size:16px;font-weight:700;padding:14px;border-radius:var(--r);cursor:pointer;width:100%;font-family:var(--font-ui);';
+  cb.textContent='סגור';cb.style.display='';
+  document.querySelector('.modal-box').className='modal-box';
+  openModal();
+}
+function startNew(){window._flightCounted=false;
   const fc=parseInt(localStorage.getItem('aircheck_flight_count')||'0')+1;
   localStorage.setItem('aircheck_flight_count',fc);
   if(window.syncToFirebase)window.syncToFirebase();
@@ -1925,9 +2060,10 @@ function renderProfileTabStrip(){
     // Show actions bar with reset button only
     actions.style.display='';
     actions.innerHTML='';
-    const legend=document.createElement('span');
-    legend.style.cssText='font-size:10px;color:var(--ink-faint);display:flex;align-items:center;gap:4px;margin-right:auto;';
-    legend.innerHTML='<span style="width:7px;height:7px;border-radius:50%;background:var(--ink);display:inline-block;flex-shrink:0;"></span><span>פריט מותאם אישית</span>';
+    const infoBtn=document.createElement('button');
+    infoBtn.className='ed-icon on-paper';infoBtn.style.cssText='margin-right:auto;font-size:16px;opacity:.75;display:inline-flex;align-items:center;gap:6px;';
+    infoBtn.innerHTML='ⓘ <span style="font-size:12px;font-family:var(--font-ui);font-weight:500;">מקרא סמלים</span>';infoBtn.title='מקרא סמלים';
+    infoBtn.onclick=e=>{e.stopPropagation();showEditorLegend();};
     const resetBtn=document.createElement('button');resetBtn.className='profile-tab-btn'+(isDefault?' disabled':'');
     resetBtn.textContent='↺ איפוס לברירת מחדל';resetBtn.disabled=isDefault;
     resetBtn.onclick=()=>showConfirm('איפוס רשימה','לאפס את הרשימה לברירת המחדל?',()=>{
@@ -1936,7 +2072,7 @@ function renderProfileTabStrip(){
       loadEditorForProfile(_editorActiveProfileId);
     });
     actions.appendChild(resetBtn);
-    actions.appendChild(legend);
+    actions.appendChild(infoBtn);
     return;
   }
 
@@ -1986,11 +2122,12 @@ function renderProfileTabStrip(){
     loadEditorForProfile(_editorActiveProfileId);
   });
   actions.innerHTML='';
-  const legend2=document.createElement('span');
-  legend2.style.cssText='font-size:10px;color:var(--ink-faint);display:flex;align-items:center;gap:4px;margin-right:auto;';
-  legend2.innerHTML='<span style="width:7px;height:7px;border-radius:50%;background:var(--ink);display:inline-block;flex-shrink:0;"></span><span>פריט מותאם אישית</span>';
+  const infoBtn2=document.createElement('button');
+  infoBtn2.className='ed-icon on-paper';infoBtn2.style.cssText='margin-right:auto;font-size:16px;opacity:.75;display:inline-flex;align-items:center;gap:6px;';
+  infoBtn2.innerHTML='ⓘ <span style="font-size:12px;font-family:var(--font-ui);font-weight:500;">מקרא סמלים</span>';infoBtn2.title='מקרא סמלים';
+  infoBtn2.onclick=e=>{e.stopPropagation();showEditorLegend();};
   actions.appendChild(renameBtn);actions.appendChild(resetBtn);actions.appendChild(delBtn);
-  actions.appendChild(legend2);
+  actions.appendChild(infoBtn2);
 }
 
 function requestSwitchProfile(id){
@@ -2206,6 +2343,7 @@ function clToEdData(list){
     if(item.touched)edIt.touched=true;
     if(item.deleted)edIt.deleted=true;
     if(item._isNew)edIt._isNew=true;
+    if(item.lean)edIt.lean=true;
     p.gMap[item.group].items.push(edIt);
   });
   return phases;
@@ -2218,6 +2356,7 @@ function edDataToCL(data){
     if(it.touched)clIt.touched=true;
     if(it.deleted)clIt.deleted=true;
     if(it._isNew)clIt._isNew=true;
+    if(it.lean)clIt.lean=true;
     list.push(clIt);
   })));
   return list;
@@ -2371,6 +2510,16 @@ function buildItemRow(it,ii,g,gi,ph,pi){
   const drag=document.createElement('span');drag.className='ed-drag';drag.textContent='⠿';
   const dot=document.createElement('span');
   dot.style.cssText='width:6px;height:6px;border-radius:50%;flex-shrink:0;margin-left:2px;background:'+(wontSync?'var(--ink)':'transparent')+';';
+  // Lean dot — green if item.lean, empty circle if not
+  const leanDot=document.createElement('span');
+  leanDot.title='הופעה בדיווח נחיתה';
+  leanDot.style.cssText='width:8px;height:8px;border-radius:50%;flex-shrink:0;cursor:pointer;border:1.5px solid '+(it.lean?'var(--cleared)':'var(--ink-faint)')+';background:'+(it.lean?'var(--cleared)':'transparent')+';transition:all .15s;margin-left:4px;';
+  leanDot.onclick=e=>{
+    e.stopPropagation();
+    it.lean=!it.lean;
+    markEdDirty();
+    renderEditor();
+  };
   const txt=document.createElement('div');txt.className='ed-item-text';
   const main=document.createElement('div');main.className='ed-item-main';main.textContent=it.main;txt.appendChild(main);
   if(it.sub){const sub=document.createElement('div');sub.className='ed-item-sub';sub.textContent=it.sub;txt.appendChild(sub);}
@@ -2501,7 +2650,7 @@ function buildItemRow(it,ii,g,gi,ph,pi){
     touchedDot.className='ed-item-touched-dot';
     row.appendChild(touchedDot);
   }
-  row.appendChild(editBtn);row.appendChild(resetBtn);row.appendChild(delBtn);
+  row.appendChild(leanDot);row.appendChild(editBtn);row.appendChild(resetBtn);row.appendChild(delBtn);
   return row;
 }
 
@@ -2823,16 +2972,16 @@ function exportEditorToXLS(){
     const a1stamp='AirCheck+ · Personal Flight Checklist · '+ver+' · built by eligrt · Exported: '+exportDate;
     p.profiles.forEach(prof=>{
       const list=prof.list||[];
-      const aoa=[[a1stamp],['Phase','Group','Item','Sub','URL','URLLabel']];
+      const aoa=[[a1stamp],['Phase','Group','Item','Sub','URL','URLLabel','Lean']];
       let prevPhase='',prevGroup='';
       list.forEach(it=>{
-        aoa.push([it.phase!==prevPhase?it.phase:'',it.group!==prevGroup?it.group:'',it.main,it.sub||'',it.url||'',it.urlLabel||'']);
+        aoa.push([it.phase!==prevPhase?it.phase:'',it.group!==prevGroup?it.group:'',it.main,it.sub||'',it.url||'',it.urlLabel||'',it.lean?'✓':'']);
         prevPhase=it.phase;prevGroup=it.group;
       });
       const ws=XLSX.utils.aoa_to_sheet(aoa);
       // Delete B1/C1/D1/E1/F1 so A1 content spreads visually
-      delete ws['B1'];delete ws['C1'];delete ws['D1'];delete ws['E1'];delete ws['F1'];
-      ws['!cols']=[{wch:28},{wch:22},{wch:36},{wch:30},{wch:36},{wch:20}];
+      delete ws['B1'];delete ws['C1'];delete ws['D1'];delete ws['E1'];delete ws['F1'];delete ws['G1'];
+      ws['!cols']=[{wch:28},{wch:22},{wch:36},{wch:30},{wch:36},{wch:20},{wch:8}];
       const sheetName=prof.name.replace(/[\\\/\?\*\[\]\:]/g,'').substring(0,31)||'רשימה';
       XLSX.utils.book_append_sheet(wb,ws,sheetName);
     });
@@ -3989,9 +4138,9 @@ function splashSecondaryAction(){
       <span style="width:26px;height:26px;border-radius:50%;background:rgba(245,158,11,.15);border:1px solid var(--amber);display:inline-flex;align-items:center;justify-content:center;font-size:13px;flex-shrink:0;"><i class="ti ti-share" aria-hidden="true"></i></span>
       שיתוף סיכום טיסה
     </div>
-    <div style="font-size:10px;color:var(--ink-muted);letter-spacing:.05em;margin-bottom:10px;">מסלול <span style="font-weight:400;color:var(--ink-faint);font-size:9px;">(אופציונלי · יופיע בשיתוף)</span></div>
+    <div style="display:none;font-size:10px;color:var(--ink-muted);letter-spacing:.05em;margin-bottom:10px;">מסלול <span style="font-weight:400;color:var(--ink-faint);font-size:9px;">(אופציונלי · יופיע בשיתוף)</span></div>
     <!-- vertical train-station route -->
-    <div style="display:flex;flex-direction:column;direction:ltr;margin-bottom:6px;">
+    <div style="display:none;flex-direction:column;direction:ltr;margin-bottom:6px;">
       <!-- FROM -->
       <div style="display:flex;flex-direction:row;align-items:stretch;gap:12px;direction:ltr;">
       <div style="display:flex;flex-direction:column;align-items:center;flex-shrink:0;width:14px;">
