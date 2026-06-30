@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <!-- ═══════════════════════════════════════
-     AirCheck+ · v2.09.073 · built by eligrt
+     AirCheck+ · v2.09.079 · built by eligrt
      ═══════════════════════════════════════ -->
 <html lang="he" dir="rtl">
 <head>
@@ -658,7 +658,7 @@ html,body{height:100%;background:#1a1a1c;font-family:var(--font-ui);color:var(--
     <div class="splash-footer-wrap">
       <div class="footer-strip" style="display:flex;align-items:center;justify-content:space-between;padding:5px 14px 8px;">
         <span class="footer-refresh" onclick="reloadApp()">רענון</span>
-        <span id="versionTap" style="cursor:default;">AirCheck+ · v2.09.073 · built by eligrt</span>
+        <span id="versionTap" style="cursor:default;">AirCheck+ · v2.09.079 · built by eligrt</span>
         <span style="width:40px;"></span>
       </div>
     </div>
@@ -778,7 +778,7 @@ html,body{height:100%;background:#1a1a1c;font-family:var(--font-ui);color:var(--
     <div class="tree-panel" id="treePanel"></div>
     <div class="footer-strip" style="display:flex;align-items:center;justify-content:space-between;padding:5px 14px 8px;">
       <span class="footer-refresh" onclick="reloadApp()">רענון</span>
-      <span id="versionTap" style="cursor:default;">AirCheck+ · v2.09.073 · built by eligrt</span>
+      <span id="versionTap" style="cursor:default;">AirCheck+ · v2.09.079 · built by eligrt</span>
       <span style="width:40px;"></span>
     </div>
   </div>
@@ -793,8 +793,8 @@ html,body{height:100%;background:#1a1a1c;font-family:var(--font-ui);color:var(--
       </div>
       <div class="phase-overlay-next" id="phaseOverlayNext"></div>
       <button class="btn btn-ink" style="margin-bottom:8px" onclick="continuePhaseNow()">המשך עכשיו ›</button>
+      <div style="margin-bottom:8px;text-align:center;"><span onclick="openShareModalPhase()" style="font-size:13px;color:var(--asphalt);opacity:.6;cursor:pointer;display:inline-flex;align-items:center;gap:5px;border-bottom:1px dashed currentColor;padding-bottom:1px;"><i class="ti ti-share" style="font-size:13px;"></i> שתף סיכום שלב</span></div>
       <button class="btn btn-ghost" onclick="parkPhaseAndExit()">סגור — אמשיך מאוחר יותר</button>
-      <div style="margin-top:10px;text-align:center;"><span onclick="openShareModalPhase()" style="font-size:13px;color:var(--asphalt);opacity:.6;cursor:pointer;display:inline-flex;align-items:center;gap:5px;border-bottom:1px dashed currentColor;padding-bottom:1px;"><i class="ti ti-share" style="font-size:13px;"></i> שתף סיכום שלב</span></div>
     </div>
   </div>
 
@@ -855,7 +855,7 @@ html,body{height:100%;background:#1a1a1c;font-family:var(--font-ui);color:var(--
 
     <div class="footer-strip" style="display:flex;align-items:center;justify-content:space-between;padding:5px 14px 8px;">
       <span style="width:40px;"></span>
-      <span id="versionTap" style="cursor:default;">AirCheck+ · v2.09.073 · built by eligrt</span>
+      <span id="versionTap" style="cursor:default;">AirCheck+ · v2.09.079 · built by eligrt</span>
       <span style="width:40px;"></span>
     </div>
   </div>
@@ -969,7 +969,7 @@ html,body{height:100%;background:#1a1a1c;font-family:var(--font-ui);color:var(--
     </div>
     <div class="footer-strip" style="display:flex;align-items:center;justify-content:space-between;padding:5px 14px 8px;">
       <span class="footer-refresh" onclick="reloadApp()">רענון</span>
-      <span id="versionTap" style="cursor:default;">AirCheck+ · v2.09.073 · built by eligrt</span>
+      <span id="versionTap" style="cursor:default;">AirCheck+ · v2.09.079 · built by eligrt</span>
       <span style="width:40px;"></span>
     </div>
   </div>
@@ -993,7 +993,7 @@ html,body{height:100%;background:#1a1a1c;font-family:var(--font-ui);color:var(--
     <div class="editor-list" id="editorList"></div>
     <div class="footer-strip" style="display:flex;align-items:center;justify-content:space-between;padding:5px 14px 8px;">
       <span class="footer-refresh" onclick="reloadApp()">רענון</span>
-      <span id="versionTap" style="cursor:default;">AirCheck+ · v2.09.073 · built by eligrt</span>
+      <span id="versionTap" style="cursor:default;">AirCheck+ · v2.09.079 · built by eligrt</span>
       <span style="width:40px;"></span>
     </div>
   </div>
@@ -1077,10 +1077,10 @@ const CL=[
   {defId:"d009",phase:"יום לפני",group:"תכנון (ניווט ודלק)",main:"חשב כמות דלק נדרשת לטיסה",sub:"בתוספת '45 (הסעה '15 + ספייר '30)"},
   {defId:"d010",phase:"יום לפני",group:"מנהלות",main:"ודא מטוס משוריין / מוזמן לטיסה",sub:""},
   {defId:"d011",phase:"יום לפני",group:"מנהלות",main:"תאום נחיתה בשדה יעד / עצירה (אם נדרש)",sub:""},
-  {defId:"d012",phase:"יום לפני",group:"בדיקת מזםא",main:"בדוק TAF בשדה המראה ושדה נחיתה",sub:"",url:"https://eligrt.github.io/AirCheck/AirCheck_METAR.html",urlLabel:"AirCheck+ METAR / TAF"},
-  {defId:"d013",phase:"יום לפני",group:"בדיקת מזםא",main:"בדוק מפות רוח בנתיב",sub:""},
-  {defId:"d014",phase:"יום לפני",group:"בדיקת מזםא",main:"בדוק מפות SIG",sub:""},
-  {defId:"d015",phase:"יום לפני",group:"בדיקת מזםא",main:"אמת נתונים באפליקציית מזםא",sub:""},
+  {defId:"d012",phase:"יום לפני",group:"בדיקת מזמא",main:"בדוק TAF בשדה המראה ושדה נחיתה",sub:"",url:"https://eligrt.github.io/AirCheck/AirCheck_METAR.html",urlLabel:"AirCheck+ METAR / TAF"},
+  {defId:"d013",phase:"יום לפני",group:"בדיקת מזמא",main:"בדוק מפות רוח בנתיב",sub:""},
+  {defId:"d014",phase:"יום לפני",group:"בדיקת מזמא",main:"בדוק מפות SIG",sub:""},
+  {defId:"d015",phase:"יום לפני",group:"בדיקת מזמא",main:"אמת נתונים באפליקציית מזמא",sub:""},
   {defId:"d016",phase:"יום לפני",group:"מודיעין טיס",main:"בדוק NOTAM",sub:"",url:"https://notam.liorbenhorin.xyz/",urlLabel:"NOTAM LL"},
   {defId:"d017",phase:"יום לפני",group:"מודיעין טיס",main:"הגשת תוכנית טיסה",sub:"",url:"https://fpl.co.il/",urlLabel:"fpl.co.il"},
   {defId:"d019",phase:"הגעה למנחת ולמטוס",group:"רישומים וניירת",main:"פתיחת טיסה במחשב המנחת (עודד)",sub:""},
@@ -1098,8 +1098,8 @@ const CL=[
   {defId:"d030",phase:"הגעה למנחת ולמטוס",group:"הכנת קוקפיט",main:"תדרוך נוסע (אם נדרש)",sub:"",url:"https://eligrt.github.io/AirCheck/passenger-briefing.html",urlLabel:"AirCheck+ Passenger Briefing"},
   {defId:"d044",phase:"הגעה למנחת ולמטוס",group:"הכנת קוקפיט",main:"מכשיר קשר נייד טעון ובתיק",sub:""},
   {defId:"d031",phase:"הגעה למנחת ולמטוס",group:"כללי",main:"עדכון בקרה בהמראה (אם נדרש)",sub:""},
-  {defId:"d032",phase:"הגעה למנחת ולמטוס",group:"כללי",main:"דאבל צֳק מזםא",sub:"METAR בשדה המראה ובשדה נחיתה",url:"https://eligrt.github.io/AirCheck/AirCheck_METAR.html",urlLabel:"AirCheck+ METAR / TAF"},
-  {defId:"d033",phase:"הגעה למנחת ולמטוס",group:"כללי",main:"בדיקה חוזרת ל NOTAM's בשדות ובנתיבים",sub:"",url:"https://notam.liorbenhorin.xyz/",urlLabel:"NOTAM LL"},
+  {defId:"d032",phase:"הגעה למנחת ולמטוס",group:"כללי",main:"דאבל צ'ק מזמא",sub:"METAR בשדה המראה ובשדה נחיתה",url:"https://eligrt.github.io/AirCheck/AirCheck_METAR.html",urlLabel:"AirCheck+ METAR / TAF"},
+  {defId:"d033",phase:"הגעה למנחת ולמטוס",group:"כללי",main:"בדיקה חוזרת ל NOTAM בשדות ובנתיבים",sub:"",url:"https://notam.liorbenhorin.xyz/",urlLabel:"NOTAM LL"},
   {defId:"d034",lean:true,phase:"סגירת טיסה",group:"ניירת",main:"ספר מטוס: סגירת שורה",sub:""},
   {defId:"d035",phase:"סגירת טיסה",group:"קיפול ציוד אישי",main:"מצלמות, IPAD, טלפון",sub:""},
   {defId:"d036",phase:"סגירת טיסה",group:"קיפול ציוד אישי",main:"אוזניות אישיות ואוזניות נוסע",sub:""},
@@ -1118,7 +1118,7 @@ const CL_DEFAULT=CL.map(it=>({...it}));
 window.CL_DEFAULT_LIST=CL_DEFAULT;
 
 // Normalize text for comparison — strip special quotes, trim, lowercase
-function norm(s){return(s||'').trim().toLowerCase().replace(/[\u05F3\u05F4\u0022\u0027\u201C\u201D\u2018\u2019״׳"""'']/g,'').replace(/\s+/g,' ');}
+function norm(s){return(s||'').trim().toLowerCase().replace(/[׳״"'“”‘’״׳"""'']/g,'').replace(/[ךכ]/g,'כ').replace(/[םמ]/g,'מ').replace(/[ןנ]/g,'נ').replace(/[ףפ]/g,'פ').replace(/[ץצ]/g,'צ').replace(/\s+/g,' ');}
 
 // Pre-built Set of default item keys for O(1) custom item detection
 // Key format: "main|group|phase|sub" — built once, never changes
@@ -1941,6 +1941,38 @@ function migrateDefaultList(){
   }
 }
 
+// ── LEGACY RENAME MIGRATION ──
+// One-time pass: fix items whose group or main text used old abbreviations
+// that were later renamed to full words (e.g. מז״א→מזמא, טרום המראה→כללי).
+// After this runs, backfillDefIds can assign defIds normally.
+function migrateRenamedItems(){
+  const RENAMES=[
+    {oldMain:'אמת נתונימ באפליקציית מזא',  newMain:'אמת נתונים באפליקציית מזמא', newGroup:'בדיקת מזמא'},
+    {oldMain:'דאבל צק מזא',                 newMain:"דאבל צ'ק מזמא",             newGroup:'כללי'},
+    {oldMain:'בדוק taf בשדה המראה ושדה נחיתה',oldGroup:'בדיקת מזא',newGroup:'בדיקת מזמא'},
+    {oldMain:'בדוק מפות רוח בנתיב',          oldGroup:'בדיקת מזא', newGroup:'בדיקת מזמא'},
+    {oldMain:'בדוק מפות sig',                oldGroup:'בדיקת מזא', newGroup:'בדיקת מזמא'},
+    {oldMain:'עדכונ בקרה בהמראה (אמ נדרש)', oldGroup:'טרומ המראה',newGroup:'כללי'},
+    {oldMain:'בדיקה חוזרת ל notams בשדות ובנתיבימ',oldGroup:'טרומ המראה',newGroup:'כללי'},
+  ];
+  let changed=false;
+  const p=getProfiles();
+  p.profiles.forEach(prof=>{
+    (prof.list||[]).forEach(it=>{
+      if(it.defId)return;
+      const nm=norm(it.main);const ng=norm(it.group);
+      RENAMES.forEach(r=>{
+        if(r.oldMain&&nm!==r.oldMain)return;
+        if(r.oldGroup&&ng!==r.oldGroup)return;
+        if(r.newMain)it.main=r.newMain;
+        if(r.newGroup)it.group=r.newGroup;
+        changed=true;
+      });
+    });
+  });
+  if(changed)saveProfiles();
+}
+
 // ── SILENT DEFAULT-LIST SYNC ──
 // One-time backfill: attach defId to existing pilot items that exactly match
 // a current default item by content, so they enter the sync system as
@@ -1996,11 +2028,21 @@ function syncDefaultList(){
       const identical=norm(it.sub||'')===norm(def.sub||'')&&norm(it.url||'')===norm(def.url||'')&&norm(it.urlLabel||'')===norm(def.urlLabel||'');
       it.defId=def.defId;it.touched=!identical;changed=true;
     });
+    // Deduplicate — if same defId appears twice (e.g. old no-defId item + _isNew append), keep touched one or first
+    const seenDefIds=new Set();
+    for(let i=list.length-1;i>=0;i--){
+      const it=list[i];
+      if(!it.defId)continue;
+      if(seenDefIds.has(it.defId)){list.splice(i,1);changed=true;}
+      else seenDefIds.add(it.defId);
+    }
     const seenIds=new Set();
     const seenKeys=new Set();
+    const seenMains=new Set();
     list.forEach(it=>{
       if(it.defId)seenIds.add(it.defId);
       seenKeys.add(`${norm(it.main)}|${norm(it.group)}|${norm(it.phase)}`);
+      seenMains.add(norm(it.main));
     });
     for(let i=list.length-1;i>=0;i--){
       const it=list[i];
@@ -2017,7 +2059,7 @@ function syncDefaultList(){
     }
     CL_DEFAULT.forEach(def=>{
       const key=`${norm(def.main)}|${norm(def.group)}|${norm(def.phase)}`;
-      if(!seenIds.has(def.defId)&&!seenKeys.has(key)){
+      if(!seenIds.has(def.defId)&&!seenKeys.has(key)&&!seenMains.has(norm(def.main))){
         list.push({...def,touched:false,_isNew:true});
         changed=true;
       }
@@ -3447,7 +3489,7 @@ function showScreen(id){
   document.getElementById(id).classList.add('active');
 }
 document.addEventListener('DOMContentLoaded',()=>{
-  loadSettings();loadList();patchDefaultLinks();migrateDefaultList();backfillDefIds();syncDefaultList();loadList();loadState();loadReg();loadRoute();drawRings();initSplash();
+  loadSettings();loadList();patchDefaultLinks();migrateDefaultList();migrateRenamedItems();backfillDefIds();syncDefaultList();loadList();loadState();loadReg();loadRoute();drawRings();initSplash();
   if(FEATURES.WHATS_NEW)checkWhatsNew();
   const profileSelectListEl=document.getElementById('profileSelectList');
   if(profileSelectListEl)profileSelectListEl.addEventListener('scroll',updateProfileSelectFade);
