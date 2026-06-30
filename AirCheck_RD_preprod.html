@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <!-- ═══════════════════════════════════════
-     AirCheck+ · v2.09.089 · built by eligrt
+     AirCheck+ · v2.09.096 · built by eligrt
      ═══════════════════════════════════════ -->
 <html lang="he" dir="rtl">
 <head>
@@ -385,15 +385,14 @@ html,body{height:100%;background:#1a1a1c;font-family:var(--font-ui);color:var(--
 .summary-group-hdr{font-size:11px;color:var(--ink-muted);font-weight:600;padding:4px 0 2px;letter-spacing:.03em;border-bottom:1px dotted rgba(200,160,74,.2);margin-bottom:2px;}
 .summary-item{display:flex;align-items:center;gap:8px;padding:3px 0 3px 4px;font-size:12px;}
 .summary-btns{flex-shrink:0;padding:10px 14px 14px;display:flex;flex-direction:row;gap:8px;border-top:1px dashed var(--gold-lite);background:var(--paper-hi);}
-.share-split{width:100%;border-radius:var(--r);border:1px solid var(--gold-lite);background:var(--paper-hi);overflow:hidden;cursor:pointer;}
+.share-split{width:100%;border-radius:var(--r);border:1px solid var(--gold-lite);background:var(--paper-hi);overflow:hidden;}
 .share-split-top{display:flex;align-items:stretch;}
-.share-split-main{flex:1;padding:12px;display:flex;align-items:center;gap:8px;font-size:13px;font-weight:600;color:var(--ink-muted);border-left:1px solid var(--gold-lite);user-select:none;}
-.share-split-change{flex-shrink:0;padding:12px 13px;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:600;color:var(--ink-faint);background:var(--paper-hi);user-select:none;}
-.share-mode-tag{color:var(--ink);font-size:13px;font-weight:700;border-bottom:2px solid var(--ink);padding-bottom:1px;white-space:nowrap;}
+.share-split-main{flex:1;padding:14px;display:flex;align-items:center;justify-content:center;gap:8px;font-size:16px;font-weight:700;color:var(--ink-muted);user-select:none;cursor:pointer;}
+.share-mode-tag{color:var(--ink);font-size:13px;font-weight:700;font-family:var(--font-ui);border-bottom:2px solid var(--ink);padding-bottom:1px;white-space:nowrap;cursor:pointer;}
 .share-picker-inner{overflow:hidden;transition:max-height .28s ease,opacity .2s ease;max-height:0;opacity:0;}
 .share-picker-inner.open{max-height:60px;opacity:1;}
-.share-picker-label{padding:6px 12px 5px;font-size:9px;font-family:var(--font-mono);letter-spacing:.14em;color:var(--ink-faint);text-transform:uppercase;border-top:1px solid var(--gold-lite);}
-.share-picker-opts{display:flex;align-items:center;padding:0 12px 10px;gap:0;}
+.share-picker-label{padding:6px 12px 5px;font-size:9px;font-family:var(--font-mono);letter-spacing:.14em;color:var(--ink-faint);text-transform:uppercase;border-top:1px solid var(--gold-lite);text-align:center;}
+.share-picker-opts{display:flex;align-items:center;justify-content:center;padding:0 12px 10px;gap:0;}
 .share-opt-btn{font-size:13px;font-weight:600;color:var(--ink-muted);cursor:pointer;white-space:nowrap;border-bottom:1px dotted var(--ink-faint);padding-bottom:1px;background:none;border-top:none;border-left:none;border-right:none;font-family:var(--font-ui);}
 .share-opt-btn.cur{color:var(--ink);font-weight:700;border-bottom:2px solid var(--ink);padding-bottom:0;}
 .share-opt-sep{color:var(--gold-lite);margin:0 10px;font-size:13px;}
@@ -595,7 +594,6 @@ html,body{height:100%;background:#1a1a1c;font-family:var(--font-ui);color:var(--
 
 .settings-row-sub{font-size:10px;color:var(--ink-muted);margin-top:2px;font-family:var(--font-mono);letter-spacing:.04em;}
 
-#shFrom::placeholder,#shVia::placeholder,#shTo::placeholder{font-family:var(--font-ui);font-size:12px;font-weight:400;color:var(--ink-faint);}
 </style>
 </head>
 <body>
@@ -658,7 +656,7 @@ html,body{height:100%;background:#1a1a1c;font-family:var(--font-ui);color:var(--
     <div class="splash-footer-wrap">
       <div class="footer-strip" style="display:flex;align-items:center;justify-content:space-between;padding:5px 14px 8px;">
         <span class="footer-refresh" onclick="reloadApp()">רענון</span>
-        <span id="versionTap" style="cursor:default;">AirCheck+ · v2.09.089 · built by eligrt</span>
+        <span id="versionTap" style="cursor:default;">AirCheck+ · v2.09.096 · built by eligrt</span>
         <span style="width:40px;"></span>
       </div>
     </div>
@@ -778,7 +776,7 @@ html,body{height:100%;background:#1a1a1c;font-family:var(--font-ui);color:var(--
     <div class="tree-panel" id="treePanel"></div>
     <div class="footer-strip" style="display:flex;align-items:center;justify-content:space-between;padding:5px 14px 8px;">
       <span class="footer-refresh" onclick="reloadApp()">רענון</span>
-      <span id="versionTap" style="cursor:default;">AirCheck+ · v2.09.089 · built by eligrt</span>
+      <span id="versionTap" style="cursor:default;">AirCheck+ · v2.09.096 · built by eligrt</span>
       <span style="width:40px;"></span>
     </div>
   </div>
@@ -846,10 +844,9 @@ html,body{height:100%;background:#1a1a1c;font-family:var(--font-ui);color:var(--
       <div class="share-split" id="shareSplitBtn">
         <div class="share-split-top">
           <div class="share-split-main" onclick="doShareDirect()">
-            <i class="ti ti-share" style="font-size:13px;flex-shrink:0;"></i>
-            שתף <span class="share-mode-tag" id="shareModeTag">דיווח נחיתה</span>
+            <i class="ti ti-share" style="font-size:16px;flex-shrink:0;"></i>
+            שתף <span class="share-mode-tag" id="shareModeTag" onclick="event.stopPropagation();toggleSharePicker()">דיווח נחיתה</span>
           </div>
-          <div class="share-split-change" id="shareChangeBtn" onclick="toggleSharePicker()">שנה ›</div>
         </div>
         <div class="share-picker-inner" id="sharePickerInner">
           <div class="share-picker-label">בחר מה לשתף</div>
@@ -866,7 +863,7 @@ html,body{height:100%;background:#1a1a1c;font-family:var(--font-ui);color:var(--
 
     <div class="footer-strip" style="display:flex;align-items:center;justify-content:space-between;padding:5px 14px 8px;">
       <span style="width:40px;"></span>
-      <span id="versionTap" style="cursor:default;">AirCheck+ · v2.09.089 · built by eligrt</span>
+      <span id="versionTap" style="cursor:default;">AirCheck+ · v2.09.096 · built by eligrt</span>
       <span style="width:40px;"></span>
     </div>
   </div>
@@ -980,7 +977,7 @@ html,body{height:100%;background:#1a1a1c;font-family:var(--font-ui);color:var(--
     </div>
     <div class="footer-strip" style="display:flex;align-items:center;justify-content:space-between;padding:5px 14px 8px;">
       <span class="footer-refresh" onclick="reloadApp()">רענון</span>
-      <span id="versionTap" style="cursor:default;">AirCheck+ · v2.09.089 · built by eligrt</span>
+      <span id="versionTap" style="cursor:default;">AirCheck+ · v2.09.096 · built by eligrt</span>
       <span style="width:40px;"></span>
     </div>
   </div>
@@ -1004,7 +1001,7 @@ html,body{height:100%;background:#1a1a1c;font-family:var(--font-ui);color:var(--
     <div class="editor-list" id="editorList"></div>
     <div class="footer-strip" style="display:flex;align-items:center;justify-content:space-between;padding:5px 14px 8px;">
       <span class="footer-refresh" onclick="reloadApp()">רענון</span>
-      <span id="versionTap" style="cursor:default;">AirCheck+ · v2.09.089 · built by eligrt</span>
+      <span id="versionTap" style="cursor:default;">AirCheck+ · v2.09.096 · built by eligrt</span>
       <span style="width:40px;"></span>
     </div>
   </div>
@@ -1525,19 +1522,14 @@ function showPhaseOverlay(donePhaseName,nextPhaseName,skippedCount){
 let _shareMode='lean';
 function toggleSharePicker(){
   const picker=document.getElementById('sharePickerInner');
-  const btn=document.getElementById('shareChangeBtn');
-  const isOpen=picker.classList.contains('open');
-  if(isOpen){picker.classList.remove('open');btn.textContent='שנה ›';}
-  else{picker.classList.add('open');btn.textContent='סגור ↑';}
+  picker.classList.toggle('open');
 }
 function pickShareMode(mode,label,el){
   _shareMode=mode;
   document.getElementById('shareModeTag').textContent=label;
   document.querySelectorAll('.share-opt-btn').forEach(b=>b.classList.remove('cur'));
   el.classList.add('cur');
-  const picker=document.getElementById('sharePickerInner');
-  picker.classList.remove('open');
-  document.getElementById('shareChangeBtn').textContent='שנה ›';
+  document.getElementById('sharePickerInner').classList.remove('open');
 }
 function doShareDirect(){
   if(_shareMode==='lean') doShareLean();
@@ -1550,12 +1542,10 @@ function doShareLean(){
   const now=new Date();
   const utcStr=String(now.getUTCHours()).padStart(2,'0')+':'+String(now.getUTCMinutes()).padStart(2,'0');
   const ver=(document.getElementById('versionTap')?.textContent||'').replace('AirCheck+ · ','').replace(' · built by eligrt','');
-  const reg=settings&&settings.tail?('4X-'+settings.tail):'';
-  const now2=new Date();
-  const ltStr=String(now2.getHours()).padStart(2,'0')+':'+String(now2.getMinutes()).padStart(2,'0');
+  const ltStr=String(now.getHours()).padStart(2,'0')+':'+String(now.getMinutes()).padStart(2,'0');
   let lines=[];
   lines.push('📤 *AirCheck+ | דיווח נחיתה*');
-  lines.push('🕐 UTC '+utcStr+' (LT '+ltStr+')');
+  lines.push('🕐 LT '+ltStr+' (UTC '+utcStr+')');
   lines.push('────────────────────');
   leanItems.forEach(it=>{
     const i=CL.indexOf(it);
@@ -1564,23 +1554,16 @@ function doShareLean(){
   lines.push('────────────────────');
   lines.push('Generated by AirCheck+');
   lines.push('Personal Flight Checklist · '+ver);
+  lines.push('Built by eligrt');
   const text=lines.join('\n');
   if(navigator.share){navigator.share({title:'AirCheck+ | דיווח נחיתה',text}).catch(()=>showShareFallback(text));}
   else{showShareFallback(text);}
 }
 function doShareLastPhase(){
-  const lastPhaseIdx=PHASES.length-1;
-  openShareModal(lastPhaseIdx);
+  doShare(PHASES.length-1,true);
 }
-function showShareFallback(text){
-  const ta=document.getElementById('shareFallbackText');
-  if(!ta)return;
-  ta.value=text;ta.style.display='block';
-  document.getElementById('shareModal').style.display='flex';
-  const btn=document.getElementById('shareNowBtn');
-  if(btn){btn.innerHTML='📋 העתק';btn.onclick=()=>{ta.select();try{document.execCommand('copy');}catch(e){}btn.innerHTML='✓ הועתק!';setTimeout(()=>{btn.innerHTML='<i class="ti ti-share"></i> שתף עכשיו';btn.onclick=doShare;},2500);};}
-}
-function openShareModalPhase(){openShareModal(_phaseOverlayIdx);}
+function showShareFallback(text){if(navigator.clipboard){navigator.clipboard.writeText(text).catch(()=>{});}showToast('הטקסט הועתק ללוח');}
+function openShareModalPhase(){doShare(_phaseOverlayIdx);}
 function dismissPhaseOverlay(){document.getElementById('phaseOverlay').classList.remove('open');}
 function continuePhaseNow(){
   dismissPhaseOverlay();
@@ -1687,37 +1670,13 @@ function closeModal(){
   document.querySelector('.modal-box').className='modal-box';
 }
 // ── SHARE ──
-function openShareModal(upToPhaseIdx){
-  const el=document.getElementById('shareModal');
-  if(!el)return;
-  document.getElementById('shFrom').value=settings.homeBase||'';
-  document.getElementById('shVia').value='';
-  document.getElementById('shTo').value='';
-  document.getElementById('shReg').value=settings.tail||'';
-  const ta=document.getElementById('shareFallbackText');
-  if(ta)ta.style.display='none';
-  const btn=document.getElementById('shareNowBtn');
-  const scope=(typeof upToPhaseIdx==='number'&&upToPhaseIdx>=0)?upToPhaseIdx:null;
-  if(btn){btn.innerHTML='<i class="ti ti-share" style="font-size:13px;"></i> שתף עכשיו';btn.style.background='var(--gold)';btn.style.color='var(--asphalt)';btn.onclick=()=>doShare(scope);}
-  el.style.display='flex';
-}
-function closeShareModal(){
-  const el=document.getElementById('shareModal');
-  if(el)el.style.display='none';
-}
-function doShare(upToPhaseIdx){
-  const from=document.getElementById('shFrom').value.trim().toUpperCase()||'[ לא הוזן ]';
-  const via=document.getElementById('shVia').value.trim().toUpperCase()||'[ לא הוזן ]';
-  const to=document.getElementById('shTo').value.trim().toUpperCase()||'[ לא הוזן ]';
-  const reg=document.getElementById('shReg').value.trim()||'[ לא הוזן ]';
-  const regStr=reg==='[ לא הוזן ]'?'[ לא הוזן ]':'4X-'+reg;
+
+function doShare(upToPhaseIdx,singlePhase){
   const now=new Date();
   const utcStr=String(now.getUTCHours()).padStart(2,'0')+':'+String(now.getUTCMinutes()).padStart(2,'0');
   const localStr=String(now.getHours()).padStart(2,'0')+':'+String(now.getMinutes()).padStart(2,'0');
-  const hasVia=document.getElementById('shVia').value.trim()!=='';
-  const route=hasVia?from+' › '+via+' › '+to:from+' › '+to;
   const isPhaseShare=typeof upToPhaseIdx==='number'&&upToPhaseIdx>=0;
-  const scopedPhases=isPhaseShare?PHASES.slice(0,upToPhaseIdx+1):PHASES;
+  const scopedPhases=isPhaseShare?(singlePhase?[PHASES[upToPhaseIdx]]:PHASES.slice(0,upToPhaseIdx+1)):PHASES;
   const scopedItems=scopedPhases.reduce((a,ph)=>a.concat(ph.groups.reduce((b,g)=>b.concat(g.items),[])),[] );
   const done=scopedItems.filter(j=>status[j]==='done').length;
   const skipped=scopedItems.filter(j=>status[j]==='skipped').length;
@@ -1726,17 +1685,16 @@ function doShare(upToPhaseIdx){
   let lines=[];
   const ver=(document.getElementById('versionTap')?.textContent||'').replace('AirCheck+ · ','').replace(' · built by eligrt','');
   lines.push((skipped>0?'🟡':'✅')+' *AirCheck+ | סיכום'+(isPhaseShare?' שלב':'טיסה')+'*');
-  lines.push('────────────────────');
-  lines.push('✈️ '+regStr+'  '+route);
   lines.push('🕐 LT '+localStr+' (UTC '+utcStr+')');
   lines.push('────────────────────');
   lines.push('📋 *'+phaseName+'* — '+done+'/'+total+(skipped>0?' ('+skipped+' דולגו)':''));
-  lines.push('');
   scopedPhases.forEach(ph=>{
     const phItems=ph.groups.reduce((a,g)=>a.concat(g.items),[]);
     const anyDone=phItems.some(j=>status[j]==='done'||status[j]==='skipped');
     if(!anyDone)return;
-    lines.push('*[ '+ph.name+' ]*');
+    // skip phase header if it's the only/last phase and already shown in summary line
+    const isLastScope=ph.name===phaseName;
+    if(!isLastScope)lines.push('*[ '+ph.name+' ]*');
     phItems.forEach(j=>{
       const s=status[j];
       if(s==='done')lines.push('✅ '+CL[j].main);
@@ -1749,30 +1707,10 @@ function doShare(upToPhaseIdx){
   lines.push('Personal Flight Checklist · '+ver);
   lines.push('Built by eligrt');
   const text=lines.join('\n');
-  const showFallback=()=>{
-    const ta=document.getElementById('shareFallbackText');
-    if(!ta)return;
-    ta.value=text;ta.style.display='block';
-    const btn=document.getElementById('shareNowBtn');
-    if(btn){
-      btn.innerHTML='📋 העתק';
-      btn.onclick=()=>{
-        ta.select();try{document.execCommand('copy');}catch(e){}
-        btn.innerHTML='✓ הועתק!';btn.style.background='var(--cleared)';btn.style.color='#fff';
-        setTimeout(()=>{
-          btn.innerHTML='<i class="ti ti-share" style="font-size:13px;"></i> שתף עכשיו';
-          btn.style.background='var(--gold)';btn.style.color='var(--asphalt)';btn.onclick=doShare;
-        },2500);
-      };
-    }
-    ta.focus();ta.select();
-  };
   if(navigator.share){
-    navigator.share({title:'AirCheck+ | סיכום טיסה',text})
-      .then(()=>{closeShareModal();})
-      .catch(()=>{showFallback();});
+    navigator.share({title:'AirCheck+ | סיכום טיסה',text}).catch(()=>showShareFallback(text));
   }else{
-    showFallback();
+    showShareFallback(text);
   }
 }
 function showEditorLegend(){
@@ -4166,71 +4104,6 @@ function splashSecondaryAction(){
 
 
 
-  <!-- Share modal -->
-  <div id="shareModal" style="display:none;position:absolute;inset:0;background:rgba(26,19,8,.82);z-index:600;align-items:center;justify-content:center;padding:20px;backdrop-filter:blur(3px);">
-    <div style="background:var(--paper-hi);border:2px solid var(--gold);border-top:4px solid var(--amber);border-radius:8px;padding:20px 18px 16px;width:100%;max-width:340px;text-align:right;box-shadow:0 20px 60px rgba(0,0,0,.4);">
-    <div style="font-size:16px;font-weight:700;color:var(--ink);margin-bottom:14px;display:flex;align-items:center;gap:8px;direction:rtl;">
-      <span style="width:26px;height:26px;border-radius:50%;background:rgba(245,158,11,.15);border:1px solid var(--amber);display:inline-flex;align-items:center;justify-content:center;font-size:13px;flex-shrink:0;"><i class="ti ti-share" aria-hidden="true"></i></span>
-      שיתוף סיכום טיסה
-    </div>
-    <div style="display:none;font-size:10px;color:var(--ink-muted);letter-spacing:.05em;margin-bottom:10px;">מסלול <span style="font-weight:400;color:var(--ink-faint);font-size:9px;">(אופציונלי · יופיע בשיתוף)</span></div>
-    <!-- vertical train-station route -->
-    <div style="display:none;flex-direction:column;direction:ltr;margin-bottom:6px;">
-      <!-- FROM -->
-      <div style="display:flex;flex-direction:row;align-items:stretch;gap:12px;direction:ltr;">
-      <div style="display:flex;flex-direction:column;align-items:center;flex-shrink:0;width:14px;">
-        <div style="width:2px;flex:1;min-height:14px;background:transparent;"></div>
-        <div style="width:12px;height:12px;border-radius:50%;flex-shrink:0;background:var(--gold);box-shadow:0 0 0 2px var(--paper-hi),0 0 0 3.5px var(--gold);"></div>
-        <div style="width:2px;flex:1;min-height:14px;background:rgba(200,160,74,.45);"></div>
-      </div>
-      <div style="flex:1;padding:2px 0 10px;">
-        <div style="font-size:9px;color:var(--ink-muted);letter-spacing:.15em;text-transform:uppercase;font-family:var(--font-mono);margin-bottom:3px;direction:ltr;text-align:left;">FROM</div>
-        <input id="shFrom" type="text" maxlength="6" autocomplete="off" autocorrect="off" spellcheck="false"
-        style="background:var(--paper);border:1px solid var(--gold);border-radius:3px;font-family:var(--font-mono);font-size:14px;font-weight:700;color:var(--ink);padding:6px 10px;outline:none;width:100%;box-sizing:border-box;direction:ltr;text-transform:uppercase;">
-      </div>
-      </div>
-      <!-- VIA -->
-      <div style="display:flex;flex-direction:row;align-items:stretch;gap:12px;direction:ltr;">
-      <div style="display:flex;flex-direction:column;align-items:center;flex-shrink:0;width:14px;">
-        <div style="width:2px;flex:1;min-height:14px;background:rgba(200,160,74,.45);"></div>
-        <div style="width:9px;height:9px;border-radius:50%;flex-shrink:0;background:var(--paper-hi);border:2px solid rgba(200,160,74,.55);"></div>
-        <div style="width:2px;flex:1;min-height:14px;background:rgba(200,160,74,.45);"></div>
-      </div>
-      <div style="flex:1;padding:2px 0 10px;">
-        <div style="font-size:9px;color:var(--ink-muted);letter-spacing:.15em;text-transform:uppercase;font-family:var(--font-mono);margin-bottom:3px;direction:ltr;text-align:left;">VIA</div>
-        <input id="shVia" type="text" maxlength="6" autocomplete="off" autocorrect="off" spellcheck="false"
-        style="background:var(--paper);border:1px solid rgba(200,160,74,.4);border-radius:3px;font-family:var(--font-mono);font-size:14px;font-weight:700;color:var(--ink);padding:6px 10px;outline:none;width:100%;box-sizing:border-box;direction:ltr;text-transform:uppercase;">
-      </div>
-      </div>
-      <!-- TO -->
-      <div style="display:flex;flex-direction:row;align-items:stretch;gap:12px;direction:ltr;">
-      <div style="display:flex;flex-direction:column;align-items:center;flex-shrink:0;width:14px;">
-        <div style="width:2px;flex:1;min-height:14px;background:rgba(200,160,74,.45);"></div>
-        <div style="width:12px;height:12px;border-radius:50%;flex-shrink:0;background:var(--gold);box-shadow:0 0 0 2px var(--paper-hi),0 0 0 3.5px var(--gold);"></div>
-        <div style="width:2px;flex:1;min-height:14px;background:transparent;"></div>
-      </div>
-      <div style="flex:1;padding:2px 0 0;">
-        <div style="font-size:9px;color:var(--ink-muted);letter-spacing:.15em;text-transform:uppercase;font-family:var(--font-mono);margin-bottom:3px;direction:ltr;text-align:left;">TO</div>
-        <input id="shTo" type="text" maxlength="6" autocomplete="off" autocorrect="off" spellcheck="false"
-        style="background:var(--paper);border:1px solid rgba(200,160,74,.4);border-radius:3px;font-family:var(--font-mono);font-size:14px;font-weight:700;color:var(--ink);padding:6px 10px;outline:none;width:100%;box-sizing:border-box;direction:ltr;text-transform:uppercase;">
-      </div>
-      </div>
-    </div>
-    <hr style="border:none;border-top:1px dashed rgba(200,160,74,.4);margin:8px 0 12px;">
-    <div style="font-size:10px;color:var(--ink-muted);letter-spacing:.05em;margin-bottom:6px;">זיהוי מטוס <span style="font-weight:400;color:var(--ink-faint);font-size:9px;">(אופציונלי)</span></div>
-    <div style="display:flex;align-items:center;margin-bottom:16px;direction:ltr;background:var(--paper);border:1px solid var(--gold);border-radius:3px;padding:0 10px;box-sizing:border-box;width:100%;">
-      <span style="font-family:var(--font-mono);font-size:14px;font-weight:700;color:var(--ink-faint);flex-shrink:0;padding:7px 8px 7px 0;margin-right:8px;">4X -</span>
-      <input id="shReg" type="text" maxlength="4" autocomplete="off" autocorrect="off" spellcheck="false" oninput="this.value=this.value.toUpperCase().replace(/[^A-Z0-9]/g,'')"
-      style="flex:1;background:transparent;border:none;outline:none;font-family:var(--font-mono);font-size:14px;font-weight:700;color:var(--ink);padding:7px 0;direction:ltr;min-width:0;">
-    </div>
-    <hr style="border:none;border-top:1px dashed rgba(200,160,74,.4);margin:0 0 14px;">
-    <textarea id="shareFallbackText" rows="6" readonly
-      style="display:none;width:100%;box-sizing:border-box;background:var(--paper);border:1px solid var(--gold);border-radius:3px;font-family:var(--font-mono);font-size:11px;color:var(--ink);padding:8px 10px;resize:none;outline:none;direction:ltr;text-align:left;margin-bottom:10px;"></textarea>
-    <div style="display:flex;gap:8px;">
-      <button onclick="closeShareModal()" class="btn btn-ghost" style="flex:.8;height:44px;font-size:13px;">ביטול</button>
-      <button id="shareNowBtn" onclick="doShare()" class="btn btn-ink" style="flex:1.2;height:44px;font-size:13px;background:var(--gold);color:var(--asphalt);border:none;"><i class="ti ti-share" style="font-size:13px;"></i> שתף עכשיו</button>
-    </div>
-    </div>
-  </div>
+
 </body>
 </html>
