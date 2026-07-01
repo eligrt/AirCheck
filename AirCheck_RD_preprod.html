@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <!-- ═══════════════════════════════════════
-     AirCheck+ · v2.09.102 · built by eligrt
+     AirCheck+ · v2.09.116 · built by eligrt
      ═══════════════════════════════════════ -->
 <html lang="he" dir="rtl">
 <head>
@@ -659,7 +659,7 @@ html,body{height:100%;background:#1a1a1c;font-family:var(--font-ui);color:var(--
     <div class="splash-footer-wrap">
       <div class="footer-strip" style="display:flex;align-items:center;justify-content:space-between;padding:5px 14px 8px;">
         <span class="footer-refresh" onclick="reloadApp()">רענון</span>
-        <span id="versionTap" style="cursor:default;">AirCheck+ · v2.09.102 · built by eligrt</span>
+        <span id="versionTap" style="cursor:default;">AirCheck+ · v2.09.116 · built by eligrt</span>
         <span style="width:40px;"></span>
       </div>
     </div>
@@ -779,7 +779,7 @@ html,body{height:100%;background:#1a1a1c;font-family:var(--font-ui);color:var(--
     <div class="tree-panel" id="treePanel"></div>
     <div class="footer-strip" style="display:flex;align-items:center;justify-content:space-between;padding:5px 14px 8px;">
       <span class="footer-refresh" onclick="reloadApp()">רענון</span>
-      <span id="versionTap" style="cursor:default;">AirCheck+ · v2.09.102 · built by eligrt</span>
+      <span id="versionTap" style="cursor:default;">AirCheck+ · v2.09.116 · built by eligrt</span>
       <span style="width:40px;"></span>
     </div>
   </div>
@@ -867,7 +867,7 @@ html,body{height:100%;background:#1a1a1c;font-family:var(--font-ui);color:var(--
 
     <div class="footer-strip" style="display:flex;align-items:center;justify-content:space-between;padding:5px 14px 8px;">
       <span style="width:40px;"></span>
-      <span id="versionTap" style="cursor:default;">AirCheck+ · v2.09.102 · built by eligrt</span>
+      <span id="versionTap" style="cursor:default;">AirCheck+ · v2.09.116 · built by eligrt</span>
       <span style="width:40px;"></span>
     </div>
   </div>
@@ -981,7 +981,7 @@ html,body{height:100%;background:#1a1a1c;font-family:var(--font-ui);color:var(--
     </div>
     <div class="footer-strip" style="display:flex;align-items:center;justify-content:space-between;padding:5px 14px 8px;">
       <span class="footer-refresh" onclick="reloadApp()">רענון</span>
-      <span id="versionTap" style="cursor:default;">AirCheck+ · v2.09.102 · built by eligrt</span>
+      <span id="versionTap" style="cursor:default;">AirCheck+ · v2.09.116 · built by eligrt</span>
       <span style="width:40px;"></span>
     </div>
   </div>
@@ -1005,7 +1005,7 @@ html,body{height:100%;background:#1a1a1c;font-family:var(--font-ui);color:var(--
     <div class="editor-list" id="editorList"></div>
     <div class="footer-strip" style="display:flex;align-items:center;justify-content:space-between;padding:5px 14px 8px;">
       <span class="footer-refresh" onclick="reloadApp()">רענון</span>
-      <span id="versionTap" style="cursor:default;">AirCheck+ · v2.09.102 · built by eligrt</span>
+      <span id="versionTap" style="cursor:default;">AirCheck+ · v2.09.116 · built by eligrt</span>
       <span style="width:40px;"></span>
     </div>
   </div>
@@ -3085,8 +3085,15 @@ function wnTab(t){
   ts.style.background=!isLinks?'var(--ink)':'transparent';
   ts.style.color=!isLinks?'var(--paper)':'var(--ink-muted)';
   ts.style.fontWeight=!isLinks?'700':'400';
-  document.getElementById('wnLinksPane').style.display=isLinks?'flex':'none';
-  document.getElementById('wnSharePane').style.display=isLinks?'none':'flex';
+  document.getElementById('wnLinksPane').style.display=isLinks?'block':'none';
+  document.getElementById('wnSharePane').style.display=isLinks?'none':'block';
+  var pills=document.getElementById('wnLinksPills');
+  if(pills)pills.style.visibility=isLinks?'visible':'hidden';
+  var bb=document.getElementById('wnBlackBox');
+  if(bb)bb.style.bottom=isLinks?'50px':'0';
+  var fr=document.getElementById('wnIframe');
+  if(fr){fr.style.marginTop=isLinks?'0':'0';fr.style.transform=isLinks?'scale(0.833)':'scale(0.74)';}
+  wnCheckScroll();
   var fr=document.getElementById('wnIframe');
   var loading=document.getElementById('wnLoading');
   if(fr){
@@ -4063,44 +4070,45 @@ function splashSecondaryAction(){
         <div style="font-size:15px;font-weight:700;color:var(--paper);line-height:1.3;">עדכון גרסה יצא מהתנור 🔥</div>
         <div style="font-size:11px;color:rgba(244,236,220,.6);margin-top:3px;">רגע לפני שמתחילים, בואו תכירו מה חדש</div>
       </div>
-      <div style="padding:8px 10px 6px;">
+      <div style="padding:6px 10px 6px;">
         <div style="display:flex;background:rgba(0,0,0,.08);border-radius:8px;padding:3px;gap:3px;">
           <div id="wnTabLinks" onclick="wnTab('links')" style="flex:1;text-align:center;padding:6px 4px;border-radius:6px;background:var(--ink);color:var(--paper);font-size:12px;font-weight:700;cursor:pointer;font-family:var(--font-ui);">🔗 קישורים</div>
           <div id="wnTabShare" onclick="wnTab('share')" style="flex:1;text-align:center;padding:6px 4px;border-radius:6px;color:var(--ink-muted);font-size:12px;cursor:pointer;font-family:var(--font-ui);">📋 שיתוף</div>
         </div>
       </div>
-      <div style="padding:0 10px 0;">
-        <div style="width:100%;height:330px;border-radius:6px;overflow:hidden;border:1px solid var(--paper-edge);background:#1a1a1c;display:flex;align-items:flex-start;justify-content:center;position:relative;">
-          <div id="wnLoading" style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;pointer-events:none;">
+      <div style="padding:0 10px 6px;position:relative;">
+        <!-- invisible spacer: sizes container to the taller content -->
+        <div aria-hidden="true" style="visibility:hidden;pointer-events:none;background:var(--paper-hi);border:1px solid var(--paper-edge);border-radius:6px;padding:7px 10px;display:flex;align-items:flex-start;gap:8px;">
+          <i class="ti ti-brand-whatsapp" style="font-size:13px;flex-shrink:0;margin-top:1px;"></i>
+          <div style="font-size:11px;line-height:1.5;"><strong>שיתוף סיכום טיסה בקליק</strong><br>למדריך, לשותפים ולכל מי שרוצה לדעת שהכל סגור, מתודלק, מכוסה ומוכן פיקס לטיסה הבאה. 🙃</div>
+        </div>
+        <div id="wnLinksPane" style="position:absolute;inset:0 10px 6px;display:block;">
+          <div style="background:var(--paper-hi);border:1px solid var(--paper-edge);border-radius:6px;padding:7px 10px;display:flex;align-items:flex-start;gap:8px;height:100%;box-sizing:border-box;">
+            <i class="ti ti-settings" style="font-size:13px;color:var(--gold);flex-shrink:0;margin-top:1px;" aria-hidden="true"></i>
+            <div style="font-size:11px;color:var(--ink-muted);line-height:1.5;"><strong style="color:var(--ink);">רוצה לקשר פריט נוסף?</strong><br>בעורך הצ'קליסט (תחת תפריט "הגדרות") ניתן להוסיף קישור חיצוני לכל פריט שתבחר.</div>
+          </div>
+        </div>
+        <div id="wnSharePane" style="position:absolute;inset:0 10px 6px;display:none;">
+          <div style="background:var(--paper-hi);border:1px solid var(--paper-edge);border-radius:6px;padding:7px 10px;display:flex;align-items:flex-start;gap:8px;height:100%;box-sizing:border-box;">
+            <i class="ti ti-brand-whatsapp" style="font-size:13px;color:#25d366;flex-shrink:0;margin-top:1px;" aria-hidden="true"></i>
+            <div style="font-size:11px;color:var(--ink-muted);line-height:1.5;"><strong style="color:var(--ink);">שיתוף סיכום טיסה בקליק</strong><br>למדריך, לשותפים ולכל מי שרוצה לדעת שהכל סגור, מתודלק, מכוסה ומוכן פיקס לטיסה הבאה. 🙃</div>
+          </div>
+        </div>
+      </div>
+      <div style="padding:0 10px 0;position:relative;height:360px;">
+        <div id="wnBlackBox" style="position:absolute;top:0;left:10px;right:10px;bottom:50px;border-radius:6px;overflow:hidden;border:1px solid var(--paper-edge);background:#1a1a1c;display:flex;align-items:flex-start;justify-content:center;">
+          <div id="wnLoading" style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;pointer-events:none;z-index:2;">
             <span style="font-family:var(--font-mono);font-size:11px;color:rgba(200,160,74,.6);letter-spacing:.1em;">טוען<span id="wnDots"></span></span>
           </div>
           <iframe id="wnIframe" src="https://eligrt.github.io/AirCheck/links-and-share-animation.html?link=notam" scrolling="no" style="width:240px;height:489px;border:none;display:block;flex-shrink:0;opacity:0;transition:opacity .3s;transform:scale(0.833);transform-origin:top center;" onload="this.style.opacity=1;document.getElementById('wnLoading').style.display='none';"></iframe>
         </div>
-      </div>
-      <div style="position:relative;height:120px;overflow:hidden;">
-        <div id="wnLinksPane" style="position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:0 10px;gap:6px;">
-          <div style="font-size:11px;line-height:1.9;text-align:center;">
-            <span id="wnPill_notam" onclick="wnPill('notam',this)" style="color:var(--gold);text-decoration:underline;text-decoration-style:dotted;cursor:pointer;font-weight:700;">NOTAM LL</span><span style="color:var(--paper-edge);margin:0 4px;">·</span><span id="wnPill_metar" onclick="wnPill('metar',this)" style="color:var(--ink-muted);text-decoration:underline;text-decoration-style:dotted;cursor:pointer;">METAR/TAF</span><span style="color:var(--paper-edge);margin:0 4px;">·</span><span id="wnPill_fpl" onclick="wnPill('fpl',this)" style="color:var(--ink-muted);text-decoration:underline;text-decoration-style:dotted;cursor:pointer;">תוכנית טיסה</span><br>
-            <span id="wnPill_airbalance" onclick="wnPill('airbalance',this)" style="color:var(--ink-muted);text-decoration:underline;text-decoration-style:dotted;cursor:pointer;">משקל ואיזון</span><span style="color:var(--paper-edge);margin:0 4px;">·</span><span id="wnPill_briefing" onclick="wnPill('briefing',this)" style="color:var(--ink-muted);text-decoration:underline;text-decoration-style:dotted;cursor:pointer;">תדרוך נוסע</span>
-          </div>
-          <div id="wnNoteLinks" style="width:100%;">
-            <div style="background:var(--paper-hi);border:1px solid var(--paper-edge);border-radius:6px;padding:7px 10px;display:flex;align-items:flex-start;gap:8px;">
-              <i class="ti ti-settings" style="font-size:13px;color:var(--gold);flex-shrink:0;margin-top:1px;" aria-hidden="true"></i>
-              <div style="font-size:11px;color:var(--ink-muted);line-height:1.5;"><strong style="color:var(--ink);">רוצה לקשר פריט נוסף?</strong><br>בעורך הצ'קליסט (תחת תפריט "הגדרות") ניתן להוסיף קישור חיצוני לכל פריט שתבחר.</div>
-            </div>
-          </div>
-        </div>
-        <div id="wnSharePane" style="position:absolute;inset:0;display:none;align-items:center;justify-content:center;padding:0 10px;">
-          <div id="wnNoteShare" style="width:100%;">
-            <div style="background:var(--paper-hi);border:1px solid var(--paper-edge);border-radius:6px;padding:7px 10px;display:flex;align-items:flex-start;gap:8px;">
-              <i class="ti ti-brand-whatsapp" style="font-size:13px;color:#25d366;flex-shrink:0;margin-top:1px;" aria-hidden="true"></i>
-              <div style="font-size:11px;color:var(--ink-muted);line-height:1.5;"><strong style="color:var(--ink);">שיתוף סיכום טיסה בקליק</strong><br>למדריך, לשותפים, ולכל מי שרוצה לדעת שהכל סגור, נבדק, חונה, מכוסה, כיסוי הפיטו במקום והקוקפיט Cold &amp; Dark 🙃</div>
-            </div>
-          </div>
+        <div id="wnLinksPills" style="position:absolute;bottom:0;left:10px;right:10px;height:50px;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;font-size:11px;line-height:2;">
+          <div><span id="wnPill_notam" onclick="wnPill('notam',this)" style="color:var(--gold);text-decoration:underline;text-decoration-style:dotted;cursor:pointer;font-weight:700;">NOTAM LL</span><span style="color:var(--paper-edge);margin:0 4px;">·</span><span id="wnPill_metar" onclick="wnPill('metar',this)" style="color:var(--ink-muted);text-decoration:underline;text-decoration-style:dotted;cursor:pointer;">METAR/TAF</span><span style="color:var(--paper-edge);margin:0 4px;">·</span><span id="wnPill_fpl" onclick="wnPill('fpl',this)" style="color:var(--ink-muted);text-decoration:underline;text-decoration-style:dotted;cursor:pointer;">תוכנית טיסה</span></div>
+          <div><span id="wnPill_airbalance" onclick="wnPill('airbalance',this)" style="color:var(--ink-muted);text-decoration:underline;text-decoration-style:dotted;cursor:pointer;">משקל ואיזון</span><span style="color:var(--paper-edge);margin:0 4px;">·</span><span id="wnPill_briefing" onclick="wnPill('briefing',this)" style="color:var(--ink-muted);text-decoration:underline;text-decoration-style:dotted;cursor:pointer;">תדרוך נוסע</span></div>
         </div>
       </div>
       <div id="wnScrollFade" style="display:none;position:sticky;bottom:0;height:40px;background:linear-gradient(transparent,var(--paper));pointer-events:none;"></div>
-      <div style="padding:6px 10px 14px;">
+      <div style="padding:6px 10px 10px;">
         <div style="display:flex;gap:8px;">
           <button onclick="snoozeWhatsNew()" style="flex:1;padding:10px;background:transparent;border:1px dashed var(--gold-lite);border-radius:6px;color:var(--ink-faint);font-size:11px;cursor:pointer;font-family:var(--font-ui);">תזכיר לי בפעם הבאה</button>
           <button onclick="closeWhatsNew()" style="flex:2;padding:10px;background:var(--ink);border:none;border-radius:6px;color:var(--paper);font-size:14px;font-weight:700;cursor:pointer;font-family:var(--font-ui);">הבנתי ›</button>
