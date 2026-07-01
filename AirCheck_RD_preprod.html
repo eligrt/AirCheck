@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <!-- ═══════════════════════════════════════
-     AirCheck+ · v2.09.098 · built by eligrt
+     AirCheck+ · v2.09.102 · built by eligrt
      ═══════════════════════════════════════ -->
 <html lang="he" dir="rtl">
 <head>
@@ -148,7 +148,7 @@ html,body{height:100%;background:#1a1a1c;font-family:var(--font-ui);color:var(--
 .runway-seg-name.cur{color:var(--ink);font-weight:700;}
 .runway-track{height:18px;background:var(--asphalt);border-radius:2px;position:relative;overflow:hidden;border:1px solid #14110b;}
 .runway-track.cur{box-shadow:0 0 0 2px var(--gold);}
-.runway-fill{position:absolute;top:0;right:0;bottom:0;border-radius:2px;transition:width .4s ease;}
+.runway-fill{position:absolute;top:0;right:0;bottom:0;transition:width .4s ease;}
 .runway-dashes{position:absolute;inset:0;display:flex;align-items:center;justify-content:space-around;pointer-events:none;}
 .runway-dash{width:6px;height:1.5px;background:var(--paper);opacity:.5;}
 .runway-seg-count{font-size:9px;color:var(--ink);text-align:center;font-family:var(--font-mono);letter-spacing:.05em;direction:ltr;font-weight:600;}
@@ -659,7 +659,7 @@ html,body{height:100%;background:#1a1a1c;font-family:var(--font-ui);color:var(--
     <div class="splash-footer-wrap">
       <div class="footer-strip" style="display:flex;align-items:center;justify-content:space-between;padding:5px 14px 8px;">
         <span class="footer-refresh" onclick="reloadApp()">רענון</span>
-        <span id="versionTap" style="cursor:default;">AirCheck+ · v2.09.098 · built by eligrt</span>
+        <span id="versionTap" style="cursor:default;">AirCheck+ · v2.09.102 · built by eligrt</span>
         <span style="width:40px;"></span>
       </div>
     </div>
@@ -779,7 +779,7 @@ html,body{height:100%;background:#1a1a1c;font-family:var(--font-ui);color:var(--
     <div class="tree-panel" id="treePanel"></div>
     <div class="footer-strip" style="display:flex;align-items:center;justify-content:space-between;padding:5px 14px 8px;">
       <span class="footer-refresh" onclick="reloadApp()">רענון</span>
-      <span id="versionTap" style="cursor:default;">AirCheck+ · v2.09.098 · built by eligrt</span>
+      <span id="versionTap" style="cursor:default;">AirCheck+ · v2.09.102 · built by eligrt</span>
       <span style="width:40px;"></span>
     </div>
   </div>
@@ -787,9 +787,9 @@ html,body{height:100%;background:#1a1a1c;font-family:var(--font-ui);color:var(--
   <div id="phaseOverlay">
     <div class="phase-overlay-box" id="phaseOverlayBox">
       <div style="background:var(--ink);margin:-24px -20px 16px;padding:14px 18px;text-align:center;border-radius:6px 6px 0 0;">
-        <div style="font-size:20px;margin-bottom:4px;">📋</div>
-        <div style="font-size:16px;font-weight:700;color:var(--paper);direction:rtl;">סוף השלב</div>
-        <div style="font-family:var(--font-mono);font-size:10px;color:rgba(244,236,220,.5);letter-spacing:.1em;margin-top:3px;">END OF PHASE</div>
+        <div style="font-size:20px;margin-bottom:4px;" id="phaseOverlayIcon">📋</div>
+        <div style="font-size:16px;font-weight:700;color:var(--paper);direction:rtl;" id="phaseOverlayHeader">סוף השלב</div>
+        <div style="font-family:var(--font-mono);font-size:10px;color:rgba(244,236,220,.5);letter-spacing:.1em;margin-top:3px;" id="phaseOverlaySubHeader">END OF PHASE</div>
       </div>
       <div id="phaseOverlayStampWrap" class="phase-overlay-stamp-wrap">
         <div class="phase-overlay-stamp">
@@ -803,7 +803,8 @@ html,body{height:100%;background:#1a1a1c;font-family:var(--font-ui);color:var(--
         תוכל לחזור אליהם בכל עת.
       </div>
       <div class="phase-overlay-next" id="phaseOverlayNext"></div>
-      <button class="btn btn-ink" style="margin-bottom:8px" onclick="continuePhaseNow()">המשך עכשיו ›</button>
+      <button id="phaseOverlayContinueBtn" class="btn btn-ink" style="margin-bottom:8px" onclick="continuePhaseNow()">המשך עכשיו ›</button>
+      <button id="phaseOverlaySummaryBtn" class="btn btn-ink" style="display:none;margin-bottom:8px" onclick="showSummaryMidFlight()">הצג סיכום טיסה ›</button>
       <button id="phaseOverlayGoBackBtn" class="btn btn-amber-outline" style="display:none;margin-bottom:8px;" onclick="phaseOverlayGoBack()">חזור לפריטים הפתוחים</button>
       <button class="btn btn-ghost" onclick="parkPhaseAndExit()">סגור - אמשיך מאוחר יותר</button>
       <div style="margin-top:10px;text-align:center;"><span onclick="openShareModalPhase()" style="font-size:13px;color:var(--asphalt);opacity:.6;cursor:pointer;display:inline-flex;align-items:center;gap:5px;border-bottom:1px dashed currentColor;padding-bottom:1px;"><i class="ti ti-share" style="font-size:13px;"></i> שתף סיכום שלב</span></div>
@@ -866,7 +867,7 @@ html,body{height:100%;background:#1a1a1c;font-family:var(--font-ui);color:var(--
 
     <div class="footer-strip" style="display:flex;align-items:center;justify-content:space-between;padding:5px 14px 8px;">
       <span style="width:40px;"></span>
-      <span id="versionTap" style="cursor:default;">AirCheck+ · v2.09.098 · built by eligrt</span>
+      <span id="versionTap" style="cursor:default;">AirCheck+ · v2.09.102 · built by eligrt</span>
       <span style="width:40px;"></span>
     </div>
   </div>
@@ -980,7 +981,7 @@ html,body{height:100%;background:#1a1a1c;font-family:var(--font-ui);color:var(--
     </div>
     <div class="footer-strip" style="display:flex;align-items:center;justify-content:space-between;padding:5px 14px 8px;">
       <span class="footer-refresh" onclick="reloadApp()">רענון</span>
-      <span id="versionTap" style="cursor:default;">AirCheck+ · v2.09.098 · built by eligrt</span>
+      <span id="versionTap" style="cursor:default;">AirCheck+ · v2.09.102 · built by eligrt</span>
       <span style="width:40px;"></span>
     </div>
   </div>
@@ -1004,7 +1005,7 @@ html,body{height:100%;background:#1a1a1c;font-family:var(--font-ui);color:var(--
     <div class="editor-list" id="editorList"></div>
     <div class="footer-strip" style="display:flex;align-items:center;justify-content:space-between;padding:5px 14px 8px;">
       <span class="footer-refresh" onclick="reloadApp()">רענון</span>
-      <span id="versionTap" style="cursor:default;">AirCheck+ · v2.09.098 · built by eligrt</span>
+      <span id="versionTap" style="cursor:default;">AirCheck+ · v2.09.102 · built by eligrt</span>
       <span style="width:40px;"></span>
     </div>
   </div>
@@ -1244,7 +1245,7 @@ function renderRunway(){
       if(color){
         const pip=document.createElement('div');
         const pct=100/pTot;
-        pip.style.cssText='position:absolute;top:0;bottom:0;border-radius:1px;pointer-events:none;transition:background .2s;';
+        pip.style.cssText='position:absolute;top:0;bottom:0;pointer-events:none;transition:background .2s;';
         pip.style.right=(idx*pct)+'%';
         pip.style.width=pct+'%';
         pip.style.background=color;
@@ -1402,30 +1403,26 @@ function goNext(){
     const nextIdx=current+1;
     const newPhase=CL[nextIdx].phase;
     if(newPhase!==prevPhase){
-      // Crossing a phase boundary — check for skipped items left behind in prevPhase
+      // Crossing a phase boundary — show phase overlay always
       const prevPhaseObj=PHASE_IDX[prevPhase];
-      if(prevPhaseObj){
-        const phAllItems=prevPhaseObj.groups.reduce((a,g)=>a.concat(g.items),[]);
-        const phSkippedCount=phAllItems.filter(j=>status[j]==='skipped').length;
-        if(phSkippedCount>0){
-          current=nextIdx;holdState='idle';resetRunwayBtn();
-          render(); // update runway bar first
-          showPhaseSkippedPopup(prevPhase,phSkippedCount);
-          return;
-        }
-      }
+      const phAllItems=prevPhaseObj?prevPhaseObj.groups.reduce((a,g)=>a.concat(g.items),[]):[];
+      const phSkippedCount=phAllItems.filter(j=>status[j]==='skipped').length;
+      current=nextIdx;holdState='idle';resetRunwayBtn();
+      render();
+      showPhaseOverlay(prevPhase,newPhase,phSkippedCount);
+      return;
     }
     current=nextIdx;holdState='idle';resetRunwayBtn();render();
   } else {
     // Last item — mark as skipped if not done
     if(status[current]!=='done')status[current]='skipped';
     const skippedCount=CL.filter((_,j)=>status[j]==='skipped').length;
-    if(skippedCount>0){
-      render(); // update runway bar first
-      showEndOfListPopup(skippedCount);
+    const lastPhase=CL[CL.length-1].phase;
+    render();
+    if(skippedCount===0){
+      showAllDoneOverlay(lastPhase);
     } else {
-      // All done, no skipped — re-show end of flight overlay
-      showAllDoneOverlay(CL[CL.length-1].phase);
+      showPhaseOverlay(lastPhase,null,skippedCount,true);
     }
   }
 }
@@ -1501,26 +1498,31 @@ function bulkConfirm(){
   holdState='idle';resetRunwayBtn();render();
 }
 let _phaseOverlayIdx=-1;
-function showPhaseOverlay(donePhaseName,nextPhaseName,skippedCount){
+function showPhaseOverlay(donePhaseName,nextPhaseName,skippedCount,isEndOfList){
   _phaseOverlayIdx=PHASES.findIndex(p=>p.name===donePhaseName);
   const hasSkipped=skippedCount>0;
   document.getElementById('phaseOverlayTitle').textContent=donePhaseName;
-  document.getElementById('phaseOverlayNext').textContent=nextPhaseName?'השלב הבא: '+nextPhaseName:'כל השלבים הושלמו!';
-  // stamp: show only when all clean
+  document.getElementById('phaseOverlayHeader').textContent=isEndOfList?'סוף הרשימה':'סוף השלב';
+  document.getElementById('phaseOverlaySubHeader').textContent=isEndOfList?'END OF LIST':'END OF PHASE';
+  document.getElementById('phaseOverlayNext').textContent=nextPhaseName?'השלב הבא: '+nextPhaseName:(isEndOfList?'':'כל השלבים הושלמו!');
   document.getElementById('phaseOverlayStampWrap').style.display=hasSkipped?'none':'flex';
   document.getElementById('phaseOverlayBox').style.borderColor=hasSkipped?'var(--gold)':'var(--cleared)';
-  // skipped note
   const note=document.getElementById('phaseOverlaySkippedNote');
   note.style.display=hasSkipped?'block':'none';
   if(hasSkipped){
     document.getElementById('phaseOverlaySkippedName').textContent=donePhaseName;
     document.getElementById('phaseOverlaySkippedCount').textContent=skippedCount;
   }
-  // go-back button
+  document.getElementById('phaseOverlayContinueBtn').style.display=isEndOfList?'none':'';
+  document.getElementById('phaseOverlaySummaryBtn').style.display=isEndOfList?'':'none';
   document.getElementById('phaseOverlayGoBackBtn').style.display=hasSkipped?'block':'none';
-  // store for go-back
   document.getElementById('phaseOverlay')._skipPhaseName=donePhaseName;
+  document.getElementById('phaseOverlay')._isEndOfList=!!isEndOfList;
   document.getElementById('phaseOverlay').classList.add('open');
+}
+function showSummaryMidFlight(){
+  dismissPhaseOverlay();
+  showAllDoneOverlay(CL[CL.length-1].phase,true);
 }
 let _shareMode='lean';
 function toggleSharePicker(){
@@ -1550,7 +1552,7 @@ function doShareLean(){
   const ver=(document.getElementById('versionTap')?.textContent||'').replace('AirCheck+ · ','').replace(' · built by eligrt','');
   const ltStr=String(now.getHours()).padStart(2,'0')+':'+String(now.getMinutes()).padStart(2,'0');
   let lines=[];
-  lines.push('📤 *AirCheck+ | דיווח נחיתה*');
+  lines.push('🛩️ *AirCheck+ | דיווח נחיתה*');
   lines.push('🕐 LT '+ltStr+' (UTC '+utcStr+')');
   lines.push('────────────────────');
   leanItems.forEach(it=>{
@@ -1569,7 +1571,7 @@ function doShareLastPhase(){
   doShare(PHASES.length-1,true);
 }
 function showShareFallback(text){if(navigator.clipboard){navigator.clipboard.writeText(text).catch(()=>{});}showToast('הטקסט הועתק ללוח');}
-function openShareModalPhase(){doShare(_phaseOverlayIdx);}
+function openShareModalPhase(){doShare(_phaseOverlayIdx,true);}
 function dismissPhaseOverlay(){document.getElementById('phaseOverlay').classList.remove('open');}
 function continuePhaseNow(){
   dismissPhaseOverlay();
@@ -1579,7 +1581,7 @@ function continuePhaseNow(){
   setTimeout(()=>{render();card.classList.remove('flipping');},450);
 }
 function parkPhaseAndExit(){dismissPhaseOverlay();saveState();showScreen('screenSplash');initSplash();}
-function showAllDoneOverlay(lastPhase){
+function showAllDoneOverlay(lastPhase,noCount){
   const done=Object.values(status).filter(s=>s==='done').length;
   const skipped=Object.values(status).filter(s=>s==='skipped').length;
   const now=new Date();
@@ -1622,8 +1624,8 @@ function showAllDoneOverlay(lastPhase){
       });
     });
   });
-  // Increment completed counter — only once per flight
-  if(!window._flightCounted){
+  // Increment completed counter — only once per flight, not when called mid-flight for share
+  if(!noCount&&!window._flightCounted){
     window._flightCounted=true;
     const _newCc=parseInt(localStorage.getItem('aircheck_completed_count')||'0')+1;
     localStorage.setItem('aircheck_completed_count',_newCc);
