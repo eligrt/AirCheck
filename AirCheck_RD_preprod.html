@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <!-- ═══════════════════════════════════════
-     AirCheck+ · v2.09.121 · built by eligrt
+     AirCheck+ · v2.09.122 · built by eligrt
      ═══════════════════════════════════════ -->
 <html lang="he" dir="rtl">
 <head>
@@ -659,7 +659,7 @@ html,body{height:100%;background:#1a1a1c;font-family:var(--font-ui);color:var(--
     <div class="splash-footer-wrap">
       <div class="footer-strip" style="display:flex;align-items:center;justify-content:space-between;padding:5px 14px 8px;">
         <span class="footer-refresh" onclick="reloadApp()">רענון</span>
-        <span id="versionTap" style="cursor:default;">AirCheck+ · v2.09.121 · built by eligrt</span>
+        <span id="versionTap" style="cursor:default;">AirCheck+ · v2.09.122 · built by eligrt</span>
         <span style="width:40px;"></span>
       </div>
     </div>
@@ -779,7 +779,7 @@ html,body{height:100%;background:#1a1a1c;font-family:var(--font-ui);color:var(--
     <div class="tree-panel" id="treePanel"></div>
     <div class="footer-strip" style="display:flex;align-items:center;justify-content:space-between;padding:5px 14px 8px;">
       <span class="footer-refresh" onclick="reloadApp()">רענון</span>
-      <span id="versionTap" style="cursor:default;">AirCheck+ · v2.09.121 · built by eligrt</span>
+      <span id="versionTap" style="cursor:default;">AirCheck+ · v2.09.122 · built by eligrt</span>
       <span style="width:40px;"></span>
     </div>
   </div>
@@ -867,7 +867,7 @@ html,body{height:100%;background:#1a1a1c;font-family:var(--font-ui);color:var(--
 
     <div class="footer-strip" style="display:flex;align-items:center;justify-content:space-between;padding:5px 14px 8px;">
       <span style="width:40px;"></span>
-      <span id="versionTap" style="cursor:default;">AirCheck+ · v2.09.121 · built by eligrt</span>
+      <span id="versionTap" style="cursor:default;">AirCheck+ · v2.09.122 · built by eligrt</span>
       <span style="width:40px;"></span>
     </div>
   </div>
@@ -981,7 +981,7 @@ html,body{height:100%;background:#1a1a1c;font-family:var(--font-ui);color:var(--
     </div>
     <div class="footer-strip" style="display:flex;align-items:center;justify-content:space-between;padding:5px 14px 8px;">
       <span class="footer-refresh" onclick="reloadApp()">רענון</span>
-      <span id="versionTap" style="cursor:default;">AirCheck+ · v2.09.121 · built by eligrt</span>
+      <span id="versionTap" style="cursor:default;">AirCheck+ · v2.09.122 · built by eligrt</span>
       <span style="width:40px;"></span>
     </div>
   </div>
@@ -1005,7 +1005,7 @@ html,body{height:100%;background:#1a1a1c;font-family:var(--font-ui);color:var(--
     <div class="editor-list" id="editorList"></div>
     <div class="footer-strip" style="display:flex;align-items:center;justify-content:space-between;padding:5px 14px 8px;">
       <span class="footer-refresh" onclick="reloadApp()">רענון</span>
-      <span id="versionTap" style="cursor:default;">AirCheck+ · v2.09.121 · built by eligrt</span>
+      <span id="versionTap" style="cursor:default;">AirCheck+ · v2.09.122 · built by eligrt</span>
       <span style="width:40px;"></span>
     </div>
   </div>
@@ -1153,11 +1153,11 @@ function loadRoute(){}
 function updateClock(){const now=new Date();const h=String(now.getUTCHours()).padStart(2,'0');const m=String(now.getUTCMinutes()).padStart(2,'0');document.getElementById('utcClock').textContent=h+':'+m;}
 setInterval(updateClock,10000);updateClock();
 function drawRings(){const g=document.getElementById('ringCoils');g.innerHTML='';const n=8;for(let k=0;k<n;k++){const x=8+k*((352-8)/7);const ns='http://www.w3.org/2000/svg';const back=document.createElementNS(ns,'path');back.setAttribute('d',`M ${x-3} 30 Q ${x-5} 18 ${x+2} 8 Q ${x+5} 4 ${x+8} 6`);back.setAttribute('fill','none');back.setAttribute('stroke','url(#wireDark)');back.setAttribute('stroke-width','1.6');back.setAttribute('stroke-linecap','round');back.setAttribute('opacity','.9');g.appendChild(back);const hole=document.createElementNS(ns,'ellipse');hole.setAttribute('cx',x);hole.setAttribute('cy','30');hole.setAttribute('rx','5');hole.setAttribute('ry','2.2');hole.setAttribute('fill','url(#paperHole)');g.appendChild(hole);const hole2=document.createElementNS(ns,'ellipse');hole2.setAttribute('cx',x);hole2.setAttribute('cy','30.5');hole2.setAttribute('rx','4');hole2.setAttribute('ry','1.2');hole2.setAttribute('fill','#000');hole2.setAttribute('opacity','.55');g.appendChild(hole2);const front=document.createElementNS(ns,'path');front.setAttribute('d',`M ${x+8} 6 Q ${x+13} 9 ${x+12} 16 Q ${x+10} 24 ${x+5} 30`);front.setAttribute('fill','none');front.setAttribute('stroke','url(#wireGrad)');front.setAttribute('stroke-width','2.1');front.setAttribute('stroke-linecap','round');g.appendChild(front);const hl=document.createElementNS(ns,'circle');hl.setAttribute('cx',x+10);hl.setAttribute('cy','8');hl.setAttribute('r','.9');hl.setAttribute('fill','#fff');hl.setAttribute('opacity','.95');g.appendChild(hl);}}
-function trackExternalLinkTap(url,lbl){
+async function trackExternalLinkTap(url,lbl){
   try{
     const key=lbl.replace(/[\.#$\/\[\] ]/g,'_');
     localStorage.setItem('aircheck_external_link_used','1');
-    if(window._syncExternalLinkToFirebase)window._syncExternalLinkToFirebase(key,lbl);
+    if(window._syncExternalLinkToFirebase)await window._syncExternalLinkToFirebase(key,lbl);
   }catch(e){}
   // Mark that we're leaving mid-flight for a reference link (in-app or
   // external/third-party). On return — whether via our own ?resume= param
