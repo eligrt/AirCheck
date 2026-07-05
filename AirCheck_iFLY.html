@@ -1,966 +1,358 @@
 <!DOCTYPE html>
 <!-- ═══════════════════════════════════════
-     AirCheck+ · iFLY · v1.02.009 · built by eligrt
+     AirCheck+ · iFLY · v1.03.013 · built by eligrt
      ═══════════════════════════════════════ -->
 <html lang="he" dir="rtl">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-<meta name="apple-mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-<meta name="apple-mobile-web-app-title" content="AirCheck+ iFLY">
-<meta name="theme-color" content="#1c3d6e">
-<link rel="apple-touch-icon" href="https://raw.githubusercontent.com/eligrt/AirCheck/main/AirCheck_icon_RD.png">
+<meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+<meta http-equiv="Pragma" content="no-cache">
+<meta http-equiv="Expires" content="0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
 <title>AirCheck+ · iFLY</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Hebrew:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet" media="print" onload="this.media='all'">
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Hebrew:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
 <style>
 :root{
-  --paper:#f4ecdc;--paper-hi:#fbf6e8;--paper-edge:#e3d4ad;--paper-line:rgba(28,61,110,.055);
-  --ink:#1c3d6e;--ink-dark:#0e2348;--ink-body:#1a1308;--ink-muted:#5a4a3a;--ink-faint:#8a7a5a;
-  --gold:#c8a04a;--gold-deep:#8a6a2a;--gold-lite:#d4b878;
-  --asphalt:#2a2218;--cleared:#1f6f3f;--cleared2:#2d8a52;--stamp-red:#b94a3a;--amber:#f59e0b;
-  --font-ui:'IBM Plex Sans Hebrew','Heebo',-apple-system,system-ui,sans-serif;
-  --font-mono:'JetBrains Mono','Menlo','Courier New',monospace;
-  --r:6px;
+  --paper:#f4ecdc;--paper-hi:#fbf6e8;--paper-edge:#e3d4ad;
+  --ink:#1c3d6e;--ink-muted:#5a4a3a;--ink-faint:#8a7a5a;
+  --gold:#c8a04a;--gold-lite:#d4b878;
+  --cleared:#1f6f3f;--amber:#f59e0b;
+  --font-ui:'IBM Plex Sans Hebrew',sans-serif;
+  --font-mono:'JetBrains Mono',monospace;
 }
-*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent;user-select:none;-webkit-user-select:none;-webkit-touch-callout:none;touch-action:manipulation;}
-html,body{height:100%;background:#1a1a1c;font-family:var(--font-ui);color:var(--ink-body);overflow:hidden;}
-#app{height:100%;display:flex;flex-direction:column;max-width:430px;margin:0 auto;position:relative;background:var(--paper);background-image:repeating-linear-gradient(0deg,transparent 0,transparent 27px,var(--paper-line) 27px,var(--paper-line) 28px);overflow:hidden;}
-.screen{display:none;flex-direction:column;flex:1;overflow:hidden;}
-.screen.active{display:flex;}
+*{box-sizing:border-box;margin:0;padding:0;}
+body{
+  background:var(--paper);
+  font-family:var(--font-ui);
+  height:100svh;
+  overflow:hidden;
+  display:flex;
+  flex-direction:column;
+  padding:0;
+  margin:0;
+  position:relative;
+}
 
-/* ── SPLASH ── */
-#screenSplash{flex-direction:column;overflow:hidden;background:linear-gradient(180deg,#0e2348 0%,#1c3d6e 40%,#4a6a8a 52%,#c0b090 62%,#f4ecdc 70%,#f4ecdc 100%);}
-.splash-hero{flex-shrink:0;background:transparent;padding:24px 18px 0;display:flex;flex-direction:column;align-items:center;gap:8px;}
-.splash-logo-wrap{width:220px;height:220px;border-radius:0;overflow:hidden;flex-shrink:0;}
-.splash-logo-wrap img{width:220px;height:220px;object-fit:contain;display:block;}
-.splash-app-title{font-family:var(--font-mono);font-size:28px;font-weight:700;color:var(--paper);direction:ltr;letter-spacing:-.5px;}
-.splash-app-sub{font-size:9px;color:rgba(244,236,220,.85);letter-spacing:.18em;font-family:var(--font-mono);text-transform:uppercase;}
-.splash-app-slogan{font-size:10px;color:rgba(244,236,220,.7);letter-spacing:.05em;font-family:var(--font-mono);font-style:italic;margin-top:2px;direction:ltr;unicode-bidi:bidi-override;}
-.splash-body{flex:1;padding:19px 18px 20px;display:flex;flex-direction:column;gap:10px;background:transparent;}
-.splash-resume-card{background:var(--paper-hi);border:1px solid var(--gold);border-radius:4px;padding:10px 12px;direction:rtl;}
-.splash-resume-lbl{font-size:8px;font-family:var(--font-mono);letter-spacing:.1em;color:var(--ink-faint);margin-bottom:3px;text-transform:uppercase;}
-.splash-resume-val{font-size:13px;font-weight:700;color:var(--ink-body);margin-bottom:8px;}
-.splash-runway-pct{font-size:9px;font-family:var(--font-mono);color:var(--ink-muted);letter-spacing:.02em;margin-bottom:5px;}
-.splash-runway{height:8px;background:rgba(100,90,80,.45);border-radius:2px;overflow:hidden;position:relative;}
-.splash-runway-fill{height:100%;border-radius:2px;background:var(--cleared);transition:width .4s ease;}
-.splash-btn-primary{width:100%;padding:14px;background:var(--ink);color:var(--paper);border:none;border-radius:4px;font-family:var(--font-ui);font-size:15px;font-weight:700;cursor:pointer;text-align:center;transition:opacity .12s;}
-.splash-btn-primary:active{opacity:.85;}
-.splash-btn-secondary{width:100%;padding:13px;background:transparent;color:var(--ink);border:2px solid var(--ink);border-radius:4px;font-family:var(--font-ui);font-size:14px;font-weight:600;cursor:pointer;text-align:center;transition:background .12s;}
-.splash-btn-secondary:active{background:rgba(200,160,74,.1);}
-.splash-footer-wrap{margin-top:auto;padding-bottom:0;}
+/* Progress */
+.progress-bar{height:4px;background:var(--paper-edge);border-radius:3px;overflow:hidden;flex:1;position:relative;}
+.progress-fill{position:absolute;top:0;right:0;bottom:0;background:var(--cleared);transition:width .3s ease;width:0%;}
 
-/* ── FLIGHT STRIP ── */
-.flight-strip{flex-shrink:0;display:flex;align-items:center;justify-content:flex-start;padding:8px 14px;background:var(--ink);color:var(--paper);font-family:var(--font-mono);box-shadow:0 3px 0 var(--ink-dark);gap:14px;position:relative;z-index:10;}
-.strip-actions{display:flex;flex-direction:row;gap:6px;flex-shrink:0;margin-left:auto;align-self:center;}
-.strip-pill{background:transparent;border:1px solid rgba(244,236,220,.3);border-radius:3px;color:var(--paper);font-family:var(--font-ui);font-size:11px;font-weight:700;letter-spacing:.02em;padding:5px 10px;cursor:pointer;white-space:nowrap;transition:background .12s;direction:ltr;}
-.strip-pill:active{background:rgba(244,236,220,.12);}
-.strip-pill-gold{border-color:var(--gold);color:var(--gold-lite);}
-.strip-pill-gold:active{background:rgba(200,160,74,.15);}
-.strip-label{font-size:8px;opacity:.75;letter-spacing:.18em;text-transform:uppercase;line-height:1;text-align:center;}
-.strip-data{display:flex;flex-direction:row;align-items:flex-start;gap:16px;flex-shrink:0;direction:ltr;}
-.strip-data-col{display:flex;flex-direction:column;align-items:center;}
-.strip-time{font-size:15px;font-weight:700;font-family:var(--font-mono);line-height:1;margin-top:3px;}
+/* Content */
+.content{padding:0 14px 16px;flex:1;overflow-y:auto;-webkit-overflow-scrolling:touch;scrollbar-width:none;}
+.content::-webkit-scrollbar{display:none;}
 
-/* ── RUNWAY SECTION (progress header) ── */
-.runway-section{flex-shrink:0;padding:10px 14px 8px;background:var(--paper-hi);border-bottom:1px solid var(--gold-lite);}
-.runway-meta{display:flex;justify-content:flex-end;align-items:center;font-family:var(--font-mono);font-size:9px;color:var(--ink-muted);letter-spacing:.1em;text-transform:uppercase;margin-bottom:6px;direction:ltr;gap:5px;}
-.runway-meta-pct{color:var(--ink);font-weight:700;}
-.runway-seg{display:flex;flex-direction:column;gap:3px;}
-.runway-seg-name{font-size:9px;color:var(--ink);font-weight:700;text-align:center;letter-spacing:.02em;}
-.runway-track{height:18px;background:var(--asphalt);border-radius:2px;position:relative;overflow:hidden;border:1px solid #14110b;box-shadow:0 0 0 2px var(--gold);cursor:pointer;}
-.runway-fill{position:absolute;top:0;right:0;bottom:0;background:var(--cleared);transition:width .4s ease;}
-.runway-dashes{position:absolute;inset:0;display:flex;align-items:center;justify-content:space-around;pointer-events:none;}
-.runway-dash{width:6px;height:1.5px;background:var(--paper);opacity:.5;}
-.runway-seg-plane{position:absolute;top:50%;transform:translateY(-50%) scaleX(-1);z-index:4;pointer-events:none;transition:right .3s ease;font-size:10px;line-height:1;color:#fff;}
+/* Intro card */
+.intro-card{
+  background:rgba(28,61,110,.06);
+  border:1px solid rgba(28,61,110,.12);
+  border-radius:8px;padding:6px 10px;margin-bottom:6px;
+  text-align:center;
+}
+.intro-card p{font-size:11px;color:var(--ink-muted);line-height:1.5;}
+.intro-card strong{color:var(--ink);}
 
-/* ── BREADCRUMB ── */
-.group-crumb{flex-shrink:0;display:flex;align-items:center;gap:6px;padding:7px 16px;font-size:11px;color:var(--ink-muted);letter-spacing:.04em;background:var(--paper);border-bottom:1px dashed var(--gold-lite);}
-.crumb-phase{font-weight:700;color:var(--ink);}
-.crumb-dot{opacity:.35;}
-.crumb-group{font-weight:500;}
+/* Section */
+.section{margin-bottom:12px;}
+.section-header{
+  display:flex;align-items:center;gap:10px;
+  padding:8px 12px;
+  background:var(--ink);
+  border-radius:6px 6px 0 0;
+}
+.section-icon{font-size:20px;line-height:1;color:#fff;}
+.section-title{font-size:14px;font-weight:700;color:#f4ecdc;}
+.section-items{
+  border:1px solid var(--paper-edge);border-top:none;
+  border-radius:0 0 6px 6px;overflow:hidden;
+}
 
-/* ── KNEEBOARD / CARD ── */
-.kneeboard-wrap{flex-shrink:0;padding:0 14px;padding-top:24px;position:relative;height:210px;}
-.kneeboard-rings{position:absolute;top:6px;left:0;right:0;height:32px;width:100%;z-index:10;pointer-events:none;}
-.card-under{position:absolute;top:24px;left:14px;right:14px;z-index:1;opacity:.6;pointer-events:none;filter:saturate(.8);border-radius:2px 2px 8px 8px;background:var(--paper-hi);border:1px solid var(--gold);height:180px;box-shadow:0 1px 0 var(--paper-edge);}
-.card-top{position:relative;z-index:2;background:var(--paper-hi);border:1px solid var(--gold);border-radius:2px 2px 8px 8px;padding:0 20px 16px;box-shadow:0 1px 0 var(--paper-edge),0 8px 18px rgba(60,40,10,.14);backface-visibility:hidden;overflow:hidden;height:182px;}
-.card-top.flipping{transform-origin:top center;transform:perspective(600px) rotateX(100deg);opacity:1;transition:transform 450ms ease-in;}
-.card-header{display:flex;justify-content:flex-start;align-items:baseline;padding-top:36px;padding-bottom:8px;border-bottom:1px dashed var(--gold);margin-bottom:14px;}
-.card-item-num{font-family:var(--font-mono);font-size:10px;color:var(--ink-muted);letter-spacing:.15em;direction:ltr;}
-.card-item-num b{font-size:16px;font-weight:700;color:var(--ink);margin:0 3px;}
-.card-item-num span{color:var(--ink-faint);}
-.card-main{font-size:24px;font-weight:700;line-height:1.3;color:var(--ink-body);margin-bottom:4px;direction:rtl;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;}
-.card-sub{font-size:13px;color:var(--ink-muted);line-height:1.5;font-style:italic;direction:rtl;}
-.card-stamp{position:absolute;top:30px;left:50%;direction:ltr;transform-origin:center;pointer-events:none;transform:translateX(-50%) rotate(-8deg);display:none;z-index:4;}
-.card-stamp.visible{display:block;}
-.stamp-box{border:2.5px solid var(--cleared);padding:4px 12px 5px;text-align:center;color:var(--cleared);font-family:var(--font-mono);background:rgba(251,246,232,.88);}
-.stamp-text{font-size:8px;letter-spacing:.28em;font-weight:700;margin-bottom:1px;}
-.stamp-init{font-size:12px;font-weight:700;letter-spacing:.12em;}
-.stamp-time{font-size:7px;letter-spacing:.15em;opacity:.7;margin-top:2px;}
+/* Item */
+.item{
+  display:flex;align-items:center;gap:12px;
+  padding:11px 12px;
+  min-height:56px;
+  background:var(--paper-hi);
+  border-bottom:1px solid var(--paper-edge);
+  cursor:pointer;
+  transition:background .15s;
+  -webkit-tap-highlight-color:transparent;
+}
+.item:last-child{border-bottom:none;}
+.item:active{background:var(--paper-edge);}
+.item.checked{background:#f0f7f0;}
+.item.skipped{background:rgba(245,158,11,.14);}
 
-/* ── CONFIRM HINT ── */
-.confirm-hint{flex-shrink:0;display:flex;align-items:center;justify-content:center;gap:10px;padding:8px 14px 4px;min-height:32px;}
-.confirm-hint-text{font-size:16px;font-weight:700;letter-spacing:.02em;color:var(--ink);transition:color .15s;}
-.confirm-hint-text.confirmed{color:var(--cleared);}
+.item-check{
+  width:24px;height:24px;border-radius:50%;
+  border:2px solid var(--paper-edge);
+  flex-shrink:0;
+  display:flex;align-items:center;justify-content:center;
+  transition:all .2s;background:var(--paper);
+}
+.item.checked .item-check{
+  background:var(--cleared);border-color:var(--cleared);
+}
+.item.skipped .item-check{
+  background:var(--amber);border-color:var(--amber);
+}
+.checkmark{
+  font-size:13px;color:#fff;opacity:0;transition:opacity .2s;
+}
+.item.checked .checkmark,.item.skipped .checkmark{opacity:1;}
 
-/* ── RUNWAY BUTTON ── */
-.runway-btn-wrap{flex-shrink:0;padding:0 14px 10px;}
-.runway-btn{width:100%;height:62px;position:relative;overflow:visible;background:var(--asphalt);border:2px solid var(--gold);border-radius:4px;cursor:pointer;padding:0;font-family:inherit;-webkit-tap-highlight-color:transparent;}
-.runway-btn.idle{animation:runwayPulse 2.4s ease-in-out infinite;}
-.runway-inner{position:absolute;inset:0;overflow:hidden;border-radius:2px;}
-.runway-fill-layer{position:absolute;top:0;right:0;bottom:0;width:0%;background:linear-gradient(270deg,var(--cleared) 0%,#4a8460 60%,#5a9670 100%);transition:width .3s linear;}
-.runway-fill-layer.holding{width:100%;}
-.runway-fill-layer.confirmed{width:100%;background:linear-gradient(90deg,var(--cleared) 0%,var(--cleared2) 100%);transition:background .15s ease-out;}
-.runway-fill-layer.releasing{width:0%;transition:width .2s ease-out;}
-.runway-centerline{position:absolute;top:0;bottom:0;left:70px;right:70px;display:flex;align-items:center;justify-content:space-around;pointer-events:none;}
-.runway-center-dash{width:16px;height:2px;background:var(--paper);opacity:.45;}
-.runway-thresh{position:absolute;top:50%;margin-top:-10px;height:20px;width:14px;display:flex;flex-direction:column;justify-content:space-between;z-index:1;pointer-events:none;}
-.thresh-bar{height:2px;width:100%;background:var(--paper);opacity:.65;border-radius:1px;}
-.runway-num{position:absolute;top:50%;margin-top:-10px;color:var(--paper);opacity:.8;font-family:var(--font-mono);font-size:14px;font-weight:700;pointer-events:none;z-index:2;text-shadow:0 1px 1px rgba(0,0,0,.5);width:22px;text-align:center;transform-origin:center;}
-.runway-plane{position:absolute;top:50%;margin-top:-15px;width:30px;height:30px;z-index:3;pointer-events:none;filter:drop-shadow(0 2px 3px rgba(0,0,0,.45));right:50px;transition:right .2s cubic-bezier(.4,0,.2,1);}
-.runway-plane.holding{right:calc(100% - 52px);transition:right .3s linear;}
-.runway-plane.confirmed{right:calc(100% + 80px);transform:translateY(-55px) rotate(10deg) scale(1.08);opacity:0;transition:right 1s cubic-bezier(.25,.55,.4,1),transform 1s cubic-bezier(.25,.55,.4,1),opacity .7s ease-in .45s;}
-@keyframes runwayPulse{0%,100%{box-shadow:0 0 0 0 rgba(200,160,74,0);border-color:var(--gold);}50%{box-shadow:0 0 0 4px rgba(200,160,74,.35);border-color:#e8b85a;}}
+.item-text{
+  font-size:13px;color:var(--ink-muted);line-height:1.3;flex:1;
+  transition:color .2s;
+}
+.item.checked .item-text{
+  color:var(--cleared);text-decoration:line-through;opacity:.7;
+}
+.item.skipped .item-text{
+  color:#92600a;opacity:.85;
+}
+.item-sub{font-size:11px;color:var(--ink-faint);margin-top:2px;font-weight:400;}
+.item-skip{
+  flex-shrink:0;
+  font-family:var(--font-ui);font-size:11px;font-weight:600;color:var(--ink-faint);
+  text-decoration:underline;text-decoration-style:dotted;text-underline-offset:3px;
+  cursor:pointer;transition:color .15s;white-space:nowrap;
+}
+.item-skip:active{opacity:.6;}
+.item.skipped .item-skip{color:#92600a;font-weight:700;}
 
-/* ── NAV ── */
-.nav-row{flex-shrink:0;display:flex;gap:6px;padding:8px 14px 12px;border-top:1px dashed var(--gold-lite);}
-.nav-btn{flex:2;padding:9px 4px;border-radius:4px;border:1px solid var(--gold-lite);background:transparent;color:var(--ink);font-size:13px;font-family:var(--font-ui);font-weight:600;cursor:pointer;transition:background .12s;line-height:1.25;text-align:center;}
-.nav-btn.narrow{flex:1.2;font-size:11px;}
-.nav-btn:active:not(:disabled){background:rgba(200,160,74,.12);}
-.nav-btn:disabled{opacity:.28;cursor:default;}
-.nav-btn.warn{color:var(--stamp-red);border-color:rgba(185,74,58,.4);}
-.nav-btn.amber{color:var(--amber);border-color:rgba(245,158,11,.4);}
+/* Note card */
+.note-card{background:var(--paper-hi);border:1px solid var(--gold-lite);border-radius:6px;padding:12px 14px;margin-bottom:12px;}
+.note-label{font-size:12px;color:var(--ink-body,var(--ink-muted));font-weight:700;margin-bottom:8px;display:flex;align-items:center;gap:6px;}
+#noteInput{width:100%;height:56px;resize:none;border:1.5px solid var(--gold-lite);border-radius:4px;background:#fff;font-family:var(--font-ui);font-size:13px;color:var(--ink-muted);padding:9px 11px;direction:rtl;transition:border-color .12s;}
+#noteInput:focus{outline:none;border-color:var(--gold);}
+#noteInput::placeholder{color:var(--ink-faint);}
 
-/* ── TREE PANEL ── */
-.tree-panel{flex:1;overflow-y:auto;background:var(--paper-hi);border-top:1px solid var(--gold-lite);padding:6px 14px 16px;-webkit-overflow-scrolling:touch;}
-.tree-panel::-webkit-scrollbar{display:none;}
-.tree-group{padding:4px 0;}
-.tree-group-hdr{display:flex;justify-content:space-between;align-items:center;cursor:pointer;padding:3px 0;border-bottom:1px dotted rgba(200,160,74,.3);margin-bottom:3px;}
-.tree-gr-name{font-size:11px;color:var(--ink-muted);font-weight:600;letter-spacing:.03em;}
-.tree-gr-chevron{font-size:10px;color:var(--ink-muted);font-family:var(--font-mono);}
-.tree-item{display:flex;align-items:center;gap:8px;padding:4px 0 4px 4px;cursor:pointer;font-size:12px;}
-.tree-item:active{opacity:.7;}
-.tree-mark{font-family:var(--font-mono);font-size:11px;width:14px;text-align:center;flex-shrink:0;}
-.tree-mark.done{color:var(--cleared);}
-.tree-mark.cur{color:var(--ink);}
-.tree-mark.upcoming{color:rgba(90,74,58,.4);}
-.tree-mark.skipped{color:var(--amber);}
-.tree-item-text{flex:1;min-width:0;}
-.tree-item-text.done{color:var(--cleared);text-decoration:line-through;}
-.tree-item-text.cur{color:var(--ink);font-weight:700;}
-.tree-item-text.upcoming{color:var(--ink-muted);}
-.tree-item-text.skipped{color:var(--amber);opacity:.75;}
-
-/* ── FOOTER ── */
-.footer-strip{margin-top:auto;flex-shrink:0;font-size:9px;font-family:var(--font-mono);color:var(--ink-faint);letter-spacing:.1em;text-transform:uppercase;direction:rtl;border-top:1px solid var(--gold-lite);background:var(--paper-hi);}
-.footer-refresh{font-size:11px;color:var(--ink-muted);cursor:pointer;text-decoration:underline;text-underline-offset:2px;opacity:.75;font-family:var(--font-ui);letter-spacing:.02em;}
-.footer-refresh:active{opacity:.4;}
-
-/* ── SUMMARY SCREEN ── */
-.summary-strip{flex-shrink:0;display:flex;align-items:center;padding:8px 14px;background:var(--ink);color:var(--paper);font-family:var(--font-mono);box-shadow:0 3px 0 var(--ink-dark);gap:14px;}
-.summary-strip-col{display:flex;flex-direction:column;align-items:center;}
-.summary-strip-label{font-size:8px;opacity:.75;letter-spacing:.18em;text-transform:uppercase;}
-.summary-strip-val{font-size:15px;font-weight:700;font-family:var(--font-mono);}
-.summary-header{flex-shrink:0;padding:18px 20px 14px;text-align:center;}
-.summary-stamp-wrap{display:flex;justify-content:center;margin-bottom:10px;}
-.summary-stamp{border:3px solid var(--cleared);padding:8px 20px 10px;text-align:center;color:var(--cleared);font-family:var(--font-mono);transform:rotate(-4deg);display:inline-block;}
-.summary-stamp-name{font-size:15px;font-weight:700;letter-spacing:.06em;margin-bottom:4px;direction:rtl;}
-.summary-stamp-bottom{font-size:20px;font-weight:700;letter-spacing:.12em;direction:ltr;}
-.summary-meta{font-size:12px;color:var(--ink-muted);font-family:var(--font-mono);direction:ltr;}
-.summary-divider{border:none;border-top:1px dashed var(--gold-lite);}
-.summary-body{flex:1;overflow-y:auto;padding:14px 18px;-webkit-overflow-scrolling:touch;background:var(--paper-hi);}
-.summary-body::-webkit-scrollbar{display:none;}
-.summary-list-card{background:var(--paper);border:1px solid var(--gold-lite);border-radius:6px;padding:4px 14px;}
-.summary-row{display:flex;align-items:center;gap:8px;padding:8px 0;font-size:13px;border-bottom:1px dashed rgba(200,160,74,.3);}
-.summary-row:last-child{border-bottom:none;}
-.summary-row-mark{font-family:var(--font-mono);font-size:12px;width:14px;text-align:center;flex-shrink:0;}
-.summary-row-mark.done{color:var(--cleared);}
-.summary-row-mark.skipped{color:var(--amber);}
-.summary-row-text.done{color:var(--ink-body);}
-.summary-row-text.skipped{color:var(--amber);}
-.summary-note-wrap{background:var(--paper);border:1px solid var(--gold-lite);border-radius:6px;padding:12px 14px;margin-top:14px;}
-.summary-note-label{font-size:12px;color:var(--ink-body);font-weight:700;margin-bottom:8px;letter-spacing:.02em;display:flex;align-items:center;gap:6px;}
-#summaryNoteInput{width:100%;height:60px;resize:none;border:1.5px solid var(--gold-lite);border-radius:4px;background:#fff;font-family:var(--font-ui);font-size:13px;color:var(--ink-body);padding:9px 11px;direction:rtl;transition:border-color .12s;}
-#summaryNoteInput:focus{outline:none;border-color:var(--gold);}
-#summaryNoteInput::placeholder{color:var(--ink-faint);}
-.summary-share-wrap{flex-shrink:0;padding:10px 18px 8px;}
-.summary-btns{flex-shrink:0;padding:0 18px 12px;display:flex;gap:8px;}
-.btn-wa{display:flex;align-items:center;justify-content:center;gap:8px;background:#1f6f3f;color:#fff;}
+/* Share bar */
+.share-bar{flex-shrink:0;padding:10px 14px;border-top:1px dashed var(--gold-lite);background:var(--paper);}
+.btn-wa{width:100%;display:flex;align-items:center;justify-content:center;gap:8px;background:#1f6f3f;color:#fff;border:none;border-radius:6px;padding:13px;font-family:var(--font-ui);font-size:14px;font-weight:700;cursor:pointer;}
+.btn-wa:active{opacity:.85;}
 .btn-wa svg{flex-shrink:0;}
 
-.btn{width:100%;padding:14px;border-radius:var(--r);border:none;font-family:var(--font-ui);font-size:15px;font-weight:700;cursor:pointer;transition:opacity .15s;}
-.btn:active{opacity:.8;}
-.btn-ink{background:var(--ink);color:var(--paper);}
-.btn-ghost{background:transparent;color:var(--ink-muted);border:1px solid var(--gold-lite);font-size:14px;}
+/* Footer */
+.footer{
+  text-align:center;padding:10px 12px;
+  font-family:var(--font-mono);font-size:9px;color:var(--ink-faint);
+  letter-spacing:.1em;text-transform:uppercase;
+  border-top:1px solid var(--gold-lite);
+  flex-shrink:0;
+}
 
-/* ── MODAL ── */
-.modal-overlay{display:none;position:absolute;inset:0;background:rgba(26,19,8,.8);z-index:500;align-items:center;justify-content:center;padding:24px;backdrop-filter:blur(3px);}
-.modal-overlay.open{display:flex;}
-.modal-box{background:var(--paper-hi);border:2px solid var(--gold);border-radius:8px;padding:24px 20px;width:100%;max-width:340px;text-align:center;box-shadow:0 20px 60px rgba(0,0,0,.4);}
-.modal-title{font-size:18px;font-weight:700;margin-bottom:8px;color:var(--ink-body);}
-.modal-sub{font-size:14px;color:var(--ink-muted);margin-bottom:18px;line-height:1.5;}
-.tail-btn{padding:14px 10px;min-width:76px;border-radius:6px;border:1.5px solid var(--gold-lite);background:var(--paper);font-family:var(--font-mono);font-weight:700;font-size:15px;color:var(--ink-body);cursor:pointer;}
-.tail-btn:active{background:rgba(200,160,74,.15);}
-.tail-group{text-align:center;}
-.tail-group-photo{width:100%;max-width:240px;height:76px;object-fit:cover;border-radius:4px;border:1px solid var(--gold-lite);margin-bottom:6px;}
-.tail-group-label{font-size:11px;font-family:var(--font-mono);letter-spacing:.08em;color:var(--ink-muted);margin-bottom:7px;text-transform:uppercase;}
+/* Tail pill */
+.tail-pill{background:transparent;border:none;font-family:var(--font-mono);font-size:12px;font-weight:700;color:var(--ink);text-decoration:underline;text-decoration-style:dotted;text-underline-offset:3px;cursor:pointer;direction:ltr;flex-shrink:0;padding:0;}
+.tail-pill:active{opacity:.6;}
+.back-btn{background:transparent;border:1px solid rgba(244,236,220,.35);border-radius:6px;padding:7px 14px;font-family:var(--font-ui);font-size:13px;font-weight:600;color:rgba(244,236,220,.8);cursor:pointer;}
+
+/* Overlay / modal (shared shell for tail picker) */
+.overlay{display:none;position:fixed;inset:0;background:rgba(26,19,8,.75);z-index:100;align-items:center;justify-content:center;padding:24px;backdrop-filter:blur(3px);}
+.overlay.open{display:flex;}
+.overlay-box{background:var(--paper);background-image:repeating-linear-gradient(0deg,transparent 0,transparent 27px,rgba(28,61,110,.055) 27px,rgba(28,61,110,.055) 28px);border:2px solid var(--gold);border-radius:8px;width:100%;max-width:320px;overflow:hidden;direction:rtl;text-align:center;}
+.overlay-header{background:var(--ink);padding:13px 16px;display:flex;align-items:center;justify-content:space-between;border-bottom:3px solid var(--gold);}
+.overlay-header-title{font-size:16px;font-weight:700;color:#f4ecdc;}
+.overlay-close{background:transparent;border:1px solid rgba(244,236,220,.35);border-radius:5px;padding:6px 13px;flex-shrink:0;color:rgba(244,236,220,.85);font-family:var(--font-ui);font-size:12px;font-weight:600;cursor:pointer;}
+.overlay-close:active{background:rgba(244,236,220,.12);}
+.overlay-content{padding:20px 18px 22px;}
+.tail-group{margin-bottom:14px;}
+.tail-group-photo{width:100%;max-width:240px;height:72px;object-fit:cover;border-radius:4px;border:1px solid var(--gold-lite);margin-bottom:6px;}
+.tail-group-label{font-size:10px;font-family:var(--font-mono);letter-spacing:.08em;color:var(--ink-muted);margin-bottom:7px;text-transform:uppercase;}
 .tail-group-row{display:flex;flex-wrap:wrap;gap:8px;justify-content:center;}
+.tail-btn{padding:13px 12px;min-width:76px;border-radius:6px;border:2px solid var(--gold-lite);background:var(--paper-hi);font-family:var(--font-mono);font-weight:700;font-size:14px;color:var(--ink-muted);cursor:pointer;box-shadow:0 1px 3px rgba(0,0,0,.08);}
+.tail-btn:active{background:rgba(200,160,74,.15);}
 
-/* ── BULK SELECT-ALL POPUP ── */
-#bulkPopup{display:none;position:absolute;z-index:300;background:var(--paper-hi);border:1.5px solid var(--gold);border-radius:6px;padding:10px 12px;box-shadow:0 8px 24px rgba(0,0,0,.35);min-width:170px;text-align:center;}
-#bulkPopup.open{display:block;}
-.bulk-phase-name{font-size:11px;font-family:var(--font-mono);letter-spacing:.08em;color:var(--ink-muted);margin-bottom:8px;}
-.bulk-btns{display:flex;flex-direction:column;gap:6px;}
-.bulk-btn{padding:9px 12px;border-radius:4px;font-size:13px;font-family:var(--font-ui);font-weight:600;cursor:pointer;border:1px solid var(--gold-lite);}
-.bulk-btn.confirm{background:var(--ink);color:var(--paper);border-color:var(--ink);}
-.bulk-btn.cancel{background:transparent;color:var(--ink-muted);}
-.bulk-btn.warn{background:transparent;color:var(--stamp-red);border-color:rgba(185,74,58,.4);}
+.toast{position:fixed;bottom:70px;left:50%;transform:translateX(-50%);background:var(--ink);color:var(--paper);padding:10px 18px;border-radius:20px;font-size:13px;font-family:var(--font-ui);font-weight:600;white-space:nowrap;z-index:200;box-shadow:0 4px 16px rgba(0,0,0,.35);display:none;}
 
-@keyframes toastIn{from{opacity:0;transform:translate(-50%,10px);}to{opacity:1;transform:translate(-50%,0);}}
-@keyframes toastOut{from{opacity:1;}to{opacity:0;}}
-.toast{position:absolute;bottom:80px;left:50%;transform:translateX(-50%);background:var(--ink);color:var(--paper);padding:10px 18px;border-radius:20px;font-size:13px;font-family:var(--font-ui);font-weight:600;white-space:nowrap;z-index:600;box-shadow:0 4px 16px rgba(0,0,0,.35);}
+/* ── PC LAYOUT: constrain to centered card, dark surround ── */
+@media(min-width:600px){
+  html{background:#1a1a1c;}
+  body{max-width:430px;margin:0 auto;border-left:2px solid var(--gold);border-right:2px solid var(--gold);box-shadow:0 0 60px rgba(0,0,0,.6);}
+}
 </style>
 </head>
 <body>
-<div id="app">
 
-  <!-- ══ SPLASH SCREEN ══ -->
-  <div class="screen active" id="screenSplash">
-    <div class="splash-hero">
-      <div class="splash-logo-wrap">
-        <img src="./AirCheck_logo_RD.png" alt="AirCheck+" onerror="this.style.display='none'">
+<!-- FROZEN UPPER AREA -->
+<div style="flex-shrink:0;background:var(--paper);">
+  <div style="background:var(--ink);padding:10px 16px 8px;display:flex;align-items:center;justify-content:space-between;">
+    <div style="font-size:18px;font-weight:700;color:#f4ecdc;font-family:var(--font-ui);">דיווח החזרת מטוס</div>
+    <button class="back-btn" onclick="backToApp()">חזרה ל&nbsp;&nbsp;<span dir="ltr">AirCheck+</span></button>
+  </div>
+  <div style="padding:0 14px;">
+    <div class="intro-card" style="text-align:right;margin-top:8px;">
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:6px;">
+        <div style="font-size:16px;font-weight:700;color:var(--ink);">השכרת מטוסים <span dir="ltr">·</span> <span dir="ltr">iFLY</span></div>
+        <button class="tail-pill" id="tailPill" onclick="openTailModal()">----</button>
       </div>
-      <div class="splash-app-title">AirCheck+ · iFLY</div>
-      <div class="splash-app-sub">RENTAL RETURN REPORT</div>
-      <div class="splash-app-slogan">"the checklist on top of the checklist"</div>
+      <p>סמנו כל פריט לפני החזרת המטוס.<br><strong>בסיום, שתפו את הדיווח בקבוצת iFLY.</strong></p>
     </div>
-    <div class="splash-body">
-      <div class="splash-resume-card" id="splashResumeCard" style="display:none;">
-        <div class="splash-resume-lbl" id="splashResumeTail">✈ 4X-—</div>
-        <div class="splash-resume-val" id="splashResumeVal">—</div>
-        <div class="splash-runway-pct" id="splashRunwayPct">0%</div>
-        <div class="splash-runway"><div class="splash-runway-fill" id="splashRunwayFill" style="width:0%"></div></div>
-      </div>
-      <div style="display:flex;flex-direction:column;gap:8px;width:100%;">
-        <button class="splash-btn-primary" id="splashMainBtn" onclick="splashMainAction()">
-          <span style="display:inline-block;transform:scaleX(-1)">✈</span> התחל דיווח
-        </button>
-        <button class="splash-btn-secondary" id="splashSecondaryBtn" onclick="splashSecondaryAction()" style="display:none;">
-          התחל דיווח חדש
-        </button>
-      </div>
+    <div style="display:flex;align-items:center;gap:8px;margin:8px 0;direction:ltr;">
+      <div id="progressPct" style="font-family:var(--font-mono);font-size:10px;color:var(--ink-faint);min-width:28px;text-align:right;">0%</div>
+      <div class="progress-bar"><div class="progress-fill" id="progressFill"></div></div>
     </div>
-    <div class="splash-footer-wrap">
-      <div class="footer-strip" style="display:flex;align-items:center;justify-content:space-between;padding:5px 14px 8px;">
-        <span class="footer-refresh" onclick="location.reload()">רענון</span>
-        <span style="cursor:default;">AirCheck+ · iFLY · v1.02.009 · built by eligrt</span>
-        <span style="width:40px;"></span>
+  </div>
+</div>
+
+<!-- SCROLLABLE SECTIONS -->
+<div class="content">
+
+  <div class="section">
+    <div class="section-header">
+      <div class="section-icon">✈</div>
+      <div class="section-title">מטוס, ניירת וציוד אישי</div>
+    </div>
+    <div class="section-items">
+      <div class="item">
+        <div class="item-check" onclick="toggle(this.parentElement)"><span class="checkmark">✓</span></div>
+        <div class="item-text" onclick="toggle(this.parentElement)">מטוס - תודלק<div class="item-sub">אם לא תדלקת - דלג</div></div>
+        <div class="item-skip" onclick="skipItem(this.parentElement)">דלג</div>
+      </div>
+      <div class="item">
+        <div class="item-check" onclick="toggle(this.parentElement)"><span class="checkmark">✓</span></div>
+        <div class="item-text" onclick="toggle(this.parentElement)">כרטיס דלק - במקום</div>
+        <div class="item-skip" onclick="skipItem(this.parentElement)">דלג</div>
+      </div>
+      <div class="item">
+        <div class="item-check" onclick="toggle(this.parentElement)"><span class="checkmark">✓</span></div>
+        <div class="item-text" onclick="toggle(this.parentElement)">ספר מטוס: סגירת שורה</div>
+        <div class="item-skip" onclick="skipItem(this.parentElement)">דלג</div>
+      </div>
+      <div class="item">
+        <div class="item-check" onclick="toggle(this.parentElement)"><span class="checkmark">✓</span></div>
+        <div class="item-text" onclick="toggle(this.parentElement)">אסוף ציוד אישי<div class="item-sub">מצלמות, IPAD, טלפון, מפות וניירת</div></div>
+        <div class="item-skip" onclick="skipItem(this.parentElement)">דלג</div>
+      </div>
+      <div class="item">
+        <div class="item-check" onclick="toggle(this.parentElement)"><span class="checkmark">✓</span></div>
+        <div class="item-text" onclick="toggle(this.parentElement)">קוקפיט נקי</div>
+        <div class="item-skip" onclick="skipItem(this.parentElement)">דלג</div>
+      </div>
+      <div class="item">
+        <div class="item-check" onclick="toggle(this.parentElement)"><span class="checkmark">✓</span></div>
+        <div class="item-text" onclick="toggle(this.parentElement)">חניה וקשירה</div>
+        <div class="item-skip" onclick="skipItem(this.parentElement)">דלג</div>
+      </div>
+      <div class="item">
+        <div class="item-check" onclick="toggle(this.parentElement)"><span class="checkmark">✓</span></div>
+        <div class="item-text" onclick="toggle(this.parentElement)">כיסוי פיטו: במקום</div>
+        <div class="item-skip" onclick="skipItem(this.parentElement)">דלג</div>
+      </div>
+      <div class="item">
+        <div class="item-check" onclick="toggle(this.parentElement)"><span class="checkmark">✓</span></div>
+        <div class="item-text" onclick="toggle(this.parentElement)">מדיד דלק - נמצא<div class="item-sub">אם לא קיים במטוס - אל תאשר, דלג</div></div>
+        <div class="item-skip" onclick="skipItem(this.parentElement)">דלג</div>
       </div>
     </div>
   </div>
 
-  <!-- ══ CHECKLIST SCREEN ══ -->
-  <div class="screen" id="screenChecklist">
-
-    <div class="flight-strip" style="direction:ltr;">
-      <div class="strip-data">
-        <div class="strip-data-col">
-          <span class="strip-label">UTC</span>
-          <span class="strip-time js-utc">--:--</span>
-        </div>
-        <button class="strip-pill" onclick="parkFlight()" style="display:flex;align-items:center;gap:5px;direction:rtl;align-self:center;">💾 שמור וצא</button>
-      </div>
-      <div class="strip-actions">
-        <button class="strip-pill strip-pill-gold js-tail-pill" onclick="openTailModal(true)">✈ ----</button>
-      </div>
-    </div>
-
-    <div class="runway-section">
-      <div class="runway-meta">
-        <span id="runwayCountLabel">00 / 00</span>
-        <span style="opacity:.4;">·</span>
-        <span class="runway-meta-pct" id="runwayPctLabel">0%</span>
-      </div>
-      <div class="runway-seg">
-        <div class="runway-seg-name">דיווח החזרת מטוס</div>
-        <div class="runway-track" id="progressTrack">
-          <div id="segPips" style="position:absolute;inset:0;"></div>
-          <div class="runway-dashes"><div class="runway-dash"></div><div class="runway-dash"></div><div class="runway-dash"></div><div class="runway-dash"></div><div class="runway-dash"></div><div class="runway-dash"></div><div class="runway-dash"></div><div class="runway-dash"></div></div>
-          <div class="runway-seg-plane" id="segPlane">✈</div>
-        </div>
-      </div>
-    </div>
-
-    <div class="group-crumb">
-      <span class="crumb-phase" id="crumbPhase">—</span>
-      <span class="crumb-dot">·</span>
-      <span class="crumb-group" id="crumbGroup">—</span>
-    </div>
-
-    <div class="kneeboard-wrap" id="kneeboardWrap">
-      <svg class="kneeboard-rings" viewBox="0 0 360 36" preserveAspectRatio="xMidYMid meet" overflow="visible">
-        <defs>
-          <linearGradient id="wireGrad" x1="0%" y1="50%" x2="100%" y2="50%"><stop offset="0%" stop-color="#3a362e"/><stop offset="50%" stop-color="#e8e3d2"/><stop offset="100%" stop-color="#3a362e"/></linearGradient>
-          <linearGradient id="wireDark" x1="0%" y1="0%" x2="0%" y2="100%"><stop offset="0%" stop-color="#5a564d"/><stop offset="100%" stop-color="#1a1813"/></linearGradient>
-          <radialGradient id="paperHole" cx="50%" cy="50%" r="50%"><stop offset="0%" stop-color="#0a0805"/><stop offset="80%" stop-color="#2a2218"/><stop offset="100%" stop-color="#5a4a3a"/></radialGradient>
-        </defs>
-        <g id="ringCoils"></g>
-      </svg>
-      <div class="card-under" id="cardUnder"></div>
-      <div class="card-top" id="cardTop">
-        <div class="card-header">
-          <div class="card-item-num" id="cardItemNum">ITEM <b>—</b><span> / —</span></div>
-        </div>
-        <div class="card-main" id="cardMain"></div>
-        <div class="card-sub" id="cardSub"></div>
-        <div class="card-stamp" id="cardStamp">
-          <div class="stamp-box">
-            <div class="stamp-text">CHECKED</div>
-            <div class="stamp-init">PIC</div>
-            <div class="stamp-time" id="stampTime">--:-- UTC</div>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <div class="confirm-hint">
-      <span class="confirm-hint-text" id="confirmHint">לחץ והחזק את המסלול לאישור</span>
-    </div>
-
-    <div class="runway-btn-wrap">
-      <button class="runway-btn idle" id="runwayBtn"
-        onmousedown="startHold()" onmouseup="releaseHold()" onmouseleave="cancelHold()"
-        ontouchstart="startHold(event)" ontouchend="releaseHold()" ontouchcancel="cancelHold()">
-        <div class="runway-inner">
-          <div class="runway-fill-layer" id="runwayFill"></div>
-          <div class="runway-centerline">
-            <div class="runway-center-dash"></div><div class="runway-center-dash"></div><div class="runway-center-dash"></div><div class="runway-center-dash"></div><div class="runway-center-dash"></div><div class="runway-center-dash"></div><div class="runway-center-dash"></div><div class="runway-center-dash"></div>
-          </div>
-          <div class="runway-thresh" style="right:6px"><div class="thresh-bar"></div><div class="thresh-bar"></div><div class="thresh-bar"></div><div class="thresh-bar"></div></div>
-          <div class="runway-num" style="right:24px;transform:rotate(-90deg)">18</div>
-          <div class="runway-thresh" style="left:6px"><div class="thresh-bar"></div><div class="thresh-bar"></div><div class="thresh-bar"></div><div class="thresh-bar"></div></div>
-          <div class="runway-num" style="left:24px;transform:rotate(90deg)">36</div>
-        </div>
-        <div class="runway-plane" id="runwayPlane">
-          <svg width="30" height="30" viewBox="0 0 34 34" style="transform:rotate(-90deg)">
-            <g fill="#f4ecdc" stroke="#1a1308" stroke-width=".6" stroke-linejoin="round">
-              <path d="M17 3 L18.5 8 L18.5 14 L26 18 L26 20 L18.5 18.5 L18.5 24 L21 27 L21 28.5 L17 27.5 L13 28.5 L13 27 L15.5 24 L15.5 18.5 L8 20 L8 18 L15.5 14 L15.5 8 Z"/>
-            </g>
-            <circle cx="8" cy="19" r="1.2" fill="#ef4444"/>
-            <circle cx="26" cy="19" r="1.2" fill="#39ff8a"/>
-          </svg>
-        </div>
-      </button>
-    </div>
-
-    <div class="nav-row">
-      <button class="nav-btn" id="navBack" onclick="goBack()">‹ קודם</button>
-      <button class="nav-btn narrow amber" id="navSkipJump" onclick="jumpToUnchecked()">חזור ללא מסומן</button>
-      <button class="nav-btn narrow warn" id="navUncheck" onclick="uncheckCurrent()">בטל<br>סימון</button>
-      <button class="nav-btn" id="navNext" onclick="goNext()">הבא ›</button>
-    </div>
-
-    <div class="tree-panel" id="treePanel"></div>
-
-    <div class="footer-strip" style="display:flex;align-items:center;justify-content:space-between;padding:5px 14px 8px;">
-      <span class="footer-refresh" onclick="location.reload()">רענון</span>
-      <span style="cursor:default;">AirCheck+ · iFLY · v1.02.009 · built by eligrt</span>
-      <span style="width:40px;"></span>
-    </div>
-  </div>
-
-  <!-- ══ SUMMARY SCREEN ══ -->
-  <div class="screen" id="screenSummary">
-    <div class="summary-strip" style="direction:ltr;">
-      <div class="summary-strip-col">
-        <span class="summary-strip-label">UTC</span>
-        <span class="summary-strip-val js-utc">--:--</span>
-      </div>
-    </div>
-
-    <div class="summary-header">
-      <div class="summary-stamp-wrap">
-        <div class="summary-stamp" id="summaryStampBox">
-          <div class="summary-stamp-name">סגירת דיווח</div>
-          <div class="summary-stamp-bottom">CHECKED &nbsp;✓</div>
-        </div>
-      </div>
-      <div class="summary-meta" id="summaryMeta">—</div>
-    </div>
-    <hr class="summary-divider">
-    <div class="summary-body">
-      <div id="summaryList" class="summary-list-card"></div>
-      <div class="summary-note-wrap">
-        <div class="summary-note-label">📝 הערה לטייס הבא (לא חובה)</div>
-        <textarea id="summaryNoteInput" placeholder="לדוגמה: השארתי לך שוקולד בתא הכפפות 🍫"></textarea>
-      </div>
-    </div>
-
-    <div class="summary-share-wrap">
-      <button class="btn btn-wa" onclick="doShare()">
-        <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M12.04 2C6.58 2 2.13 6.45 2.13 11.91c0 1.75.46 3.45 1.32 4.95L2.05 22l5.29-1.39a9.9 9.9 0 0 0 4.7 1.2h.01c5.46 0 9.9-4.45 9.9-9.9C21.95 6.45 17.5 2 12.04 2Zm5.8 14.06c-.24.68-1.4 1.32-1.93 1.4-.5.08-1.12.11-1.8-.11-.42-.13-.96-.31-1.65-.6-2.9-1.25-4.8-4.17-4.94-4.36-.14-.19-1.18-1.57-1.18-3 0-1.43.75-2.13 1.02-2.42.27-.29.58-.36.78-.36h.55c.18 0 .42-.03.65.5.24.56.8 1.94.87 2.08.07.14.11.3.02.49-.09.19-.14.3-.28.46-.14.16-.29.36-.42.48-.14.13-.29.28-.12.55.17.27.75 1.24 1.62 2.01 1.11.99 2.05 1.3 2.32 1.44.27.14.43.12.59-.07.16-.19.68-.79.86-1.06.18-.27.36-.22.6-.13.24.09 1.53.72 1.79.85.26.13.44.19.5.3.06.11.06.62-.18 1.3Z"/></svg>
-        שתף ועדכן בקבוצת "השכרת מטוסים iFLY"
-      </button>
-    </div>
-    <div class="summary-btns">
-      <button class="btn btn-ghost" style="flex:1" onclick="backToChecklist()">‹ חזור לרשימה</button>
-      <button class="btn btn-ghost" style="flex:1" onclick="startNew()">✦ דיווח חדש</button>
-    </div>
-
-    <div class="footer-strip" style="display:flex;align-items:center;justify-content:space-between;padding:5px 14px 8px;">
-      <span style="width:40px;"></span>
-      <span style="cursor:default;">AirCheck+ · iFLY · v1.02.009 · built by eligrt</span>
-      <span style="width:40px;"></span>
-    </div>
-  </div>
-
-  <!-- TAIL SELECT MODAL -->
-  <div id="tailModal" class="modal-overlay">
-    <div class="modal-box">
-      <div class="modal-title">✈ בחר מטוס</div>
-      <div id="tailGrid" style="display:flex;flex-direction:column;gap:14px;margin-bottom:16px;"></div>
-      <button id="tailCancelBtn" class="btn btn-ghost" style="display:none;" onclick="closeTailModal()">ביטול</button>
-    </div>
-  </div>
-
-  <!-- BULK SELECT-ALL POPUP -->
-  <div id="bulkPopup">
-    <div class="bulk-phase-name">כל הפריטים ברשימה</div>
-    <div class="bulk-btns">
-      <button class="bulk-btn confirm" id="bulkConfirmBtn" onclick="bulkConfirm()">סמן הכל ✓</button>
-      <button class="bulk-btn cancel" onclick="closeBulkPopup()">ביטול</button>
-    </div>
+  <div class="note-card">
+    <div class="note-label">📝 הערה לטייס הבא (לא חובה)</div>
+    <textarea id="noteInput" placeholder="לדוגמה: נשכחו משקפי שמש בתא המטען"></textarea>
   </div>
 
 </div>
+
+<div class="share-bar">
+  <button class="btn-wa" onclick="doShare()">
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M12.04 2C6.58 2 2.13 6.45 2.13 11.91c0 1.75.46 3.45 1.32 4.95L2.05 22l5.29-1.39a9.9 9.9 0 0 0 4.7 1.2h.01c5.46 0 9.9-4.45 9.9-9.9C21.95 6.45 17.5 2 12.04 2Zm5.8 14.06c-.24.68-1.4 1.32-1.93 1.4-.5.08-1.12.11-1.8-.11-.42-.13-.96-.31-1.65-.6-2.9-1.25-4.8-4.17-4.94-4.36-.14-.19-1.18-1.57-1.18-3 0-1.43.75-2.13 1.02-2.42.27-.29.58-.36.78-.36h.55c.18 0 .42-.03.65.5.24.56.8 1.94.87 2.08.07.14.11.3.02.49-.09.19-.14.3-.28.46-.14.16-.29.36-.42.48-.14.13-.29.28-.12.55.17.27.75 1.24 1.62 2.01 1.11.99 2.05 1.3 2.32 1.44.27.14.43.12.59-.07.16-.19.68-.79.86-1.06.18-.27.36-.22.6-.13.24.09 1.53.72 1.79.85.26.13.44.19.5.3.06.11.06.62-.18 1.3Z"/></svg>
+    שתף ועדכן בקבוצת "השכרת מטוסים iFLY"
+  </button>
+</div>
+
+<div class="footer" dir="ltr">AirCheck+ · iFLY · v1.03.013 · built by eligrt</div>
+
+<!-- TAIL SELECT MODAL -->
+<div id="tailModal" class="overlay">
+  <div class="overlay-box">
+    <div class="overlay-header">
+      <div class="overlay-header-title">✈ בחר מטוס</div>
+      <button class="overlay-close" onclick="closeTailModal()">ביטול</button>
+    </div>
+    <div class="overlay-content">
+
+      <div class="tail-group">
+        <img class="tail-group-photo" src="https://eligrt.github.io/AirCheck/texan.jpg" alt="טקסן" onerror="this.style.display='none'">
+        <div class="tail-group-label">טקסן · TEXAN</div>
+        <div class="tail-group-row" id="tailRowTexan"></div>
+      </div>
+
+      <div class="tail-group" style="margin-bottom:0;">
+        <img class="tail-group-photo" src="https://eligrt.github.io/AirCheck/harmony.jpg" alt="הרמוני" onerror="this.style.display='none'">
+        <div class="tail-group-label">הרמוני · HARMONY</div>
+        <div class="tail-group-row" id="tailRowHarmony"></div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<div class="toast" id="appToast"></div>
+
 <script>
-// ── DATA ──
 const TAIL_GROUPS=[
-  {label:'טקסן · TEXAN',photo:'./texan.jpg',tails:['HIZ','HYN','HLH']},
-  {label:'הרמוני · HARMONY',photo:'./harmony.jpg',tails:['HSF','HSG']}
+  {rowId:'tailRowTexan',tails:['HIZ','HYN','HLH']},
+  {rowId:'tailRowHarmony',tails:['HSF','HSG']}
 ];
-const TAILS=TAIL_GROUPS.reduce((a,g)=>a.concat(g.tails),[]);
-const GROUP_NAME='מטוס, ניירת וציוד אישי';
-const CL=[
-  {main:'מטוס - תודלק',sub:'אם לא תדלקת - דלג'},
-  {main:'כרטיס דלק - במקום'},
-  {main:'ספר מטוס: סגירת שורה'},
-  {main:'אסוף ציוד אישי',sub:'מצלמות, IPAD, טלפון, מפות וניירת'},
-  {main:'קוקפיט נקי'},
-  {main:'חניה וקשירה'},
-  {main:'כיסוי פיטו: במקום'},
-  {main:'מדיד דלק - נמצא',sub:'אם לא קיים במטוס - אל תאשר, דלג'}
-];
-const VERSION='v1.02.009';
-const KEY='aircheck_ifly_v1';
-
-let status=new Array(CL.length).fill('upcoming');
-let noteText='';
-let current=0;
+const ALL_TAILS=TAIL_GROUPS.reduce((a,g)=>a.concat(g.tails),[]);
 let tail='';
-let _confirmedTimeStr='--:--';
-let groupExpanded=true;
 
-// ── PERSISTENCE (local device only — no server, no Firebase) ──
-function saveState(){
-  try{localStorage.setItem(KEY,JSON.stringify({tail,current,status,noteText}));}catch(e){}
-}
-function loadSavedState(){
-  try{
-    const raw=localStorage.getItem(KEY);
-    if(!raw)return null;
-    return JSON.parse(raw);
-  }catch(e){return null;}
-}
-function clearSavedState(){
-  try{localStorage.removeItem(KEY);}catch(e){}
-}
-function hasSavedProgress(d){
-  return !!(d&&d.tail&&Array.isArray(d.status)&&d.status.some(s=>s!=='upcoming'));
-}
-
-// ── INIT ──
-function init(){
-  updateClock();
-  setInterval(updateClock,15000);
-  buildTailGrid();
-  drawRings();
-
-  const params=new URLSearchParams(location.search);
-  const qTail=(params.get('tail')||'').toUpperCase();
-  const saved=loadSavedState();
-
-  if(hasSavedProgress(saved)){
-    // Progress exists — let the splash screen offer resume/new
-    initSplash(saved);
-    showScreen('screenSplash');
-  }else if(TAILS.includes(qTail)){
-    // Fresh QR entry — skip splash + tail modal entirely
-    selectTail(qTail,true);
-    showScreen('screenChecklist');
-    render();
-  }else{
-    initSplash(null);
-    showScreen('screenSplash');
-  }
-}
-
-function showScreen(id){
-  document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
-  document.getElementById(id).classList.add('active');
-}
-
-function updateClock(){
-  const now=new Date();
-  const h=String(now.getUTCHours()).padStart(2,'0');
-  const m=String(now.getUTCMinutes()).padStart(2,'0');
-  document.querySelectorAll('.js-utc').forEach(el=>el.textContent=h+':'+m);
-}
-
-function hapticTap(){ if(navigator.vibrate)navigator.vibrate(40); }
-
-let toastTimer=null;
-function showToast(msg,duration=2600){
-  let t=document.getElementById('appToast');
-  if(!t){t=document.createElement('div');t.id='appToast';t.className='toast';document.getElementById('app').appendChild(t);}
-  t.textContent=msg;t.style.display='block';t.style.animation='toastIn .2s ease-out';
-  clearTimeout(toastTimer);
-  toastTimer=setTimeout(()=>{t.style.animation='toastOut .3s ease-in forwards';setTimeout(()=>{t.style.display='none';},300);},duration);
-}
-
-// ── SPLASH SCREEN ──
-function initSplash(saved){
-  const resumeCard=document.getElementById('splashResumeCard');
-  const secondaryBtn=document.getElementById('splashSecondaryBtn');
-  const mainBtn=document.getElementById('splashMainBtn');
-  if(hasSavedProgress(saved)){
-    const doneCount=saved.status.filter(s=>s==='done').length;
-    const pct=Math.round(doneCount/CL.length*100);
-    document.getElementById('splashResumeTail').textContent='✈ 4X-'+saved.tail;
-    document.getElementById('splashResumeVal').textContent=doneCount+' / '+CL.length+' פריטים סומנו';
-    document.getElementById('splashRunwayFill').style.width=pct+'%';
-    document.getElementById('splashRunwayPct').textContent=pct+'%';
-    resumeCard.style.display='block';
-    secondaryBtn.style.display='block';
-    mainBtn.innerHTML='<span style="display:inline-block;transform:scaleX(-1)">✈</span> המשך דיווח';
-  }else{
-    resumeCard.style.display='none';
-    secondaryBtn.style.display='none';
-    mainBtn.innerHTML='<span style="display:inline-block;transform:scaleX(-1)">✈</span> התחל דיווח';
-  }
-}
-function splashMainAction(){
-  hapticTap();
-  const saved=loadSavedState();
-  if(hasSavedProgress(saved)){
-    tail=saved.tail;current=saved.current||0;status=saved.status;noteText=saved.noteText||'';
-    document.querySelectorAll('.js-tail-pill').forEach(el=>el.textContent='✈ 4X-'+tail);
-    showScreen('screenChecklist');
-    holdState='idle';resetRunwayBtn();render();
-  }else{
-    showScreen('screenChecklist');
-    holdState='idle';resetRunwayBtn();render();
-    openTailModal(false);
-  }
-}
-function splashSecondaryAction(){
-  hapticTap();
-  clearSavedState();
-  status=new Array(CL.length).fill('upcoming');
-  noteText='';current=0;tail='';
-  showScreen('screenChecklist');
-  openTailModal(false);
-}
-function parkFlight(){
-  saveState();
-  initSplash(loadSavedState());
-  showScreen('screenSplash');
-}
-
-// ── TAIL SELECTION ──
 function buildTailGrid(){
-  const grid=document.getElementById('tailGrid');
-  grid.innerHTML='';
   TAIL_GROUPS.forEach(g=>{
-    const wrap=document.createElement('div');
-    wrap.className='tail-group';
-    const photo=document.createElement('img');
-    photo.className='tail-group-photo';
-    photo.src=g.photo;
-    photo.alt=g.label;
-    photo.onerror=function(){this.style.display='none';};
-    wrap.appendChild(photo);
-    const lbl=document.createElement('div');
-    lbl.className='tail-group-label';
-    lbl.textContent=g.label;
-    wrap.appendChild(lbl);
-    const row=document.createElement('div');
-    row.className='tail-group-row';
+    const row=document.getElementById(g.rowId);
+    row.innerHTML='';
     g.tails.forEach(t=>{
       const b=document.createElement('button');
       b.className='tail-btn';
       b.textContent='4X-'+t;
-      b.onclick=()=>selectTail(t,false);
+      b.onclick=()=>selectTail(t);
       row.appendChild(b);
     });
-    wrap.appendChild(row);
-    grid.appendChild(wrap);
   });
 }
-function openTailModal(cancellable){
-  document.getElementById('tailCancelBtn').style.display='block';
-  document.getElementById('tailModal').classList.add('open');
-}
+function openTailModal(){document.getElementById('tailModal').classList.add('open');}
 function closeTailModal(){document.getElementById('tailModal').classList.remove('open');}
-function selectTail(t,silent){
+function selectTail(t){
   tail=t;
-  document.querySelectorAll('.js-tail-pill').forEach(el=>el.textContent='✈ 4X-'+t);
+  document.getElementById('tailPill').textContent='4X-'+t;
   closeTailModal();
-  saveState();
-  holdState='idle';resetRunwayBtn();render();
-  if(!silent)hapticTap();
 }
 
-// ── DRAW METAL RINGS (kneeboard binder look) ──
-function drawRings(){
-  const g=document.getElementById('ringCoils');
-  if(!g)return;
-  g.innerHTML='';
-  const n=8;
-  for(let k=0;k<n;k++){
-    const x=8+k*((352-8)/7);
-    const ns='http://www.w3.org/2000/svg';
-    const back=document.createElementNS(ns,'path');
-    back.setAttribute('d',`M ${x-3} 30 Q ${x-5} 18 ${x+2} 8 Q ${x+5} 4 ${x+8} 6`);
-    back.setAttribute('fill','none');back.setAttribute('stroke','url(#wireDark)');back.setAttribute('stroke-width','1.6');back.setAttribute('stroke-linecap','round');back.setAttribute('opacity','.9');
-    g.appendChild(back);
-    const hole=document.createElementNS(ns,'ellipse');
-    hole.setAttribute('cx',x);hole.setAttribute('cy','30');hole.setAttribute('rx','5');hole.setAttribute('ry','2.2');hole.setAttribute('fill','url(#paperHole)');
-    g.appendChild(hole);
-    const hole2=document.createElementNS(ns,'ellipse');
-    hole2.setAttribute('cx',x);hole2.setAttribute('cy','30.5');hole2.setAttribute('rx','4');hole2.setAttribute('ry','1.2');hole2.setAttribute('fill','#000');hole2.setAttribute('opacity','.55');
-    g.appendChild(hole2);
-    const front=document.createElementNS(ns,'path');
-    front.setAttribute('d',`M ${x+8} 6 Q ${x+13} 9 ${x+12} 16 Q ${x+10} 24 ${x+5} 30`);
-    front.setAttribute('fill','none');front.setAttribute('stroke','url(#wireGrad)');front.setAttribute('stroke-width','2.1');front.setAttribute('stroke-linecap','round');
-    g.appendChild(front);
-    const hl=document.createElementNS(ns,'circle');
-    hl.setAttribute('cx',x+10);hl.setAttribute('cy','8');hl.setAttribute('r','.9');hl.setAttribute('fill','#fff');hl.setAttribute('opacity','.95');
-    g.appendChild(hl);
-  }
+function toggle(el){
+  if(el.classList.contains('checked')){el.classList.remove('checked');}
+  else{el.classList.remove('skipped');el.classList.add('checked');}
+  updateProgress();
+}
+function skipItem(el){
+  if(el.classList.contains('skipped')){el.classList.remove('skipped');}
+  else{el.classList.remove('checked');el.classList.add('skipped');}
+  updateProgress();
+}
+function updateProgress(){
+  const items=document.querySelectorAll('.item');
+  const total=items.length;
+  const resolved=document.querySelectorAll('.item.checked, .item.skipped').length;
+  const pct=Math.round(resolved/total*100);
+  document.getElementById('progressFill').style.width=pct+'%';
+  document.getElementById('progressPct').textContent=pct+'%';
 }
 
-// ── HOLD-TO-CONFIRM (runway) ──
-const HOLD_MS=300;
-let holdState='idle';
-function startHold(){
-  if(holdState==='flipping'||holdState==='confirmed')return;
-  if(status[current]==='done')return;
-  holdState='holding';
-  document.getElementById('confirmHint').textContent='מחזיק…';
-  const fill=document.getElementById('runwayFill');
-  const plane=document.getElementById('runwayPlane');
-  fill.style.transition='none';fill.style.width='0%';
-  plane.style.transition='none';plane.style.right='50px';
-  fill.classList.remove('releasing','holding','confirmed');
-  plane.classList.remove('holding','confirmed');
-  const btn=document.getElementById('runwayBtn');btn.classList.remove('idle');
-  const btnW=btn.offsetWidth;
-  const startTs=performance.now();
-  function animHold(ts){
-    if(holdState!=='holding')return;
-    const prog=Math.min((ts-startTs)/HOLD_MS,1);
-    const planeRight=50+(btnW-102)*prog;
-    plane.style.right=planeRight+'px';
-    fill.style.width=(planeRight/btnW*100)+'%';
-    if(prog<1){requestAnimationFrame(animHold);}
-    else{
-      holdState='confirmed';
-      fill.style.width='100%';
-      const now=new Date();
-      _confirmedTimeStr=String(now.getUTCHours()).padStart(2,'0')+':'+String(now.getUTCMinutes()).padStart(2,'0');
-      document.getElementById('stampTime').textContent=_confirmedTimeStr+' UTC';
-      document.getElementById('cardStamp').classList.add('visible');
-      hapticTap();
-      document.getElementById('confirmHint').textContent='אושר — שחרר להמשך';
-      document.getElementById('confirmHint').classList.add('confirmed');
-      fill.style.transition='';fill.classList.add('confirmed');
-      plane.style.transition='';plane.style.right='';plane.classList.add('confirmed');
-    }
-  }
-  requestAnimationFrame(animHold);
-}
-function releaseHold(){
-  if(holdState==='confirmed'){
-    holdState='flipping';
-    const card=document.getElementById('cardTop');
-    document.getElementById('cardStamp').classList.remove('visible');
-    setTimeout(()=>{
-      status[current]='done';
-      holdState='idle';
-      resetRunwayBtn(true);
-      card.classList.add('flipping');
-      setTimeout(()=>{advanceAfterDone();card.classList.remove('flipping');},450);
-    },0);
-  }else{cancelHold();}
-}
-function cancelHold(){
-  if(holdState==='flipping'||holdState==='confirmed')return;
-  holdState='idle';
-  resetRunwayBtn();
-  document.getElementById('confirmHint').textContent='לחץ והחזק את המסלול לאישור';
-  document.getElementById('confirmHint').classList.remove('confirmed');
-  document.getElementById('cardStamp').classList.remove('visible');
-}
-function resetRunwayBtn(instant){
-  const fill=document.getElementById('runwayFill');
-  const plane=document.getElementById('runwayPlane');
-  const btn=document.getElementById('runwayBtn');
-  fill.style.transition='none';fill.style.width='0%';plane.style.transition='';plane.style.right='';
-  if(instant){
-    plane.style.transition='none';
-    fill.classList.remove('holding','confirmed','releasing');
-    plane.classList.remove('holding','confirmed');
-    fill.offsetWidth;plane.offsetWidth;
-    fill.style.transition='';plane.style.transition='';
-  }else{
-    fill.classList.remove('holding','confirmed');
-    fill.classList.add('releasing');
-    setTimeout(()=>fill.classList.remove('releasing'),250);
-    plane.classList.remove('holding','confirmed');
-  }
-  btn.classList.add('idle');
+function backToApp(){
+  const from=new URLSearchParams(window.location.search).get('from')||'AirCheck_RD.html';
+  window.location.href=from+'?resume=1';
 }
 
-// ── NAVIGATION ──
-function advanceAfterDone(){
-  saveState();
-  let n=current+1;
-  while(n<CL.length&&status[n]==='done')n++;
-  if(n<CL.length){current=n;render();}
-  else{showSummary();}
-}
-function goBack(){
-  if(current>0){hapticTap();current--;holdState='idle';resetRunwayBtn();render();saveState();}
-}
-function goNext(){
-  hapticTap();
-  if(status[current]!=='done')status[current]='skipped';
-  saveState();
-  if(current<CL.length-1){
-    current++;
-    holdState='idle';resetRunwayBtn();render();
-  }else{
-    showSummary();
-  }
-}
-function uncheckCurrent(){
-  hapticTap();
-  status[current]='skipped';
-  holdState='idle';resetRunwayBtn();
-  render();saveState();
-}
-function jumpToUnchecked(){
-  const idx=status.findIndex(s=>s!=='done');
-  if(idx===-1){showToast('כל הפריטים סומנו');return;}
-  hapticTap();
-  current=idx;holdState='idle';resetRunwayBtn();render();
-}
-function jumpToItem(idx){
-  hapticTap();
-  current=idx;holdState='idle';resetRunwayBtn();render();
+let toastTimer=null;
+function showToast(msg,duration=2600){
+  const t=document.getElementById('appToast');
+  t.textContent=msg;t.style.display='block';
+  clearTimeout(toastTimer);
+  toastTimer=setTimeout(()=>{t.style.display='none';},duration);
 }
 
-// ── BULK SELECT/DESELECT ALL (long-press on progress track) ──
-let lpTimer=null;
-function bindTrackLongPress(){
-  const track=document.getElementById('progressTrack');
-  const start=()=>{lpTimer=setTimeout(()=>{lpTimer=null;openBulkPopup();},500);};
-  const cancel=()=>{if(lpTimer){clearTimeout(lpTimer);lpTimer=null;}};
-  track.addEventListener('mousedown',start);
-  track.addEventListener('touchstart',start,{passive:true});
-  track.addEventListener('mouseup',cancel);
-  track.addEventListener('mouseleave',cancel);
-  track.addEventListener('touchend',cancel);
-  track.addEventListener('touchcancel',cancel);
-}
-function openBulkPopup(){
-  const isComplete=status.every(s=>s==='done');
-  const btn=document.getElementById('bulkConfirmBtn');
-  if(isComplete){btn.textContent='בטל סימון הכל ~';btn.className='bulk-btn warn';}
-  else{btn.textContent='סמן הכל ✓';btn.className='bulk-btn confirm';}
-  const popup=document.getElementById('bulkPopup');
-  popup._isComplete=isComplete;
-  popup.classList.add('open');
-  const appRect=document.getElementById('app').getBoundingClientRect();
-  const trackRect=document.getElementById('progressTrack').getBoundingClientRect();
-  let top=trackRect.bottom-appRect.top+6;
-  let left=trackRect.left-appRect.left;
-  popup.style.top=top+'px';
-  popup.style.left=Math.max(4,Math.min(left,appRect.width-popup.offsetWidth-4))+'px';
-}
-function closeBulkPopup(){document.getElementById('bulkPopup').classList.remove('open');}
-function bulkConfirm(){
-  const isComplete=document.getElementById('bulkPopup')._isComplete;
-  closeBulkPopup();
-  hapticTap();
-  if(isComplete){
-    status=status.map(()=>'skipped');
-    current=0;
-    holdState='idle';resetRunwayBtn();render();saveState();
-  }else{
-    const t=(()=>{const n=new Date();return String(n.getUTCHours()).padStart(2,'0')+':'+String(n.getUTCMinutes()).padStart(2,'0');})();
-    _confirmedTimeStr=t;
-    status=status.map(()=>'done');
-    saveState();
-    showSummary();
-  }
-}
-
-// ── RENDER (checklist screen) ──
-function render(){
-  const navBack=document.getElementById('navBack');
-  navBack.disabled=(current===0);
-
-  const it=CL[current];
-  document.getElementById('cardItemNum').innerHTML='ITEM <b>'+String(current+1).padStart(2,'0')+'</b><span> / '+CL.length+'</span>';
-  document.getElementById('cardMain').textContent=it.main;
-  document.getElementById('cardSub').textContent=it.sub||'';
-  const stamp=document.getElementById('cardStamp');
-  if(status[current]==='done'){
-    stamp.classList.add('visible');
-    document.getElementById('stampTime').textContent=(_confirmedTimeStr||'--:--')+' UTC';
-  }else{
-    stamp.classList.remove('visible');
-  }
-  document.getElementById('confirmHint').textContent=status[current]==='done'?'סומן ✓':'לחץ והחזק את המסלול לאישור';
-  document.getElementById('confirmHint').classList.toggle('confirmed',status[current]==='done');
-  document.getElementById('runwayBtn').classList.toggle('idle',status[current]!=='done');
-
-  document.getElementById('crumbPhase').textContent='דיווח החזרת מטוס';
-  document.getElementById('crumbGroup').textContent=GROUP_NAME;
-
-  const doneCount=status.filter(s=>s==='done').length;
-  const pct=Math.round(doneCount/CL.length*100);
-  document.getElementById('runwayCountLabel').textContent=String(doneCount).padStart(2,'0')+' / '+CL.length;
-  document.getElementById('runwayPctLabel').textContent=pct+'%';
-  const pipsWrap=document.getElementById('segPips');
-  pipsWrap.innerHTML='';
-  const segPct=100/CL.length;
-  CL.forEach((it,i)=>{
-    const s=status[i];
-    let color=null;
-    if(s==='done')color='rgba(31,111,63,.82)';
-    else if(s==='skipped')color='rgba(245,158,11,.82)';
-    if(color){
-      const pip=document.createElement('div');
-      pip.style.cssText='position:absolute;top:0;bottom:0;pointer-events:none;';
-      pip.style.right=(i*segPct)+'%';
-      pip.style.width=segPct+'%';
-      pip.style.background=color;
-      pipsWrap.appendChild(pip);
-    }
-  });
-  document.getElementById('segPlane').style.right=(current*segPct+segPct/2-1)+'%';
-
-  renderTree();
-}
-
-function toggleGroup(){
-  groupExpanded=!groupExpanded;
-  renderTree();
-}
-function renderTree(){
-  const panel=document.getElementById('treePanel');
-  panel.innerHTML='';
-  const gDiv=document.createElement('div');
-  gDiv.className='tree-group';
-  const hdr=document.createElement('div');
-  hdr.className='tree-group-hdr';
-  hdr.onclick=toggleGroup;
-  const gnm=document.createElement('span');
-  gnm.className='tree-gr-name';
-  gnm.textContent=GROUP_NAME;
-  const chevron=document.createElement('span');
-  chevron.className='tree-gr-chevron';
-  chevron.textContent=groupExpanded?'▼':'►';
-  hdr.appendChild(gnm);hdr.appendChild(chevron);
-  gDiv.appendChild(hdr);
-  if(groupExpanded){
-    CL.forEach((it,i)=>{
-      const s=status[i]||'upcoming';
-      const isCur=i===current;
-      const row=document.createElement('div');
-      row.className='tree-item';
-      row.onclick=()=>jumpToItem(i);
-      const mark=document.createElement('span');
-      mark.className='tree-mark '+(s==='done'?'done':isCur?'cur':s==='skipped'?'skipped':'upcoming');
-      mark.textContent=s==='done'?'✓':isCur?'●':s==='skipped'?'~':'○';
-      const txt=document.createElement('div');
-      txt.className='tree-item-text '+(s==='done'?'done':isCur?'cur':s==='skipped'?'skipped':'upcoming');
-      txt.textContent=it.main;
-      row.appendChild(mark);row.appendChild(txt);
-      gDiv.appendChild(row);
-    });
-  }
-  panel.appendChild(gDiv);
-}
-
-// ── SUMMARY SCREEN ──
-function showSummary(){
-  showScreen('screenSummary');
-  const doneCount=status.filter(s=>s==='done').length;
-  const skippedCount=status.filter(s=>s==='skipped').length;
-  document.getElementById('summaryMeta').textContent='4X-'+(tail||'—')+' · '+doneCount+'/'+CL.length+' פריטים אושרו';
-  document.getElementById('summaryStampBox').style.borderColor=skippedCount>0?'var(--amber)':'var(--cleared)';
-  document.getElementById('summaryStampBox').style.color=skippedCount>0?'#92600a':'var(--cleared)';
-
-  const list=document.getElementById('summaryList');
-  list.innerHTML='';
-  const gHdr=document.createElement('div');
-  gHdr.className='tree-gr-name';
-  gHdr.textContent=GROUP_NAME;
-  list.appendChild(gHdr);
-  CL.forEach((it,i)=>{
-    const s=status[i];
-    const row=document.createElement('div');
-    row.className='summary-row';
-    const mark=document.createElement('span');
-    mark.className='summary-row-mark '+(s==='done'?'done':'skipped');
-    mark.textContent=s==='done'?'✓':'~';
-    const txt=document.createElement('span');
-    txt.className='summary-row-text '+(s==='done'?'done':'skipped');
-    txt.textContent=it.main;
-    row.appendChild(mark);row.appendChild(txt);
-    list.appendChild(row);
-  });
-
-  document.getElementById('summaryNoteInput').value=noteText;
-}
-function backToChecklist(){
-  const idx=status.findIndex(s=>s!=='done');
-  current=(idx===-1)?CL.length-1:idx;
-  showScreen('screenChecklist');
-  holdState='idle';resetRunwayBtn();render();
-}
-function startNew(){
-  clearSavedState();
-  status=new Array(CL.length).fill('upcoming');
-  noteText='';
-  current=0;
-  holdState='idle';
-  resetRunwayBtn(true);
-  showScreen('screenChecklist');
-  render();
-  openTailModal(false);
-}
-
-// ── SHARE ──
 function doShare(){
-  noteText=(document.getElementById('summaryNoteInput').value||'').trim();
-  saveState();
+  const noteText=(document.getElementById('noteInput').value||'').trim();
   const now=new Date();
   const ltStr=String(now.getHours()).padStart(2,'0')+':'+String(now.getMinutes()).padStart(2,'0');
   const utcStr=String(now.getUTCHours()).padStart(2,'0')+':'+String(now.getUTCMinutes()).padStart(2,'0');
@@ -969,8 +361,12 @@ function doShare(){
   lines.push('🛩️ 4X-'+(tail||'—'));
   lines.push('🕐 LT '+ltStr+' (UTC '+utcStr+')');
   lines.push('────────────────────');
-  CL.forEach((it,i)=>{
-    lines.push((status[i]==='done'?'✅':'🟡')+' '+it.main);
+  document.querySelectorAll('.item').forEach(it=>{
+    const textEl=it.querySelector('.item-text');
+    const subEl=textEl.querySelector('.item-sub');
+    const mainText=subEl?textEl.firstChild.textContent.trim():textEl.textContent.trim();
+    const mark=it.classList.contains('checked')?'✅':'🟡';
+    lines.push(mark+' '+mainText);
   });
   lines.push('────────────────────');
   if(noteText){
@@ -978,22 +374,31 @@ function doShare(){
     lines.push('────────────────────');
   }
   lines.push('Generated by AirCheck+ · iFLY');
-  lines.push('Rental Return Report · '+VERSION);
+  lines.push('Rental Return Report · v1.03.013');
   lines.push('Built by eligrt');
   const text=lines.join('\n');
   if(navigator.share){
-    navigator.share({title:'AirCheck+ | iFLY',text}).catch(()=>showShareFallback(text));
+    navigator.share({title:'AirCheck+ | iFLY',text}).catch(()=>shareFallback(text));
   }else{
-    showShareFallback(text);
+    shareFallback(text);
   }
 }
-function showShareFallback(text){
+function shareFallback(text){
   if(navigator.clipboard){navigator.clipboard.writeText(text).catch(()=>{});}
   showToast('הטקסט הועתק ללוח');
 }
 
-document.addEventListener('DOMContentLoaded',()=>{init();bindTrackLongPress();});
-
+(function init(){
+  buildTailGrid();
+  const params=new URLSearchParams(window.location.search);
+  const qTail=(params.get('tail')||'').toUpperCase();
+  if(ALL_TAILS.includes(qTail)){
+    selectTail(qTail);
+  }else{
+    openTailModal();
+  }
+})();
 </script>
+
 </body>
 </html>
