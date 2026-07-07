@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <!-- ═══════════════════════════════════════
-     AirCheck+ · v2.09.125 · built by eligrt
+     AirCheck+ · v2.09.127 · built by eligrt
      ═══════════════════════════════════════ -->
 <html lang="he" dir="rtl">
 <head>
@@ -659,7 +659,7 @@ html,body{height:100%;background:#1a1a1c;font-family:var(--font-ui);color:var(--
     <div class="splash-footer-wrap">
       <div class="footer-strip" style="display:flex;align-items:center;justify-content:space-between;padding:5px 14px 8px;">
         <span class="footer-refresh" onclick="reloadApp()">רענון</span>
-        <span id="versionTap" style="cursor:default;">AirCheck+ · v2.09.125 · built by eligrt</span>
+        <span id="versionTap" style="cursor:default;">AirCheck+ · v2.09.127 · built by eligrt</span>
         <span style="width:40px;"></span>
       </div>
     </div>
@@ -779,7 +779,7 @@ html,body{height:100%;background:#1a1a1c;font-family:var(--font-ui);color:var(--
     <div class="tree-panel" id="treePanel"></div>
     <div class="footer-strip" style="display:flex;align-items:center;justify-content:space-between;padding:5px 14px 8px;">
       <span class="footer-refresh" onclick="reloadApp()">רענון</span>
-      <span id="versionTap" style="cursor:default;">AirCheck+ · v2.09.125 · built by eligrt</span>
+      <span id="versionTap" style="cursor:default;">AirCheck+ · v2.09.127 · built by eligrt</span>
       <span style="width:40px;"></span>
     </div>
   </div>
@@ -809,7 +809,7 @@ html,body{height:100%;background:#1a1a1c;font-family:var(--font-ui);color:var(--
       <button class="btn btn-ghost" onclick="parkPhaseAndExit()">סגור - אמשיך מאוחר יותר</button>
       <div style="margin-top:10px;text-align:center;display:flex;justify-content:center;gap:16px;">
         <span onclick="openShareModalPhase()" style="font-size:13px;color:var(--asphalt);opacity:.6;cursor:pointer;display:inline-flex;align-items:center;gap:5px;border-bottom:1px dashed currentColor;padding-bottom:1px;"><i class="ti ti-share" style="font-size:13px;"></i> שתף סיכום שלב</span>
-        <span id="phaseOverlayShareLean" style="display:none;font-size:13px;color:var(--asphalt);opacity:.6;cursor:pointer;align-items:center;gap:5px;border-bottom:1px dashed currentColor;padding-bottom:1px;" onclick="doShareLean()"><i class="ti ti-share" style="font-size:13px;"></i> דיווח נחיתה</span>
+        <span id="phaseOverlayShareLean" style="display:none;font-size:14px;font-weight:700;color:var(--ink);cursor:pointer;align-items:center;gap:5px;border-bottom:2px solid currentColor;padding-bottom:1px;" onclick="doShareLean()"><i class="ti ti-send-2" style="font-size:14px;"></i> דיווח נחיתה</span>
       </div>
     </div>
   </div>
@@ -860,7 +860,7 @@ html,body{height:100%;background:#1a1a1c;font-family:var(--font-ui);color:var(--
 
     <div class="footer-strip" style="display:flex;align-items:center;justify-content:space-between;padding:5px 14px 8px;">
       <span style="width:40px;"></span>
-      <span id="versionTap" style="cursor:default;">AirCheck+ · v2.09.125 · built by eligrt</span>
+      <span id="versionTap" style="cursor:default;">AirCheck+ · v2.09.127 · built by eligrt</span>
       <span style="width:40px;"></span>
     </div>
   </div>
@@ -974,7 +974,7 @@ html,body{height:100%;background:#1a1a1c;font-family:var(--font-ui);color:var(--
     </div>
     <div class="footer-strip" style="display:flex;align-items:center;justify-content:space-between;padding:5px 14px 8px;">
       <span class="footer-refresh" onclick="reloadApp()">רענון</span>
-      <span id="versionTap" style="cursor:default;">AirCheck+ · v2.09.125 · built by eligrt</span>
+      <span id="versionTap" style="cursor:default;">AirCheck+ · v2.09.127 · built by eligrt</span>
       <span style="width:40px;"></span>
     </div>
   </div>
@@ -998,7 +998,7 @@ html,body{height:100%;background:#1a1a1c;font-family:var(--font-ui);color:var(--
     <div class="editor-list" id="editorList"></div>
     <div class="footer-strip" style="display:flex;align-items:center;justify-content:space-between;padding:5px 14px 8px;">
       <span class="footer-refresh" onclick="reloadApp()">רענון</span>
-      <span id="versionTap" style="cursor:default;">AirCheck+ · v2.09.125 · built by eligrt</span>
+      <span id="versionTap" style="cursor:default;">AirCheck+ · v2.09.127 · built by eligrt</span>
       <span style="width:40px;"></span>
     </div>
   </div>
@@ -1332,18 +1332,18 @@ function releaseHold(){
       holdState='idle';
       resetRunwayBtn(true);
       const newPhase=CL[current]?CL[current].phase:null;
+      const anyUpcoming=CL.some((_,j)=>!status[j]||status[j]==='upcoming');
+      if(!anyUpcoming){
+        // nothing left unaddressed anywhere in the flight — end of list
+        card.classList.remove('flipping');
+        const skippedCountAll=CL.filter((_,j)=>status[j]==='skipped').length;
+        showPhaseOverlay(CL[CL.length-1].phase,null,skippedCountAll,true);
+        return;
+      }
       const prevPhaseObj=PHASE_IDX[prevPhase];
       if(prevPhaseObj){
         const phAllItems=prevPhaseObj.groups.reduce((a,g)=>a.concat(g.items),[]);
         const pAllGreen=phAllItems.every(j=>status[j]==='done');
-        const allDone=CL.every((_,j)=>status[j]==='done'||status[j]==='skipped');
-        const anySkipped=CL.some((_,j)=>status[j]==='skipped');
-        const anyUpcoming=CL.some((_,j)=>!status[j]||status[j]==='upcoming');
-        if(allDone&&!anySkipped&&!anyUpcoming){
-          card.classList.remove('flipping');
-          showAllDoneOverlay(CL[CL.length-1].phase);
-          return;
-        }
         const phSkippedCount=phAllItems.filter(j=>status[j]==='skipped').length;
         if(phSkippedCount>0&&newPhase&&newPhase!==prevPhase){
           card.classList.remove('flipping');
@@ -3007,7 +3007,13 @@ function showPhaseSkippedPopup(phaseName,skippedCount){
 }
 function phaseOverlayGoBack(){
   const phaseName=document.getElementById('phaseOverlay')._skipPhaseName;
+  const isEnd=document.getElementById('phaseOverlay')._isEndOfList;
   dismissPhaseOverlay();
+  if(isEnd){
+    const idx=CL.findIndex((_,j)=>status[j]==='skipped');
+    if(idx!==-1){current=idx;holdState='idle';resetRunwayBtn();render();}
+    return;
+  }
   const phaseObj=PHASE_IDX[phaseName];
   if(phaseObj){
     const phAllItems=phaseObj.groups.reduce((a,g)=>a.concat(g.items),[]);
