@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <!-- ═══════════════════════════════════════
-     AirCheck+ · v2.09.123 · built by eligrt
+     AirCheck+ · v2.09.125 · built by eligrt
      ═══════════════════════════════════════ -->
 <html lang="he" dir="rtl">
 <head>
@@ -659,7 +659,7 @@ html,body{height:100%;background:#1a1a1c;font-family:var(--font-ui);color:var(--
     <div class="splash-footer-wrap">
       <div class="footer-strip" style="display:flex;align-items:center;justify-content:space-between;padding:5px 14px 8px;">
         <span class="footer-refresh" onclick="reloadApp()">רענון</span>
-        <span id="versionTap" style="cursor:default;">AirCheck+ · v2.09.123 · built by eligrt</span>
+        <span id="versionTap" style="cursor:default;">AirCheck+ · v2.09.125 · built by eligrt</span>
         <span style="width:40px;"></span>
       </div>
     </div>
@@ -779,7 +779,7 @@ html,body{height:100%;background:#1a1a1c;font-family:var(--font-ui);color:var(--
     <div class="tree-panel" id="treePanel"></div>
     <div class="footer-strip" style="display:flex;align-items:center;justify-content:space-between;padding:5px 14px 8px;">
       <span class="footer-refresh" onclick="reloadApp()">רענון</span>
-      <span id="versionTap" style="cursor:default;">AirCheck+ · v2.09.123 · built by eligrt</span>
+      <span id="versionTap" style="cursor:default;">AirCheck+ · v2.09.125 · built by eligrt</span>
       <span style="width:40px;"></span>
     </div>
   </div>
@@ -807,7 +807,10 @@ html,body{height:100%;background:#1a1a1c;font-family:var(--font-ui);color:var(--
       <button id="phaseOverlaySummaryBtn" class="btn btn-ink" style="display:none;margin-bottom:8px" onclick="showSummaryMidFlight()">הצג סיכום טיסה ›</button>
       <button id="phaseOverlayGoBackBtn" class="btn btn-amber-outline" style="display:none;margin-bottom:8px;" onclick="phaseOverlayGoBack()">חזור לפריטים הפתוחים</button>
       <button class="btn btn-ghost" onclick="parkPhaseAndExit()">סגור - אמשיך מאוחר יותר</button>
-      <div style="margin-top:10px;text-align:center;"><span onclick="openShareModalPhase()" style="font-size:13px;color:var(--asphalt);opacity:.6;cursor:pointer;display:inline-flex;align-items:center;gap:5px;border-bottom:1px dashed currentColor;padding-bottom:1px;"><i class="ti ti-share" style="font-size:13px;"></i> שתף סיכום שלב</span></div>
+      <div style="margin-top:10px;text-align:center;display:flex;justify-content:center;gap:16px;">
+        <span onclick="openShareModalPhase()" style="font-size:13px;color:var(--asphalt);opacity:.6;cursor:pointer;display:inline-flex;align-items:center;gap:5px;border-bottom:1px dashed currentColor;padding-bottom:1px;"><i class="ti ti-share" style="font-size:13px;"></i> שתף סיכום שלב</span>
+        <span id="phaseOverlayShareLean" style="display:none;font-size:13px;color:var(--asphalt);opacity:.6;cursor:pointer;align-items:center;gap:5px;border-bottom:1px dashed currentColor;padding-bottom:1px;" onclick="doShareLean()"><i class="ti ti-share" style="font-size:13px;"></i> דיווח נחיתה</span>
+      </div>
     </div>
   </div>
 
@@ -843,23 +846,13 @@ html,body{height:100%;background:#1a1a1c;font-family:var(--font-ui);color:var(--
     <div class="summary-btns" style="flex-direction:column;">
       <div style="display:flex;gap:8px;">
         <button class="btn btn-ghost" style="flex:1" onclick="showScreen('screenChecklist');render()">‹ חזור לרשימה</button>
-        <button class="btn btn-ink" style="flex:1" onclick="openNewFlightModal()">✦ טיסה חדשה</button>
+        <button class="btn btn-ink" style="flex:1" onclick="closeSummaryToSplash()">✕ סגור</button>
       </div>
       <div class="share-split" id="shareSplitBtn">
         <div class="share-split-top">
-          <div class="share-split-main" onclick="doShareDirect()">
+          <div class="share-split-main" onclick="doShare()">
             <i class="ti ti-share" style="font-size:14px;flex-shrink:0;"></i>
-            שתף <span class="share-mode-tag" onclick="event.stopPropagation();toggleSharePicker()"><span class="share-mode-tag-text" id="shareModeTag">דיווח נחיתה</span><i class="ti ti-chevron-down"></i></span>
-          </div>
-        </div>
-        <div class="share-picker-inner" id="sharePickerInner">
-          <div class="share-picker-label">בחר מה לשתף</div>
-          <div class="share-picker-opts">
-            <button class="share-opt-btn cur" id="shareOptLean" onclick="pickShareMode('lean','דיווח נחיתה',this)">דיווח נחיתה</button>
-            <span class="share-opt-sep">·</span>
-            <button class="share-opt-btn" id="shareOptPhase" onclick="pickShareMode('phase','שלב אחרון',this)">שלב אחרון</button>
-            <span class="share-opt-sep">·</span>
-            <button class="share-opt-btn" id="shareOptFull" onclick="pickShareMode('full','צ׳קליסט מלא',this)">צ׳קליסט מלא</button>
+            שתף צ׳קליסט מלא
           </div>
         </div>
       </div>
@@ -867,7 +860,7 @@ html,body{height:100%;background:#1a1a1c;font-family:var(--font-ui);color:var(--
 
     <div class="footer-strip" style="display:flex;align-items:center;justify-content:space-between;padding:5px 14px 8px;">
       <span style="width:40px;"></span>
-      <span id="versionTap" style="cursor:default;">AirCheck+ · v2.09.123 · built by eligrt</span>
+      <span id="versionTap" style="cursor:default;">AirCheck+ · v2.09.125 · built by eligrt</span>
       <span style="width:40px;"></span>
     </div>
   </div>
@@ -981,7 +974,7 @@ html,body{height:100%;background:#1a1a1c;font-family:var(--font-ui);color:var(--
     </div>
     <div class="footer-strip" style="display:flex;align-items:center;justify-content:space-between;padding:5px 14px 8px;">
       <span class="footer-refresh" onclick="reloadApp()">רענון</span>
-      <span id="versionTap" style="cursor:default;">AirCheck+ · v2.09.123 · built by eligrt</span>
+      <span id="versionTap" style="cursor:default;">AirCheck+ · v2.09.125 · built by eligrt</span>
       <span style="width:40px;"></span>
     </div>
   </div>
@@ -1005,7 +998,7 @@ html,body{height:100%;background:#1a1a1c;font-family:var(--font-ui);color:var(--
     <div class="editor-list" id="editorList"></div>
     <div class="footer-strip" style="display:flex;align-items:center;justify-content:space-between;padding:5px 14px 8px;">
       <span class="footer-refresh" onclick="reloadApp()">רענון</span>
-      <span id="versionTap" style="cursor:default;">AirCheck+ · v2.09.123 · built by eligrt</span>
+      <span id="versionTap" style="cursor:default;">AirCheck+ · v2.09.125 · built by eligrt</span>
       <span style="width:40px;"></span>
     </div>
   </div>
@@ -1419,11 +1412,7 @@ function goNext(){
     const skippedCount=CL.filter((_,j)=>status[j]==='skipped').length;
     const lastPhase=CL[CL.length-1].phase;
     render();
-    if(skippedCount===0){
-      showAllDoneOverlay(lastPhase);
-    } else {
-      showPhaseOverlay(lastPhase,null,skippedCount,true);
-    }
+    showPhaseOverlay(lastPhase,null,skippedCount,true);
   }
 }
 function jumpToUnchecked(){
@@ -1490,7 +1479,12 @@ function bulkConfirm(){
     // check if all done → summary
     const allDone=CL.every((_,j)=>status[j]==='done');
     holdState='idle';resetRunwayBtn();
-    if(allDone){showAllDoneOverlay(bulkPhaseName);return;}
+    if(allDone){
+      render();
+      const skippedCountAll=CL.filter((_,j)=>status[j]==='skipped').length;
+      showPhaseOverlay(bulkPhaseName,null,skippedCountAll,true);
+      return;
+    }
     // show phase-end overlay (sets _phaseOverlayIdx for share)
     const nextPhaseName=CL[current]?CL[current].phase:null;
     if(nextPhaseName&&nextPhaseName!==bulkPhaseName){render();showPhaseOverlay(bulkPhaseName,nextPhaseName);return;}
@@ -1516,6 +1510,7 @@ function showPhaseOverlay(donePhaseName,nextPhaseName,skippedCount,isEndOfList){
   document.getElementById('phaseOverlayContinueBtn').style.display=isEndOfList?'none':'';
   document.getElementById('phaseOverlaySummaryBtn').style.display=isEndOfList?'':'none';
   document.getElementById('phaseOverlayGoBackBtn').style.display=hasSkipped?'block':'none';
+  document.getElementById('phaseOverlayShareLean').style.display=isEndOfList?'inline-flex':'none';
   document.getElementById('phaseOverlay')._skipPhaseName=donePhaseName;
   document.getElementById('phaseOverlay')._isEndOfList=!!isEndOfList;
   document.getElementById('phaseOverlay').classList.add('open');
@@ -1523,26 +1518,6 @@ function showPhaseOverlay(donePhaseName,nextPhaseName,skippedCount,isEndOfList){
 function showSummaryMidFlight(){
   dismissPhaseOverlay();
   showAllDoneOverlay(CL[CL.length-1].phase,true);
-}
-let _shareMode='lean';
-function toggleSharePicker(){
-  const picker=document.getElementById('sharePickerInner');
-  const split=document.getElementById('shareSplitBtn');
-  picker.classList.toggle('open');
-  split.classList.toggle('open');
-}
-function pickShareMode(mode,label,el){
-  _shareMode=mode;
-  document.getElementById('shareModeTag').textContent=label;
-  document.querySelectorAll('.share-opt-btn').forEach(b=>b.classList.remove('cur'));
-  el.classList.add('cur');
-  document.getElementById('sharePickerInner').classList.remove('open');
-  document.getElementById('shareSplitBtn').classList.remove('open');
-}
-function doShareDirect(){
-  if(_shareMode==='lean') doShareLean();
-  else if(_shareMode==='phase') doShareLastPhase();
-  else doShare();
 }
 function doShareLean(){
   const leanItems=CL.filter((_,i)=>CL[i].lean&&(status[i]==='done'||status[i]==='skipped'));
@@ -1567,9 +1542,6 @@ function doShareLean(){
   if(navigator.share){navigator.share({title:'AirCheck+ | דיווח נחיתה',text}).catch(()=>showShareFallback(text));}
   else{showShareFallback(text);}
 }
-function doShareLastPhase(){
-  doShare(PHASES.length-1,true);
-}
 function showShareFallback(text){if(navigator.clipboard){navigator.clipboard.writeText(text).catch(()=>{});}showToast('הטקסט הועתק ללוח');}
 function openShareModalPhase(){doShare(_phaseOverlayIdx,true);}
 function dismissPhaseOverlay(){document.getElementById('phaseOverlay').classList.remove('open');}
@@ -1581,6 +1553,7 @@ function continuePhaseNow(){
   setTimeout(()=>{render();card.classList.remove('flipping');},450);
 }
 function parkPhaseAndExit(){dismissPhaseOverlay();saveState();showScreen('screenSplash');initSplash();}
+function closeSummaryToSplash(){clearState();showScreen('screenSplash');initSplash();}
 function showAllDoneOverlay(lastPhase,noCount){
   const done=Object.values(status).filter(s=>s==='done').length;
   const skipped=Object.values(status).filter(s=>s==='skipped').length;
