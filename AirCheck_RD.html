@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <!-- ═══════════════════════════════════════
-     AirCheck+ · v2.09.128 · built by eligrt
+     AirCheck+ · v2.09.129 · built by eligrt
      ═══════════════════════════════════════ -->
 <html lang="he" dir="rtl">
 <head>
@@ -659,7 +659,7 @@ html,body{height:100%;background:#1a1a1c;font-family:var(--font-ui);color:var(--
     <div class="splash-footer-wrap">
       <div class="footer-strip" style="display:flex;align-items:center;justify-content:space-between;padding:5px 14px 8px;">
         <span class="footer-refresh" onclick="reloadApp()">רענון</span>
-        <span id="versionTap" style="cursor:default;">AirCheck+ · v2.09.128 · built by eligrt</span>
+        <span id="versionTap" style="cursor:default;">AirCheck+ · v2.09.129 · built by eligrt</span>
         <span style="width:40px;"></span>
       </div>
     </div>
@@ -779,7 +779,7 @@ html,body{height:100%;background:#1a1a1c;font-family:var(--font-ui);color:var(--
     <div class="tree-panel" id="treePanel"></div>
     <div class="footer-strip" style="display:flex;align-items:center;justify-content:space-between;padding:5px 14px 8px;">
       <span class="footer-refresh" onclick="reloadApp()">רענון</span>
-      <span id="versionTap" style="cursor:default;">AirCheck+ · v2.09.128 · built by eligrt</span>
+      <span id="versionTap" style="cursor:default;">AirCheck+ · v2.09.129 · built by eligrt</span>
       <span style="width:40px;"></span>
     </div>
   </div>
@@ -860,7 +860,7 @@ html,body{height:100%;background:#1a1a1c;font-family:var(--font-ui);color:var(--
 
     <div class="footer-strip" style="display:flex;align-items:center;justify-content:space-between;padding:5px 14px 8px;">
       <span style="width:40px;"></span>
-      <span id="versionTap" style="cursor:default;">AirCheck+ · v2.09.128 · built by eligrt</span>
+      <span id="versionTap" style="cursor:default;">AirCheck+ · v2.09.129 · built by eligrt</span>
       <span style="width:40px;"></span>
     </div>
   </div>
@@ -974,7 +974,7 @@ html,body{height:100%;background:#1a1a1c;font-family:var(--font-ui);color:var(--
     </div>
     <div class="footer-strip" style="display:flex;align-items:center;justify-content:space-between;padding:5px 14px 8px;">
       <span class="footer-refresh" onclick="reloadApp()">רענון</span>
-      <span id="versionTap" style="cursor:default;">AirCheck+ · v2.09.128 · built by eligrt</span>
+      <span id="versionTap" style="cursor:default;">AirCheck+ · v2.09.129 · built by eligrt</span>
       <span style="width:40px;"></span>
     </div>
   </div>
@@ -998,7 +998,7 @@ html,body{height:100%;background:#1a1a1c;font-family:var(--font-ui);color:var(--
     <div class="editor-list" id="editorList"></div>
     <div class="footer-strip" style="display:flex;align-items:center;justify-content:space-between;padding:5px 14px 8px;">
       <span class="footer-refresh" onclick="reloadApp()">רענון</span>
-      <span id="versionTap" style="cursor:default;">AirCheck+ · v2.09.128 · built by eligrt</span>
+      <span id="versionTap" style="cursor:default;">AirCheck+ · v2.09.129 · built by eligrt</span>
       <span style="width:40px;"></span>
     </div>
   </div>
@@ -1477,8 +1477,8 @@ function bulkConfirm(){
     let n=lastInPhase+1;
     while(n<CL.length&&status[n]==='done')n++;
     current=n<CL.length?n:lastInPhase;
-    // check if all done → summary
-    const allDone=CL.every((_,j)=>status[j]==='done');
+    // check if all resolved (done or skipped) → summary
+    const allDone=CL.every((_,j)=>status[j]==='done'||status[j]==='skipped');
     holdState='idle';resetRunwayBtn();
     if(allDone){
       render();
@@ -1515,6 +1515,14 @@ function showPhaseOverlay(donePhaseName,nextPhaseName,skippedCount,isEndOfList){
   document.getElementById('phaseOverlay')._skipPhaseName=donePhaseName;
   document.getElementById('phaseOverlay')._isEndOfList=!!isEndOfList;
   document.getElementById('phaseOverlay').classList.add('open');
+  // Flight completed — fires once per flight, at the true end-of-list point regardless of
+  // which path got here (goNext, releaseHold, or bulkConfirm), skipped items included
+  if(isEndOfList&&!window._flightCounted){
+    window._flightCounted=true;
+    const _newCc=parseInt(localStorage.getItem('aircheck_completed_count')||'0')+1;
+    localStorage.setItem('aircheck_completed_count',_newCc);
+    if(window.syncToFirebase)window.syncToFirebase('flightComplete');
+  }
 }
 function showSummaryMidFlight(){
   dismissPhaseOverlay();
@@ -1598,13 +1606,8 @@ function showAllDoneOverlay(lastPhase,noCount){
       });
     });
   });
-  // Increment completed counter — only once per flight, not when called mid-flight for share
-  if(!noCount&&!window._flightCounted){
-    window._flightCounted=true;
-    const _newCc=parseInt(localStorage.getItem('aircheck_completed_count')||'0')+1;
-    localStorage.setItem('aircheck_completed_count',_newCc);
-    if(window.syncToFirebase)window.syncToFirebase();
-  }
+  // Completed-flight counter now lives in showPhaseOverlay() (the true end-of-list point);
+  // by the time this summary screen renders, it's already been incremented there.
   const cc=parseInt(localStorage.getItem('aircheck_completed_count')||'0');
   const prevCc=cc-1;
   // Rank
@@ -1738,7 +1741,7 @@ function showEditorLegend(){
 function startNew(){window._flightCounted=false;
   const fc=parseInt(localStorage.getItem('aircheck_flight_count')||'0')+1;
   localStorage.setItem('aircheck_flight_count',fc);
-  if(window.syncToFirebase)window.syncToFirebase();
+  if(window.syncToFirebase)window.syncToFirebase('flightStart');
   clearState();holdState='idle';resetRunwayBtn();showScreen('screenChecklist');render();
 }
 // ── SETTINGS ──
@@ -3746,7 +3749,7 @@ function splashSecondaryAction(){
 
   // ── SINGLE SYNC FUNCTION ──
   // Called from: app open, station change, new flight, flight complete, editor save
-  async function syncToFirebase(){
+  async function syncToFirebase(eventType){
     try{
       const deviceId=getDeviceId();
       const now=Date.now();
@@ -3761,6 +3764,14 @@ function splashSecondaryAction(){
       const profiles=typeof getProfiles==='function'?getProfiles().profiles:[];
       const profileCount=profiles.length||1;
       const listType=getListType();
+
+      // App version — parsed from the footer, same source used elsewhere in the app
+      const appVersion=(document.getElementById('versionTap')?.textContent||'').replace('AirCheck+ · ','').replace(' · built by eligrt','')||existing.appVersion||'';
+
+      // Event-specific timestamps — only the field matching this call's eventType updates, others carry forward
+      const lastOpenedAt=eventType==='open'?now:(existing.lastOpenedAt||null);
+      const lastFlightStartedAt=eventType==='flightStart'?now:(existing.lastFlightStartedAt||null);
+      const lastFlightCompletedAt=eventType==='flightComplete'?now:(existing.lastFlightCompletedAt||null);
 
       // METAR — this app no longer reads/writes METAR usage data itself.
       // The standalone AirCheck_METAR.html page is the sole owner of these
@@ -3797,6 +3808,7 @@ function splashSecondaryAction(){
       await set(pilotRef,{
         firstSeen: existing.firstSeen||now,
         lastSeen: now,
+        appVersion, lastOpenedAt, lastFlightStartedAt, lastFlightCompletedAt,
         os, listType, profileCount,
         metarUsed, metarStation, metarCustomIcao, metarStationCounts,
         externalLinkUsed, externalLinkCounts, externalLinkLabels,
@@ -3856,7 +3868,7 @@ function splashSecondaryAction(){
   };
 
   // Sync on load
-  syncToFirebase();
+  syncToFirebase('open');
 </script>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js" defer></script>
