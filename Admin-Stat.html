@@ -41,8 +41,8 @@ body{
 .headline-num{font-family:var(--font-mono);font-size:34px;font-weight:700;color:var(--ink);direction:ltr;}
 .headline-label{font-size:13px;color:var(--ink-muted);}
 
-.tabbar{display:flex;background:var(--paper-hi);border-bottom:1px solid var(--paper-edge);margin-top:8px;}
-.tab-btn{flex:1;padding:10px 4px;background:transparent;border:none;border-bottom:2px solid transparent;font-family:var(--font-ui);font-size:13px;color:var(--ink-faint);cursor:pointer;}
+.tabbar{display:flex;background:var(--paper-hi);border-bottom:1px solid var(--paper-edge);margin-top:8px;direction:ltr;}
+.tab-btn{flex:1;padding:8px 4px;background:transparent;border:none;border-bottom:2px solid transparent;font-family:var(--font-ui);font-size:12px;line-height:1.3;color:var(--ink-faint);cursor:pointer;text-align:center;}
 .tab-btn.active{background:var(--paper);border-bottom-color:var(--gold);color:var(--ink);font-weight:700;}
 .tab-btn-inner{position:relative;display:inline-block;}
 .tab-dot{position:absolute;top:-2px;right:-10px;width:6px;height:6px;border-radius:50%;background:var(--amber);}
@@ -92,7 +92,46 @@ body{
 .action-chevron{font-size:20px;color:var(--ink-faint);line-height:1;}
 
 .loading{text-align:center;padding:40px 20px;color:var(--ink-muted);font-size:13px;}
-.footer{text-align:center;padding:12px;font-family:var(--font-mono);font-size:9px;color:var(--ink-faint);letter-spacing:.1em;text-transform:uppercase;border-top:1px solid var(--gold-lite);}
+.icon-refresh{display:inline-flex;align-items:center;gap:5px;cursor:pointer;}
+.icon-refresh .refresh-glyph{font-size:13px;color:var(--ink-muted);}
+.icon-refresh:active .refresh-glyph{opacity:.5;}
+.icon-refresh.spinning .refresh-glyph{animation:refreshSpin .6s linear;}
+
+/* ── DEVICES TAB — LTR data table, grid-aligned columns ── */
+.dev-wrap{direction:ltr;}
+.dev-wrap .bar-fill{margin-left:0;margin-right:auto;}
+.dev-legend{font-family:var(--font-mono);font-size:9px;color:var(--ink-faint);margin-bottom:8px;}
+.group{background:#fff;border:1px solid var(--paper-edge);border-radius:6px;margin-bottom:10px;overflow:hidden;}
+.group-hdr{display:flex;justify-content:space-between;align-items:center;padding:10px 12px;cursor:pointer;background:var(--paper-hi);}
+.group-hdr-left{display:flex;align-items:center;gap:8px;}
+.group-name{font-size:12px;font-weight:700;color:var(--ink);}
+.group-count{font-family:var(--font-mono);font-size:10px;color:var(--ink-faint);}
+.group-chevron{font-size:10px;color:var(--ink-faint);transition:transform .15s;}
+.group.open .group-chevron{transform:rotate(90deg);}
+.group-body{display:none;}
+.group.open .group-body{display:block;}
+.dev-header,.dev-row{display:grid;grid-template-columns:22px 26px 1fr 40px 100px 62px;align-items:center;gap:6px;padding:0 12px;min-height:34px;}
+.dev-header{background:var(--paper-hi);border-bottom:1px solid var(--paper-edge);min-height:24px;}
+.dev-header span{font-family:var(--font-mono);font-size:8px;color:var(--ink-faint);letter-spacing:.06em;text-transform:uppercase;}
+.dev-row{border-top:1px solid var(--paper-edge);cursor:pointer;}
+.col-os{text-align:center;}
+.col-pwa{text-align:center;}
+.col-id{text-align:left;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+.col-active{text-align:right;}
+.col-ver{text-align:right;}
+.col-flights{text-align:right;}
+.dev-id{font-family:var(--font-mono);font-size:11px;color:var(--ink);}
+.dev-os{font-size:12px;}
+.dev-pwa{font-size:10px;}
+.dev-active{font-family:var(--font-mono);font-size:10px;color:var(--ink-muted);}
+.dev-ver{font-family:var(--font-mono);font-size:10px;color:var(--ink-faint);white-space:nowrap;}
+.dev-flights{font-family:var(--font-mono);font-size:11px;color:var(--ink);}
+.dev-flights .done{color:var(--cleared);}
+.dev-detail{display:none;padding:8px 12px 10px;border-top:1px dashed var(--paper-edge);background:var(--paper);}
+.dev-row.open + .dev-detail{display:block;}
+.dev-detail-row{display:flex;justify-content:space-between;font-size:10px;font-family:var(--font-mono);padding:2px 0;}
+.dev-detail-row .lbl{color:var(--ink-faint);font-family:var(--font-ui);}
+.stale-flag{display:inline-block;font-size:8px;font-family:var(--font-mono);background:rgba(185,74,58,.12);color:var(--stamp-red);padding:0 4px;border-radius:3px;margin-right:3px;white-space:nowrap;}
 
 /* ── PC LAYOUT: constrain to centered card, dark surround ── */
 @media(min-width:600px){
@@ -111,15 +150,15 @@ body{
     <button class="back-btn" onclick="backToApp()">חזרה ל&nbsp;&nbsp;<span dir="ltr">AirCheck+</span></button>
   </div>
 
-  <div class="headline">
+  <div class="headline" style="direction:ltr;justify-content:center;gap:48px;">
     <span id="headlineCount" style="display:none;align-items:baseline;gap:8px;">
       <span class="headline-num" id="headlineNum">0</span>
-      <span class="headline-label">טייסים רשומים</span>
+      <span class="headline-label">PILOTS</span>
     </span>
-    <div style="margin-right:auto;display:flex;flex-direction:column;align-items:center;gap:3px;">
-      <button class="metar-refresh-btn" id="adminRefreshBtn" onclick="refreshStats()" style="padding:6px 13px;font-size:12px;">↻ רענן</button>
-      <div id="lastUpdateLabel" style="font-family:var(--font-mono);font-size:9px;color:var(--ink-faint);letter-spacing:.04em;white-space:nowrap;">—</div>
-    </div>
+    <span id="headlineFlights" style="display:none;align-items:baseline;gap:8px;">
+      <span class="headline-num" id="headlineFlightsNum">0</span>
+      <span class="headline-label">FLIGHTS</span>
+    </span>
   </div>
 
   <div id="tabbar" class="tabbar" style="display:none;"></div>
@@ -129,7 +168,13 @@ body{
   <div class="loading">טוען נתונים...</div>
 </div>
 
-<div class="footer" dir="ltr">AirCheck+ · Admin · v1.24 · built by eligrt</div>
+<div class="footer-strip" dir="ltr" style="position:relative;display:flex;align-items:center;padding:5px 14px 8px;border-top:1px solid var(--gold-lite);">
+  <span class="icon-refresh" id="footerRefreshBtn" onclick="refreshStats()">
+    <span class="refresh-glyph">↻</span>
+    <span id="lastUpdateLabel" style="font-family:var(--font-mono);font-size:9px;color:var(--ink-faint);letter-spacing:.04em;white-space:nowrap;">—</span>
+  </span>
+  <span style="position:absolute;left:50%;transform:translateX(-50%);font-family:var(--font-mono);font-size:9px;color:var(--ink-faint);letter-spacing:.1em;text-transform:uppercase;white-space:nowrap;">AirCheck+ · Admin · v1.32 · built by eligrt</span>
+</div>
 
 <div id="deleteModal" class="modal-overlay" onclick="handleDeleteModalClick(event)">
   <div class="modal-box">
@@ -215,6 +260,111 @@ function section(title,inner){
   return `<div class="section"><div class="section-title">${title}</div><div class="section-box">${inner}</div></div>`;
 }
 
+// ── DEVICES TAB HELPERS ──
+function parseVerNums(v){
+  return (v||'').match(/\d+/g)?.map(Number)||[0];
+}
+function compareVersions(a,b){
+  const na=parseVerNums(a),nb=parseVerNums(b);
+  for(let i=0;i<Math.max(na.length,nb.length);i++){
+    const d=(na[i]||0)-(nb[i]||0);
+    if(d!==0)return d;
+  }
+  return 0;
+}
+function osIcon(os){
+  if(os==='iOS')return'🍎';
+  if(os==='Android')return'📱';
+  return'🖥️';
+}
+function timeAgoShort(ts){
+  if(!ts)return'—';
+  const diff=Date.now()-ts;
+  if(diff<3600000)return Math.round(diff/60000)+'m';
+  if(diff<86400000)return Math.round(diff/3600000)+'h';
+  return Math.round(diff/86400000)+'d';
+}
+function fmtDT(ts){
+  if(!ts)return'—';
+  return new Date(ts).toLocaleString('en-GB',{day:'2-digit',month:'2-digit',hour:'2-digit',minute:'2-digit',hour12:false});
+}
+function buildDevicesTab(data){
+  const entries=Object.entries(data||{}).map(([id,p])=>({id,...p}));
+  if(!entries.length)return'<div class="loading">No devices yet</div>';
+
+  // Version distribution — parsed numerically so e.g. v2.09.99 vs v2.09.129 sorts correctly
+  const verCounts={};
+  entries.forEach(d=>{const v=d.appVersion||'unknown';verCounts[v]=(verCounts[v]||0)+1;});
+  const versions=Object.keys(verCounts).sort((a,b)=>compareVersions(b,a));
+  const latest=versions[0];
+  const oldest=versions[versions.length-1];
+  const total=entries.length;
+  const versionHtml=versions.map(v=>
+    barRow(v+(v===latest?' (latest)':''),verCounts[v],total,v===latest?'var(--cleared)':(v===oldest?'var(--stamp-red)':'var(--amber)'))
+  ).join('');
+
+  // Recency buckets — mutually exclusive by most-recent lastSeen, not cumulative windows
+  const now=Date.now(),D=86400000;
+  const buckets=[
+    {name:'Today',test:d=>now-(d.lastSeen||0)<D},
+    {name:'This Week',test:d=>now-(d.lastSeen||0)>=D&&now-(d.lastSeen||0)<7*D},
+    {name:'This Month',test:d=>now-(d.lastSeen||0)>=7*D&&now-(d.lastSeen||0)<30*D},
+    {name:'Older',test:d=>now-(d.lastSeen||0)>=30*D},
+  ];
+  const sorted=[...entries].sort((a,b)=>(b.lastSeen||0)-(a.lastSeen||0));
+
+  const groupsHtml=buckets.map((b,i)=>{
+    const items=sorted.filter(b.test);
+    if(!items.length)return'';
+    const rows=items.map(d=>{
+      // Numeric compare — a T-suffixed test build and its matching prod build are the
+      // same release and shouldn't flag each other as stale, only a genuinely older version should.
+      const stale=d.appVersion&&compareVersions(d.appVersion,latest)!==0;
+      return `
+        <div class="dev-row" onclick="this.classList.toggle('open')">
+          <span class="dev-os col-os">${osIcon(d.os)}</span>
+          <span class="dev-pwa col-pwa">${d.pwaInstalled?'📲':'—'}</span>
+          <span class="dev-id col-id">${d.id}</span>
+          <span class="dev-active col-active">${timeAgoShort(d.lastSeen)}</span>
+          <span class="dev-ver col-ver">${stale?'<span class="stale-flag">!</span>':''}${d.appVersion||'—'}</span>
+          <span class="dev-flights col-flights">${d.flightCount||0}/<span class="done">${d.completedFlights||0}</span></span>
+        </div>
+        <div class="dev-detail">
+          <div class="dev-detail-row"><span class="lbl">Last opened</span><span>${fmtDT(d.lastOpenedAt)}</span></div>
+          <div class="dev-detail-row"><span class="lbl">Last flight started</span><span>${fmtDT(d.lastFlightStartedAt)}</span></div>
+          <div class="dev-detail-row"><span class="lbl">Last flight completed</span><span>${fmtDT(d.lastFlightCompletedAt)}</span></div>
+        </div>`;
+    }).join('');
+    return `<div class="group${i===0?' open':''}">
+      <div class="group-hdr" onclick="this.parentElement.classList.toggle('open')">
+        <div class="group-hdr-left"><span class="group-name">${b.name}</span><span class="group-count">${items.length}</span></div>
+        <span class="group-chevron">▶</span>
+      </div>
+      <div class="group-body">
+        <div class="dev-header">
+          <span class="col-os"></span><span class="col-pwa">PWA</span><span class="col-id">DEVICE</span><span class="col-active">ACTIVE</span><span class="col-ver">VERSION</span><span class="col-flights">START/DONE</span>
+        </div>
+        ${rows}
+      </div>
+    </div>`;
+  }).join('');
+
+  // OS distribution — same fleet, different lens; kept here since System tab was folded in
+  const osCounts={iOS:0,Android:0,Desktop:0};
+  entries.forEach(d=>{if(osCounts[d.os]!==undefined)osCounts[d.os]++;});
+  const osHtml=
+    barRow('iOS',osCounts.iOS,total,'var(--ink)')+
+    barRow('Android',osCounts.Android,total,'var(--cleared)')+
+    barRow('Desktop',osCounts.Desktop,total,'var(--amber)');
+
+  return `<div class="dev-wrap">
+    ${section('VERSION DISTRIBUTION',versionHtml)}
+    ${section('OS DISTRIBUTION',osHtml)}
+    <div class="section-title" style="margin-top:4px;">DEVICES — MOST RECENTLY ACTIVE FIRST</div>
+    ${groupsHtml}
+  </div>`;
+}
+
 function getRank(n){
   let current=null,next=null;
   for(let i=0;i<RANKS.length;i++){
@@ -224,7 +374,7 @@ function getRank(n){
 }
 
 window.refreshStats=function(){
-  const btn=document.getElementById('adminRefreshBtn');
+  const btn=document.getElementById('footerRefreshBtn');
   btn.classList.add('spinning');
   setTimeout(()=>btn.classList.remove('spinning'),600);
   loadStats();
@@ -236,7 +386,7 @@ function updateLastUpdateLabel(){
   const now=new Date();
   const h=String(now.getHours()).padStart(2,'0');
   const m=String(now.getMinutes()).padStart(2,'0');
-  el.textContent='עודכן '+h+':'+m;
+  el.textContent=h+':'+m;
 }
 
 async function loadStats(){
@@ -252,25 +402,8 @@ async function loadStats(){
     const pilots=Object.values(data);
     window._adminRawPilots=data;
     const total=pilots.length;
-    const now=Date.now();
-    const hours48=48*60*60*1000;
-    const sevenDays=7*24*60*60*1000;
-    const thirtyDays=30*24*60*60*1000;
-    const ninetyDays=90*24*60*60*1000;
-
-    const active48=pilots.filter(p=>now-p.lastSeen<hours48).length;
-    const active7=pilots.filter(p=>now-p.lastSeen<sevenDays).length;
-    const active30=pilots.filter(p=>now-p.lastSeen<thirtyDays).length;
-    const active90=pilots.filter(p=>now-p.lastSeen<ninetyDays).length;
-    const openedOnce=pilots.filter(p=>p.firstSeen&&p.lastSeen&&Math.abs(p.lastSeen-p.firstSeen)<60000).length;
-    const neverStarted=pilots.filter(p=>!p.flightCount||p.flightCount===0).length;
-
-    const active90pilots=pilots.filter(p=>now-p.lastSeen<ninetyDays);
-    const active90flights=active90pilots.reduce((s,p)=>s+(p.flightCount||0),0);
-    const avgFlights=active90pilots.length>0?(active90flights/active90pilots.length).toFixed(1):0;
 
     const custom=pilots.filter(p=>p.listType==='modified').length;
-    const multiProfile=pilots.filter(p=>p.profileCount&&p.profileCount>1).length;
     const profileDist={1:0,2:0,3:0,4:0,'5+':0};
     pilots.forEach(p=>{
       const c=p.profileCount||1;
@@ -310,14 +443,6 @@ async function loadStats(){
     const totalFlights=pilots.reduce((s,p)=>s+(p.flightCount||0),0);
     const totalCompleted=pilots.reduce((s,p)=>s+(p.completedFlights||0),0);
 
-    const osCounts={iOS:0,Android:0,Desktop:0};
-    pilots.forEach(p=>{if(osCounts[p.os]!==undefined)osCounts[p.os]++;});
-
-    const pwaCounts={iOS:0,Android:0,Desktop:0};
-    pilots.forEach(p=>{if(p.pwaInstalled&&osCounts[p.os]!==undefined)pwaCounts[p.os]++;});
-    const pwaPromptShown=pilots.filter(p=>p.pwaPromptShown).length;
-    const pwaInstalled=pilots.filter(p=>p.pwaInstalled).length;
-
     let communityPending=0,communityApproved=0,communityRejected=0;
     try{
       const pendingSnap=await get(ref(db,'community/pending'));
@@ -339,46 +464,17 @@ async function loadStats(){
 
     document.getElementById('headlineNum').textContent=total;
     document.getElementById('headlineCount').style.display='inline-flex';
+    document.getElementById('headlineFlightsNum').textContent=totalFlights;
+    document.getElementById('headlineFlights').style.display='inline-flex';
 
     const tabs=[
       {
-        id:'overview',label:'Overview',alert:false,
-        html:
-          section('ACTIVITY',
-            barRow('פעילים 48 שעות',active48,total,'var(--ink)')+
-            barRow('פעילים 7 ימים',active7,total,'var(--ink)')+
-            barRow('פעילים 30 יום',active30,total,'var(--ink)')+
-            barRow('פעילים 90 יום',active90,total,'var(--ink)')+
-            barRow('פתחו פעם אחת בלבד',openedOnce,total,'var(--amber)')+
-            barRow('מעולם לא התחילו טיסה',neverStarted,total,'var(--amber)')
-          )+
-          section('RANKS',
-            RANKS.map(r=>barRow(r.icon+' '+r.name,rankDist[r.name]||0,total,'var(--ink)')).join('')
-          )
+        id:'devices',label:'Devices',alert:false,
+        html: buildDevicesTab(data)
       },
       {
-        id:'engagement',label:'Engagement',alert:false,
+        id:'links',label:'Links<br>& METAR',alert:false,
         html:
-          section('FLIGHTS',
-            bigNumRow('טיסות שהתחילו',totalFlights)+
-            barRow('טיסות שהושלמו',totalCompleted,totalFlights||1,'var(--cleared)')+
-            `<div class="bignum-row"><span class="lbl">ממוצע טיסות לטייס פעיל (90י)</span><span class="val">${avgFlights}</span></div>`
-          )+
-          section('CHECKLISTS',
-            barRow('צ׳קליסט מותאם אישית',custom,total,'var(--ink)')+
-            barRow('עם רשימות מרובות',multiProfile,total,'var(--ink)')
-          )+
-          section('PROFILE DISTRIBUTION',
-            Object.entries(profileDist).map(([k,v])=>barRow(k+' רשימות',v,total,'var(--ink)')).join('')
-          )
-      },
-      {
-        id:'features',label:'Features',alert:communityPending>0,
-        html:
-          section('COMMUNITY',
-            actionRow('ממתינים לאישור',communityPending,'AirCheckCustomRep.html?from=Admin-Stat.html&tab=features')+
-            barRow('מאושרים',communityApproved,(communityPending+communityApproved+communityRejected)||1,'var(--cleared)')
-          )+
           section('EXTERNAL LINKS',
             bigNumRow('משתמשים בקישורים חיצוניים',extLinkUsers)+
             bigNumRow('סה״כ לחיצות',totalExtLinkTaps)+
@@ -399,22 +495,31 @@ async function loadStats(){
           )
       },
       {
-        id:'system',label:'System',alert:false,
+        id:'customchecklist',label:'Custom<br>Checklist',alert:communityPending>0,
         html:
-          section('OS',
-            barRow('iOS',osCounts.iOS,total,'var(--ink)')+
-            barRow('Android',osCounts.Android,total,'var(--cleared)')+
-            barRow('Desktop',osCounts.Desktop,total,'var(--amber)')
+          section('CHECKLISTS',
+            barRow('צ׳קליסט מותאם אישית',custom,total,'var(--ink)')
           )+
-          section('PWA ADOPTION',
-            barRow('ראו את ההודעה',pwaPromptShown,total,'var(--gold)')+
-            barRow('התקינו',pwaInstalled,pwaPromptShown||1,'var(--cleared)')
+          section('COMMUNITY',
+            actionRow('ממתינים לאישור',communityPending,'AirCheckCustomRep.html?from=Admin-Stat.html&tab=customchecklist')+
+            barRow('מאושרים',communityApproved,(communityPending+communityApproved+communityRejected)||1,'var(--cleared)')
+          )
+      },
+      {
+        id:'future',label:'Future<br>/ Not Live',alert:false,
+        html:
+          `<div style="font-family:var(--font-mono);font-size:10px;color:var(--stamp-red);background:rgba(185,74,58,.08);border:1px solid rgba(185,74,58,.25);border-radius:6px;padding:8px 10px;margin-bottom:14px;direction:ltr;text-align:left;">⚠ Not yet shipped to pilots — RANKING and MULTI_PROFILE flags are off in prod. This data reflects test devices only, not real fleet behavior.</div>`+
+          section('RANKS',
+            RANKS.map(r=>barRow(r.icon+' '+r.name,rankDist[r.name]||0,total,'var(--ink)')).join('')
+          )+
+          section('PROFILE DISTRIBUTION',
+            Object.entries(profileDist).map(([k,v])=>barRow(k+' רשימות',v,total,'var(--ink)')).join('')
           )
       }
     ];
 
     window._adminTabs=tabs;
-    const tabToShow=tabs.some(t=>t.id===_activeTab)?_activeTab:'overview';
+    const tabToShow=tabs.some(t=>t.id===_activeTab)?_activeTab:'devices';
     renderTabBar(tabToShow);
     renderContent(tabToShow);
 
@@ -423,7 +528,7 @@ async function loadStats(){
   }
 }
 
-let _activeTab=new URLSearchParams(window.location.search).get('tab')||'overview';
+let _activeTab=new URLSearchParams(window.location.search).get('tab')||'devices';
 
 window.renderTabBar=function(activeId){
   const tabs=window._adminTabs;
