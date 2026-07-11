@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<!-- AirCheck+ · AirCheck_METAR.html · v1.53 · built by eligrt -->
+<!-- AirCheck+ · AirCheck_METAR.html · v1.54 · built by eligrt -->
 <html lang="he" dir="rtl">
 <head>
 <meta charset="UTF-8">
@@ -289,7 +289,7 @@ body{display:flex;flex-direction:column;height:100svh;overflow:hidden;}
   <div class="metar-age-footer" id="metarAgeFooter">—</div>
 </div>
 
-<div class="page-footer" dir="ltr">AirCheck+ · METAR / TAF · v1.53 · built by eligrt</div>
+<div class="page-footer" dir="ltr">AirCheck+ · METAR / TAF · v1.54 · built by eligrt</div>
 
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/12.14.0/firebase-app.js";
@@ -345,6 +345,7 @@ document.dispatchEvent(new Event('towerReady'));
 const METAR_STATION_KEY='aircheck_metar_station';
 const METAR_CUSTOM_KEY='aircheck_metar_custom';
 let _metarCache={metar:null,taf:null,fetchedAt:null,icao:null};
+const TOWER_FIELD_UPDATE_ENABLED=false; // pending LLHZ tower approval — flip to true to re-enable
 const TOWER_STATIONS=['LLHZ'];
 const STATION_NAMES={
   LLBG:'נתב״ג · Ben Gurion',LLHA:'חיפה · Haifa',
@@ -426,6 +427,10 @@ function towerAgeClass(ts){
 function renderTowerBadge(){
   const bar=document.getElementById('towerBar');
   if(!bar)return;
+  if(!TOWER_FIELD_UPDATE_ENABLED){
+    bar.style.display='none';
+    return;
+  }
   bar.style.display='';
   const btn=document.getElementById('towerBtn');
   const bell=document.getElementById('towerBarBell');
@@ -460,6 +465,7 @@ function renderTowerBadge(){
 }
 
 function prefetchTower(){
+  if(!TOWER_FIELD_UPDATE_ENABLED)return;
   if(window._towerReady&&window._towerRead){
     window._towerRead('LLHZ').then(d=>{
       _towerData=d;
