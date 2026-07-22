@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <!-- ═══════════════════════════════════════
-     AirCheck+ · v2.09.131T · built by eligrt
+     AirCheck+ · v2.09.132T · built by eligrt
      ═══════════════════════════════════════ -->
 <html lang="he" dir="rtl">
 <head>
@@ -659,7 +659,7 @@ html,body{height:100%;background:#1a1a1c;font-family:var(--font-ui);color:var(--
     <div class="splash-footer-wrap">
       <div class="footer-strip" style="display:flex;align-items:center;justify-content:space-between;padding:5px 14px 8px;">
         <span class="footer-refresh" onclick="reloadApp()">רענון</span>
-        <span id="versionTap" style="cursor:default;">AirCheck+ · v2.09.131T · built by eligrt</span>
+        <span id="versionTap" style="cursor:default;">AirCheck+ · v2.09.132T · built by eligrt</span>
         <span style="width:40px;"></span>
       </div>
     </div>
@@ -780,7 +780,7 @@ html,body{height:100%;background:#1a1a1c;font-family:var(--font-ui);color:var(--
     <div class="tree-panel" id="treePanel"></div>
     <div class="footer-strip" style="display:flex;align-items:center;justify-content:space-between;padding:5px 14px 8px;">
       <span class="footer-refresh" onclick="reloadApp()">רענון</span>
-      <span id="versionTap" style="cursor:default;">AirCheck+ · v2.09.131T · built by eligrt</span>
+      <span id="versionTap" style="cursor:default;">AirCheck+ · v2.09.132T · built by eligrt</span>
       <span style="width:40px;"></span>
     </div>
   </div>
@@ -861,7 +861,7 @@ html,body{height:100%;background:#1a1a1c;font-family:var(--font-ui);color:var(--
 
     <div class="footer-strip" style="display:flex;align-items:center;justify-content:space-between;padding:5px 14px 8px;">
       <span style="width:40px;"></span>
-      <span id="versionTap" style="cursor:default;">AirCheck+ · v2.09.131T · built by eligrt</span>
+      <span id="versionTap" style="cursor:default;">AirCheck+ · v2.09.132T · built by eligrt</span>
       <span style="width:40px;"></span>
     </div>
   </div>
@@ -975,7 +975,7 @@ html,body{height:100%;background:#1a1a1c;font-family:var(--font-ui);color:var(--
     </div>
     <div class="footer-strip" style="display:flex;align-items:center;justify-content:space-between;padding:5px 14px 8px;">
       <span class="footer-refresh" onclick="reloadApp()">רענון</span>
-      <span id="versionTap" style="cursor:default;">AirCheck+ · v2.09.131T · built by eligrt</span>
+      <span id="versionTap" style="cursor:default;">AirCheck+ · v2.09.132T · built by eligrt</span>
       <span style="width:40px;"></span>
     </div>
   </div>
@@ -999,7 +999,7 @@ html,body{height:100%;background:#1a1a1c;font-family:var(--font-ui);color:var(--
     <div class="editor-list" id="editorList"></div>
     <div class="footer-strip" style="display:flex;align-items:center;justify-content:space-between;padding:5px 14px 8px;">
       <span class="footer-refresh" onclick="reloadApp()">רענון</span>
-      <span id="versionTap" style="cursor:default;">AirCheck+ · v2.09.131T · built by eligrt</span>
+      <span id="versionTap" style="cursor:default;">AirCheck+ · v2.09.132T · built by eligrt</span>
       <span style="width:40px;"></span>
     </div>
   </div>
@@ -3649,8 +3649,7 @@ function splashMainAction(){
     // Multiple profiles — show selector
     openNewFlightModal();
   } else {
-    clearState();
-    showScreen('screenChecklist');render();
+    startNew();
   }
 }
 
@@ -3659,7 +3658,7 @@ function splashSecondaryAction(){
   const p=getProfiles();
   const doStart=()=>{
     if(FEATURES.MULTI_PROFILE&&p.profiles.length>1){openNewFlightModal();}
-    else{clearState();showScreen('screenChecklist');render();}
+    else{startNew();}
   };
   if(done>0){
     document.querySelector('.modal-box').className='modal-box danger';

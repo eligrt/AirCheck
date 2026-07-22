@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <!-- ═══════════════════════════════════════
-     AirCheck+ · v2.09.130 · built by eligrt
+     AirCheck+ · v2.09.132 · built by eligrt
      ═══════════════════════════════════════ -->
 <html lang="he" dir="rtl">
 <head>
@@ -659,7 +659,7 @@ html,body{height:100%;background:#1a1a1c;font-family:var(--font-ui);color:var(--
     <div class="splash-footer-wrap">
       <div class="footer-strip" style="display:flex;align-items:center;justify-content:space-between;padding:5px 14px 8px;">
         <span class="footer-refresh" onclick="reloadApp()">רענון</span>
-        <span id="versionTap" style="cursor:default;">AirCheck+ · v2.09.130 · built by eligrt</span>
+        <span id="versionTap" style="cursor:default;">AirCheck+ · v2.09.132 · built by eligrt</span>
         <span style="width:40px;"></span>
       </div>
     </div>
@@ -779,7 +779,7 @@ html,body{height:100%;background:#1a1a1c;font-family:var(--font-ui);color:var(--
     <div class="tree-panel" id="treePanel"></div>
     <div class="footer-strip" style="display:flex;align-items:center;justify-content:space-between;padding:5px 14px 8px;">
       <span class="footer-refresh" onclick="reloadApp()">רענון</span>
-      <span id="versionTap" style="cursor:default;">AirCheck+ · v2.09.130 · built by eligrt</span>
+      <span id="versionTap" style="cursor:default;">AirCheck+ · v2.09.132 · built by eligrt</span>
       <span style="width:40px;"></span>
     </div>
   </div>
@@ -860,7 +860,7 @@ html,body{height:100%;background:#1a1a1c;font-family:var(--font-ui);color:var(--
 
     <div class="footer-strip" style="display:flex;align-items:center;justify-content:space-between;padding:5px 14px 8px;">
       <span style="width:40px;"></span>
-      <span id="versionTap" style="cursor:default;">AirCheck+ · v2.09.130 · built by eligrt</span>
+      <span id="versionTap" style="cursor:default;">AirCheck+ · v2.09.132 · built by eligrt</span>
       <span style="width:40px;"></span>
     </div>
   </div>
@@ -974,7 +974,7 @@ html,body{height:100%;background:#1a1a1c;font-family:var(--font-ui);color:var(--
     </div>
     <div class="footer-strip" style="display:flex;align-items:center;justify-content:space-between;padding:5px 14px 8px;">
       <span class="footer-refresh" onclick="reloadApp()">רענון</span>
-      <span id="versionTap" style="cursor:default;">AirCheck+ · v2.09.130 · built by eligrt</span>
+      <span id="versionTap" style="cursor:default;">AirCheck+ · v2.09.132 · built by eligrt</span>
       <span style="width:40px;"></span>
     </div>
   </div>
@@ -998,7 +998,7 @@ html,body{height:100%;background:#1a1a1c;font-family:var(--font-ui);color:var(--
     <div class="editor-list" id="editorList"></div>
     <div class="footer-strip" style="display:flex;align-items:center;justify-content:space-between;padding:5px 14px 8px;">
       <span class="footer-refresh" onclick="reloadApp()">רענון</span>
-      <span id="versionTap" style="cursor:default;">AirCheck+ · v2.09.130 · built by eligrt</span>
+      <span id="versionTap" style="cursor:default;">AirCheck+ · v2.09.132 · built by eligrt</span>
       <span style="width:40px;"></span>
     </div>
   </div>
@@ -2986,25 +2986,6 @@ function exportEditorToXLS(){
   }
 }
 
-function showEndOfListPopup(skippedCount){
-  document.getElementById('endOfListCount').textContent=skippedCount;
-  document.getElementById('endOfListModal').style.display='flex';
-}
-function handleEndOfListClick(e){if(e.target===document.getElementById('endOfListModal'))closeEndOfList();}
-function closeEndOfList(){document.getElementById('endOfListModal').style.display='none';}
-function endOfListGoBack(){
-  closeEndOfList();
-  // Jump to first skipped item
-  const idx=CL.findIndex((_,i)=>status[i]==='skipped');
-  if(idx!==-1){current=idx;holdState='idle';resetRunwayBtn();render();}
-}
-function endOfListPark(){
-  closeEndOfList();
-  saveState();
-  showScreen('screenSplash');
-  initSplash();
-}
-
 // ── PHASE SKIPPED POPUP — now routed through unified phaseOverlay ──
 function showPhaseSkippedPopup(phaseName,skippedCount){
   showPhaseOverlay(phaseName,CL[current]?CL[current].phase:null,skippedCount);
@@ -3662,8 +3643,7 @@ function splashMainAction(){
     // Multiple profiles — show selector
     openNewFlightModal();
   } else {
-    clearState();
-    showScreen('screenChecklist');render();
+    startNew();
   }
 }
 
@@ -3672,7 +3652,7 @@ function splashSecondaryAction(){
   const p=getProfiles();
   const doStart=()=>{
     if(FEATURES.MULTI_PROFILE&&p.profiles.length>1){openNewFlightModal();}
-    else{clearState();showScreen('screenChecklist');render();}
+    else{startNew();}
   };
   if(done>0){
     document.querySelector('.modal-box').className='modal-box danger';
@@ -3932,24 +3912,6 @@ function splashSecondaryAction(){
   </div>
 
   <!-- ══ WHAT'S NEW POPUP ══ -->
-  <!-- ══ END OF LIST POPUP ══ -->
-  <div id="endOfListModal" onclick="handleEndOfListClick(event)" style="display:none;position:absolute;inset:0;background:rgba(26,19,8,.8);z-index:520;align-items:center;justify-content:center;padding:24px;backdrop-filter:blur(3px);">
-    <div class="modal-box" style="text-align:center;padding-top:0;overflow:hidden;">
-      <div style="background:var(--ink);margin:0 -20px 16px;padding:14px 18px;text-align:center;">
-        <div style="font-size:20px;margin-bottom:4px;">📋</div>
-        <div style="font-size:16px;font-weight:700;color:var(--paper);direction:rtl;">סוף הרשימה</div>
-        <div style="font-family:var(--font-mono);font-size:10px;color:rgba(244,236,220,.5);letter-spacing:.1em;margin-top:3px;">END OF LIST</div>
-      </div>
-      <div style="font-size:13px;color:var(--ink-body);line-height:1.7;margin-bottom:14px;direction:rtl;text-align:right;">
-        הגעת לסוף הרשימה.<br>
-        נשארו <strong id="endOfListCount">0</strong> פריטים לא מסומנים.<br>
-        תוכל לחזור אליהם בכל עת.
-      </div>
-      <div style="height:1px;background:var(--gold-lite);margin:0 0 14px;opacity:.7;"></div>
-      <button class="btn btn-amber-outline" onclick="endOfListGoBack()" style="margin-bottom:8px;">חזור לפריטים הפתוחים</button>
-      <button class="btn btn-ghost" onclick="endOfListPark()">סיים לעכשיו, אמשיך מאוחר יותר</button>
-    </div>
-  </div>
 
   <!-- ══ PHASE SKIPPED POPUP (non-final phase boundary, items skipped) ══ -->
 
