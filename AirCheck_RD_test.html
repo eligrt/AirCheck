@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <!-- ═══════════════════════════════════════
-     AirCheck+ · v2.10.004T · built by eligrt
+     AirCheck+ · v2.10.005T · built by eligrt
      ═══════════════════════════════════════ -->
 <html lang="he" dir="rtl">
 <head>
@@ -669,7 +669,7 @@ html,body{height:100%;background:#1a1a1c;font-family:var(--font-ui);color:var(--
     <div class="splash-footer-wrap">
       <div class="footer-strip" style="display:flex;align-items:center;justify-content:space-between;padding:5px 14px 8px;">
         <span class="footer-refresh" onclick="reloadApp()">רענון</span>
-        <span id="versionTap" style="cursor:default;">AirCheck+ · v2.10.004T · built by eligrt</span>
+        <span id="versionTap" style="cursor:default;">AirCheck+ · v2.10.005T · built by eligrt</span>
         <span style="width:40px;"></span>
       </div>
     </div>
@@ -790,7 +790,7 @@ html,body{height:100%;background:#1a1a1c;font-family:var(--font-ui);color:var(--
     <div class="tree-panel" id="treePanel"></div>
     <div class="footer-strip" style="display:flex;align-items:center;justify-content:space-between;padding:5px 14px 8px;">
       <span class="footer-refresh" onclick="reloadApp()">רענון</span>
-      <span id="versionTap" style="cursor:default;">AirCheck+ · v2.10.004T · built by eligrt</span>
+      <span id="versionTap" style="cursor:default;">AirCheck+ · v2.10.005T · built by eligrt</span>
       <span style="width:40px;"></span>
     </div>
   </div>
@@ -871,7 +871,7 @@ html,body{height:100%;background:#1a1a1c;font-family:var(--font-ui);color:var(--
 
     <div class="footer-strip" style="display:flex;align-items:center;justify-content:space-between;padding:5px 14px 8px;">
       <span style="width:40px;"></span>
-      <span id="versionTap" style="cursor:default;">AirCheck+ · v2.10.004T · built by eligrt</span>
+      <span id="versionTap" style="cursor:default;">AirCheck+ · v2.10.005T · built by eligrt</span>
       <span style="width:40px;"></span>
     </div>
   </div>
@@ -985,7 +985,7 @@ html,body{height:100%;background:#1a1a1c;font-family:var(--font-ui);color:var(--
     </div>
     <div class="footer-strip" style="display:flex;align-items:center;justify-content:space-between;padding:5px 14px 8px;">
       <span class="footer-refresh" onclick="reloadApp()">רענון</span>
-      <span id="versionTap" style="cursor:default;">AirCheck+ · v2.10.004T · built by eligrt</span>
+      <span id="versionTap" style="cursor:default;">AirCheck+ · v2.10.005T · built by eligrt</span>
       <span style="width:40px;"></span>
     </div>
   </div>
@@ -1009,7 +1009,7 @@ html,body{height:100%;background:#1a1a1c;font-family:var(--font-ui);color:var(--
     <div class="editor-list" id="editorList"></div>
     <div class="footer-strip" style="display:flex;align-items:center;justify-content:space-between;padding:5px 14px 8px;">
       <span class="footer-refresh" onclick="reloadApp()">רענון</span>
-      <span id="versionTap" style="cursor:default;">AirCheck+ · v2.10.004T · built by eligrt</span>
+      <span id="versionTap" style="cursor:default;">AirCheck+ · v2.10.005T · built by eligrt</span>
       <span style="width:40px;"></span>
     </div>
   </div>
@@ -1321,7 +1321,7 @@ function animHold(ts){
     document.getElementById('cardStamp').classList.add('visible');
     hapticTap();
     if(settings&&settings.sounds){playConfirmSound();}
-    document.getElementById('confirmHint').textContent='אושר — שחרר להמשך';
+    document.getElementById('confirmHint').textContent='אושר - שחרר להמשך';
     document.getElementById('confirmHint').classList.add('confirmed');
     fill.style.transition='';fill.classList.add('confirmed');
     plane.style.transition='';plane.style.right='';plane.classList.add('confirmed');
@@ -1688,7 +1688,7 @@ function doShare(upToPhaseIdx,singlePhase){
   lines.push((skipped>0?'🟡':'✅')+' *AirCheck+ | סיכום'+(isPhaseShare?' שלב':'טיסה')+'*');
   lines.push('🕐 LT '+localStr+' (UTC '+utcStr+')');
   lines.push('────────────────────');
-  lines.push('📋 *'+phaseName+'* — '+done+'/'+total+(skipped>0?' ('+skipped+' דולגו)':''));
+  lines.push('📋 *'+phaseName+'* - '+done+'/'+total+(skipped>0?' ('+skipped+' דולגו)':''));
   scopedPhases.forEach(ph=>{
     const phItems=ph.groups.reduce((a,g)=>a.concat(g.items),[]);
     const anyDone=phItems.some(j=>status[j]==='done'||status[j]==='skipped');
@@ -2241,7 +2241,7 @@ function openNewFlightModal(){
   const done=Object.values(status).filter(s=>s==='done').length;
   document.querySelector('.modal-box').className='modal-box danger';
   document.getElementById('modalTitle').innerHTML='<span style="color:var(--stamp-red);margin-left:6px;">⚠</span> התחלת טיסה חדשה?';
-  document.getElementById('modalSub').textContent='הטיסה הנוכחית תאבד — '+done+' פריטים מסומנים יימחקו. לא ניתן לשחזר.';
+  document.getElementById('modalSub').textContent='הטיסה הנוכחית תאבד - '+done+' פריטים מסומנים יימחקו. לא ניתן לשחזר.';
   document.getElementById('modalConfirmBtn').textContent='כן, אפס והתחל';
   document.getElementById('modalConfirmBtn').onclick=()=>{closeModal();clearState();startNew();};
   openModal();
@@ -2928,7 +2928,7 @@ function exportChecklist(){
   ws['!cols']=[{wch:28},{wch:22},{wch:36},{wch:30},{wch:36},{wch:20}];
   XLSX.utils.book_append_sheet(wb,ws,'Checklist');
   XLSX.writeFile(wb,'AirCheck+_Export.xlsx');
-  showToast('✓ הקובץ יוצא בהצלחה — בדוק את ההורדות');
+  showToast('✓ הקובץ יוצא בהצלחה - בדוק את ההורדות');
 }
 function exportEditorToXLS(){
   if(typeof XLSX==='undefined'){showToast('טוען ספריה...');return;}
@@ -2955,7 +2955,7 @@ function exportEditorToXLS(){
       XLSX.utils.book_append_sheet(wb,ws,sheetName);
     });
     XLSX.writeFile(wb,'AirCheck+_Export.xlsx');
-    showToast('✓ הקובץ יוצא בהצלחה — '+p.profiles.length+' רשימות');
+    showToast('✓ הקובץ יוצא בהצלחה - '+p.profiles.length+' רשימות');
   }catch(e){
     showToast('שגיאה בייצוא: '+e.message);
     console.error('Export error:',e);
@@ -3678,7 +3678,7 @@ function splashSecondaryAction(){
   if(done>0){
     document.querySelector('.modal-box').className='modal-box danger';
     document.getElementById('modalTitle').innerHTML='<span style="color:var(--stamp-red);margin-left:6px;">⚠</span> התחלת טיסה חדשה?';
-    document.getElementById('modalSub').textContent='הטיסה הנוכחית תאבד — '+done+' פריטים מסומנים יימחקו. לא ניתן לשחזר.';
+    document.getElementById('modalSub').textContent='הטיסה הנוכחית תאבד - '+done+' פריטים מסומנים יימחקו. לא ניתן לשחזר.';
     document.getElementById('modalConfirmBtn').textContent='כן, אפס והתחל';
     document.getElementById('modalConfirmBtn').onclick=()=>{closeModal();clearState();doStart();};
     openModal();
