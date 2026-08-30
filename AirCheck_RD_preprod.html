@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <!-- ═══════════════════════════════════════
-     AirCheck+ · v2.10.001 · built by eligrt
+     AirCheck+ · v2.10.004 · built by eligrt
      ═══════════════════════════════════════ -->
 <html lang="he" dir="rtl">
 <head>
@@ -600,13 +600,12 @@ html,body{height:100%;background:#1a1a1c;font-family:var(--font-ui);color:var(--
 
 /* multi-list splash pills */
 .splash-list-pills{display:flex;gap:7px;width:100%;margin-bottom:9px;direction:rtl;}
-.splash-list-pill{flex:1;min-width:0;border-radius:999px;padding:8px 6px;text-align:center;font-size:13px;font-weight:600;font-family:inherit;cursor:pointer;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;border:1.5px solid var(--gold-lite);background:transparent;color:var(--ink);transition:background .15s,color .15s;}
-.splash-list-pill.selected{background:var(--ink);color:var(--paper);border-color:var(--ink);}
-.splash-list-pill.add{border-style:dashed;color:var(--ink-faint);font-weight:400;font-size:12px;}
-.splash-list-active{display:flex;align-items:center;justify-content:center;gap:8px;width:100%;margin-bottom:9px;direction:rtl;background:rgba(28,63,110,.06);border:1px solid var(--gold-lite);border-radius:999px;padding:8px 14px;}
-.splash-list-active .dot{color:var(--cleared);font-size:13px;}
+.splash-list-pill{flex:1;min-width:0;border-radius:999px;padding:9px 6px;text-align:center;font-size:13px;font-weight:600;font-family:inherit;cursor:pointer;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;border:1.5px solid rgba(244,236,220,.35);background:transparent;color:var(--paper);transition:background .15s,color .15s,border-color .15s;}
+.splash-list-pill.selected{background:var(--gold);color:#2a1f08;border-color:var(--gold);}
+.splash-list-pill.add{border-style:dashed;background:transparent;border-color:rgba(244,236,220,.35);color:rgba(244,236,220,.55);font-weight:400;font-size:12px;}
+.splash-list-active{display:flex;align-items:center;justify-content:center;gap:8px;width:100%;margin-bottom:9px;direction:rtl;background:var(--paper);border:1px solid var(--gold-lite);border-radius:999px;padding:8px 14px;}
 .splash-list-active .lbl{font-size:13px;color:var(--ink-faint);}
-.splash-list-active .name{font-size:13px;color:var(--ink);font-weight:600;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;max-width:55%;}
+.splash-list-active .name{font-size:13px;color:var(--ink);font-weight:600;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;max-width:60%;}
 </style>
 </head>
 <body>
@@ -670,7 +669,7 @@ html,body{height:100%;background:#1a1a1c;font-family:var(--font-ui);color:var(--
     <div class="splash-footer-wrap">
       <div class="footer-strip" style="display:flex;align-items:center;justify-content:space-between;padding:5px 14px 8px;">
         <span class="footer-refresh" onclick="reloadApp()">רענון</span>
-        <span id="versionTap" style="cursor:default;">AirCheck+ · v2.10.001 · built by eligrt</span>
+        <span id="versionTap" style="cursor:default;">AirCheck+ · v2.10.004 · built by eligrt</span>
         <span style="width:40px;"></span>
       </div>
     </div>
@@ -685,7 +684,7 @@ html,body{height:100%;background:#1a1a1c;font-family:var(--font-ui);color:var(--
           <span class="strip-label">UTC</span>
           <span class="strip-time" id="utcClock">--:--</span>
         </div>
-        <button class="strip-pill" onclick="parkFlight()" style="display:flex;align-items:center;gap:5px;direction:rtl;align-self:center;"><i class="ti ti-device-floppy" aria-hidden="true" style="font-size:13px;"></i> שמור</button>
+        <button class="strip-pill" onclick="parkFlight()" style="display:flex;align-items:center;gap:5px;direction:rtl;align-self:center;"><i class="ti ti-home" aria-hidden="true" style="font-size:13px;"></i> חזרה למסך הפתיחה</button>
       </div>
       <div class="strip-actions" style="margin-left:auto;align-self:center;">
         <button class="strip-pill" onclick="openSettings()">⚙ הגדרות</button>
@@ -790,7 +789,7 @@ html,body{height:100%;background:#1a1a1c;font-family:var(--font-ui);color:var(--
     <div class="tree-panel" id="treePanel"></div>
     <div class="footer-strip" style="display:flex;align-items:center;justify-content:space-between;padding:5px 14px 8px;">
       <span class="footer-refresh" onclick="reloadApp()">רענון</span>
-      <span id="versionTap" style="cursor:default;">AirCheck+ · v2.10.001 · built by eligrt</span>
+      <span id="versionTap" style="cursor:default;">AirCheck+ · v2.10.004 · built by eligrt</span>
       <span style="width:40px;"></span>
     </div>
   </div>
@@ -871,7 +870,7 @@ html,body{height:100%;background:#1a1a1c;font-family:var(--font-ui);color:var(--
 
     <div class="footer-strip" style="display:flex;align-items:center;justify-content:space-between;padding:5px 14px 8px;">
       <span style="width:40px;"></span>
-      <span id="versionTap" style="cursor:default;">AirCheck+ · v2.10.001 · built by eligrt</span>
+      <span id="versionTap" style="cursor:default;">AirCheck+ · v2.10.004 · built by eligrt</span>
       <span style="width:40px;"></span>
     </div>
   </div>
@@ -985,7 +984,7 @@ html,body{height:100%;background:#1a1a1c;font-family:var(--font-ui);color:var(--
     </div>
     <div class="footer-strip" style="display:flex;align-items:center;justify-content:space-between;padding:5px 14px 8px;">
       <span class="footer-refresh" onclick="reloadApp()">רענון</span>
-      <span id="versionTap" style="cursor:default;">AirCheck+ · v2.10.001 · built by eligrt</span>
+      <span id="versionTap" style="cursor:default;">AirCheck+ · v2.10.004 · built by eligrt</span>
       <span style="width:40px;"></span>
     </div>
   </div>
@@ -1009,7 +1008,7 @@ html,body{height:100%;background:#1a1a1c;font-family:var(--font-ui);color:var(--
     <div class="editor-list" id="editorList"></div>
     <div class="footer-strip" style="display:flex;align-items:center;justify-content:space-between;padding:5px 14px 8px;">
       <span class="footer-refresh" onclick="reloadApp()">רענון</span>
-      <span id="versionTap" style="cursor:default;">AirCheck+ · v2.10.001 · built by eligrt</span>
+      <span id="versionTap" style="cursor:default;">AirCheck+ · v2.10.004 · built by eligrt</span>
       <span style="width:40px;"></span>
     </div>
   </div>
@@ -2230,56 +2229,16 @@ function renameProfileConfirm(){
 // ── PROFILE SELECTOR (new flight) ──
 let _selectedProfileForFlight=null;
 function openNewFlightModal(){
-  const p=getProfiles();
-  if(!FEATURES.MULTI_PROFILE||p.profiles.length<=1){
-    // Single profile — confirm and start
-    document.querySelector('.modal-box').className='modal-box amber';
-    document.getElementById('modalTitle').textContent='טיסה חדשה?';
-    document.getElementById('modalSub').textContent='פעולה זו תאפס את כל ההתקדמות הנוכחית.';
-    document.getElementById('modalConfirmBtn').textContent='כן, אפס והתחל מחדש';
-    document.getElementById('modalConfirmBtn').onclick=()=>{
-      closeModal();
-      startNew();
-    };
-    openModal();
-  } else {
-    // Multiple profiles — show selector
-    _selectedProfileForFlight=p.activeProfile;
-    const list=document.getElementById('profileSelectList');
-    list.innerHTML='';
-    p.profiles.forEach(prof=>{
-      const row=document.createElement('div');
-      row.className='profile-select-row'+(prof.id===_selectedProfileForFlight?' selected':'');
-      const name=document.createElement('span');
-      name.className='profile-select-name';
-      name.textContent=prof.name;
-      const badge=document.createElement('span');
-      badge.className='profile-select-badge '+(prof.type==='default'?'default':'custom');
-      badge.textContent=prof.type==='default'?'סטנדרטי':'מותאם אישית';
-      const count=document.createElement('span');
-      count.style.cssText='font-family:var(--font-mono);font-size:10px;color:var(--ink-faint);flex-shrink:0;';
-      count.textContent=(prof.list||[]).length+' פריטים';
-      const check=document.createElement('span');
-      check.className='profile-select-check';check.textContent='✓';
-      row.appendChild(name);row.appendChild(count);row.appendChild(badge);row.appendChild(check);
-      row.onclick=()=>{
-        _selectedProfileForFlight=prof.id;
-        document.querySelectorAll('.profile-select-row').forEach(r=>r.classList.remove('selected'));
-        row.classList.add('selected');
-        const fadeHeight=36;
-        const rowBottom=row.offsetTop+row.offsetHeight;
-        const visibleBottom=list.scrollTop+list.clientHeight-fadeHeight;
-        if(rowBottom>visibleBottom){
-          list.scrollTo({top:rowBottom-list.clientHeight+fadeHeight,behavior:'smooth'});
-        }
-        setTimeout(updateProfileSelectFade,350);
-      };
-      list.appendChild(row);
-    });
-    document.getElementById('profileSelectCount').textContent='קיימות '+p.profiles.length+' רשימות';
-    document.getElementById('profileSelectorModal').style.display='flex';
-    updateProfileSelectFade();
-  }
+  // In-flight "new flight" — always reset-confirm then start on the CURRENT
+  // active list. Uses the same danger modal (with item-loss count) as the
+  // splash "new flight" path, so both entry points read identically.
+  const done=Object.values(status).filter(s=>s==='done').length;
+  document.querySelector('.modal-box').className='modal-box danger';
+  document.getElementById('modalTitle').innerHTML='<span style="color:var(--stamp-red);margin-left:6px;">⚠</span> התחלת טיסה חדשה?';
+  document.getElementById('modalSub').textContent='הטיסה הנוכחית תאבד — '+done+' פריטים מסומנים יימחקו. לא ניתן לשחזר.';
+  document.getElementById('modalConfirmBtn').textContent='כן, אפס והתחל';
+  document.getElementById('modalConfirmBtn').onclick=()=>{closeModal();clearState();startNew();};
+  openModal();
 }
 function updateProfileSelectFade(){
   const list=document.getElementById('profileSelectList');
@@ -3571,7 +3530,7 @@ function renderSplashActiveList(){
   const prof=getActiveProfile();
   wrap.className='splash-list-active';
   wrap.style.display='flex';
-  wrap.innerHTML='<span class="dot">●</span><span class="lbl">טיסה פעילה:</span><span class="name">'+((prof&&prof.name)||'')+'</span>';
+  wrap.innerHTML='<span class="lbl">טיסה פעילה:</span><span class="name">'+((prof&&prof.name)||'')+'</span>';
 }
 function initSplash(){
   // If returning from a reference link (in-app standalone page, or an
