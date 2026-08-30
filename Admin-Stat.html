@@ -173,7 +173,7 @@ body{
     <span class="refresh-glyph">↻</span>
     <span id="lastUpdateLabel" style="font-family:var(--font-mono);font-size:9px;color:var(--ink-faint);letter-spacing:.04em;white-space:nowrap;">—</span>
   </span>
-  <span style="position:absolute;left:50%;transform:translateX(-50%);font-family:var(--font-mono);font-size:9px;color:var(--ink-faint);letter-spacing:.1em;text-transform:uppercase;white-space:nowrap;">AirCheck+ · Admin · v1.32 · built by eligrt</span>
+  <span style="position:absolute;left:50%;transform:translateX(-50%);font-family:var(--font-mono);font-size:9px;color:var(--ink-faint);letter-spacing:.1em;text-transform:uppercase;white-space:nowrap;">AirCheck+ · Admin · v1.35 · built by eligrt</span>
 </div>
 
 <div id="deleteModal" class="modal-overlay" onclick="handleDeleteModalClick(event)">
@@ -188,6 +188,7 @@ body{
   </div>
 </div>
 
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/12.14.0/firebase-app.js";
 import { getDatabase, ref, get, remove } from "https://www.gstatic.com/firebasejs/12.14.0/firebase-database.js";
@@ -288,21 +289,7 @@ function fmtDT(ts){
   if(!ts)return'—';
   return new Date(ts).toLocaleString('en-GB',{day:'2-digit',month:'2-digit',hour:'2-digit',minute:'2-digit',hour12:false});
 }
-function buildDevicesTab(data){
-  const entries=Object.entries(data||{}).map(([id,p])=>({id,...p}));
-  if(!entries.length)return'<div class="loading">No devices yet</div>';
-
-  // Version distribution — parsed numerically so e.g. v2.09.99 vs v2.09.129 sorts correctly
-  const verCounts={};
-  entries.forEach(d=>{const v=d.appVersion||'unknown';verCounts[v]=(verCounts[v]||0)+1;});
-  const versions=Object.keys(verCounts).sort((a,b)=>compareVersions(b,a));
-  const latest=versions[0];
-  const oldest=versions[versions.length-1];
-  const total=entries.length;
-  const versionHtml=versions.map(v=>
-    barRow(v+(v===latest?' (latest)':''),verCounts[v],total,v===latest?'var(--cleared)':(v===oldest?'var(--stamp-red)':'var(--amber)'))
-  ).join('');
-
+function buildRecencyGroups(entries,latest){
   // Recency buckets — mutually exclusive by most-recent lastSeen, not cumulative windows
   const now=Date.now(),D=86400000;
   const buckets=[
@@ -348,6 +335,96 @@ function buildDevicesTab(data){
       </div>
     </div>`;
   }).join('');
+  return groupsHtml;
+}
+
+function buildUsageTab(data){
+  const entries=Object.entries(data||{}).map(([id,p])=>({id,...p}));
+  const verCounts={};
+  entries.forEach(d=>{const v=d.appVersion||'unknown';verCounts[v]=(verCounts[v]||0)+1;});
+  const latest=Object.keys(verCounts).sort((a,b)=>compareVersions(b,a))[0];
+
+  // LIVE health check — real devices/{id}/daily/* data flowing in from the app.
+  const dd=window._adminDevicesDaily||{};
+  let dailyDevices=0,dailyEntries=0,dailyFlights=0;
+  Object.values(dd).forEach(dev=>{
+    const days=dev&&dev.daily;
+    if(days&&typeof days==='object'){
+      dailyDevices++;
+      Object.values(days).forEach(n=>{dailyEntries++;dailyFlights+=(parseInt(n)||0);});
+    }
+  });
+  const liveBanner=`<div style="font-family:var(--font-mono);font-size:11px;background:${dailyEntries>0?'rgba(63,122,82,.10)':'rgba(216,160,74,.10)'};border:1px solid ${dailyEntries>0?'var(--cleared)':'var(--amber)'};border-radius:6px;padding:9px 11px;margin-bottom:14px;direction:ltr;text-align:left;color:var(--ink);">
+    ${dailyEntries>0?'✓ LIVE DATA FLOWING':'⚠ NO DAILY DATA YET'} — ${dailyFlights} flights · ${dailyEntries} day-entries · ${dailyDevices} devices reporting</div>`;
+  const recencyHtml=entries.length?buildRecencyGroups(entries,latest):'<div class="loading">No devices yet</div>';
+  // ---- PLACEHOLDER DATA ----
+  // Real source (once shipped): devices/{id}/daily/{YYYY-MM-DD}: count, written at flight-start (local date).
+  // Weekday = Sun-Thu (getDay 0-4), Weekend = Fri-Sat (getDay 5,6). Israel week.
+  // Aggregation TODO — replace the four dummy blocks below with fleet rollups.
+  const DOW=[41,29,33,38,42,171,141];                 // Sun..Sat
+  const weekdayTotal=41+29+33+38+42;                  // 183
+  const weekendTotal=171+141;                          // 312
+  const grand=weekdayTotal+weekendTotal;
+  const wkPct=Math.round(weekdayTotal/grand*100);
+  const wePct=Math.round(weekendTotal/grand*100);
+  const weeks=['W1','W2','W3','W4','W5','W6','W7','W8'];
+  const wd=[19,22,18,25,21,24,27,27];
+  const we=[28,34,31,45,39,42,48,45];
+  const tot=wd.map((v,i)=>v+we[i]);
+  // ---- END PLACEHOLDER ----
+
+  const tiles=`<div style="display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;margin-bottom:18px;direction:ltr;">
+      <div style="background:var(--paper);border:1px solid var(--gold-lite);border-radius:8px;padding:12px;">
+        <div style="font-size:12px;color:var(--ink-faint);margin-bottom:4px;">Weekday flights</div>
+        <div style="font-size:24px;font-weight:600;color:var(--ink);">${weekdayTotal}</div>
+        <div style="font-size:12px;color:var(--ink-faint);">${wkPct}% of total</div>
+      </div>
+      <div style="background:var(--paper);border:1px solid var(--gold-lite);border-radius:8px;padding:12px;">
+        <div style="font-size:12px;color:var(--ink-faint);margin-bottom:4px;">Weekend flights</div>
+        <div style="font-size:24px;font-weight:600;color:var(--ink);">${weekendTotal}</div>
+        <div style="font-size:12px;color:var(--ink-faint);">${wePct}% of total</div>
+      </div>
+    </div>`;
+
+  const charts=`
+    <div class="section-title" style="margin-top:4px;">FLIGHTS BY DAY OF WEEK</div>
+    <div style="position:relative;width:100%;height:170px;margin-bottom:6px;"><canvas id="usageDow"></canvas></div>
+    <div style="display:flex;gap:16px;font-size:12px;color:var(--ink-faint);margin-bottom:20px;direction:ltr;">
+      <span style="display:flex;align-items:center;gap:5px;"><span style="width:10px;height:10px;border-radius:2px;background:var(--ink);"></span>weekday</span>
+      <span style="display:flex;align-items:center;gap:5px;"><span style="width:10px;height:10px;border-radius:2px;background:var(--gold);"></span>weekend</span>
+    </div>
+    <div class="section-title">WEEK-OVER-WEEK TREND</div>
+    <div style="position:relative;width:100%;height:180px;"><canvas id="usageTrend"></canvas></div>`;
+
+  // stash placeholder data for the deferred chart init
+  window._usageChartData={DOW,weeks,wd,we,tot};
+
+  return `<div class="dev-wrap">
+    ${liveBanner}
+    <div style="font-family:var(--font-mono);font-size:10px;color:var(--amber);background:rgba(216,160,74,.08);border:1px solid rgba(216,160,74,.3);border-radius:6px;padding:8px 10px;margin-bottom:14px;direction:ltr;text-align:left;">⚠ Placeholder data — charts below are dummy. The banner above shows the real daily data flowing in.</div>
+    ${tiles}
+    ${charts}
+    <div class="section-title" style="margin-top:22px;">DEVICES BY RECENCY</div>
+    ${recencyHtml}
+  </div>`;
+}
+
+function buildDevicesTab(data){
+  const entries=Object.entries(data||{}).map(([id,p])=>({id,...p}));
+  if(!entries.length)return'<div class="loading">No devices yet</div>';
+
+  // Version distribution — parsed numerically so e.g. v2.09.99 vs v2.09.129 sorts correctly
+  const verCounts={};
+  entries.forEach(d=>{const v=d.appVersion||'unknown';verCounts[v]=(verCounts[v]||0)+1;});
+  const versions=Object.keys(verCounts).sort((a,b)=>compareVersions(b,a));
+  const latest=versions[0];
+  const oldest=versions[versions.length-1];
+  const total=entries.length;
+  const versionHtml=versions.map(v=>
+    barRow(v+(v===latest?' (latest)':''),verCounts[v],total,v===latest?'var(--cleared)':(v===oldest?'var(--stamp-red)':'var(--amber)'))
+  ).join('');
+
+  const groupsHtml=buildRecencyGroups(entries,latest);
 
   // OS distribution — same fleet, different lens; kept here since System tab was folded in
   const osCounts={iOS:0,Android:0,Desktop:0};
@@ -394,6 +471,11 @@ async function loadStats(){
     const pilotRef=ref(db,'pilots');
     const snap=await get(pilotRef);
     const data=snap.val();
+    // Real usage-pattern data: devices/{id}/daily/{date}: count
+    try{
+      const devSnap=await get(ref(db,'devices'));
+      window._adminDevicesDaily=devSnap.val()||{};
+    }catch(e){window._adminDevicesDaily={};}
     updateLastUpdateLabel();
     if(!data){
       document.getElementById('content').innerHTML='<div class="loading">אין נתונים עדיין</div>';
@@ -469,6 +551,10 @@ async function loadStats(){
 
     const tabs=[
       {
+        id:'usage',label:'Usage',alert:false,
+        html: buildUsageTab(data)
+      },
+      {
         id:'devices',label:'Devices',alert:false,
         html: buildDevicesTab(data)
       },
@@ -519,7 +605,7 @@ async function loadStats(){
     ];
 
     window._adminTabs=tabs;
-    const tabToShow=tabs.some(t=>t.id===_activeTab)?_activeTab:'devices';
+    const tabToShow=tabs.some(t=>t.id===_activeTab)?_activeTab:'usage';
     renderTabBar(tabToShow);
     renderContent(tabToShow);
 
@@ -528,7 +614,7 @@ async function loadStats(){
   }
 }
 
-let _activeTab=new URLSearchParams(window.location.search).get('tab')||'devices';
+let _activeTab=new URLSearchParams(window.location.search).get('tab')||'usage';
 
 window.renderTabBar=function(activeId){
   const tabs=window._adminTabs;
@@ -545,7 +631,56 @@ window.renderContent=function(activeId){
   const tabs=window._adminTabs;
   const tab=tabs.find(t=>t.id===activeId);
   document.getElementById('content').innerHTML=tab.html;
+  if(activeId==='usage')initUsageCharts();
 };
+
+let _usageCharts=[];
+function initUsageCharts(){
+  if(typeof Chart==='undefined'||!window._usageChartData)return;
+  _usageCharts.forEach(c=>{try{c.destroy();}catch(e){}});_usageCharts=[];
+  const css=n=>getComputedStyle(document.documentElement).getPropertyValue(n).trim();
+  const ink=css('--ink')||'#1c3d6e', gold=css('--gold')||'#c8a04a', faint=css('--ink-faint')||'#8a8578';
+  const grid='rgba(120,120,110,0.15)';
+  const {DOW,weeks,wd,we,tot}=window._usageChartData;
+
+  const valTop={id:'valTop',afterDatasetsDraw:function(c){
+    const ctx=c.ctx;ctx.save();ctx.font='600 11px sans-serif';ctx.fillStyle=ink;ctx.textAlign='center';
+    c.data.datasets[0].data.forEach((v,i)=>{const el=c.getDatasetMeta(0).data[i];ctx.fillText(v,el.x,el.y-6);});
+    ctx.restore();
+  }};
+  const lineTop={id:'lineTop',afterDatasetsDraw:function(c){
+    const ctx=c.ctx;ctx.save();ctx.font='600 11px sans-serif';ctx.fillStyle=ink;ctx.textAlign='center';
+    c.getDatasetMeta(0).data.forEach((el,i)=>ctx.fillText(c.data.datasets[0].data[i],el.x,el.y-8));
+    ctx.restore();
+  }};
+
+  const dowEl=document.getElementById('usageDow');
+  if(dowEl)_usageCharts.push(new Chart(dowEl,{
+    type:'bar',
+    data:{labels:['Sun','Mon','Tue','Wed','Thu','Fri','Sat'],
+      datasets:[{data:DOW,backgroundColor:[ink,ink,ink,ink,ink,gold,gold],borderRadius:4,borderSkipped:false,barThickness:22}]},
+    options:{responsive:true,maintainAspectRatio:false,layout:{padding:{top:16}},
+      plugins:{legend:{display:false}},
+      scales:{x:{grid:{display:false},ticks:{font:{size:11},color:faint}},
+        y:{grid:{color:grid},ticks:{font:{size:11},color:faint},beginAtZero:true}}},
+    plugins:[valTop]
+  }));
+
+  const trendEl=document.getElementById('usageTrend');
+  if(trendEl)_usageCharts.push(new Chart(trendEl,{
+    type:'line',
+    data:{labels:weeks,datasets:[
+      {label:'total',data:tot,borderColor:ink,backgroundColor:ink,borderWidth:2.5,tension:0.3,pointRadius:3,pointBackgroundColor:ink},
+      {label:'weekend',data:we,borderColor:gold,backgroundColor:gold,borderWidth:1.5,tension:0.3,pointRadius:2,pointBackgroundColor:gold},
+      {label:'weekday',data:wd,borderColor:ink,backgroundColor:ink,borderWidth:1.5,borderDash:[5,4],tension:0.3,pointRadius:2,pointBackgroundColor:ink}
+    ]},
+    options:{responsive:true,maintainAspectRatio:false,layout:{padding:{top:18}},
+      plugins:{legend:{display:true,position:'bottom',labels:{boxWidth:10,boxHeight:10,font:{size:11},color:faint}}},
+      scales:{x:{grid:{display:false},ticks:{font:{size:11},color:faint}},
+        y:{grid:{color:grid},ticks:{font:{size:11},color:faint},beginAtZero:true}}},
+    plugins:[lineTop]
+  }));
+}
 
 window.selectTab=function(id){
   _activeTab=id;
