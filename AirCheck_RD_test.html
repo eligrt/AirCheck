@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <!-- ═══════════════════════════════════════
-     AirCheck+ · v2.09.132T · built by eligrt
+     AirCheck+ · v2.10.001T · built by eligrt
      ═══════════════════════════════════════ -->
 <html lang="he" dir="rtl">
 <head>
@@ -597,6 +597,16 @@ html,body{height:100%;background:#1a1a1c;font-family:var(--font-ui);color:var(--
 
 .settings-row-sub{font-size:10px;color:var(--ink-muted);margin-top:2px;font-family:var(--font-mono);letter-spacing:.04em;}
 
+
+/* multi-list splash pills */
+.splash-list-pills{display:flex;gap:7px;width:100%;margin-bottom:9px;direction:rtl;}
+.splash-list-pill{flex:1;min-width:0;border-radius:999px;padding:8px 6px;text-align:center;font-size:13px;font-weight:600;font-family:inherit;cursor:pointer;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;border:1.5px solid var(--gold-lite);background:transparent;color:var(--ink);transition:background .15s,color .15s;}
+.splash-list-pill.selected{background:var(--ink);color:var(--paper);border-color:var(--ink);}
+.splash-list-pill.add{border-style:dashed;color:var(--ink-faint);font-weight:400;font-size:12px;}
+.splash-list-active{display:flex;align-items:center;justify-content:center;gap:8px;width:100%;margin-bottom:9px;direction:rtl;background:rgba(28,63,110,.06);border:1px solid var(--gold-lite);border-radius:999px;padding:8px 14px;}
+.splash-list-active .dot{color:var(--cleared);font-size:13px;}
+.splash-list-active .lbl{font-size:13px;color:var(--ink-faint);}
+.splash-list-active .name{font-size:13px;color:var(--ink);font-weight:600;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;max-width:55%;}
 </style>
 </head>
 <body>
@@ -647,6 +657,7 @@ html,body{height:100%;background:#1a1a1c;font-family:var(--font-ui);color:var(--
         <div class="splash-runway" id="splashRunway"><div class="splash-runway-fill" id="splashRunwayFill" style="width:0%"></div><div class="splash-runway-ticks" id="splashRunwayTicks"></div></div>
         <div class="splash-skip-row" id="splashSkipRow"></div>
       </div>
+      <div id="splashListPills" class="splash-list-pills" style="display:none;"></div>
       <div id="splashBtnsWrap" style="display:flex;gap:8px;width:100%;">
         <button class="splash-btn-secondary" id="splashSecondaryBtn" onclick="splashSecondaryAction()" style="display:none;flex:1;font-size:12px;">
           <span style="display:inline-block;transform:scaleX(-1)">✈</span> התחל טיסה חדשה
@@ -659,7 +670,7 @@ html,body{height:100%;background:#1a1a1c;font-family:var(--font-ui);color:var(--
     <div class="splash-footer-wrap">
       <div class="footer-strip" style="display:flex;align-items:center;justify-content:space-between;padding:5px 14px 8px;">
         <span class="footer-refresh" onclick="reloadApp()">רענון</span>
-        <span id="versionTap" style="cursor:default;">AirCheck+ · v2.09.132T · built by eligrt</span>
+        <span id="versionTap" style="cursor:default;">AirCheck+ · v2.10.001T · built by eligrt</span>
         <span style="width:40px;"></span>
       </div>
     </div>
@@ -780,7 +791,7 @@ html,body{height:100%;background:#1a1a1c;font-family:var(--font-ui);color:var(--
     <div class="tree-panel" id="treePanel"></div>
     <div class="footer-strip" style="display:flex;align-items:center;justify-content:space-between;padding:5px 14px 8px;">
       <span class="footer-refresh" onclick="reloadApp()">רענון</span>
-      <span id="versionTap" style="cursor:default;">AirCheck+ · v2.09.132T · built by eligrt</span>
+      <span id="versionTap" style="cursor:default;">AirCheck+ · v2.10.001T · built by eligrt</span>
       <span style="width:40px;"></span>
     </div>
   </div>
@@ -861,7 +872,7 @@ html,body{height:100%;background:#1a1a1c;font-family:var(--font-ui);color:var(--
 
     <div class="footer-strip" style="display:flex;align-items:center;justify-content:space-between;padding:5px 14px 8px;">
       <span style="width:40px;"></span>
-      <span id="versionTap" style="cursor:default;">AirCheck+ · v2.09.132T · built by eligrt</span>
+      <span id="versionTap" style="cursor:default;">AirCheck+ · v2.10.001T · built by eligrt</span>
       <span style="width:40px;"></span>
     </div>
   </div>
@@ -975,7 +986,7 @@ html,body{height:100%;background:#1a1a1c;font-family:var(--font-ui);color:var(--
     </div>
     <div class="footer-strip" style="display:flex;align-items:center;justify-content:space-between;padding:5px 14px 8px;">
       <span class="footer-refresh" onclick="reloadApp()">רענון</span>
-      <span id="versionTap" style="cursor:default;">AirCheck+ · v2.09.132T · built by eligrt</span>
+      <span id="versionTap" style="cursor:default;">AirCheck+ · v2.10.001T · built by eligrt</span>
       <span style="width:40px;"></span>
     </div>
   </div>
@@ -999,7 +1010,7 @@ html,body{height:100%;background:#1a1a1c;font-family:var(--font-ui);color:var(--
     <div class="editor-list" id="editorList"></div>
     <div class="footer-strip" style="display:flex;align-items:center;justify-content:space-between;padding:5px 14px 8px;">
       <span class="footer-refresh" onclick="reloadApp()">רענון</span>
-      <span id="versionTap" style="cursor:default;">AirCheck+ · v2.09.132T · built by eligrt</span>
+      <span id="versionTap" style="cursor:default;">AirCheck+ · v2.10.001T · built by eligrt</span>
       <span style="width:40px;"></span>
     </div>
   </div>
@@ -1748,6 +1759,7 @@ function startNew(){window._flightCounted=false;
   const fc=parseInt(localStorage.getItem('aircheck_flight_count')||'0')+1;
   localStorage.setItem('aircheck_flight_count',fc);
   if(window.syncToFirebase)window.syncToFirebase('flightStart');
+  if(window.logDailyFlight)window.logDailyFlight();
   clearState();holdState='idle';resetRunwayBtn();showScreen('screenChecklist');render();
 }
 // ── SETTINGS ──
@@ -2090,11 +2102,10 @@ function renderProfileTabStrip(){
     tab.onclick=()=>requestSwitchProfile(prof.id);
     strip.appendChild(tab);
   });
-  if(p.profiles.length<15){
+  if(p.profiles.length<3){
     const add=document.createElement('div');add.className='profile-tab-add';add.textContent='+';
     add.onclick=()=>{
-      if(p.profiles.length>=7){openManyListsNudge();}
-      else{openNewProfileModal();}
+      openNewProfileModal();
     };
     strip.appendChild(add);
   }
@@ -2929,7 +2940,7 @@ function confirmXLSImport(){
     })
   }));
   // Limit to 5
-  if(p.profiles.length>15)p.profiles=p.profiles.slice(0,15);
+  if(p.profiles.length>3)p.profiles=p.profiles.slice(0,3);
   p.activeProfile=p.profiles[0].id;
   saveProfiles();
   // Load first profile into CL
@@ -3528,6 +3539,46 @@ function buildRankStrip(n){
   return html;
 }
 
+function renderSplashPills(){
+  const wrap=document.getElementById('splashListPills');
+  if(!wrap)return;
+  if(!FEATURES.MULTI_PROFILE){wrap.style.display='none';return;}
+  const p=getProfiles();
+  wrap.className='splash-list-pills';
+  wrap.style.display='flex';
+  wrap.innerHTML='';
+  if(!_selectedProfileForFlight||!p.profiles.some(pr=>pr.id===_selectedProfileForFlight)){
+    _selectedProfileForFlight=p.activeProfile||(p.profiles[0]&&p.profiles[0].id);
+  }
+  const MAX=3;
+  p.profiles.slice(0,MAX).forEach(prof=>{
+    const pill=document.createElement('div');
+    pill.className='splash-list-pill'+(prof.id===_selectedProfileForFlight?' selected':'');
+    pill.textContent=prof.name;
+    pill.onclick=()=>{
+      _selectedProfileForFlight=prof.id;
+      wrap.querySelectorAll('.splash-list-pill').forEach(x=>x.classList.remove('selected'));
+      pill.classList.add('selected');
+    };
+    wrap.appendChild(pill);
+  });
+  for(let k=p.profiles.length;k<MAX;k++){
+    const add=document.createElement('div');
+    add.className='splash-list-pill add';
+    add.textContent='+ הוסף רשימה';
+    add.onclick=()=>{openEditor(true);};
+    wrap.appendChild(add);
+  }
+}
+function renderSplashActiveList(){
+  const wrap=document.getElementById('splashListPills');
+  if(!wrap)return;
+  if(!FEATURES.MULTI_PROFILE){wrap.style.display='none';return;}
+  const prof=getActiveProfile();
+  wrap.className='splash-list-active';
+  wrap.style.display='flex';
+  wrap.innerHTML='<span class="dot">●</span><span class="lbl">טיסה פעילה:</span><span class="name">'+((prof&&prof.name)||'')+'</span>';
+}
 function initSplash(){
   // If returning from a reference link (in-app standalone page, or an
   // external/third-party site like NOTAM/FPL that won't round-trip our
@@ -3628,10 +3679,12 @@ function initSplash(){
     });
     skipRow.classList.toggle('show',skippedCount>0);
     // Primary = continue, secondary = new flight
+    renderSplashActiveList();
     mainBtn.innerHTML='המשך טיסה ›';
     secBtn.style.display='';
     secBtn.innerHTML='<span style="display:inline-block;transform:scaleX(-1)">✈</span> התחל טיסה חדשה';
   } else {
+    renderSplashPills();
     // No progress — single button
     mainBtn.innerHTML='<span style="display:inline-block;transform:scaleX(-1)">✈</span> התחל טיסה';
     secBtn.style.display='none';
@@ -3646,8 +3699,9 @@ function splashMainAction(){
     // Resume current flight
     showScreen('screenChecklist');render();
   } else if(FEATURES.MULTI_PROFILE&&p.profiles.length>1){
-    // Multiple profiles — show selector
-    openNewFlightModal();
+    // Multiple profiles — start the pill-selected list directly (picker modal retired from splash)
+    if(_selectedProfileForFlight)setActiveProfile(_selectedProfileForFlight);
+    startNew();
   } else {
     startNew();
   }
@@ -3657,8 +3711,10 @@ function splashSecondaryAction(){
   const done=Object.values(status).filter(s=>s==='done').length;
   const p=getProfiles();
   const doStart=()=>{
-    if(FEATURES.MULTI_PROFILE&&p.profiles.length>1){openNewFlightModal();}
-    else{startNew();}
+    if(FEATURES.MULTI_PROFILE&&p.profiles.length>1){
+      if(_selectedProfileForFlight)setActiveProfile(_selectedProfileForFlight);
+      startNew();
+    } else {startNew();}
   };
   if(done>0){
     document.querySelector('.modal-box').className='modal-box danger';
@@ -3806,6 +3862,19 @@ function splashSecondaryAction(){
 
   // Expose for calls from main script
   window.syncToFirebase=syncToFirebase;
+  // Usage-pattern analytics — per-device per-LOCAL-day flight-start counter,
+  // stored under devices/{id}/daily/{YYYY-MM-DD}, separate from the pilots/ tree.
+  // Local date (not UTC) so a Friday-night Israel flight lands on the right weekday.
+  async function logDailyFlight(){
+    try{
+      const deviceId=getDeviceId();
+      const d=new Date().toLocaleDateString('en-CA'); // YYYY-MM-DD local
+      const r=ref(db,'devices/'+deviceId+'/daily/'+d);
+      const snap=await get(r);
+      await set(r,(snap.val()||0)+1);
+    }catch(e){}
+  }
+  window.logDailyFlight=logDailyFlight;
   // Lightweight PWA stats sync
   window.syncPwaStats=syncToFirebase;
 
