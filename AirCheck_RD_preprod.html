@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <!-- ═══════════════════════════════════════
-     AirCheck+ · v2.10.013 · built by eligrt
+     AirCheck+ · v2.10.014 · built by eligrt
      ═══════════════════════════════════════ -->
 <html lang="he" dir="rtl">
 <head>
@@ -669,7 +669,7 @@ html,body{height:100%;background:#1a1a1c;font-family:var(--font-ui);color:var(--
     <div class="splash-footer-wrap">
       <div class="footer-strip" style="display:flex;align-items:center;justify-content:space-between;padding:5px 14px 8px;">
         <span class="footer-refresh" onclick="reloadApp()">רענון</span>
-        <span id="versionTap" style="cursor:default;">AirCheck+ · v2.10.013 · built by eligrt</span>
+        <span id="versionTap" style="cursor:default;">AirCheck+ · v2.10.014 · built by eligrt</span>
         <span style="width:40px;"></span>
       </div>
     </div>
@@ -789,7 +789,7 @@ html,body{height:100%;background:#1a1a1c;font-family:var(--font-ui);color:var(--
     <div class="tree-panel" id="treePanel"></div>
     <div class="footer-strip" style="display:flex;align-items:center;justify-content:space-between;padding:5px 14px 8px;">
       <span class="footer-refresh" onclick="reloadApp()">רענון</span>
-      <span id="versionTap" style="cursor:default;">AirCheck+ · v2.10.013 · built by eligrt</span>
+      <span id="versionTap" style="cursor:default;">AirCheck+ · v2.10.014 · built by eligrt</span>
       <span style="width:40px;"></span>
     </div>
   </div>
@@ -870,7 +870,7 @@ html,body{height:100%;background:#1a1a1c;font-family:var(--font-ui);color:var(--
 
     <div class="footer-strip" style="display:flex;align-items:center;justify-content:space-between;padding:5px 14px 8px;">
       <span style="width:40px;"></span>
-      <span id="versionTap" style="cursor:default;">AirCheck+ · v2.10.013 · built by eligrt</span>
+      <span id="versionTap" style="cursor:default;">AirCheck+ · v2.10.014 · built by eligrt</span>
       <span style="width:40px;"></span>
     </div>
   </div>
@@ -984,7 +984,7 @@ html,body{height:100%;background:#1a1a1c;font-family:var(--font-ui);color:var(--
     </div>
     <div class="footer-strip" style="display:flex;align-items:center;justify-content:space-between;padding:5px 14px 8px;">
       <span class="footer-refresh" onclick="reloadApp()">רענון</span>
-      <span id="versionTap" style="cursor:default;">AirCheck+ · v2.10.013 · built by eligrt</span>
+      <span id="versionTap" style="cursor:default;">AirCheck+ · v2.10.014 · built by eligrt</span>
       <span style="width:40px;"></span>
     </div>
   </div>
@@ -1008,7 +1008,7 @@ html,body{height:100%;background:#1a1a1c;font-family:var(--font-ui);color:var(--
     <div class="editor-list" id="editorList"></div>
     <div class="footer-strip" style="display:flex;align-items:center;justify-content:space-between;padding:5px 14px 8px;">
       <span class="footer-refresh" onclick="reloadApp()">רענון</span>
-      <span id="versionTap" style="cursor:default;">AirCheck+ · v2.10.013 · built by eligrt</span>
+      <span id="versionTap" style="cursor:default;">AirCheck+ · v2.10.014 · built by eligrt</span>
       <span style="width:40px;"></span>
     </div>
   </div>
@@ -2178,17 +2178,26 @@ function openNewProfileModal(){
   document.getElementById('newProfileModal').style.display='flex';
   const inp=document.getElementById('newProfileNameInput');
   const overlay=document.getElementById('newProfileModal');
-  // This modal contains a text input, so a mobile keyboard will cover a
-  // centered box. Rather than chase scroll/viewport tricks (the overlay is
-  // position:absolute;inset:0 with no scroll container), anchor the box near
-  // the TOP from the outset — above where any keyboard appears. Nothing needs
-  // to move when the field is focused, and tapping a start-from button (which
-  // dismisses the keyboard) is harmless because the box never shifted.
+  // Anchor the box to the top of the CURRENTLY VISIBLE viewport. When the
+  // keyboard is up, visualViewport.height shrinks; we pin the overlay's height
+  // to that so the flex-start box sits fully in the visible band, above the
+  // keyboard. Re-applied on every viewport resize (keyboard open/close).
   overlay.style.alignItems='flex-start';
-  overlay.style.paddingTop='calc(env(safe-area-inset-top, 0px) + 12px)';
-  setTimeout(()=>inp.focus(),100);
+  overlay.style.paddingTop='8px';
+  if(!inp._npVvBound){
+    inp._npVvBound=true;
+    const vv=window.visualViewport;
+    const fit=()=>{
+      if(overlay.style.display==='none')return;
+      if(vv){overlay.style.height=vv.height+'px';overlay.style.top=(vv.offsetTop||0)+'px';}
+    };
+    inp._npFit=fit;
+    if(vv){vv.addEventListener('resize',fit);vv.addEventListener('scroll',fit);}
+  }
+  if(inp._npFit)inp._npFit();
+  setTimeout(()=>{inp.focus();if(inp._npFit)setTimeout(inp._npFit,300);},100);
 }
-function npClose(){const o=document.getElementById('newProfileModal');o.style.alignItems='center';o.style.paddingTop='';o.style.display='none';}
+function npClose(){const o=document.getElementById('newProfileModal');o.style.alignItems='center';o.style.paddingTop='';o.style.height='';o.style.top='';o.style.display='none';}
 function handleNewProfileClick(e){if(e.target===document.getElementById('newProfileModal'))npClose();}
 function npSelectFrom(type){
   _npFromType=type;
@@ -3946,10 +3955,10 @@ function splashSecondaryAction(){
       <div class="modal-title">רשימה חדשה</div>
       <div class="modal-sub" style="margin-bottom:13px;">במה להתחיל?</div>
       <div dir="rtl" style="display:flex;gap:8px;margin-bottom:13px;">
-        <button class="start-from-btn selected" id="startFromDefault" onclick="npSelectFrom('default')" style="flex:1;text-align:center;margin-bottom:0;padding:11px 8px;">
+        <button class="start-from-btn selected" id="startFromDefault" onmousedown="event.preventDefault()" onclick="npSelectFrom('default')" style="flex:1;text-align:center;margin-bottom:0;padding:11px 8px;">
           <div class="start-from-btn-title" style="line-height:1.3;">רשימת<br>ברירת המחדל</div>
         </button>
-        <button class="start-from-btn" id="startFromScratch" onclick="npSelectFrom('scratch')" style="flex:1;text-align:center;margin-bottom:0;padding:11px 8px;">
+        <button class="start-from-btn" id="startFromScratch" onmousedown="event.preventDefault()" onclick="npSelectFrom('scratch')" style="flex:1;text-align:center;margin-bottom:0;padding:11px 8px;">
           <div class="start-from-btn-title" style="line-height:1.3;">רשימה<br>ריקה</div>
         </button>
       </div>
