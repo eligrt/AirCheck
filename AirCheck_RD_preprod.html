@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <!-- ═══════════════════════════════════════
-     AirCheck+ · v2.10.012 · built by eligrt
+     AirCheck+ · v2.10.013 · built by eligrt
      ═══════════════════════════════════════ -->
 <html lang="he" dir="rtl">
 <head>
@@ -669,7 +669,7 @@ html,body{height:100%;background:#1a1a1c;font-family:var(--font-ui);color:var(--
     <div class="splash-footer-wrap">
       <div class="footer-strip" style="display:flex;align-items:center;justify-content:space-between;padding:5px 14px 8px;">
         <span class="footer-refresh" onclick="reloadApp()">רענון</span>
-        <span id="versionTap" style="cursor:default;">AirCheck+ · v2.10.012 · built by eligrt</span>
+        <span id="versionTap" style="cursor:default;">AirCheck+ · v2.10.013 · built by eligrt</span>
         <span style="width:40px;"></span>
       </div>
     </div>
@@ -789,7 +789,7 @@ html,body{height:100%;background:#1a1a1c;font-family:var(--font-ui);color:var(--
     <div class="tree-panel" id="treePanel"></div>
     <div class="footer-strip" style="display:flex;align-items:center;justify-content:space-between;padding:5px 14px 8px;">
       <span class="footer-refresh" onclick="reloadApp()">רענון</span>
-      <span id="versionTap" style="cursor:default;">AirCheck+ · v2.10.012 · built by eligrt</span>
+      <span id="versionTap" style="cursor:default;">AirCheck+ · v2.10.013 · built by eligrt</span>
       <span style="width:40px;"></span>
     </div>
   </div>
@@ -870,7 +870,7 @@ html,body{height:100%;background:#1a1a1c;font-family:var(--font-ui);color:var(--
 
     <div class="footer-strip" style="display:flex;align-items:center;justify-content:space-between;padding:5px 14px 8px;">
       <span style="width:40px;"></span>
-      <span id="versionTap" style="cursor:default;">AirCheck+ · v2.10.012 · built by eligrt</span>
+      <span id="versionTap" style="cursor:default;">AirCheck+ · v2.10.013 · built by eligrt</span>
       <span style="width:40px;"></span>
     </div>
   </div>
@@ -984,7 +984,7 @@ html,body{height:100%;background:#1a1a1c;font-family:var(--font-ui);color:var(--
     </div>
     <div class="footer-strip" style="display:flex;align-items:center;justify-content:space-between;padding:5px 14px 8px;">
       <span class="footer-refresh" onclick="reloadApp()">רענון</span>
-      <span id="versionTap" style="cursor:default;">AirCheck+ · v2.10.012 · built by eligrt</span>
+      <span id="versionTap" style="cursor:default;">AirCheck+ · v2.10.013 · built by eligrt</span>
       <span style="width:40px;"></span>
     </div>
   </div>
@@ -1008,7 +1008,7 @@ html,body{height:100%;background:#1a1a1c;font-family:var(--font-ui);color:var(--
     <div class="editor-list" id="editorList"></div>
     <div class="footer-strip" style="display:flex;align-items:center;justify-content:space-between;padding:5px 14px 8px;">
       <span class="footer-refresh" onclick="reloadApp()">רענון</span>
-      <span id="versionTap" style="cursor:default;">AirCheck+ · v2.10.012 · built by eligrt</span>
+      <span id="versionTap" style="cursor:default;">AirCheck+ · v2.10.013 · built by eligrt</span>
       <span style="width:40px;"></span>
     </div>
   </div>
@@ -2178,24 +2178,15 @@ function openNewProfileModal(){
   document.getElementById('newProfileModal').style.display='flex';
   const inp=document.getElementById('newProfileNameInput');
   const overlay=document.getElementById('newProfileModal');
-  // The overlay is position:absolute;inset:0 centered via flex — no scroll
-  // container, so scrollIntoView() can't move it. Lift the box only while the
-  // on-screen keyboard is actually up, detected via visualViewport height
-  // shrink. Driving off the keyboard (not input focus/blur) means tapping a
-  // start-from button — which blurs the input but does NOT close the keyboard —
-  // no longer makes the box jump/stretch.
-  if(!inp._npVvBound){
-    inp._npVvBound=true;
-    const vv=window.visualViewport;
-    const applyLift=()=>{
-      const kbUp=vv?(window.innerHeight-vv.height>120):false;
-      if(kbUp){overlay.style.alignItems='flex-start';overlay.style.paddingTop='16px';}
-      else{overlay.style.alignItems='center';overlay.style.paddingTop='';}
-    };
-    inp._npApplyLift=applyLift;
-    if(vv)vv.addEventListener('resize',()=>{if(overlay.style.display!=='none')applyLift();});
-  }
-  setTimeout(()=>{inp.focus();if(inp._npApplyLift)setTimeout(inp._npApplyLift,250);},100);
+  // This modal contains a text input, so a mobile keyboard will cover a
+  // centered box. Rather than chase scroll/viewport tricks (the overlay is
+  // position:absolute;inset:0 with no scroll container), anchor the box near
+  // the TOP from the outset — above where any keyboard appears. Nothing needs
+  // to move when the field is focused, and tapping a start-from button (which
+  // dismisses the keyboard) is harmless because the box never shifted.
+  overlay.style.alignItems='flex-start';
+  overlay.style.paddingTop='calc(env(safe-area-inset-top, 0px) + 12px)';
+  setTimeout(()=>inp.focus(),100);
 }
 function npClose(){const o=document.getElementById('newProfileModal');o.style.alignItems='center';o.style.paddingTop='';o.style.display='none';}
 function handleNewProfileClick(e){if(e.target===document.getElementById('newProfileModal'))npClose();}
