@@ -173,7 +173,7 @@ body{
     <span class="refresh-glyph">↻</span>
     <span id="lastUpdateLabel" style="font-family:var(--font-mono);font-size:9px;color:var(--ink-faint);letter-spacing:.04em;white-space:nowrap;">—</span>
   </span>
-  <span style="position:absolute;left:50%;transform:translateX(-50%);font-family:var(--font-mono);font-size:9px;color:var(--ink-faint);letter-spacing:.1em;text-transform:uppercase;white-space:nowrap;">AirCheck+ · Admin · v1.35 · built by eligrt</span>
+  <span style="position:absolute;left:50%;transform:translateX(-50%);font-family:var(--font-mono);font-size:9px;color:var(--ink-faint);letter-spacing:.1em;text-transform:uppercase;white-space:nowrap;">AirCheck+ · Admin · v1.36 · built by eligrt</span>
 </div>
 
 <div id="deleteModal" class="modal-overlay" onclick="handleDeleteModalClick(event)">
@@ -535,6 +535,34 @@ async function loadStats(){
       communityRejected=rejectedSnap.exists()?Object.keys(rejectedSnap.val()).length:0;
     }catch(e){}
 
+    // LIVE health check for per-list capture (devices/{id}/lists/{pos}:{count,name}).
+    // Verifies the multi-list adoption write path works — real adoption charts TBD
+    // once weeks of data accumulate. Reuses _adminDevicesDaily (whole devices tree).
+    const _dd=window._adminDevicesDaily||{};
+    let listDevices=0,listFlights=0,multiListDevices=0;
+    const listNameSamples=[];
+    Object.values(_dd).forEach(dev=>{
+      const lists=dev&&dev.lists;
+      if(lists&&typeof lists==='object'){
+        const keys=Object.keys(lists);
+        if(keys.length){
+          listDevices++;
+          let usedPositions=0;
+          keys.forEach(k=>{
+            const rec=lists[k];
+            const c=rec&&typeof rec==='object'?(parseInt(rec.count)||0):(parseInt(rec)||0);
+            if(c>0)usedPositions++;
+            listFlights+=c;
+            const nm=rec&&rec.name;
+            if(nm&&k!=='1'&&listNameSamples.length<12)listNameSamples.push(nm);
+          });
+          if(usedPositions>=2)multiListDevices++;
+        }
+      }
+    });
+    const listBanner=`<div style="font-family:var(--font-mono);font-size:11px;background:${listFlights>0?'rgba(63,122,82,.10)':'rgba(216,160,74,.10)'};border:1px solid ${listFlights>0?'var(--cleared)':'var(--amber)'};border-radius:6px;padding:9px 11px;margin-bottom:14px;direction:ltr;text-align:left;color:var(--ink);">
+      ${listFlights>0?'✓ LIST DATA FLOWING':'⚠ NO LIST DATA YET'} — ${listFlights} list-flights · ${listDevices} devices reporting · ${multiListDevices} flew 2+ lists${listNameSamples.length?'<br>names seen: '+listNameSamples.map(n=>String(n).replace(/[<>]/g,'')).join(' · '):''}</div>`;
+
     const rankDist={};
     RANKS.forEach(r=>rankDist[r.name]=0);
     pilots.forEach(p=>{
@@ -598,6 +626,7 @@ async function loadStats(){
           section('RANKS',
             RANKS.map(r=>barRow(r.icon+' '+r.name,rankDist[r.name]||0,total,'var(--ink)')).join('')
           )+
+          listBanner+
           section('PROFILE DISTRIBUTION',
             Object.entries(profileDist).map(([k,v])=>barRow(k+' רשימות',v,total,'var(--ink)')).join('')
           )
