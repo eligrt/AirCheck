@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <!-- ═══════════════════════════════════════
-     AirCheck+ · v2.10.010 · built by eligrt
+     AirCheck+ · v2.10.012 · built by eligrt
      ═══════════════════════════════════════ -->
 <html lang="he" dir="rtl">
 <head>
@@ -669,7 +669,7 @@ html,body{height:100%;background:#1a1a1c;font-family:var(--font-ui);color:var(--
     <div class="splash-footer-wrap">
       <div class="footer-strip" style="display:flex;align-items:center;justify-content:space-between;padding:5px 14px 8px;">
         <span class="footer-refresh" onclick="reloadApp()">רענון</span>
-        <span id="versionTap" style="cursor:default;">AirCheck+ · v2.10.010 · built by eligrt</span>
+        <span id="versionTap" style="cursor:default;">AirCheck+ · v2.10.012 · built by eligrt</span>
         <span style="width:40px;"></span>
       </div>
     </div>
@@ -789,7 +789,7 @@ html,body{height:100%;background:#1a1a1c;font-family:var(--font-ui);color:var(--
     <div class="tree-panel" id="treePanel"></div>
     <div class="footer-strip" style="display:flex;align-items:center;justify-content:space-between;padding:5px 14px 8px;">
       <span class="footer-refresh" onclick="reloadApp()">רענון</span>
-      <span id="versionTap" style="cursor:default;">AirCheck+ · v2.10.010 · built by eligrt</span>
+      <span id="versionTap" style="cursor:default;">AirCheck+ · v2.10.012 · built by eligrt</span>
       <span style="width:40px;"></span>
     </div>
   </div>
@@ -870,7 +870,7 @@ html,body{height:100%;background:#1a1a1c;font-family:var(--font-ui);color:var(--
 
     <div class="footer-strip" style="display:flex;align-items:center;justify-content:space-between;padding:5px 14px 8px;">
       <span style="width:40px;"></span>
-      <span id="versionTap" style="cursor:default;">AirCheck+ · v2.10.010 · built by eligrt</span>
+      <span id="versionTap" style="cursor:default;">AirCheck+ · v2.10.012 · built by eligrt</span>
       <span style="width:40px;"></span>
     </div>
   </div>
@@ -984,7 +984,7 @@ html,body{height:100%;background:#1a1a1c;font-family:var(--font-ui);color:var(--
     </div>
     <div class="footer-strip" style="display:flex;align-items:center;justify-content:space-between;padding:5px 14px 8px;">
       <span class="footer-refresh" onclick="reloadApp()">רענון</span>
-      <span id="versionTap" style="cursor:default;">AirCheck+ · v2.10.010 · built by eligrt</span>
+      <span id="versionTap" style="cursor:default;">AirCheck+ · v2.10.012 · built by eligrt</span>
       <span style="width:40px;"></span>
     </div>
   </div>
@@ -1008,7 +1008,7 @@ html,body{height:100%;background:#1a1a1c;font-family:var(--font-ui);color:var(--
     <div class="editor-list" id="editorList"></div>
     <div class="footer-strip" style="display:flex;align-items:center;justify-content:space-between;padding:5px 14px 8px;">
       <span class="footer-refresh" onclick="reloadApp()">רענון</span>
-      <span id="versionTap" style="cursor:default;">AirCheck+ · v2.10.010 · built by eligrt</span>
+      <span id="versionTap" style="cursor:default;">AirCheck+ · v2.10.012 · built by eligrt</span>
       <span style="width:40px;"></span>
     </div>
   </div>
@@ -2178,19 +2178,26 @@ function openNewProfileModal(){
   document.getElementById('newProfileModal').style.display='flex';
   const inp=document.getElementById('newProfileNameInput');
   const overlay=document.getElementById('newProfileModal');
-  // The overlay is position:absolute;inset:0 centered via flex — there is no
-  // scroll container, so scrollIntoView() can't move it. Instead, when the name
-  // field is focused (keyboard up), top-align the overlay so the whole box lifts
-  // above the keyboard; revert to centered on blur. Fires on every focus,
-  // including a re-tap after the keyboard was dismissed.
-  if(!inp._npScrollBound){
-    inp._npScrollBound=true;
-    inp.addEventListener('focus',()=>{overlay.style.alignItems='flex-start';overlay.style.paddingTop='16px';});
-    inp.addEventListener('blur',()=>{overlay.style.alignItems='';overlay.style.paddingTop='';});
+  // The overlay is position:absolute;inset:0 centered via flex — no scroll
+  // container, so scrollIntoView() can't move it. Lift the box only while the
+  // on-screen keyboard is actually up, detected via visualViewport height
+  // shrink. Driving off the keyboard (not input focus/blur) means tapping a
+  // start-from button — which blurs the input but does NOT close the keyboard —
+  // no longer makes the box jump/stretch.
+  if(!inp._npVvBound){
+    inp._npVvBound=true;
+    const vv=window.visualViewport;
+    const applyLift=()=>{
+      const kbUp=vv?(window.innerHeight-vv.height>120):false;
+      if(kbUp){overlay.style.alignItems='flex-start';overlay.style.paddingTop='16px';}
+      else{overlay.style.alignItems='center';overlay.style.paddingTop='';}
+    };
+    inp._npApplyLift=applyLift;
+    if(vv)vv.addEventListener('resize',()=>{if(overlay.style.display!=='none')applyLift();});
   }
-  setTimeout(()=>inp.focus(),100);
+  setTimeout(()=>{inp.focus();if(inp._npApplyLift)setTimeout(inp._npApplyLift,250);},100);
 }
-function npClose(){document.getElementById('newProfileModal').style.display='none';}
+function npClose(){const o=document.getElementById('newProfileModal');o.style.alignItems='center';o.style.paddingTop='';o.style.display='none';}
 function handleNewProfileClick(e){if(e.target===document.getElementById('newProfileModal'))npClose();}
 function npSelectFrom(type){
   _npFromType=type;
@@ -3944,7 +3951,7 @@ function splashSecondaryAction(){
 
   <!-- ══ NEW PROFILE MODAL ══ -->
   <div id="newProfileModal" onclick="handleNewProfileClick(event)" style="display:none;position:absolute;inset:0;background:rgba(26,19,8,.8);z-index:520;align-items:center;justify-content:center;padding:24px;backdrop-filter:blur(3px);">
-    <div class="modal-box" style="text-align:center;">
+    <div class="modal-box" style="text-align:center;align-self:center;">
       <div class="modal-title">רשימה חדשה</div>
       <div class="modal-sub" style="margin-bottom:13px;">במה להתחיל?</div>
       <div dir="rtl" style="display:flex;gap:8px;margin-bottom:13px;">
