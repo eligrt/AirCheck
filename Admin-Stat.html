@@ -173,7 +173,7 @@ body{
     <span class="refresh-glyph">↻</span>
     <span id="lastUpdateLabel" style="font-family:var(--font-mono);font-size:9px;color:var(--ink-faint);letter-spacing:.04em;white-space:nowrap;">—</span>
   </span>
-  <span style="position:absolute;left:50%;transform:translateX(-50%);font-family:var(--font-mono);font-size:9px;color:var(--ink-faint);letter-spacing:.1em;text-transform:uppercase;white-space:nowrap;">AirCheck+ · Admin · v1.36 · built by eligrt</span>
+  <span style="position:absolute;left:50%;transform:translateX(-50%);font-family:var(--font-mono);font-size:9px;color:var(--ink-faint);letter-spacing:.1em;text-transform:uppercase;white-space:nowrap;">AirCheck+ · Admin · v1.37 · built by eligrt</span>
 </div>
 
 <div id="deleteModal" class="modal-overlay" onclick="handleDeleteModalClick(event)">
@@ -356,7 +356,6 @@ function buildUsageTab(data){
   });
   const liveBanner=`<div style="font-family:var(--font-mono);font-size:11px;background:${dailyEntries>0?'rgba(63,122,82,.10)':'rgba(216,160,74,.10)'};border:1px solid ${dailyEntries>0?'var(--cleared)':'var(--amber)'};border-radius:6px;padding:9px 11px;margin-bottom:14px;direction:ltr;text-align:left;color:var(--ink);">
     ${dailyEntries>0?'✓ LIVE DATA FLOWING':'⚠ NO DAILY DATA YET'} — ${dailyFlights} flights · ${dailyEntries} day-entries · ${dailyDevices} devices reporting</div>`;
-  const recencyHtml=entries.length?buildRecencyGroups(entries,latest):'<div class="loading">No devices yet</div>';
   // ---- PLACEHOLDER DATA ----
   // Real source (once shipped): devices/{id}/daily/{YYYY-MM-DD}: count, written at flight-start (local date).
   // Weekday = Sun-Thu (getDay 0-4), Weekend = Fri-Sat (getDay 5,6). Israel week.
@@ -404,8 +403,6 @@ function buildUsageTab(data){
     <div style="font-family:var(--font-mono);font-size:10px;color:var(--amber);background:rgba(216,160,74,.08);border:1px solid rgba(216,160,74,.3);border-radius:6px;padding:8px 10px;margin-bottom:14px;direction:ltr;text-align:left;">⚠ Placeholder data — charts below are dummy. The banner above shows the real daily data flowing in.</div>
     ${tiles}
     ${charts}
-    <div class="section-title" style="margin-top:22px;">DEVICES BY RECENCY</div>
-    ${recencyHtml}
   </div>`;
 }
 
