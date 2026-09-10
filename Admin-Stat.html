@@ -173,7 +173,7 @@ body{
     <span class="refresh-glyph">↻</span>
     <span id="lastUpdateLabel" style="font-family:var(--font-mono);font-size:9px;color:var(--ink-faint);letter-spacing:.04em;white-space:nowrap;">—</span>
   </span>
-  <span style="position:absolute;left:50%;transform:translateX(-50%);font-family:var(--font-mono);font-size:9px;color:var(--ink-faint);letter-spacing:.1em;text-transform:uppercase;white-space:nowrap;">AirCheck+ · Admin · v1.37 · built by eligrt</span>
+  <span style="position:absolute;left:50%;transform:translateX(-50%);font-family:var(--font-mono);font-size:9px;color:var(--ink-faint);letter-spacing:.1em;text-transform:uppercase;white-space:nowrap;">AirCheck+ · Admin · v1.38 · built by eligrt</span>
 </div>
 
 <div id="deleteModal" class="modal-overlay" onclick="handleDeleteModalClick(event)">
@@ -356,21 +356,45 @@ function buildUsageTab(data){
   });
   const liveBanner=`<div style="font-family:var(--font-mono);font-size:11px;background:${dailyEntries>0?'rgba(63,122,82,.10)':'rgba(216,160,74,.10)'};border:1px solid ${dailyEntries>0?'var(--cleared)':'var(--amber)'};border-radius:6px;padding:9px 11px;margin-bottom:14px;direction:ltr;text-align:left;color:var(--ink);">
     ${dailyEntries>0?'✓ LIVE DATA FLOWING':'⚠ NO DAILY DATA YET'} — ${dailyFlights} flights · ${dailyEntries} day-entries · ${dailyDevices} devices reporting</div>`;
-  // ---- PLACEHOLDER DATA ----
-  // Real source (once shipped): devices/{id}/daily/{YYYY-MM-DD}: count, written at flight-start (local date).
+  // ---- REAL ROLLUP ----
+  // Source: devices/{id}/daily/{YYYY-MM-DD}: count, written at flight-start (local date).
   // Weekday = Sun-Thu (getDay 0-4), Weekend = Fri-Sat (getDay 5,6). Israel week.
-  // Aggregation TODO — replace the four dummy blocks below with fleet rollups.
-  const DOW=[41,29,33,38,42,171,141];                 // Sun..Sat
-  const weekdayTotal=41+29+33+38+42;                  // 183
-  const weekendTotal=171+141;                          // 312
+  // Date key parsed as local (no TZ shift): new Date(y, m-1, d).
+  const DOW=[0,0,0,0,0,0,0];                 // Sun..Sat
+  const weekMap={};                          // week-start 'YYYY-MM-DD' -> {wd, we, ms}
+  Object.values(dd).forEach(dev=>{
+    const days=dev&&dev.daily;
+    if(!days||typeof days!=='object')return;
+    Object.entries(days).forEach(([key,val])=>{
+      const m=/^(\d{4})-(\d{2})-(\d{2})$/.exec(key);
+      if(!m)return;
+      const cnt=parseInt(val)||0;
+      if(!cnt)return;
+      const dt=new Date(+m[1],+m[2]-1,+m[3]);
+      const dow=dt.getDay();                 // 0=Sun .. 6=Sat
+      DOW[dow]+=cnt;
+      const weekend=(dow===5||dow===6);
+      // Week bucket: label by the Sunday that starts this Israel week.
+      const sunday=new Date(dt); sunday.setDate(dt.getDate()-dow);
+      const wk=sunday.getFullYear()+'-'+String(sunday.getMonth()+1).padStart(2,'0')+'-'+String(sunday.getDate()).padStart(2,'0');
+      if(!weekMap[wk])weekMap[wk]={wd:0,we:0,ms:sunday.getTime()};
+      if(weekend)weekMap[wk].we+=cnt; else weekMap[wk].wd+=cnt;
+    });
+  });
+  const weekdayTotal=DOW[0]+DOW[1]+DOW[2]+DOW[3]+DOW[4];
+  const weekendTotal=DOW[5]+DOW[6];
   const grand=weekdayTotal+weekendTotal;
-  const wkPct=Math.round(weekdayTotal/grand*100);
-  const wePct=Math.round(weekendTotal/grand*100);
-  const weeks=['W1','W2','W3','W4','W5','W6','W7','W8'];
-  const wd=[19,22,18,25,21,24,27,27];
-  const we=[28,34,31,45,39,42,48,45];
+  const wkPct=grand?Math.round(weekdayTotal/grand*100):0;
+  const wePct=grand?Math.round(weekendTotal/grand*100):0;
+  // Trend: last up-to-8 weeks that have data, chronological. Label Mmm D (week start).
+  const sortedWeeks=Object.keys(weekMap).sort((a,b)=>weekMap[a].ms-weekMap[b].ms).slice(-8);
+  const MON=['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+  const weeks=sortedWeeks.map(k=>{const s=new Date(weekMap[k].ms);return MON[s.getMonth()]+' '+s.getDate();});
+  const wd=sortedWeeks.map(k=>weekMap[k].wd);
+  const we=sortedWeeks.map(k=>weekMap[k].we);
   const tot=wd.map((v,i)=>v+we[i]);
-  // ---- END PLACEHOLDER ----
+  const hasData=grand>0;
+  // ---- END REAL ROLLUP ----
 
   const tiles=`<div style="display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;margin-bottom:18px;direction:ltr;">
       <div style="background:var(--paper);border:1px solid var(--gold-lite);border-radius:8px;padding:12px;">
@@ -396,13 +420,12 @@ function buildUsageTab(data){
     <div style="position:relative;width:100%;height:180px;"><canvas id="usageTrend"></canvas></div>`;
 
   // stash placeholder data for the deferred chart init
-  window._usageChartData={DOW,weeks,wd,we,tot};
+  window._usageChartData=hasData?{DOW,weeks,wd,we,tot}:null;
 
+  const emptyState=`<div style="font-family:var(--font-mono);font-size:11px;color:var(--ink-faint);background:var(--paper);border:1px dashed var(--gold-lite);border-radius:8px;padding:20px 14px;text-align:center;direction:ltr;">No flight data yet — charts appear once daily counts start flowing in.</div>`;
   return `<div class="dev-wrap">
     ${liveBanner}
-    <div style="font-family:var(--font-mono);font-size:10px;color:var(--amber);background:rgba(216,160,74,.08);border:1px solid rgba(216,160,74,.3);border-radius:6px;padding:8px 10px;margin-bottom:14px;direction:ltr;text-align:left;">⚠ Placeholder data — charts below are dummy. The banner above shows the real daily data flowing in.</div>
-    ${tiles}
-    ${charts}
+    ${hasData?tiles+charts:emptyState}
   </div>`;
 }
 
@@ -752,7 +775,7 @@ window.confirmDeleteEntry=async function(){
 };
 
 window.backToApp=function(){
-  const from=new URLSearchParams(window.location.search).get('from')||'AirCheck_RD_test.html';
+  const from=new URLSearchParams(window.location.search).get('from')||'AirCheck_RD.html';
   window.location.href=from+'?resume=1';
 };
 
