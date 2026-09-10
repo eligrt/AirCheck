@@ -173,7 +173,7 @@ body{
     <span class="refresh-glyph">↻</span>
     <span id="lastUpdateLabel" style="font-family:var(--font-mono);font-size:9px;color:var(--ink-faint);letter-spacing:.04em;white-space:nowrap;">—</span>
   </span>
-  <span style="position:absolute;left:50%;transform:translateX(-50%);font-family:var(--font-mono);font-size:9px;color:var(--ink-faint);letter-spacing:.1em;text-transform:uppercase;white-space:nowrap;">AirCheck+ · Admin · v1.38 · built by eligrt</span>
+  <span style="position:absolute;left:50%;transform:translateX(-50%);font-family:var(--font-mono);font-size:9px;color:var(--ink-faint);letter-spacing:.1em;text-transform:uppercase;white-space:nowrap;">AirCheck+ · Admin · v1.40 · built by eligrt</span>
 </div>
 
 <div id="deleteModal" class="modal-overlay" onclick="handleDeleteModalClick(event)">
@@ -362,6 +362,7 @@ function buildUsageTab(data){
   // Date key parsed as local (no TZ shift): new Date(y, m-1, d).
   const DOW=[0,0,0,0,0,0,0];                 // Sun..Sat
   const weekMap={};                          // week-start 'YYYY-MM-DD' -> {wd, we, ms}
+  let firstMs=null;                          // earliest tracked date
   Object.values(dd).forEach(dev=>{
     const days=dev&&dev.daily;
     if(!days||typeof days!=='object')return;
@@ -371,6 +372,7 @@ function buildUsageTab(data){
       const cnt=parseInt(val)||0;
       if(!cnt)return;
       const dt=new Date(+m[1],+m[2]-1,+m[3]);
+      if(firstMs===null||dt.getTime()<firstMs)firstMs=dt.getTime();
       const dow=dt.getDay();                 // 0=Sun .. 6=Sat
       DOW[dow]+=cnt;
       const weekend=(dow===5||dow===6);
@@ -394,20 +396,23 @@ function buildUsageTab(data){
   const we=sortedWeeks.map(k=>weekMap[k].we);
   const tot=wd.map((v,i)=>v+we[i]);
   const hasData=grand>0;
+  const MON2=['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+  const sinceLabel=firstMs!==null?(()=>{const s=new Date(firstMs);return MON2[s.getMonth()]+' '+s.getDate()+', '+s.getFullYear();})():'';
   // ---- END REAL ROLLUP ----
 
-  const tiles=`<div style="display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;margin-bottom:18px;direction:ltr;">
+  const tiles=`<div style="display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;margin-bottom:6px;direction:ltr;">
       <div style="background:var(--paper);border:1px solid var(--gold-lite);border-radius:8px;padding:12px;">
         <div style="font-size:12px;color:var(--ink-faint);margin-bottom:4px;">Weekday flights</div>
         <div style="font-size:24px;font-weight:600;color:var(--ink);">${weekdayTotal}</div>
-        <div style="font-size:12px;color:var(--ink-faint);">${wkPct}% of total</div>
+        <div style="font-size:12px;color:var(--ink-faint);">${wkPct}% of tracked</div>
       </div>
       <div style="background:var(--paper);border:1px solid var(--gold-lite);border-radius:8px;padding:12px;">
         <div style="font-size:12px;color:var(--ink-faint);margin-bottom:4px;">Weekend flights</div>
         <div style="font-size:24px;font-weight:600;color:var(--ink);">${weekendTotal}</div>
-        <div style="font-size:12px;color:var(--ink-faint);">${wePct}% of total</div>
+        <div style="font-size:12px;color:var(--ink-faint);">${wePct}% of tracked</div>
       </div>
-    </div>`;
+    </div>
+    <div style="font-family:var(--font-mono);font-size:10px;color:var(--ink-faint);direction:ltr;text-align:left;margin-bottom:18px;">${grand} flights tracked since ${sinceLabel} · separate from the all-time total above.</div>`;
 
   const charts=`
     <div class="section-title" style="margin-top:4px;">FLIGHTS BY DAY OF WEEK</div>
