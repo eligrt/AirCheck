@@ -173,7 +173,7 @@ body{
     <span class="refresh-glyph">↻</span>
     <span id="lastUpdateLabel" style="font-family:var(--font-mono);font-size:9px;color:var(--ink-faint);letter-spacing:.04em;white-space:nowrap;">—</span>
   </span>
-  <span style="position:absolute;left:50%;transform:translateX(-50%);font-family:var(--font-mono);font-size:9px;color:var(--ink-faint);letter-spacing:.1em;text-transform:uppercase;white-space:nowrap;">AirCheck+ · Admin · v1.40 · built by eligrt</span>
+  <span style="position:absolute;left:50%;transform:translateX(-50%);font-family:var(--font-mono);font-size:9px;color:var(--ink-faint);letter-spacing:.1em;text-transform:uppercase;white-space:nowrap;">AirCheck+ · Admin · v1.41 · built by eligrt</span>
 </div>
 
 <div id="deleteModal" class="modal-overlay" onclick="handleDeleteModalClick(event)">
@@ -293,9 +293,9 @@ function buildRecencyGroups(entries,latest){
   // Recency buckets — mutually exclusive by most-recent lastSeen, not cumulative windows
   const now=Date.now(),D=86400000;
   const buckets=[
-    {name:'Today',test:d=>now-(d.lastSeen||0)<D},
-    {name:'This Week',test:d=>now-(d.lastSeen||0)>=D&&now-(d.lastSeen||0)<7*D},
-    {name:'This Month',test:d=>now-(d.lastSeen||0)>=7*D&&now-(d.lastSeen||0)<30*D},
+    {name:'Last 24h',test:d=>now-(d.lastSeen||0)<D},
+    {name:'Last 7 days',test:d=>now-(d.lastSeen||0)>=D&&now-(d.lastSeen||0)<7*D},
+    {name:'Last 30 days',test:d=>now-(d.lastSeen||0)>=7*D&&now-(d.lastSeen||0)<30*D},
     {name:'Older',test:d=>now-(d.lastSeen||0)>=30*D},
   ];
   const sorted=[...entries].sort((a,b)=>(b.lastSeen||0)-(a.lastSeen||0));
