@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <!-- ═══════════════════════════════════════
-     AirCheck+ · v2.10.015 · built by eligrt
+     AirCheck+ · v2.10.017 · built by eligrt
      ═══════════════════════════════════════ -->
 <html lang="he" dir="rtl">
 <head>
@@ -606,9 +606,28 @@ html,body{height:100%;background:#1a1a1c;font-family:var(--font-ui);color:var(--
 .splash-list-active{display:flex;align-items:center;justify-content:center;gap:8px;width:100%;margin-bottom:9px;direction:rtl;background:var(--paper);border:1px solid var(--gold-lite);border-radius:999px;padding:8px 14px;}
 .splash-list-active .lbl{font-size:13px;color:var(--ink-faint);}
 .splash-list-active .name{font-size:13px;color:var(--ink);font-weight:600;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;max-width:60%;}
+#rotateGuard{display:none;}
+@media (orientation:landscape) and (max-height:500px) and (hover:none){
+  #rotateGuard{display:flex;position:fixed;inset:0;z-index:2147483647;align-items:center;justify-content:center;direction:rtl;background:rgba(14,20,30,.58);backdrop-filter:blur(4px);-webkit-backdrop-filter:blur(4px);}
+  #rotateGuard .rg-inner{text-align:center;padding:0 32px;max-width:420px;}
+  #rotateGuard .rg-icon{font-size:52px;color:#fff;line-height:1;margin-bottom:18px;}
+  #rotateGuard .rg-text{font-size:17px;color:#fff;line-height:1.65;margin:0;}
+}
 </style>
 </head>
 <body>
+<div id="rotateGuard" role="alertdialog" aria-modal="true" aria-label="נא לסובב את המכשיר למצב אנכי">
+  <div class="rg-inner">
+    <div class="rg-icon">
+      <svg width="52" height="52" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <rect x="4" y="2" width="12" height="20" rx="2" transform="rotate(30 12 12)"/>
+        <path d="M3.5 14a9 9 0 0 0 14 4"/>
+        <path d="M17.5 20v-3h-3"/>
+      </svg>
+    </div>
+    <p class="rg-text">משיקולי בטיחות טיסה, האפליקציה עובדת במצב אנכי (portrait) בלבד. נא לסובב את המכשיר.</p>
+  </div>
+</div>
 <script>
   // Suppress the splash-screen flash when returning from an external
   // reference link (NOTAM/FPL/standalone pages) or a same-session resume.
@@ -669,7 +688,7 @@ html,body{height:100%;background:#1a1a1c;font-family:var(--font-ui);color:var(--
     <div class="splash-footer-wrap">
       <div class="footer-strip" style="display:flex;align-items:center;justify-content:space-between;padding:5px 14px 8px;">
         <span class="footer-refresh" onclick="reloadApp()">רענון</span>
-        <span id="versionTap" style="cursor:default;">AirCheck+ · v2.10.015 · built by eligrt</span>
+        <span id="versionTap" style="cursor:default;">AirCheck+ · v2.10.017 · built by eligrt</span>
         <span style="width:40px;"></span>
       </div>
     </div>
@@ -789,7 +808,7 @@ html,body{height:100%;background:#1a1a1c;font-family:var(--font-ui);color:var(--
     <div class="tree-panel" id="treePanel"></div>
     <div class="footer-strip" style="display:flex;align-items:center;justify-content:space-between;padding:5px 14px 8px;">
       <span class="footer-refresh" onclick="reloadApp()">רענון</span>
-      <span id="versionTap" style="cursor:default;">AirCheck+ · v2.10.015 · built by eligrt</span>
+      <span id="versionTap" style="cursor:default;">AirCheck+ · v2.10.017 · built by eligrt</span>
       <span style="width:40px;"></span>
     </div>
   </div>
@@ -870,7 +889,7 @@ html,body{height:100%;background:#1a1a1c;font-family:var(--font-ui);color:var(--
 
     <div class="footer-strip" style="display:flex;align-items:center;justify-content:space-between;padding:5px 14px 8px;">
       <span style="width:40px;"></span>
-      <span id="versionTap" style="cursor:default;">AirCheck+ · v2.10.015 · built by eligrt</span>
+      <span id="versionTap" style="cursor:default;">AirCheck+ · v2.10.017 · built by eligrt</span>
       <span style="width:40px;"></span>
     </div>
   </div>
@@ -984,7 +1003,7 @@ html,body{height:100%;background:#1a1a1c;font-family:var(--font-ui);color:var(--
     </div>
     <div class="footer-strip" style="display:flex;align-items:center;justify-content:space-between;padding:5px 14px 8px;">
       <span class="footer-refresh" onclick="reloadApp()">רענון</span>
-      <span id="versionTap" style="cursor:default;">AirCheck+ · v2.10.015 · built by eligrt</span>
+      <span id="versionTap" style="cursor:default;">AirCheck+ · v2.10.017 · built by eligrt</span>
       <span style="width:40px;"></span>
     </div>
   </div>
@@ -1008,7 +1027,7 @@ html,body{height:100%;background:#1a1a1c;font-family:var(--font-ui);color:var(--
     <div class="editor-list" id="editorList"></div>
     <div class="footer-strip" style="display:flex;align-items:center;justify-content:space-between;padding:5px 14px 8px;">
       <span class="footer-refresh" onclick="reloadApp()">רענון</span>
-      <span id="versionTap" style="cursor:default;">AirCheck+ · v2.10.015 · built by eligrt</span>
+      <span id="versionTap" style="cursor:default;">AirCheck+ · v2.10.017 · built by eligrt</span>
       <span style="width:40px;"></span>
     </div>
   </div>
