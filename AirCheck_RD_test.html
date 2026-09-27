@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <!-- ═══════════════════════════════════════
-     AirCheck+ · v2.10.018T · built by eligrt
+     AirCheck+ · v2.20.001T · built by eligrt
      ═══════════════════════════════════════ -->
 <html lang="he" dir="rtl">
 <head>
@@ -688,7 +688,7 @@ html,body{height:100%;background:#1a1a1c;font-family:var(--font-ui);color:var(--
     <div class="splash-footer-wrap">
       <div class="footer-strip" style="display:flex;align-items:center;justify-content:space-between;padding:5px 14px 8px;">
         <span class="footer-refresh" onclick="reloadApp()">רענון</span>
-        <span id="versionTap" style="cursor:default;">AirCheck+ · v2.10.018T · built by eligrt</span>
+        <span id="versionTap" style="cursor:default;">AirCheck+ · v2.20.001T · built by eligrt</span>
         <span style="width:40px;"></span>
       </div>
     </div>
@@ -809,7 +809,7 @@ html,body{height:100%;background:#1a1a1c;font-family:var(--font-ui);color:var(--
     <div class="tree-panel" id="treePanel"></div>
     <div class="footer-strip" style="display:flex;align-items:center;justify-content:space-between;padding:5px 14px 8px;">
       <span class="footer-refresh" onclick="reloadApp()">רענון</span>
-      <span id="versionTap" style="cursor:default;">AirCheck+ · v2.10.018T · built by eligrt</span>
+      <span id="versionTap" style="cursor:default;">AirCheck+ · v2.20.001T · built by eligrt</span>
       <span style="width:40px;"></span>
     </div>
   </div>
@@ -890,7 +890,7 @@ html,body{height:100%;background:#1a1a1c;font-family:var(--font-ui);color:var(--
 
     <div class="footer-strip" style="display:flex;align-items:center;justify-content:space-between;padding:5px 14px 8px;">
       <span style="width:40px;"></span>
-      <span id="versionTap" style="cursor:default;">AirCheck+ · v2.10.018T · built by eligrt</span>
+      <span id="versionTap" style="cursor:default;">AirCheck+ · v2.20.001T · built by eligrt</span>
       <span style="width:40px;"></span>
     </div>
   </div>
@@ -1004,7 +1004,7 @@ html,body{height:100%;background:#1a1a1c;font-family:var(--font-ui);color:var(--
     </div>
     <div class="footer-strip" style="display:flex;align-items:center;justify-content:space-between;padding:5px 14px 8px;">
       <span class="footer-refresh" onclick="reloadApp()">רענון</span>
-      <span id="versionTap" style="cursor:default;">AirCheck+ · v2.10.018T · built by eligrt</span>
+      <span id="versionTap" style="cursor:default;">AirCheck+ · v2.20.001T · built by eligrt</span>
       <span style="width:40px;"></span>
     </div>
   </div>
@@ -1028,7 +1028,7 @@ html,body{height:100%;background:#1a1a1c;font-family:var(--font-ui);color:var(--
     <div class="editor-list" id="editorList"></div>
     <div class="footer-strip" style="display:flex;align-items:center;justify-content:space-between;padding:5px 14px 8px;">
       <span class="footer-refresh" onclick="reloadApp()">רענון</span>
-      <span id="versionTap" style="cursor:default;">AirCheck+ · v2.10.018T · built by eligrt</span>
+      <span id="versionTap" style="cursor:default;">AirCheck+ · v2.20.001T · built by eligrt</span>
       <span style="width:40px;"></span>
     </div>
   </div>
@@ -1162,12 +1162,57 @@ const PHASES=[];const PHASE_IDX={};
 function buildIndex(){PHASES.length=0;Object.keys(PHASE_IDX).forEach(k=>delete PHASE_IDX[k]);CL.forEach((item,i)=>{if(!PHASE_IDX[item.phase]){const p={name:item.phase,start:i,end:i,groups:[],gIdx:{}};PHASE_IDX[item.phase]=p;PHASES.push(p);}const p=PHASE_IDX[item.phase];p.end=i;if(!p.gIdx[item.group]){const g={name:item.group,start:i,end:i,items:[]};p.gIdx[item.group]=g;p.groups.push(g);}const g=p.gIdx[item.group];g.end=i;g.items.push(i);});}
 buildIndex();
 const KEY='aircheck_rd_v1';const REG_KEY='aircheck_rd_reg';const ROUTE_KEY='aircheck_rd_route';
-let current=0;let status={};let statusTime={};let treeOpen=true;let _confirmedTimeStr=null;
-function saveState(){try{localStorage.setItem(KEY,JSON.stringify({current,status,statusTime}));}catch(e){}}
-function loadState(){try{const raw=localStorage.getItem(KEY);if(raw){const d=JSON.parse(raw);current=d.current||0;status=d.status||{};statusTime=d.statusTime||{};}}catch(e){}}
+let current=0;let status={};let statusTime={};let statusTs={};let flightMeta={};let treeOpen=true;let _confirmedTimeStr=null;
+function saveState(){try{localStorage.setItem(KEY,JSON.stringify({current,status,statusTime,statusTs,flightMeta}));}catch(e){}}
+function loadState(){try{const raw=localStorage.getItem(KEY);if(raw){const d=JSON.parse(raw);current=d.current||0;status=d.status||{};statusTime=d.statusTime||{};statusTs=d.statusTs||{};flightMeta=d.flightMeta||{};}}catch(e){}}
 function clearState(){
-  current=0;status={};statusTime={};saveState();
+  finalizeFlight();
+  current=0;status={};statusTime={};statusTs={};flightMeta={};saveState();
   localStorage.removeItem('aircheck_rd_route');
+}
+// ── QUALIFIED FLIGHT ──
+// A flight qualifies once >=80% of items are 'done' (skipped does not count) and
+// >=20 minutes have passed since its first tick. Checked on every tick (normal or
+// bulk), counted once per flight. flightMeta is saved with the flight state so the
+// "already counted" flag survives iOS reloads. Stats use only status/statusTs and
+// the item count cached at tick time, so they stay correct even if the active list
+// changes just before clearState() runs.
+const QUAL_PCT=80;const QUAL_MIN=20;
+function flightStats(){
+  const done=Object.values(status).filter(v=>v==='done').length;
+  const ts=Object.values(statusTs).filter(t=>typeof t==='number');
+  const first=ts.length?Math.min(...ts):null;
+  const last=ts.length?Math.max(...ts):null;
+  const n=flightMeta.n||CL.length;
+  const pct=n?Math.min(100,Math.round(done/n*100)):0;
+  const mins=(first!==null&&last!==null)?Math.round((last-first)/60000):0;
+  return{done,first,last,n,pct,mins};
+}
+function flightDayKey(first){
+  return new Date(flightMeta.startedAt||first||Date.now()).toLocaleDateString('en-CA');
+}
+function checkQualified(){
+  flightMeta.n=CL.length;
+  if(flightMeta.qualified){saveState();return;}
+  const st=flightStats();
+  if(st.pct>=QUAL_PCT&&st.first!==null&&Date.now()-st.first>=QUAL_MIN*60000){
+    flightMeta.qualified=true;
+    const qc=parseInt(localStorage.getItem('aircheck_qualified_count')||'0')+1;
+    localStorage.setItem('aircheck_qualified_count',qc);
+    if(window.logQualifiedFlight)window.logQualifiedFlight(flightDayKey(st.first));
+    if(window.syncToFirebase)window.syncToFirebase('flightQualified');
+  }
+  saveState();
+}
+// One small record per flight, sent when its ticks are about to be erased.
+// Used only to tune QUAL_PCT / QUAL_MIN from real data.
+function finalizeFlight(){
+  if(flightMeta.logged)return;
+  const st=flightStats();
+  if(!st.done)return;
+  flightMeta.logged=true;
+  const key=String(flightMeta.startedAt||st.first||Date.now());
+  if(window.logFlightRecord)window.logFlightRecord(key,{pct:st.pct,mins:st.mins,q:flightMeta.qualified?1:0,n:st.n,day:flightDayKey(st.first)});
 }
 function saveReg(val){try{localStorage.setItem(REG_KEY,val);}catch(e){}document.getElementById('stampInit').textContent='PIC · 4X-'+(val||'HHH');}
 function loadReg(){try{const v=localStorage.getItem(REG_KEY)||'';document.getElementById('stampInit').textContent='PIC · 4X-'+(v||'HHH');}catch(e){}}
@@ -1358,6 +1403,8 @@ function releaseHold(){
       status[current]='done';
       clearIsNewAt(current);
       statusTime[current]=_confirmedTimeStr;
+      statusTs[current]=Date.now();
+      checkQualified();
       const prevPhase=CL[current].phase;
       advanceToNext();
       holdState='idle';
@@ -1500,7 +1547,9 @@ function bulkConfirm(){
   }else{
     // check all
     const bulkTime=(()=>{const n=new Date();return String(n.getUTCHours()).padStart(2,'0')+':'+String(n.getUTCMinutes()).padStart(2,'0');})();
-    _bulkPhaseItems.forEach(ii=>{status[ii]='done';statusTime[ii]=bulkTime;});
+    const bulkTs=Date.now();
+    _bulkPhaseItems.forEach(ii=>{status[ii]='done';statusTime[ii]=bulkTime;statusTs[ii]=bulkTs;});
+    checkQualified();
     // advance current past this phase
     const bulkPhaseName=CL[_bulkPhaseItems[0]].phase;
     const lastInPhase=_bulkPhaseItems[_bulkPhaseItems.length-1];
@@ -1669,8 +1718,6 @@ function showAllDoneOverlay(lastPhase,noCount){
     rankUp.innerHTML='<div class="rankup-icon-wrap"><div class="rankup-icon">'+rankData.current.icon+'</div></div><div class="rankup-title" style="direction:rtl;">ברכות לרגל קבלת דרגת <span dir="ltr">AirCheck+</span> חדשה</div><div class="rankup-name">'+rankData.current.name+'</div><div class="rankup-sub" style="direction:rtl;">השלמת '+cc+' צ׳קליסטים מלאים. כל הכבוד!</div>';
   }else if(rankUp){rankUp.style.display='none';}
   showScreen('screenSummary');
-  // Show donation popup after 3rd completed flight
-  if(cc>=3) setTimeout(()=>checkDonatePopup(), 1500);
 }
 function dismissAllDone(){showScreen('screenChecklist');render();}
 
@@ -1779,7 +1826,7 @@ function startNew(){window._flightCounted=false;
   localStorage.setItem('aircheck_flight_count',fc);
   if(window.syncToFirebase)window.syncToFirebase('flightStart');
   if(window.logDailyFlight)window.logDailyFlight();
-  clearState();holdState='idle';resetRunwayBtn();showScreen('screenChecklist');render();
+  clearState();flightMeta.startedAt=Date.now();holdState='idle';resetRunwayBtn();showScreen('screenChecklist');render();
 }
 // ── SETTINGS ──
 const SETTINGS_KEY='aircheck_rd_settings';
@@ -3047,6 +3094,7 @@ function reloadApp(){
   localStorage.removeItem('aircheck_pwa_shown');
   localStorage.removeItem('aircheck_donated');
   localStorage.removeItem('aircheck_donate_later');
+  localStorage.removeItem('aircheck_donate_snoozes');
   localStorage.removeItem('aircheck_sync_toast_v1');
   location.reload();
 }
@@ -3173,13 +3221,26 @@ function closePwaNever(){
 }
 
 // ── DONATION POPUP ──
+// Shown on app open (splash only, never mid-flight) once the pilot has
+// DONATE_MIN_QUALIFIED qualified flights. Snooze grows: 3x 7 days, 3x 14 days,
+// then 30 days forever.
+const DONATE_MIN_QUALIFIED=7;
+function donateSnoozeDays(n){return n<=3?7:(n<=6?14:30);}
 function checkDonatePopup(){
   if(!FEATURES.DONATE)return;
   if(localStorage.getItem('aircheck_donated')==='1')return;
+  if(parseInt(localStorage.getItem('aircheck_qualified_count')||'0')<DONATE_MIN_QUALIFIED)return;
+  const snoozes=parseInt(localStorage.getItem('aircheck_donate_snoozes')||'0');
   const later=parseInt(localStorage.getItem('aircheck_donate_later')||'0');
-  if(later&&Date.now()-later<7*24*60*60*1000)return;
-  // Only show if What's New and PWA popups are not showing this session
+  if(later&&Date.now()-later<donateSnoozeDays(snoozes)*24*60*60*1000)return;
+  // Only when What's New / PWA popups are not showing, and only on the splash screen
   if(_whatsNewShownThisSession)return;
+  const pwa=document.getElementById('pwaOverlay');
+  if(pwa&&pwa.style.display==='flex')return;
+  const splash=document.getElementById('screenSplash');
+  if(!splash||!splash.classList.contains('active'))return;
+  const lbl=document.getElementById('donateSnoozeLbl');
+  if(lbl)lbl.textContent='+'+donateSnoozeDays(snoozes+1)+' ימים';
   const el=document.getElementById('donateOverlay');
   if(el)el.style.display='flex';
 }
@@ -3198,6 +3259,7 @@ function closeDonateNow(){
 
 function closeDonateSnooze(){
   localStorage.setItem('aircheck_donate_later',Date.now());
+  localStorage.setItem('aircheck_donate_snoozes',parseInt(localStorage.getItem('aircheck_donate_snoozes')||'0')+1);
   closeDonate();
 }
 
@@ -3442,6 +3504,7 @@ document.addEventListener('DOMContentLoaded',()=>{
     }
   }
   checkPwaPopup();
+  setTimeout(checkDonatePopup,4000);
 });
 
 function startSplashTypewriter(){
@@ -3851,11 +3914,14 @@ function splashSecondaryAction(){
       // Flight counters — use max(local, firebase) to survive browser clears
       const localFlights=parseInt(localStorage.getItem('aircheck_flight_count')||'0');
       const localCompleted=parseInt(localStorage.getItem('aircheck_completed_count')||'0');
+      const localQualified=parseInt(localStorage.getItem('aircheck_qualified_count')||'0');
       const flightCount=Math.max(localFlights,existing.flightCount||0);
       const completedFlights=Math.max(localCompleted,existing.completedFlights||0);
+      const qualifiedFlights=Math.max(localQualified,existing.qualifiedFlights||0);
       // Sync back if firebase had higher values
       if((existing.flightCount||0)>localFlights)localStorage.setItem('aircheck_flight_count',existing.flightCount);
       if((existing.completedFlights||0)>localCompleted)localStorage.setItem('aircheck_completed_count',existing.completedFlights);
+      if((existing.qualifiedFlights||0)>localQualified)localStorage.setItem('aircheck_qualified_count',existing.qualifiedFlights);
 
       // PWA
       const pwaInstalled=localStorage.getItem('aircheck_pwa_installed')==='1'||window.matchMedia('(display-mode: standalone)').matches;
@@ -3869,7 +3935,7 @@ function splashSecondaryAction(){
         os, listType, profileCount,
         metarUsed, metarStation, metarCustomIcao, metarStationCounts,
         externalLinkUsed, externalLinkCounts, externalLinkLabels,
-        flightCount, completedFlights,
+        flightCount, completedFlights, qualifiedFlights,
         pwaInstalled, pwaPromptShown, pwaPromptTimestamp
       });
     }catch(e){}
@@ -3906,6 +3972,19 @@ function splashSecondaryAction(){
     }catch(e){}
   }
   window.logDailyFlight=logDailyFlight;
+  // Qualified-flight analytics: devices/{id}/dailyQualified/{YYYY-MM-DD} keyed by
+  // the flight's START date, so it lines up week-for-week with daily/ above.
+  window.logQualifiedFlight=async function(dayKey){
+    try{
+      const r=ref(db,'devices/'+getDeviceId()+'/dailyQualified/'+dayKey);
+      const snap=await get(r);
+      await set(r,(snap.val()||0)+1);
+    }catch(e){}
+  };
+  // One record per flight: devices/{id}/flights/{startTs}: {pct,mins,q,n,day}
+  window.logFlightRecord=async function(key,rec){
+    try{await set(ref(db,'devices/'+getDeviceId()+'/flights/'+key),rec);}catch(e){}
+  };
   // Lightweight PWA stats sync
   window.syncPwaStats=syncToFirebase;
 
@@ -4117,7 +4196,7 @@ function splashSecondaryAction(){
       <div style="padding:10px 16px 14px;display:flex;align-items:flex-start;justify-content:center;">
         <button onclick="closeDonateSnooze()" style="background:transparent;border:none;font-family:var(--font-ui);font-size:12px;color:var(--ink-muted);cursor:pointer;padding:4px 0;display:flex;align-items:center;gap:5px;">
           אחר כך
-          <span style="font-family:var(--font-mono);font-size:8px;background:rgba(200,160,74,.12);color:var(--gold-deep);padding:1px 5px;border-radius:3px;">+7 ימים</span>
+          <span id="donateSnoozeLbl" style="font-family:var(--font-mono);font-size:8px;background:rgba(200,160,74,.12);color:var(--gold-deep);padding:1px 5px;border-radius:3px;">+7 ימים</span>
         </button>
       </div>
     </div>
