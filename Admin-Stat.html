@@ -133,6 +133,15 @@ body{
 .dev-detail-row .lbl{color:var(--ink-faint);font-family:var(--font-ui);}
 .stale-flag{display:inline-block;font-size:8px;font-family:var(--font-mono);background:rgba(185,74,58,.12);color:var(--stamp-red);padding:0 4px;border-radius:3px;margin-right:3px;white-space:nowrap;}
 
+/* ── USAGE TREND RANGE SELECTOR ── */
+.range-pills{display:flex;gap:6px;margin-bottom:8px;}
+.range-pill{flex:1;padding:6px 4px;background:transparent;border:1px solid var(--gold-lite);border-radius:5px;font-family:var(--font-mono);font-size:10px;color:var(--ink-muted);cursor:pointer;}
+.range-pill.active{background:var(--ink);border-color:var(--ink);color:#f4ecdc;font-weight:700;}
+.range-custom{display:none;align-items:center;gap:6px;margin-bottom:8px;font-family:var(--font-mono);font-size:10px;color:var(--ink-faint);}
+.range-custom.open{display:flex;}
+.range-custom select{flex:1;min-width:0;padding:5px 4px;background:#fff;border:1px solid var(--paper-edge);border-radius:5px;font-family:var(--font-mono);font-size:11px;color:var(--ink);}
+.range-sum{font-family:var(--font-mono);font-size:10px;color:var(--ink-faint);margin-bottom:6px;}
+
 /* ── PC LAYOUT: constrain to centered card, dark surround ── */
 @media(min-width:600px){
   html{background:#1a1a1c;}
@@ -173,7 +182,7 @@ body{
     <span class="refresh-glyph">↻</span>
     <span id="lastUpdateLabel" style="font-family:var(--font-mono);font-size:9px;color:var(--ink-faint);letter-spacing:.04em;white-space:nowrap;">—</span>
   </span>
-  <span style="position:absolute;left:50%;transform:translateX(-50%);font-family:var(--font-mono);font-size:9px;color:var(--ink-faint);letter-spacing:.1em;text-transform:uppercase;white-space:nowrap;">AirCheck+ · Admin · v1.42 · built by eligrt</span>
+  <span style="position:absolute;left:50%;transform:translateX(-50%);font-family:var(--font-mono);font-size:9px;color:var(--ink-faint);letter-spacing:.1em;text-transform:uppercase;white-space:nowrap;">AirCheck+ · Admin · v1.43 · built by eligrt</span>
 </div>
 
 <div id="deleteModal" class="modal-overlay" onclick="handleDeleteModalClick(event)">
@@ -388,13 +397,21 @@ function buildUsageTab(data){
   const grand=weekdayTotal+weekendTotal;
   const wkPct=grand?Math.round(weekdayTotal/grand*100):0;
   const wePct=grand?Math.round(weekendTotal/grand*100):0;
-  // Trend: last up-to-8 weeks that have data, chronological. Label Mmm D (week start).
-  const sortedWeeks=Object.keys(weekMap).sort((a,b)=>weekMap[a].ms-weekMap[b].ms).slice(-8);
+  // Trend: continuous week list (empty weeks = 0) from first tracked week to the current week.
+  // Range (4W / 12W / custom) is applied at draw time by drawTrend().
   const MON=['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
-  const weeks=sortedWeeks.map(k=>{const s=new Date(weekMap[k].ms);return MON[s.getMonth()]+' '+s.getDate();});
-  const wd=sortedWeeks.map(k=>weekMap[k].wd);
-  const we=sortedWeeks.map(k=>weekMap[k].we);
-  const tot=wd.map((v,i)=>v+we[i]);
+  const allWeeks=[];
+  if(firstMs!==null){
+    const f=new Date(firstMs),n=new Date();
+    const curSun=new Date(n.getFullYear(),n.getMonth(),n.getDate()-n.getDay()).getTime();
+    let s=new Date(f.getFullYear(),f.getMonth(),f.getDate()-f.getDay());
+    while(s.getTime()<=curSun){
+      const k=s.getFullYear()+'-'+String(s.getMonth()+1).padStart(2,'0')+'-'+String(s.getDate()).padStart(2,'0');
+      const w=weekMap[k]||{wd:0,we:0};
+      allWeeks.push({label:MON[s.getMonth()]+' '+s.getDate(),full:MON[s.getMonth()]+' '+s.getDate()+', '+s.getFullYear(),wd:w.wd,we:w.we});
+      s=new Date(s.getFullYear(),s.getMonth(),s.getDate()+7);
+    }
+  }
   const hasData=grand>0;
   const MON2=['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
   const sinceLabel=firstMs!==null?(()=>{const s=new Date(firstMs);return MON2[s.getMonth()]+' '+s.getDate()+', '+s.getFullYear();})():'';
@@ -422,10 +439,20 @@ function buildUsageTab(data){
       <span style="display:flex;align-items:center;gap:5px;"><span style="width:10px;height:10px;border-radius:2px;background:var(--gold);"></span>weekend</span>
     </div>
     <div class="section-title">WEEK-OVER-WEEK TREND</div>
+    <div class="range-pills">
+      <button class="range-pill" data-r="4" onclick="setTrendRange('4')">4 WEEKS</button>
+      <button class="range-pill" data-r="12" onclick="setTrendRange('12')">LAST Q (12W)</button>
+      <button class="range-pill" data-r="custom" onclick="setTrendRange('custom')">CUSTOM</button>
+    </div>
+    <div class="range-custom" id="trendCustom">
+      <span>FROM</span><select id="trendFrom" onchange="onTrendCustom()"></select>
+      <span>TO</span><select id="trendTo" onchange="onTrendCustom()"></select>
+    </div>
+    <div class="range-sum" id="trendSum"></div>
     <div style="position:relative;width:100%;height:180px;"><canvas id="usageTrend"></canvas></div>`;
 
   // stash placeholder data for the deferred chart init
-  window._usageChartData=hasData?{DOW,weeks,wd,we,tot}:null;
+  window._usageChartData=hasData?{DOW,allWeeks}:null;
 
   const emptyState=`<div style="font-family:var(--font-mono);font-size:11px;color:var(--ink-faint);background:var(--paper);border:1px dashed var(--gold-lite);border-radius:8px;padding:20px 14px;text-align:center;direction:ltr;">No flight data yet — charts appear once daily counts start flowing in.</div>`;
   return `<div class="dev-wrap">
@@ -695,19 +722,13 @@ function initUsageCharts(){
   const css=n=>getComputedStyle(document.documentElement).getPropertyValue(n).trim();
   const ink=css('--ink')||'#1c3d6e', gold=css('--gold')||'#c8a04a', faint=css('--ink-faint')||'#8a8578';
   const grid='rgba(120,120,110,0.15)';
-  const {DOW,weeks,wd,we,tot}=window._usageChartData;
+  const {DOW}=window._usageChartData;
 
   const valTop={id:'valTop',afterDatasetsDraw:function(c){
     const ctx=c.ctx;ctx.save();ctx.font='600 11px sans-serif';ctx.fillStyle=ink;ctx.textAlign='center';
     c.data.datasets[0].data.forEach((v,i)=>{const el=c.getDatasetMeta(0).data[i];ctx.fillText(v,el.x,el.y-6);});
     ctx.restore();
   }};
-  const lineTop={id:'lineTop',afterDatasetsDraw:function(c){
-    const ctx=c.ctx;ctx.save();ctx.font='600 11px sans-serif';ctx.fillStyle=ink;ctx.textAlign='center';
-    c.getDatasetMeta(0).data.forEach((el,i)=>ctx.fillText(c.data.datasets[0].data[i],el.x,el.y-8));
-    ctx.restore();
-  }};
-
   const dowEl=document.getElementById('usageDow');
   if(dowEl)_usageCharts.push(new Chart(dowEl,{
     type:'bar',
@@ -720,21 +741,66 @@ function initUsageCharts(){
     plugins:[valTop]
   }));
 
-  const trendEl=document.getElementById('usageTrend');
-  if(trendEl)_usageCharts.push(new Chart(trendEl,{
+  drawTrend();
+}
+
+// ── TREND RANGE: '4' | '12' | 'custom' (from/to = indexes into allWeeks). Persists across refresh.
+let _trendRange='4',_trendFrom=null,_trendTo=null,_trendChart=null;
+function drawTrend(){
+  const data=window._usageChartData;
+  const el=document.getElementById('usageTrend');
+  if(!data||!el||typeof Chart==='undefined')return;
+  const all=data.allWeeks,n=all.length;
+  if(_trendFrom===null||_trendTo===null||_trendTo>=n){_trendTo=n-1;_trendFrom=Math.max(0,n-8);}
+  let a,b;
+  if(_trendRange==='custom'){a=Math.min(_trendFrom,_trendTo);b=Math.max(_trendFrom,_trendTo);}
+  else{b=n-1;a=Math.max(0,n-parseInt(_trendRange));}
+  const slice=all.slice(a,b+1);
+  const weeks=slice.map(w=>w.label),wd=slice.map(w=>w.wd),we=slice.map(w=>w.we),tot=wd.map((v,i)=>v+we[i]);
+
+  document.querySelectorAll('.range-pill').forEach(p=>p.classList.toggle('active',p.dataset.r===_trendRange));
+  const cw=document.getElementById('trendCustom');
+  if(cw)cw.classList.toggle('open',_trendRange==='custom');
+  const opts=all.map((w,i)=>`<option value="${i}">${w.full}</option>`).join('');
+  const fs=document.getElementById('trendFrom'),ts=document.getElementById('trendTo');
+  if(fs&&ts){fs.innerHTML=opts;ts.innerHTML=opts;fs.value=String(a);ts.value=String(b);}
+  const sum=document.getElementById('trendSum');
+  const total=tot.reduce((x,y)=>x+y,0);
+  if(sum)sum.textContent=`${all[a].full} - ${all[b].full} · ${slice.length} weeks · ${total} flights`+(slice.length<parseInt(_trendRange)?' (tracking started later)':'');
+
+  if(_trendChart){try{_trendChart.destroy();}catch(e){}}
+  const css=v=>getComputedStyle(document.documentElement).getPropertyValue(v).trim();
+  const ink=css('--ink')||'#1c3d6e', gold=css('--gold')||'#c8a04a', faint=css('--ink-faint')||'#8a8578';
+  const grid='rgba(120,120,110,0.15)';
+  const dense=slice.length>16;
+  const lineTop={id:'lineTop',afterDatasetsDraw:function(c){
+    if(dense)return;
+    const ctx=c.ctx;ctx.save();ctx.font='600 11px sans-serif';ctx.fillStyle=ink;ctx.textAlign='center';
+    c.getDatasetMeta(0).data.forEach((el,i)=>ctx.fillText(c.data.datasets[0].data[i],el.x,el.y-8));
+    ctx.restore();
+  }};
+  const pr=dense?1:3,pr2=dense?1:2;
+  _trendChart=new Chart(el,{
     type:'line',
     data:{labels:weeks,datasets:[
-      {label:'total',data:tot,borderColor:ink,backgroundColor:ink,borderWidth:2.5,tension:0.3,pointRadius:3,pointBackgroundColor:ink},
-      {label:'weekend',data:we,borderColor:gold,backgroundColor:gold,borderWidth:1.5,tension:0.3,pointRadius:2,pointBackgroundColor:gold},
-      {label:'weekday',data:wd,borderColor:ink,backgroundColor:ink,borderWidth:1.5,borderDash:[5,4],tension:0.3,pointRadius:2,pointBackgroundColor:ink}
+      {label:'total',data:tot,borderColor:ink,backgroundColor:ink,borderWidth:2.5,tension:0.3,pointRadius:pr,pointBackgroundColor:ink},
+      {label:'weekend',data:we,borderColor:gold,backgroundColor:gold,borderWidth:1.5,tension:0.3,pointRadius:pr2,pointBackgroundColor:gold},
+      {label:'weekday',data:wd,borderColor:ink,backgroundColor:ink,borderWidth:1.5,borderDash:[5,4],tension:0.3,pointRadius:pr2,pointBackgroundColor:ink}
     ]},
     options:{responsive:true,maintainAspectRatio:false,layout:{padding:{top:18}},
+      interaction:{mode:'index',intersect:false},
       plugins:{legend:{display:true,position:'bottom',labels:{boxWidth:10,boxHeight:10,font:{size:11},color:faint}}},
-      scales:{x:{grid:{display:false},ticks:{font:{size:11},color:faint}},
-        y:{grid:{color:grid},ticks:{font:{size:11},color:faint},beginAtZero:true}}},
+      scales:{x:{grid:{display:false},ticks:{font:{size:11},color:faint,autoSkip:true,maxRotation:0}},
+        y:{grid:{color:grid},ticks:{font:{size:11},color:faint,precision:0},beginAtZero:true}}},
     plugins:[lineTop]
-  }));
+  });
 }
+window.setTrendRange=function(r){_trendRange=r;drawTrend();};
+window.onTrendCustom=function(){
+  _trendFrom=parseInt(document.getElementById('trendFrom').value);
+  _trendTo=parseInt(document.getElementById('trendTo').value);
+  drawTrend();
+};
 
 window.selectTab=function(id){
   _activeTab=id;
