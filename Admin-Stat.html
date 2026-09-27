@@ -183,7 +183,7 @@ body{
     <span class="refresh-glyph">↻</span>
     <span id="lastUpdateLabel" style="font-family:var(--font-mono);font-size:9px;color:var(--ink-faint);letter-spacing:.04em;white-space:nowrap;">—</span>
   </span>
-  <span style="position:absolute;left:50%;transform:translateX(-50%);font-family:var(--font-mono);font-size:9px;color:var(--ink-faint);letter-spacing:.1em;text-transform:uppercase;white-space:nowrap;">AirCheck+ · Admin · v1.46 · built by eligrt</span>
+  <span style="position:absolute;left:50%;transform:translateX(-50%);font-family:var(--font-mono);font-size:9px;color:var(--ink-faint);letter-spacing:.1em;text-transform:uppercase;white-space:nowrap;">AirCheck+ · Admin · v1.47 · built by eligrt</span>
 </div>
 
 <div id="deleteModal" class="modal-overlay" onclick="handleDeleteModalClick(event)">
@@ -872,13 +872,17 @@ function drawQual(slice,tot){
   const qualLabels={id:'qualLabels',afterDatasetsDraw:function(c){
     if(dense)return;
     const ctx=c.ctx;ctx.save();ctx.textAlign='center';
+    // keep edge labels inside the plot (clear of the y-axis) and the canvas
+    const fitX=(t,x)=>{const h=ctx.measureText(t).width/2+2;return Math.min(Math.max(x,c.chartArea.left+h),c.width-h);};
     ctx.font='600 11px sans-serif';ctx.fillStyle=ink;
-    c.getDatasetMeta(0).data.forEach((el,i)=>ctx.fillText(tot[i],el.x,el.y-8));
+    c.getDatasetMeta(0).data.forEach((el,i)=>{const t=String(tot[i]);ctx.fillText(t,fitX(t,el.x),el.y-8);});
     ctx.font='600 10px sans-serif';ctx.fillStyle=green;
     c.getDatasetMeta(1).data.forEach((el,i)=>{
       if(q[i]===null||!tot[i])return;
-      const t=tot[i]?q[i]+' ('+Math.round(q[i]/tot[i]*100)+'%)':String(q[i]);
-      ctx.fillText(t,el.x,el.y+15);
+      const t=q[i]+' ('+Math.round(q[i]/tot[i]*100)+'%)';
+      // below the point, unless that would run into the x-axis - then above it
+      const y=el.y+15>c.chartArea.bottom-2?el.y-8:el.y+15;
+      ctx.fillText(t,fitX(t,el.x),y);
     });
     ctx.restore();
   }};
