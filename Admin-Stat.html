@@ -110,7 +110,7 @@ body{
 .group.open .group-chevron{transform:rotate(90deg);}
 .group-body{display:none;}
 .group.open .group-body{display:block;}
-.dev-header,.dev-row{display:grid;grid-template-columns:22px 26px 1fr 40px 100px 62px;align-items:center;gap:6px;padding:0 12px;min-height:34px;}
+.dev-header,.dev-row{display:grid;grid-template-columns:22px 26px 1fr 40px 100px 84px;align-items:center;gap:6px;padding:0 12px;min-height:34px;}
 .dev-header{background:var(--paper-hi);border-bottom:1px solid var(--paper-edge);min-height:24px;}
 .dev-header span{font-family:var(--font-mono);font-size:8px;color:var(--ink-faint);letter-spacing:.06em;text-transform:uppercase;}
 .dev-row{border-top:1px solid var(--paper-edge);cursor:pointer;}
@@ -127,6 +127,7 @@ body{
 .dev-ver{font-family:var(--font-mono);font-size:10px;color:var(--ink-faint);white-space:nowrap;}
 .dev-flights{font-family:var(--font-mono);font-size:11px;color:var(--ink);}
 .dev-flights .done{color:var(--cleared);}
+.dev-flights .qual{color:var(--gold);}
 .dev-detail{display:none;padding:8px 12px 10px;border-top:1px dashed var(--paper-edge);background:var(--paper);}
 .dev-row.open + .dev-detail{display:block;}
 .dev-detail-row{display:flex;justify-content:space-between;font-size:10px;font-family:var(--font-mono);padding:2px 0;}
@@ -182,7 +183,7 @@ body{
     <span class="refresh-glyph">↻</span>
     <span id="lastUpdateLabel" style="font-family:var(--font-mono);font-size:9px;color:var(--ink-faint);letter-spacing:.04em;white-space:nowrap;">—</span>
   </span>
-  <span style="position:absolute;left:50%;transform:translateX(-50%);font-family:var(--font-mono);font-size:9px;color:var(--ink-faint);letter-spacing:.1em;text-transform:uppercase;white-space:nowrap;">AirCheck+ · Admin · v1.43 · built by eligrt</span>
+  <span style="position:absolute;left:50%;transform:translateX(-50%);font-family:var(--font-mono);font-size:9px;color:var(--ink-faint);letter-spacing:.1em;text-transform:uppercase;white-space:nowrap;">AirCheck+ · Admin · v1.46 · built by eligrt</span>
 </div>
 
 <div id="deleteModal" class="modal-overlay" onclick="handleDeleteModalClick(event)">
@@ -323,7 +324,7 @@ function buildRecencyGroups(entries,latest){
           <span class="dev-id col-id">${d.id}</span>
           <span class="dev-active col-active">${timeAgoShort(d.lastSeen)}</span>
           <span class="dev-ver col-ver">${stale?'<span class="stale-flag">!</span>':''}${d.appVersion||'—'}</span>
-          <span class="dev-flights col-flights">${d.flightCount||0}/<span class="done">${d.completedFlights||0}</span></span>
+          <span class="dev-flights col-flights">${d.flightCount||0}/<span class="done">${d.completedFlights||0}</span>/<span class="qual">${d.qualifiedFlights||0}</span></span>
         </div>
         <div class="dev-detail">
           <div class="dev-detail-row"><span class="lbl">Last opened</span><span>${fmtDT(d.lastOpenedAt)}</span></div>
@@ -338,7 +339,7 @@ function buildRecencyGroups(entries,latest){
       </div>
       <div class="group-body">
         <div class="dev-header">
-          <span class="col-os"></span><span class="col-pwa">PWA</span><span class="col-id">DEVICE</span><span class="col-active">ACTIVE</span><span class="col-ver">VERSION</span><span class="col-flights">START/DONE</span>
+          <span class="col-os"></span><span class="col-pwa">PWA</span><span class="col-id">DEVICE</span><span class="col-active">ACTIVE</span><span class="col-ver">VERSION</span><span class="col-flights">START/DONE/QUAL</span>
         </div>
         ${rows}
       </div>
@@ -392,6 +393,33 @@ function buildUsageTab(data){
       if(weekend)weekMap[wk].we+=cnt; else weekMap[wk].wd+=cnt;
     });
   });
+  // Qualified flights: devices/{id}/dailyQualified/{YYYY-MM-DD}: count, keyed by the
+  // flight's START date (same local-date convention as daily/), so both lines share weeks.
+  let firstQMs=null;
+  Object.values(dd).forEach(dev=>{
+    const days=dev&&dev.dailyQualified;
+    if(!days||typeof days!=='object')return;
+    Object.entries(days).forEach(([key,val])=>{
+      const m=/^(\d{4})-(\d{2})-(\d{2})$/.exec(key);
+      if(!m)return;
+      const cnt=parseInt(val)||0;
+      if(!cnt)return;
+      const dt=new Date(+m[1],+m[2]-1,+m[3]);
+      const dow=dt.getDay();
+      const sunday=new Date(dt); sunday.setDate(dt.getDate()-dow);
+      if(firstQMs===null||sunday.getTime()<firstQMs)firstQMs=sunday.getTime();
+      const wk=sunday.getFullYear()+'-'+String(sunday.getMonth()+1).padStart(2,'0')+'-'+String(sunday.getDate()).padStart(2,'0');
+      if(!weekMap[wk])weekMap[wk]={wd:0,we:0,ms:sunday.getTime()};
+      weekMap[wk].q=(weekMap[wk].q||0)+cnt;
+    });
+  });
+  // Per-flight records: devices/{id}/flights/{startTs}: {pct,mins,q,n,day}
+  const recs=[];
+  Object.values(dd).forEach(dev=>{
+    const fl=dev&&dev.flights;
+    if(!fl||typeof fl!=='object')return;
+    Object.values(fl).forEach(r=>{if(r&&typeof r==='object')recs.push(r);});
+  });
   const weekdayTotal=DOW[0]+DOW[1]+DOW[2]+DOW[3]+DOW[4];
   const weekendTotal=DOW[5]+DOW[6];
   const grand=weekdayTotal+weekendTotal;
@@ -408,7 +436,9 @@ function buildUsageTab(data){
     while(s.getTime()<=curSun){
       const k=s.getFullYear()+'-'+String(s.getMonth()+1).padStart(2,'0')+'-'+String(s.getDate()).padStart(2,'0');
       const w=weekMap[k]||{wd:0,we:0};
-      allWeeks.push({label:MON[s.getMonth()]+' '+s.getDate(),full:MON[s.getMonth()]+' '+s.getDate()+', '+s.getFullYear(),wd:w.wd,we:w.we});
+      // q is null (not 0) for weeks before qualified tracking started, so the line starts at ship week
+      const q=(firstQMs!==null&&s.getTime()>=firstQMs)?(w.q||0):null;
+      allWeeks.push({label:MON[s.getMonth()]+' '+s.getDate(),full:MON[s.getMonth()]+' '+s.getDate()+', '+s.getFullYear(),wd:w.wd,we:w.we,q});
       s=new Date(s.getFullYear(),s.getMonth(),s.getDate()+7);
     }
   }
@@ -431,6 +461,29 @@ function buildUsageTab(data){
     </div>
     <div style="font-family:var(--font-mono);font-size:10px;color:var(--ink-faint);direction:ltr;text-align:left;margin-bottom:18px;">${grand} flights tracked since ${sinceLabel} · separate from the all-time total above.</div>`;
 
+  // FLIGHT QUALITY: spread of final % done and duration, for tuning the 80% / 20 min thresholds
+  let qualityHtml='';
+  if(recs.length){
+    const med=a=>{const b=[...a].sort((x,y)=>x-y);const m=Math.floor(b.length/2);return b.length%2?b[m]:Math.round((b[m-1]+b[m])/2);};
+    const nQ=recs.filter(r=>r.q).length;
+    const pcts=recs.map(r=>parseInt(r.pct)||0), mins=recs.map(r=>parseInt(r.mins)||0);
+    const N=recs.length;
+    const cnt=f=>recs.filter(f).length;
+    qualityHtml=section('FLIGHT QUALITY · '+N+' FLIGHTS LOGGED',
+      `<div style="display:flex;justify-content:space-between;font-family:var(--font-mono);font-size:11px;color:var(--ink);margin-bottom:10px;direction:ltr;">
+        <span>qualified <b>${nQ}</b> (${Math.round(nQ/N*100)}%)</span><span>median <b>${med(pcts)}%</b> done</span><span>median <b>${med(mins)}</b> min</span>
+      </div>`+
+      '<div style="font-family:var(--font-mono);font-size:9px;color:var(--ink-faint);margin:4px 0 6px;">% ITEMS DONE</div>'+
+      barRow('80-100%',cnt(r=>(parseInt(r.pct)||0)>=80),N,'var(--cleared)')+
+      barRow('50-79%',cnt(r=>{const p=parseInt(r.pct)||0;return p>=50&&p<80;}),N,'var(--amber)')+
+      barRow('under 50%',cnt(r=>(parseInt(r.pct)||0)<50),N,'var(--stamp-red)')+
+      '<div style="font-family:var(--font-mono);font-size:9px;color:var(--ink-faint);margin:10px 0 6px;">FIRST TO LAST TICK</div>'+
+      barRow('60+ min',cnt(r=>(parseInt(r.mins)||0)>=60),N,'var(--cleared)')+
+      barRow('20-59 min',cnt(r=>{const m=parseInt(r.mins)||0;return m>=20&&m<60;}),N,'var(--amber)')+
+      barRow('under 20 min',cnt(r=>(parseInt(r.mins)||0)<20),N,'var(--stamp-red)')
+    );
+  }
+
   const charts=`
     <div class="section-title" style="margin-top:4px;">FLIGHTS BY DAY OF WEEK</div>
     <div style="position:relative;width:100%;height:170px;margin-bottom:6px;"><canvas id="usageDow"></canvas></div>
@@ -449,7 +502,12 @@ function buildUsageTab(data){
       <span>TO</span><select id="trendTo" onchange="onTrendCustom()"></select>
     </div>
     <div class="range-sum" id="trendSum"></div>
-    <div style="position:relative;width:100%;height:180px;"><canvas id="usageTrend"></canvas></div>`;
+    <div style="position:relative;width:100%;height:180px;"><canvas id="usageTrend"></canvas></div>
+    <div class="section-title" style="margin-top:22px;">STARTED VS QUALIFIED</div>
+    <div class="range-sum" id="qualSum"></div>
+    <div style="position:relative;width:100%;height:200px;"><canvas id="usageQual"></canvas></div>
+    <div style="font-family:var(--font-mono);font-size:10px;color:var(--ink-faint);direction:ltr;text-align:left;margin:6px 0 18px;">Qualified = 80%+ items done and 20+ min from first tick. Same range as the trend above.</div>
+    ${qualityHtml}`;
 
   // stash placeholder data for the deferred chart init
   window._usageChartData=hasData?{DOW,allWeeks}:null;
@@ -793,6 +851,50 @@ function drawTrend(){
       scales:{x:{grid:{display:false},ticks:{font:{size:11},color:faint,autoSkip:true,maxRotation:0}},
         y:{grid:{color:grid},ticks:{font:{size:11},color:faint,precision:0},beginAtZero:true}}},
     plugins:[lineTop]
+  });
+  drawQual(slice,tot);
+}
+let _qualChart=null;
+function drawQual(slice,tot){
+  const el=document.getElementById('usageQual');
+  if(!el||typeof Chart==='undefined')return;
+  const q=slice.map(w=>w.q);
+  const tracked=q.map((v,i)=>v===null?null:i).filter(i=>i!==null);
+  const sumS=tracked.reduce((a,i)=>a+tot[i],0), sumQ=tracked.reduce((a,i)=>a+q[i],0);
+  const sumEl=document.getElementById('qualSum');
+  if(sumEl)sumEl.textContent=tracked.length?`${sumS} started · ${sumQ} qualified · ${sumS?Math.round(sumQ/sumS*100):0}% (${tracked.length} tracked weeks)`:'No qualified-flight data in this range yet';
+  if(_qualChart){try{_qualChart.destroy();}catch(e){}}
+  const css=v=>getComputedStyle(document.documentElement).getPropertyValue(v).trim();
+  const ink=css('--ink')||'#1c3d6e', green=css('--cleared')||'#1f6f3f', faint=css('--ink-faint')||'#8a8578';
+  const grid='rgba(120,120,110,0.15)';
+  const dense=slice.length>16, pr=dense?1:3;
+  // Value labels: started total above its point, qualified "N (X%)" below its point
+  const qualLabels={id:'qualLabels',afterDatasetsDraw:function(c){
+    if(dense)return;
+    const ctx=c.ctx;ctx.save();ctx.textAlign='center';
+    ctx.font='600 11px sans-serif';ctx.fillStyle=ink;
+    c.getDatasetMeta(0).data.forEach((el,i)=>ctx.fillText(tot[i],el.x,el.y-8));
+    ctx.font='600 10px sans-serif';ctx.fillStyle=green;
+    c.getDatasetMeta(1).data.forEach((el,i)=>{
+      if(q[i]===null||!tot[i])return;
+      const t=tot[i]?q[i]+' ('+Math.round(q[i]/tot[i]*100)+'%)':String(q[i]);
+      ctx.fillText(t,el.x,el.y+15);
+    });
+    ctx.restore();
+  }};
+  _qualChart=new Chart(el,{
+    type:'line',
+    data:{labels:slice.map(w=>w.label),datasets:[
+      {label:'started',data:tot,borderColor:ink,backgroundColor:ink,borderWidth:2,tension:0.3,pointRadius:pr,pointBackgroundColor:ink},
+      {label:'qualified',data:q,borderColor:green,backgroundColor:green,borderWidth:2.5,tension:0.3,pointRadius:pr,pointBackgroundColor:green,spanGaps:false}
+    ]},
+    options:{responsive:true,maintainAspectRatio:false,layout:{padding:{top:18,bottom:6}},
+      interaction:{mode:'index',intersect:false},
+      plugins:{legend:{display:true,position:'bottom',labels:{boxWidth:10,boxHeight:10,font:{size:11},color:faint}},
+        tooltip:{callbacks:{footer:items=>{const i=items[0].dataIndex;if(q[i]===null)return'not tracked yet';return tot[i]?Math.round(q[i]/tot[i]*100)+'% qualified':'';}}}},
+      scales:{x:{grid:{display:false},ticks:{font:{size:11},color:faint,autoSkip:true,maxRotation:0}},
+        y:{grid:{color:grid},ticks:{font:{size:11},color:faint,precision:0},beginAtZero:true}}},
+    plugins:[qualLabels]
   });
 }
 window.setTrendRange=function(r){_trendRange=r;drawTrend();};
