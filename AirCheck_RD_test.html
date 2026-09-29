@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <!-- ═══════════════════════════════════════
-     AirCheck+ · v2.20.002T · built by eligrt
+     AirCheck+ · v2.20.004T · built by eligrt
      ═══════════════════════════════════════ -->
 <html lang="he" dir="rtl">
 <head>
@@ -178,6 +178,8 @@ html,body{height:100%;height:var(--app-h,100%);background:#1a1a1c;font-family:va
 .card-link-btn{display:inline-flex;align-items:center;gap:5px;background:transparent;color:var(--gold);border:1px solid rgba(200,160,74,.5);border-radius:6px;padding:5px 12px;font-family:var(--font-ui);font-size:12px;font-weight:400;cursor:pointer;text-decoration:none;direction:ltr;position:absolute;bottom:14px;left:18px;z-index:3;pointer-events:auto;}
 .card-link-btn:active{opacity:.7;}
 .card-link-btn i{font-size:14px;}
+.card-link-sticker{position:absolute;top:-17px;left:-10px;transform:rotate(-9deg);display:inline-flex;align-items:center;gap:4px;font-family:var(--font-mono);font-size:9.5px;font-weight:500;letter-spacing:.02em;line-height:1.4;padding:2px 6px 2px 4px;border-radius:3px;background:var(--paper-hi);color:var(--ink);border:1px solid rgba(28,61,110,.35);box-shadow:0 1px 2px rgba(26,19,8,.25);white-space:nowrap;pointer-events:none;}
+.card-link-sticker-ico{width:12px;height:12px;border-radius:3px;flex:none;background:url(data:image/jpeg;base64,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) center/cover no-repeat;}
 .ed-item-link{font-size:10px;color:var(--ink-faint);font-family:var(--font-mono);margin-top:2px;direction:rtl;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
 .ed-popup-link-section{margin-top:10px;padding-top:10px;border-top:1px dashed var(--gold-lite);}
 .ed-popup-link-label{font-size:10px;color:var(--ink-faint);font-family:var(--font-mono);letter-spacing:.06em;margin-bottom:6px;}
@@ -700,7 +702,7 @@ html,body{height:100%;height:var(--app-h,100%);background:#1a1a1c;font-family:va
     <div class="splash-footer-wrap">
       <div class="footer-strip" style="display:flex;align-items:center;justify-content:space-between;padding:5px 14px 8px;">
         <span class="footer-refresh" onclick="reloadApp()">רענון</span>
-        <span id="versionTap" style="cursor:default;">AirCheck+ · v2.20.002T · built by eligrt</span>
+        <span id="versionTap" style="cursor:default;">AirCheck+ · v2.20.004T · built by eligrt</span>
         <span style="width:40px;"></span>
       </div>
     </div>
@@ -821,7 +823,7 @@ html,body{height:100%;height:var(--app-h,100%);background:#1a1a1c;font-family:va
     <div class="tree-panel" id="treePanel"></div>
     <div class="footer-strip" style="display:flex;align-items:center;justify-content:space-between;padding:5px 14px 8px;">
       <span class="footer-refresh" onclick="reloadApp()">רענון</span>
-      <span id="versionTap" style="cursor:default;">AirCheck+ · v2.20.002T · built by eligrt</span>
+      <span id="versionTap" style="cursor:default;">AirCheck+ · v2.20.004T · built by eligrt</span>
       <span style="width:40px;"></span>
     </div>
   </div>
@@ -902,7 +904,7 @@ html,body{height:100%;height:var(--app-h,100%);background:#1a1a1c;font-family:va
 
     <div class="footer-strip" style="display:flex;align-items:center;justify-content:space-between;padding:5px 14px 8px;">
       <span style="width:40px;"></span>
-      <span id="versionTap" style="cursor:default;">AirCheck+ · v2.20.002T · built by eligrt</span>
+      <span id="versionTap" style="cursor:default;">AirCheck+ · v2.20.004T · built by eligrt</span>
       <span style="width:40px;"></span>
     </div>
   </div>
@@ -1016,7 +1018,7 @@ html,body{height:100%;height:var(--app-h,100%);background:#1a1a1c;font-family:va
     </div>
     <div class="footer-strip" style="display:flex;align-items:center;justify-content:space-between;padding:5px 14px 8px;">
       <span class="footer-refresh" onclick="reloadApp()">רענון</span>
-      <span id="versionTap" style="cursor:default;">AirCheck+ · v2.20.002T · built by eligrt</span>
+      <span id="versionTap" style="cursor:default;">AirCheck+ · v2.20.004T · built by eligrt</span>
       <span style="width:40px;"></span>
     </div>
   </div>
@@ -1040,7 +1042,7 @@ html,body{height:100%;height:var(--app-h,100%);background:#1a1a1c;font-family:va
     <div class="editor-list" id="editorList"></div>
     <div class="footer-strip" style="display:flex;align-items:center;justify-content:space-between;padding:5px 14px 8px;">
       <span class="footer-refresh" onclick="reloadApp()">רענון</span>
-      <span id="versionTap" style="cursor:default;">AirCheck+ · v2.20.002T · built by eligrt</span>
+      <span id="versionTap" style="cursor:default;">AirCheck+ · v2.20.004T · built by eligrt</span>
       <span style="width:40px;"></span>
     </div>
   </div>
@@ -1233,13 +1235,19 @@ function loadRoute(){}
 function updateClock(){const now=new Date();const h=String(now.getUTCHours()).padStart(2,'0');const m=String(now.getUTCMinutes()).padStart(2,'0');document.getElementById('utcClock').textContent=h+':'+m;}
 setInterval(updateClock,10000);updateClock();
 function drawRings(){const g=document.getElementById('ringCoils');g.innerHTML='';const n=8;for(let k=0;k<n;k++){const x=8+k*((352-8)/7);const ns='http://www.w3.org/2000/svg';const back=document.createElementNS(ns,'path');back.setAttribute('d',`M ${x-3} 30 Q ${x-5} 18 ${x+2} 8 Q ${x+5} 4 ${x+8} 6`);back.setAttribute('fill','none');back.setAttribute('stroke','url(#wireDark)');back.setAttribute('stroke-width','1.6');back.setAttribute('stroke-linecap','round');back.setAttribute('opacity','.9');g.appendChild(back);const hole=document.createElementNS(ns,'ellipse');hole.setAttribute('cx',x);hole.setAttribute('cy','30');hole.setAttribute('rx','5');hole.setAttribute('ry','2.2');hole.setAttribute('fill','url(#paperHole)');g.appendChild(hole);const hole2=document.createElementNS(ns,'ellipse');hole2.setAttribute('cx',x);hole2.setAttribute('cy','30.5');hole2.setAttribute('rx','4');hole2.setAttribute('ry','1.2');hole2.setAttribute('fill','#000');hole2.setAttribute('opacity','.55');g.appendChild(hole2);const front=document.createElementNS(ns,'path');front.setAttribute('d',`M ${x+8} 6 Q ${x+13} 9 ${x+12} 16 Q ${x+10} 24 ${x+5} 30`);front.setAttribute('fill','none');front.setAttribute('stroke','url(#wireGrad)');front.setAttribute('stroke-width','2.1');front.setAttribute('stroke-linecap','round');g.appendChild(front);const hl=document.createElementNS(ns,'circle');hl.setAttribute('cx',x+10);hl.setAttribute('cy','8');hl.setAttribute('r','.9');hl.setAttribute('fill','#fff');hl.setAttribute('opacity','.95');g.appendChild(hl);}}
+// AirCheck family = any page on eligrt.github.io (all repos: AirCheck,
+// AirBalance, AirATIS, AirNOTAM, POH, AirLog, MERHAV_fpl...).
+function isAirCheckFamilyUrl(url){return /^https?:\/\/eligrt\.github\.io\//i.test(url||'');}
 async function trackExternalLinkTap(url,lbl){
-  // Installed app (home-screen PWA): non-AirCheck sites open in the system
+  // Family pages (see isAirCheckFamilyUrl) open in the same window with
+  // ?from= and the resume flag, so their own back/X buttons return straight
+  // into the running checklist.
+  // Installed app (home-screen PWA): third-party sites open in the system
   // in-app browser sheet on top of the app, instead of navigating the app
   // window away. Closing the sheet returns to the app exactly as it was, so
   // no reload/resume is needed and iOS never restores a shrunken viewport.
   // Opened before any await so the tap still counts as a user gesture.
-  const isOwnPage=url.includes('eligrt.github.io/AirCheck/');
+  const isOwnPage=isAirCheckFamilyUrl(url);
   const inSheet=!isOwnPage&&(window.matchMedia('(display-mode: standalone)').matches||window.navigator.standalone===true);
   if(inSheet){window.open(url,'_blank','noopener');}
   try{
@@ -1255,7 +1263,7 @@ async function trackExternalLinkTap(url,lbl){
   try{sessionStorage.setItem('aircheck_pending_resume','1');}catch(e){}
   // Append ?from= so standalone pages can return to correct version
   let dest=url;
-  if(url.includes('eligrt.github.io/AirCheck/')){
+  if(isOwnPage){
     const from=window.location.pathname.split('/').pop()||'AirCheck_RD.html';
     dest=url+(url.includes('?')?'&':'?')+'from='+encodeURIComponent(from);
   }
@@ -1265,7 +1273,7 @@ function render(){
   // Sync stamp tail from settings on every render
   const stampEl=document.getElementById('stampInit');
   if(stampEl){const t=settings&&settings.tail?settings.tail:(localStorage.getItem(REG_KEY)||'');stampEl.textContent='PIC · 4X-'+(t||'HHH');}
-  const item=CL[current];if(!item)return;const phase=PHASE_IDX[item.phase];const group=phase?phase.groups.find(g=>g.name===item.group):null;document.getElementById('crumbPhase').textContent=item.phase;document.getElementById('crumbGroup').textContent=item.group;const numEl=document.getElementById('cardItemNum');numEl.innerHTML='ITEM <b>'+(current+1).toString().padStart(2,'0')+'</b><span> / '+CL.length+'</span>';const badge=document.getElementById('cardBadge');if(group){const pos=group.items.indexOf(current)+1;badge.textContent=pos+'/'+group.items.length+' בקבוצה';badge.style.display='';}else{badge.style.display='none';}document.getElementById('cardMain').textContent=item.main;{const cm=document.getElementById('cardMain');if(item._isNew){cm.textContent='';const nb=document.createElement('span');nb.className='badge-new';nb.style.marginLeft='6px';nb.textContent='NEW';cm.appendChild(nb);cm.appendChild(document.createTextNode(item.main));}}const subEl=document.getElementById('cardSub');subEl.textContent=item.sub||'';subEl.style.display=item.sub?'':'none';const linkEl=document.getElementById('cardLink');if(linkEl){const lastEl=item.sub?subEl:document.getElementById('cardMain');document.getElementById('cardMain').style.paddingBottom='';subEl.style.paddingBottom='';if(FEATURES.EXTERNAL_LINK&&item.url){const lbl=item.urlLabel||'פתח קישור';linkEl.innerHTML='';const btn=document.createElement('button');btn.className='card-link-btn';btn.type='button';btn.innerHTML='<i class="ti ti-external-link" aria-hidden="true"></i> '+lbl;
+  const item=CL[current];if(!item)return;const phase=PHASE_IDX[item.phase];const group=phase?phase.groups.find(g=>g.name===item.group):null;document.getElementById('crumbPhase').textContent=item.phase;document.getElementById('crumbGroup').textContent=item.group;const numEl=document.getElementById('cardItemNum');numEl.innerHTML='ITEM <b>'+(current+1).toString().padStart(2,'0')+'</b><span> / '+CL.length+'</span>';const badge=document.getElementById('cardBadge');if(group){const pos=group.items.indexOf(current)+1;badge.textContent=pos+'/'+group.items.length+' בקבוצה';badge.style.display='';}else{badge.style.display='none';}document.getElementById('cardMain').textContent=item.main;{const cm=document.getElementById('cardMain');if(item._isNew){cm.textContent='';const nb=document.createElement('span');nb.className='badge-new';nb.style.marginLeft='6px';nb.textContent='NEW';cm.appendChild(nb);cm.appendChild(document.createTextNode(item.main));}}const subEl=document.getElementById('cardSub');subEl.textContent=item.sub||'';subEl.style.display=item.sub?'':'none';const linkEl=document.getElementById('cardLink');if(linkEl){const lastEl=item.sub?subEl:document.getElementById('cardMain');document.getElementById('cardMain').style.paddingBottom='';subEl.style.paddingBottom='';if(FEATURES.EXTERNAL_LINK&&item.url){const lbl=item.urlLabel||'פתח קישור';linkEl.innerHTML='';const btn=document.createElement('button');btn.className='card-link-btn';btn.type='button';btn.innerHTML='<i class="ti ti-external-link" aria-hidden="true"></i> '+lbl;if(isAirCheckFamilyUrl(item.url))btn.insertAdjacentHTML('beforeend','<span class="card-link-sticker" aria-hidden="true"><span class="card-link-sticker-ico"></span>AirCheck+</span>');
       btn.setAttribute('onclick','trackExternalLinkTap('+JSON.stringify(item.url)+','+JSON.stringify(lbl)+')');
       linkEl.appendChild(btn);linkEl.style.display='block';lastEl.style.paddingBottom='36px';}else{linkEl.style.display='none';}}
   // Persistent stamp — if this item was already checked off, the stamp
