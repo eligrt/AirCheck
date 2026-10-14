@@ -24,10 +24,12 @@
   --font-mono:'JetBrains Mono',monospace;
 }
 *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent;touch-action:manipulation;}
+html{height:100%;height:var(--app-h, 100%);overflow:hidden;}
 body{
   background:var(--paper);
   font-family:var(--font-ui);
   height:100svh;
+  height:var(--app-h, 100svh);
   overflow:hidden;
   display:flex;flex-direction:column;
 }
@@ -235,7 +237,7 @@ body{
 
 <div class="footer-strip" dir="ltr" style="position:relative;display:flex;align-items:center;justify-content:space-between;padding:8px 22px calc(8px + env(safe-area-inset-bottom));border-top:1px solid var(--gold-lite);">
   <span class="footer-reload" onclick="forceReload()">reload</span>
-  <span style="flex:1;min-width:0;text-align:center;font-family:var(--font-mono);font-size:9px;color:var(--ink-faint);letter-spacing:.01em;text-transform:uppercase;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;margin:0 6px;">AIRCHECK_ADMIN · v1.58 · built by eligrt</span>
+  <span style="flex:1;min-width:0;text-align:center;font-family:var(--font-mono);font-size:9px;color:var(--ink-faint);letter-spacing:.01em;text-transform:uppercase;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;margin:0 6px;">AIRCHECK_ADMIN · v1.59 · built by eligrt</span>
   <span class="icon-refresh" id="footerRefreshBtn" onclick="refreshStats()">
     <span class="refresh-glyph">↻</span>
     <span id="lastUpdateLabel" style="font-family:var(--font-mono);font-size:9px;color:var(--ink-faint);letter-spacing:.04em;white-space:nowrap;">—</span>
@@ -254,6 +256,22 @@ body{
   </div>
 </div>
 
+<script>
+// Full-height fix (same as AirATIS / MERHAV): on an iPhone home-screen app, CSS 100svh and window.innerHeight come out
+// shorter than the real screen and leave an empty strip under the footer. Use the screen height there.
+function setAppHeight(){
+  const iosApp=window.navigator.standalone===true;
+  const h=iosApp?Math.max(window.innerHeight,screen.height):window.innerHeight;
+  document.documentElement.style.setProperty('--app-h',h+'px');
+}
+setAppHeight();
+window.addEventListener('resize',setAppHeight);
+window.addEventListener('orientationchange',function(){setTimeout(setAppHeight,300);});
+function refitAppHeight(){setAppHeight();setTimeout(setAppHeight,250);setTimeout(setAppHeight,800);}
+window.addEventListener('pageshow',refitAppHeight);
+window.addEventListener('focus',refitAppHeight);
+document.addEventListener('visibilitychange',function(){if(!document.hidden)refitAppHeight();});
+</script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/12.14.0/firebase-app.js";
