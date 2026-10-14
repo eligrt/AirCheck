@@ -32,12 +32,12 @@ body{
   display:flex;flex-direction:column;
 }
 .topfixed{flex-shrink:0;background:var(--paper);}
-.header{background:var(--ink);padding:calc(10px + env(safe-area-inset-top)) 16px 8px;display:flex;align-items:center;justify-content:space-between;direction:rtl;position:relative;box-sizing:border-box;min-height:calc(58px + env(safe-area-inset-top));}
+.header{background:var(--ink);padding:calc(10px + env(safe-area-inset-top)) 16px 8px;display:flex;align-items:center;justify-content:space-between;direction:ltr;position:relative;box-sizing:border-box;min-height:calc(58px + env(safe-area-inset-top));}
 .hdr-rail{display:flex;align-items:center;gap:10px;min-width:0;}
 .hdr-glyph{width:38px;height:38px;flex:0 0 38px;border-radius:9px;overflow:hidden;border:1px solid var(--gold);background:var(--paper);}
 .hdr-glyph img{width:100%;height:100%;display:block;object-fit:cover}
-.hdr-title h1{font-size:16.5px;line-height:1.25;font-weight:700;letter-spacing:-.1px;color:#f4ecdc;direction:ltr;text-align:right;}
-.hdr-title p{color:var(--gold-lite);font-weight:500;margin-top:1px;line-height:1.3;font-size:10.5px;direction:ltr;text-align:right;}
+.hdr-title h1{font-size:16.5px;line-height:1.25;font-weight:700;letter-spacing:-.1px;color:#f4ecdc;direction:ltr;text-align:left;}
+.hdr-title p{color:var(--gold-lite);font-weight:500;margin-top:1px;line-height:1.3;font-size:10.5px;direction:ltr;text-align:left;}
 .metar-refresh-btn{background:transparent;border:1px solid var(--gold-lite);border-radius:4px;padding:8px 16px;font-family:var(--font-ui);font-size:14px;font-weight:600;color:var(--ink-muted);cursor:pointer;}
 .metar-refresh-btn:active{background:rgba(200,160,74,.1);}
 .metar-refresh-btn.spinning{animation:refreshSpin .6s linear;}
@@ -45,6 +45,7 @@ body{
 .headline{padding:14px 18px 4px;display:flex;align-items:baseline;gap:8px;direction:rtl;}
 .headline-num{font-family:var(--font-mono);font-size:34px;font-weight:700;color:var(--ink);direction:ltr;}
 .headline-label{font-size:13px;color:var(--ink-muted);}
+#hlAirCheck,#hlAtis,#hlLinks,#hlFuture,#hlNotam{min-height:68px;align-items:center;box-sizing:border-box;}
 
 .tabbar{display:flex;background:var(--paper-hi);border-bottom:1px solid var(--paper-edge);margin-top:8px;direction:ltr;}
 .tab-btn{flex:1;padding:8px 4px;background:transparent;border:none;border-bottom:2px solid transparent;font-family:var(--font-ui);font-size:12px;line-height:1.3;color:var(--ink-faint);cursor:pointer;text-align:center;}
@@ -104,6 +105,36 @@ body{
 
 /* ── DEVICES TAB — LTR data table, grid-aligned columns ── */
 .dev-wrap{direction:ltr;}
+/* ── COLLAPSIBLE SECTIONS (AirCheck tab) ── */
+.acc{background:var(--paper-hi);border:1px solid var(--paper-edge);border-radius:6px;margin-bottom:12px;overflow:hidden;}
+.acc-hdr{display:flex;justify-content:space-between;align-items:center;padding:11px 12px;cursor:pointer;direction:ltr;}
+.acc-hdr-left{display:flex;align-items:center;gap:8px;}
+.acc-name{font-family:var(--font-mono);font-size:11px;font-weight:700;letter-spacing:.14em;color:var(--ink);}
+.acc-count{font-family:var(--font-mono);font-size:10px;color:var(--ink-faint);}
+.acc-dot{width:6px;height:6px;border-radius:50%;background:var(--amber);}
+.acc-chevron{font-size:10px;color:var(--ink-faint);transition:transform .15s;}
+.acc.open .acc-chevron{transform:rotate(90deg);}
+.acc-body{display:none;padding:12px 6px;border-top:1px solid var(--paper-edge);background:var(--paper);}
+.acc .dev-header,.acc .dev-row{padding:0 8px;gap:4px;}
+.acc.open .acc-body{display:block;}
+/* ── AIRATIS TAB (LTR, namespaced so it cannot clash with the AirCheck tables and bars) ── */
+.atis-wrap{direction:ltr;}
+.atis-wrap .dev-header,.atis-wrap .dev-row{grid-template-columns:22px 26px 1fr 40px 100px 64px;}
+.atis-wrap .col-cnt{text-align:right;}
+.atis-wrap .dev-cnt{font-family:var(--font-mono);font-size:11px;color:var(--ink);}
+.atis-wrap .dev-cnt .done{color:var(--gold);font-weight:700;}
+.atis-bar-row{margin-bottom:10px;}
+.atis-bar-row:last-child{margin-bottom:0;}
+.atis-bar-labels{display:flex;justify-content:space-between;font-size:10px;font-family:var(--font-mono);color:var(--ink-muted);margin-bottom:3px;}
+.atis-bar-labels .lbl{color:var(--ink-body);font-weight:700;}
+.atis-bar-track{position:relative;height:8px;background:var(--paper-edge);border-radius:4px;overflow:hidden;}
+.atis-bar-fill{position:absolute;left:0;top:0;bottom:0;border-radius:4px;}
+.headline-item{display:flex;flex-direction:column;align-items:center;}
+.headline-item .headline-num{line-height:1.1;}
+.headline-item .headline-num.gold{color:var(--gold);}
+.headline-item .headline-label{font-family:var(--font-mono);font-size:10px;letter-spacing:.14em;}
+.empty{font-family:var(--font-mono);font-size:11px;color:var(--ink-faint);background:var(--paper);border:1px dashed var(--gold-lite);border-radius:8px;padding:20px 14px;text-align:center;line-height:1.6;direction:ltr;}
+.loading.err{color:var(--stamp-red);font-family:var(--font-mono);font-size:11px;line-height:1.6;direction:ltr;}
 .dev-wrap .bar-fill{margin-left:0;margin-right:auto;}
 .dev-legend{font-family:var(--font-mono);font-size:9px;color:var(--ink-faint);margin-bottom:8px;}
 .group{background:#fff;border:1px solid var(--paper-edge);border-radius:6px;margin-bottom:10px;overflow:hidden;}
@@ -163,7 +194,7 @@ body{
     <script>document.getElementById('hdrIcon').src=document.getElementById('appIcon').href;</script>
   </div>
 
-  <div class="headline" style="direction:ltr;justify-content:center;gap:48px;">
+  <div class="headline" id="hlAirCheck" style="direction:ltr;justify-content:center;gap:48px;">
     <span id="headlineCount" style="display:none;align-items:baseline;gap:8px;">
       <span class="headline-num" id="headlineNum">0</span>
       <span class="headline-label">PILOTS</span>
@@ -172,6 +203,25 @@ body{
       <span class="headline-num" id="headlineFlightsNum">0</span>
       <span class="headline-label">FLIGHTS</span>
     </span>
+  </div>
+
+  <div class="headline" id="hlAtis" style="display:none;direction:ltr;justify-content:center;gap:28px;">
+    <div class="headline-item"><span class="headline-num" id="hlAtisDevices">0</span><span class="headline-label">DEVICES</span></div>
+    <div class="headline-item"><span class="headline-num" id="hlAtisStarted">0</span><span class="headline-label">STARTED</span></div>
+    <div class="headline-item"><span class="headline-num gold" id="hlAtisDone">0</span><span class="headline-label">DONE</span></div>
+  </div>
+
+  <div class="headline" id="hlLinks" style="display:none;direction:ltr;justify-content:center;gap:48px;">
+    <span style="display:inline-flex;align-items:baseline;gap:8px;"><span class="headline-num" id="hlLinksTaps">0</span><span class="headline-label">LINK TAPS</span></span>
+    <span style="display:inline-flex;align-items:baseline;gap:8px;"><span class="headline-num" id="hlLinksMetar">0</span><span class="headline-label">METAR OPENS</span></span>
+  </div>
+  <div class="headline" id="hlFuture" style="display:none;direction:ltr;justify-content:center;gap:48px;">
+    <span style="display:inline-flex;align-items:baseline;gap:8px;"><span class="headline-num" id="hlFutureRanked">0</span><span class="headline-label">RANKED PILOTS</span></span>
+    <span style="display:inline-flex;align-items:baseline;gap:8px;"><span class="headline-num" id="hlFutureLists">0</span><span class="headline-label">LIST FLIGHTS</span></span>
+  </div>
+  <div class="headline" id="hlNotam" style="display:none;direction:ltr;justify-content:center;gap:48px;">
+    <span style="display:inline-flex;align-items:baseline;gap:8px;"><span class="headline-num">-</span><span class="headline-label">DEVICES</span></span>
+    <span style="display:inline-flex;align-items:baseline;gap:8px;"><span class="headline-num">-</span><span class="headline-label">OPENS</span></span>
   </div>
 
   <div id="tabbar" class="tabbar" style="display:none;"></div>
@@ -186,7 +236,7 @@ body{
     <span class="refresh-glyph">↻</span>
     <span id="lastUpdateLabel" style="font-family:var(--font-mono);font-size:9px;color:var(--ink-faint);letter-spacing:.04em;white-space:nowrap;">—</span>
   </span>
-  <span style="position:absolute;left:50%;transform:translateX(-50%);font-family:var(--font-mono);font-size:9px;color:var(--ink-faint);letter-spacing:.1em;text-transform:uppercase;white-space:nowrap;">AIRCHECK_ADMIN · v1.52 · built by eligrt</span>
+  <span style="position:absolute;left:50%;transform:translateX(-50%);font-family:var(--font-mono);font-size:9px;color:var(--ink-faint);letter-spacing:.1em;text-transform:uppercase;white-space:nowrap;">AIRCHECK_ADMIN · v1.56 · built by eligrt</span>
 </div>
 
 <div id="deleteModal" class="modal-overlay" onclick="handleDeleteModalClick(event)">
@@ -555,6 +605,224 @@ function buildDevicesTab(data){
   </div>`;
 }
 
+// ── COLLAPSIBLE SECTIONS ──
+let _openSecs=new Set(['usage']);   // Usage is open by default
+function accSection(id,title,inner,count,alert){
+  return `<div class="acc${_openSecs.has(id)?' open':''}" data-sec="${id}">
+    <div class="acc-hdr" onclick="toggleSec('${id}')">
+      <div class="acc-hdr-left"><span class="acc-name">${title}</span>${count?`<span class="acc-count">${count}</span>`:''}${alert?'<span class="acc-dot"></span>':''}</div>
+      <span class="acc-chevron">&#9654;</span>
+    </div>
+    <div class="acc-body">${inner}</div>
+  </div>`;
+}
+window.toggleSec=function(id){
+  const el=document.querySelector('.acc[data-sec="'+id+'"]');
+  if(!el)return;
+  el.classList.toggle('open');
+  if(el.classList.contains('open'))_openSecs.add(id);else _openSecs.delete(id);
+  if(id==='usage'&&el.classList.contains('open'))initUsageCharts();
+};
+
+// ── AIRATIS TAB ── data: airatis/devices (per device: os, pwaInstalled, appVersion, lastSeen, lastOpenedAt,
+// started, done, lastStartedAt, lastDoneAt, daily/{YYYY-MM-DD}/{s,d}, ap/{ICAO}/{s,d})
+const ATIS_AP_ORDER=['LLIB','LLHA','LLER','LLBG','OTHER'];
+const ATIS_MON=['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+function atisEsc(s){return String(s==null?'':s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));}
+function atisNum(v){const n=Number(v);return isFinite(n)&&n>0?Math.floor(n):0;}
+function atisPad(n){return String(n).padStart(2,'0');}
+
+function atisBarRow(label,started,done,max){
+  const ps=max>0?Math.round(started/max*100):0,pd=max>0?Math.round(done/max*100):0;
+  return `<div class="atis-bar-row">
+    <div class="atis-bar-labels"><span class="lbl">${atisEsc(label)}</span><span>${started} started &middot; ${done} done</span></div>
+    <div class="atis-bar-track"><div class="atis-bar-fill" style="width:${ps}%;background:var(--ink);"></div><div class="atis-bar-fill" style="width:${pd}%;background:var(--gold);"></div></div>
+  </div>`;
+}
+
+function atisRecencyGroups(entries,latest){
+  const now=Date.now(),D=86400000;
+  const buckets=[
+    {name:'Last 24h',test:d=>now-(d.lastSeen||0)<D},
+    {name:'Last 7 days',test:d=>now-(d.lastSeen||0)>=D&&now-(d.lastSeen||0)<7*D},
+    {name:'Last 30 days',test:d=>now-(d.lastSeen||0)>=7*D&&now-(d.lastSeen||0)<30*D},
+    {name:'Older',test:d=>now-(d.lastSeen||0)>=30*D}
+  ];
+  const sorted=[...entries].sort((a,b)=>(b.lastSeen||0)-(a.lastSeen||0));
+  return buckets.map((b,i)=>{
+    const items=sorted.filter(b.test);
+    if(!items.length)return'';
+    const rows=items.map(d=>{
+      const stale=d.appVersion&&compareVersions(d.appVersion,latest)!==0;
+      return `
+        <div class="dev-row" onclick="this.classList.toggle('open')">
+          <span class="dev-os col-os">${osIcon(d.os)}</span>
+          <span class="dev-pwa col-pwa">${d.pwaInstalled?'📲':'-'}</span>
+          <span class="dev-id col-id">${atisEsc(d.id)}</span>
+          <span class="dev-active col-active">${timeAgoShort(d.lastSeen)}</span>
+          <span class="dev-ver col-ver">${stale?'<span class="stale-flag">!</span>':''}${atisEsc(d.appVersion||'-')}</span>
+          <span class="dev-cnt col-cnt">${atisNum(d.started)}/<span class="done">${atisNum(d.done)}</span></span>
+        </div>
+        <div class="dev-detail">
+          <div class="dev-detail-row"><span class="lbl">Last opened</span><span>${fmtDT(d.lastOpenedAt)}</span></div>
+          <div class="dev-detail-row"><span class="lbl">Last ATIS started</span><span>${fmtDT(d.lastStartedAt)}</span></div>
+          <div class="dev-detail-row"><span class="lbl">Last ATIS done</span><span>${fmtDT(d.lastDoneAt)}</span></div>
+        </div>`;
+    }).join('');
+    return `<div class="group${i===0?' open':''}">
+      <div class="group-hdr" onclick="this.parentElement.classList.toggle('open')">
+        <div class="group-hdr-left"><span class="group-name">${b.name}</span><span class="group-count">${items.length}</span></div>
+        <span class="group-chevron">&#9654;</span>
+      </div>
+      <div class="group-body">
+        <div class="dev-header">
+          <span class="col-os"></span><span class="col-pwa">PWA</span><span class="col-id">DEVICE</span><span class="col-active">ACTIVE</span><span class="col-ver">VERSION</span><span class="col-cnt">START/DONE</span>
+        </div>
+        ${rows}
+      </div>
+    </div>`;
+  }).join('');
+}
+
+// Weeks (Israel week, starts Sunday), continuous from the first tracked week to this week
+function atisBuildWeeks(entries){
+  const map={};
+  entries.forEach(d=>{
+    const dl=d.daily;
+    if(!dl||typeof dl!=='object')return;
+    Object.entries(dl).forEach(([day,v])=>{
+      const m=/^(\d{4})-(\d{2})-(\d{2})$/.exec(day);
+      if(!m||!v||typeof v!=='object')return;
+      const dt=new Date(+m[1],+m[2]-1,+m[3]);
+      const sun=new Date(dt.getFullYear(),dt.getMonth(),dt.getDate()-dt.getDay());
+      const key=sun.getFullYear()+'-'+atisPad(sun.getMonth()+1)+'-'+atisPad(sun.getDate());
+      const w=map[key]||(map[key]={s:0,d:0,ms:sun.getTime()});
+      w.s+=atisNum(v.s);w.d+=atisNum(v.d);
+    });
+  });
+  const keys=Object.keys(map).sort();
+  if(!keys.length)return[];
+  const first=new Date(map[keys[0]].ms);
+  const now=new Date(),cur=new Date(now.getFullYear(),now.getMonth(),now.getDate()-now.getDay());
+  const out=[];
+  for(let s=new Date(first.getFullYear(),first.getMonth(),first.getDate());s<=cur;s=new Date(s.getFullYear(),s.getMonth(),s.getDate()+7)){
+    const key=s.getFullYear()+'-'+atisPad(s.getMonth()+1)+'-'+atisPad(s.getDate());
+    const w=map[key]||{s:0,d:0};
+    out.push({label:ATIS_MON[s.getMonth()]+' '+s.getDate(),full:ATIS_MON[s.getMonth()]+' '+s.getDate()+', '+s.getFullYear(),s:w.s,d:w.d});
+  }
+  return out;
+}
+
+function atisBuildTab(data,err){
+  if(err)return '<div class="loading err">Could not load AirATIS data.<br>'+atisEsc(err)+'</div>';
+  const entries=Object.entries(data||{}).filter(([k,p])=>p&&typeof p==='object').map(([id,p])=>({id,...p}));
+  if(!entries.length){
+    window._atisHeadline={d:0,s:0,n:0};
+    return '<div class="empty">No data yet.<br>Devices appear here after they open the updated AirATIS.</div>';
+  }
+  const started=entries.reduce((a,d)=>a+atisNum(d.started),0);
+  const done=entries.reduce((a,d)=>a+atisNum(d.done),0);
+  window._atisHeadline={d:entries.length,s:started,n:done};
+
+  const ap={};
+  entries.forEach(d=>{
+    if(!d.ap||typeof d.ap!=='object')return;
+    Object.entries(d.ap).forEach(([k,v])=>{
+      if(!v||typeof v!=='object')return;
+      const a=ap[k]||(ap[k]={s:0,d:0});a.s+=atisNum(v.s);a.d+=atisNum(v.d);
+    });
+  });
+  const keys=Object.keys(ap).sort((a,b)=>{
+    const ia=ATIS_AP_ORDER.indexOf(a),ib=ATIS_AP_ORDER.indexOf(b);
+    return (ia<0?99:ia)-(ib<0?99:ib)||a.localeCompare(b);
+  });
+  const maxS=keys.reduce((m,k)=>Math.max(m,ap[k].s),0);
+  const apHtml=keys.length?keys.map(k=>atisBarRow(k,ap[k].s,ap[k].d,maxS)).join(''):'<div class="empty">No airfield data yet.</div>';
+
+  const verCounts={};
+  entries.forEach(d=>{if(d.appVersion)verCounts[d.appVersion]=1;});
+  const latest=Object.keys(verCounts).sort((a,b)=>compareVersions(b,a))[0]||'';
+
+  window._atisWeeks=atisBuildWeeks(entries);
+  const weekly=window._atisWeeks.length?`
+    <div class="range-pills">
+      <button class="range-pill" data-ar="4" onclick="atisSetRange('4')">4 WEEKS</button>
+      <button class="range-pill" data-ar="12" onclick="atisSetRange('12')">12 WEEKS</button>
+      <button class="range-pill" data-ar="custom" onclick="atisSetRange('custom')">CUSTOM</button>
+    </div>
+    <div class="range-custom" id="atisCustom">
+      <span>FROM</span><select id="atisFrom" onchange="atisOnCustom()"></select>
+      <span>TO</span><select id="atisTo" onchange="atisOnCustom()"></select>
+    </div>
+    <div class="range-sum" id="atisSum"></div>
+    <div style="position:relative;width:100%;height:200px;"><canvas id="atisTrend"></canvas></div>`
+    :'<div class="empty">The weekly chart appears once the first ATIS is started.</div>';
+
+  window._atisNeedsDraw=window._atisWeeks.length>0;
+  return `<div class="atis-wrap">
+    <div class="section"><div class="section-title">WEEKLY - ATIS STARTED VS DONE</div><div class="section-box">${weekly}</div></div>
+    <div class="section"><div class="section-title">BY AIRFIELD</div><div class="section-box">${apHtml}</div></div>
+    <div class="section"><div class="section-title">DEVICES</div>
+      <div class="dev-legend">Counts = started / done. Red "!" = not on the latest version${latest?' ('+atisEsc(latest)+')':''}.</div>
+      ${atisRecencyGroups(entries,latest)}
+    </div>
+  </div>`;
+}
+
+let _atisRange='4',_atisFrom=null,_atisTo=null,_atisChart=null;
+window.atisSetRange=function(r){_atisRange=r;atisDrawTrend();};
+window.atisOnCustom=function(){
+  _atisFrom=parseInt(document.getElementById('atisFrom').value,10);
+  _atisTo=parseInt(document.getElementById('atisTo').value,10);
+  atisDrawTrend();
+};
+function atisDrawTrend(){
+  const el=document.getElementById('atisTrend');
+  const all=window._atisWeeks||[],n=all.length;
+  if(!el||!n)return;
+  if(_atisFrom===null||_atisTo===null||_atisTo>=n||_atisFrom>=n){_atisTo=n-1;_atisFrom=Math.max(0,n-8);}
+  let a,b;
+  if(_atisRange==='custom'){a=Math.min(_atisFrom,_atisTo);b=Math.max(_atisFrom,_atisTo);}
+  else{b=n-1;a=Math.max(0,n-parseInt(_atisRange,10));}
+  const slice=all.slice(a,b+1);
+  document.querySelectorAll('.range-pill[data-ar]').forEach(p=>p.classList.toggle('active',p.dataset.ar===_atisRange));
+  const cw=document.getElementById('atisCustom');
+  if(cw)cw.classList.toggle('open',_atisRange==='custom');
+  const opts=all.map((w,i)=>`<option value="${i}">${w.full}</option>`).join('');
+  const fs=document.getElementById('atisFrom'),ts=document.getElementById('atisTo');
+  if(fs&&ts){fs.innerHTML=opts;ts.innerHTML=opts;fs.value=String(a);ts.value=String(b);}
+  const sumS=slice.reduce((x,w)=>x+w.s,0),sumD=slice.reduce((x,w)=>x+w.d,0);
+  const sum=document.getElementById('atisSum');
+  if(sum)sum.textContent=`${all[a].full} - ${all[b].full} · ${slice.length} weeks · ${sumS} started · ${sumD} done${sumS?' ('+Math.round(sumD/sumS*100)+'%)':''}`+(_atisRange!=='custom'&&slice.length<parseInt(_atisRange,10)?' (tracking started later)':'');
+  if(_atisChart){try{_atisChart.destroy();}catch(e){}_atisChart=null;}
+  if(typeof Chart==='undefined'){el.parentNode.innerHTML='<div class="empty">The chart library could not load (no internet?).</div>';return;}
+  const css=v=>getComputedStyle(document.documentElement).getPropertyValue(v).trim();
+  const ink=css('--ink')||'#1c3d6e',gold=css('--gold')||'#c8a04a',faint=css('--ink-faint')||'#8a7a5a';
+  const dense=slice.length>16;
+  const topLabels={id:'atisTopLabels',afterDatasetsDraw:function(c){
+    if(dense)return;
+    const ctx=c.ctx;ctx.save();ctx.font='600 10px sans-serif';ctx.textAlign='center';
+    c.data.datasets.forEach((ds,di)=>{
+      ctx.fillStyle=di===0?ink:'#8a6a1f';
+      c.getDatasetMeta(di).data.forEach((bar,i)=>{if(ds.data[i]>0)ctx.fillText(ds.data[i],bar.x,bar.y-4);});
+    });
+    ctx.restore();
+  }};
+  _atisChart=new Chart(el,{
+    type:'bar',
+    data:{labels:slice.map(w=>w.label),datasets:[
+      {label:'started',data:slice.map(w=>w.s),backgroundColor:ink,borderRadius:2},
+      {label:'done',data:slice.map(w=>w.d),backgroundColor:gold,borderRadius:2}
+    ]},
+    options:{responsive:true,maintainAspectRatio:false,layout:{padding:{top:16}},
+      interaction:{mode:'index',intersect:false},
+      plugins:{legend:{display:true,position:'bottom',labels:{boxWidth:10,boxHeight:10,font:{size:11},color:faint}}},
+      scales:{x:{grid:{display:false},ticks:{font:{size:11},color:faint,autoSkip:true,maxRotation:0}},
+        y:{grid:{color:'rgba(120,120,110,0.15)'},ticks:{font:{size:11},color:faint,precision:0},beginAtZero:true}}},
+    plugins:[topLabels]
+  });
+}
+
 function getRank(n){
   let current=null,next=null;
   for(let i=0;i<RANKS.length;i++){
@@ -589,6 +857,11 @@ async function loadStats(){
       const devSnap=await get(ref(db,'devices'));
       window._adminDevicesDaily=devSnap.val()||{};
     }catch(e){window._adminDevicesDaily={};}
+    // AirATIS usage lives in the same database under airatis/devices; a failure here must not break the AirCheck tabs
+    try{
+      const atisSnap=await get(ref(db,'airatis/devices'));
+      window._adminAtis=atisSnap.val()||{};window._adminAtisErr=null;
+    }catch(e){window._adminAtis={};window._adminAtisErr=(e&&e.message)||String(e);}
     updateLastUpdateLabel();
     if(!data){
       document.getElementById('content').innerHTML='<div class="loading">אין נתונים עדיין</div>';
@@ -685,19 +958,37 @@ async function loadStats(){
       if(r.current)rankDist[r.current.name]=(rankDist[r.current.name]||0)+1;
     });
 
+    window._futureHeadline={ranked:Object.values(rankDist).reduce((a,b)=>a+b,0),lists:listFlights};
+    window._linksHeadline={taps:totalExtLinkTaps,metar:totalMetarOpens};
     document.getElementById('headlineNum').textContent=total;
     document.getElementById('headlineCount').style.display='inline-flex';
     document.getElementById('headlineFlightsNum').textContent=totalFlights;
     document.getElementById('headlineFlights').style.display='inline-flex';
 
+    const customChecklistHtml=
+      section('CHECKLISTS',
+        barRow('צ׳קליסט מותאם אישית',custom,total,'var(--ink)')
+      )+
+      section('COMMUNITY',
+        actionRow('ממתינים לאישור',communityPending,'AirCheckCustomRep.html?from=Admin-Stat.html&tab=customchecklist')+
+        barRow('מאושרים',communityApproved,(communityPending+communityApproved+communityRejected)||1,'var(--cleared)')
+      );
+
     const tabs=[
       {
-        id:'usage',label:'Usage',alert:false,
-        html: buildUsageTab(data)
+        id:'aircheck',label:'AirCheck',alert:communityPending>0,
+        html:
+          accSection('usage','USAGE',buildUsageTab(data),'')+
+          accSection('devices','DEVICES',buildDevicesTab(data),String(total))+
+          accSection('checklist','CUSTOM CHECKLIST',customChecklistHtml,'',communityPending>0)
       },
       {
-        id:'devices',label:'Devices',alert:false,
-        html: buildDevicesTab(data)
+        id:'atis',label:'AirATIS',alert:false,
+        html: atisBuildTab(window._adminAtis,window._adminAtisErr)
+      },
+      {
+        id:'notam',label:'AirNotam<br>ISR',alert:false,
+        html:'<div class="empty">AirNotam-ISR admin<br>Coming soon.</div>'
       },
       {
         id:'links',label:'Links<br>& METAR',alert:false,
@@ -722,17 +1013,6 @@ async function loadStats(){
           )
       },
       {
-        id:'customchecklist',label:'Custom<br>Checklist',alert:communityPending>0,
-        html:
-          section('CHECKLISTS',
-            barRow('צ׳קליסט מותאם אישית',custom,total,'var(--ink)')
-          )+
-          section('COMMUNITY',
-            actionRow('ממתינים לאישור',communityPending,'AirCheckCustomRep.html?from=Admin-Stat.html&tab=customchecklist')+
-            barRow('מאושרים',communityApproved,(communityPending+communityApproved+communityRejected)||1,'var(--cleared)')
-          )
-      },
-      {
         id:'future',label:'Future<br>/ Not Live',alert:false,
         html:
           `<div style="font-family:var(--font-mono);font-size:10px;color:var(--stamp-red);background:rgba(185,74,58,.08);border:1px solid rgba(185,74,58,.25);border-radius:6px;padding:8px 10px;margin-bottom:14px;direction:ltr;text-align:left;">⚠ Not yet shipped to pilots — RANKING and MULTI_PROFILE flags are off in prod. This data reflects test devices only, not real fleet behavior.</div>`+
@@ -747,7 +1027,7 @@ async function loadStats(){
     ];
 
     window._adminTabs=tabs;
-    const tabToShow=tabs.some(t=>t.id===_activeTab)?_activeTab:'usage';
+    const tabToShow=tabs.some(t=>t.id===_activeTab)?_activeTab:'aircheck';
     renderTabBar(tabToShow);
     renderContent(tabToShow);
 
@@ -756,7 +1036,12 @@ async function loadStats(){
   }
 }
 
-let _activeTab=new URLSearchParams(window.location.search).get('tab')||'usage';
+// Old links (?tab=usage / devices / customchecklist) now open the AirCheck tab with that section expanded
+let _activeTab=new URLSearchParams(window.location.search).get('tab')||'aircheck';
+(function(){
+  const legacy={usage:'usage',devices:'devices',customchecklist:'checklist'};
+  if(legacy[_activeTab]){_openSecs.add(legacy[_activeTab]);_activeTab='aircheck';}
+})();
 
 window.renderTabBar=function(activeId){
   const tabs=window._adminTabs;
@@ -773,7 +1058,21 @@ window.renderContent=function(activeId){
   const tabs=window._adminTabs;
   const tab=tabs.find(t=>t.id===activeId);
   document.getElementById('content').innerHTML=tab.html;
-  if(activeId==='usage')initUsageCharts();
+  const h=window._atisHeadline||{d:0,s:0,n:0};
+  document.getElementById('hlAtisDevices').textContent=h.d;
+  document.getElementById('hlAtisStarted').textContent=h.s;
+  document.getElementById('hlAtisDone').textContent=h.n;
+  const isAtis=activeId==='atis';
+  const lh=window._linksHeadline||{taps:0,metar:0};
+  document.getElementById('hlLinksTaps').textContent=lh.taps;
+  document.getElementById('hlLinksMetar').textContent=lh.metar;
+  const fh=window._futureHeadline||{ranked:0,lists:0};
+  document.getElementById('hlFutureRanked').textContent=fh.ranked;
+  document.getElementById('hlFutureLists').textContent=fh.lists;
+  const hlShow={aircheck:'hlAirCheck',future:'hlFuture',atis:'hlAtis',links:'hlLinks',notam:'hlNotam'}[activeId]||'hlAirCheck';
+  ['hlAirCheck','hlAtis','hlLinks','hlFuture','hlNotam'].forEach(id=>{document.getElementById(id).style.display=(id===hlShow)?'flex':'none';});
+  if(activeId==='aircheck'&&_openSecs.has('usage'))initUsageCharts();
+  if(isAtis&&window._atisNeedsDraw)atisDrawTrend();
 };
 
 let _usageCharts=[];
