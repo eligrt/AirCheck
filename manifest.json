@@ -1,6 +1,6 @@
 {
-  "name": "AirCheck+",
-  "short_name": "AirCheck+",
+  "name": "AirCheck",
+  "short_name": "AirCheck",
   "description": "The checklist on top of the checklist",
   "start_url": "./AirCheck_RD.html",
   "display": "standalone",
@@ -9,7 +9,7 @@
   "theme_color": "#1c3d6e",
   "icons": [
     {
-      "src": "https://raw.githubusercontent.com/eligrt/AirCheck/main/AirCheck_icon_RD.png",
+      "src": "./AirCheck_icon_RD.png",
       "sizes": "1024x1024",
       "type": "image/png",
       "purpose": "any maskable"

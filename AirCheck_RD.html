@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <!-- ═══════════════════════════════════════
-     AirCheck+ · v2.20.004 · built by eligrt
+     AirCheck · v2.20.005 · built by eligrt
      ═══════════════════════════════════════ -->
 <html lang="he" dir="rtl">
 <head>
@@ -8,12 +8,20 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-<meta name="apple-mobile-web-app-title" content="AirCheck+">
+<meta name="apple-mobile-web-app-title" content="AirCheck">
 <meta name="theme-color" content="#1c3d6e">
 <link rel="manifest" href="manifest.json">
-<link rel="apple-touch-icon" href="https://raw.githubusercontent.com/eligrt/AirCheck/main/AirCheck_icon_RD.png">
-<title>AirCheck+</title>
-<meta property="og:title" content="AirCheck+ | Personal flight checklist" />
+<link rel="apple-touch-icon" href="AirCheck_icon_RD.png">
+<link rel="icon" type="image/png" href="data:image/png;base64,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">
+<title>AirCheck</title>
+<script>
+/* Single source of truth for app identity. Footers, share texts, exports and Firebase appVersion all read these. */
+const APP_NAME='AirCheck';
+const APP_VERSION='v2.20.005';
+const APP_STAMP=APP_NAME+' · '+APP_VERSION+' · built by eligrt';
+document.addEventListener('DOMContentLoaded',function(){document.querySelectorAll('.app-stamp').forEach(function(e){e.textContent=APP_STAMP;});});
+</script>
+<meta property="og:title" content="AirCheck | Personal flight checklist" />
 <meta property="og:description" content="&quot;The checklist on top of the checklist&quot;" />
 <meta property="og:image" content="https://eligrt.github.io/AirCheck/AirCheck_og_RD.png" />
 <meta property="og:url" content="https://eligrt.github.io/AirCheck/AirCheck_RD.html" />
@@ -671,9 +679,9 @@ html,body{height:100%;height:var(--app-h,100%);background:#1a1a1c;font-family:va
     <div class="splash-hero">
       <div class="splash-logo-wrap">
         <img src="./AirCheck_logo_RD.png"
-          alt="AirCheck+" onerror="this.style.display='none'">
+          alt="AirCheck" onerror="this.style.display='none'">
       </div>
-      <div class="splash-app-title">AirCheck+</div>
+      <div class="splash-app-title">AirCheck</div>
       <div class="splash-app-sub" id="splashSub" style="opacity:0;transition:opacity 1.2s ease;">personal flight checklist</div>
       <div class="splash-app-slogan" id="splashSlogan" style="opacity:0;"></div>
     <div id="splashRankBox" class="rank-strip-box" style="display:none;">
@@ -702,7 +710,7 @@ html,body{height:100%;height:var(--app-h,100%);background:#1a1a1c;font-family:va
     <div class="splash-footer-wrap">
       <div class="footer-strip" style="display:flex;align-items:center;justify-content:space-between;padding:5px 14px 8px;">
         <span class="footer-refresh" onclick="reloadApp()">רענון</span>
-        <span id="versionTap" style="cursor:default;">AirCheck+ · v2.20.004 · built by eligrt</span>
+        <span class="app-stamp" style="cursor:default;"></span>
         <span style="width:40px;"></span>
       </div>
     </div>
@@ -822,7 +830,7 @@ html,body{height:100%;height:var(--app-h,100%);background:#1a1a1c;font-family:va
     <div class="tree-panel" id="treePanel"></div>
     <div class="footer-strip" style="display:flex;align-items:center;justify-content:space-between;padding:5px 14px 8px;">
       <span class="footer-refresh" onclick="reloadApp()">רענון</span>
-      <span id="versionTap" style="cursor:default;">AirCheck+ · v2.20.004 · built by eligrt</span>
+      <span class="app-stamp" style="cursor:default;"></span>
       <span style="width:40px;"></span>
     </div>
   </div>
@@ -903,7 +911,7 @@ html,body{height:100%;height:var(--app-h,100%);background:#1a1a1c;font-family:va
 
     <div class="footer-strip" style="display:flex;align-items:center;justify-content:space-between;padding:5px 14px 8px;">
       <span style="width:40px;"></span>
-      <span id="versionTap" style="cursor:default;">AirCheck+ · v2.20.004 · built by eligrt</span>
+      <span class="app-stamp" style="cursor:default;"></span>
       <span style="width:40px;"></span>
     </div>
   </div>
@@ -1017,7 +1025,7 @@ html,body{height:100%;height:var(--app-h,100%);background:#1a1a1c;font-family:va
     </div>
     <div class="footer-strip" style="display:flex;align-items:center;justify-content:space-between;padding:5px 14px 8px;">
       <span class="footer-refresh" onclick="reloadApp()">רענון</span>
-      <span id="versionTap" style="cursor:default;">AirCheck+ · v2.20.004 · built by eligrt</span>
+      <span class="app-stamp" style="cursor:default;"></span>
       <span style="width:40px;"></span>
     </div>
   </div>
@@ -1041,7 +1049,7 @@ html,body{height:100%;height:var(--app-h,100%);background:#1a1a1c;font-family:va
     <div class="editor-list" id="editorList"></div>
     <div class="footer-strip" style="display:flex;align-items:center;justify-content:space-between;padding:5px 14px 8px;">
       <span class="footer-refresh" onclick="reloadApp()">רענון</span>
-      <span id="versionTap" style="cursor:default;">AirCheck+ · v2.20.004 · built by eligrt</span>
+      <span class="app-stamp" style="cursor:default;"></span>
       <span style="width:40px;"></span>
     </div>
   </div>
@@ -1125,7 +1133,7 @@ const CL=[
   {defId:"d009",phase:"יום לפני",group:"תכנון (ניווט ודלק)",main:"חשב כמות דלק נדרשת לטיסה",sub:"בתוספת '45 (הסעה '15 + ספייר '30)"},
   {defId:"d010",phase:"יום לפני",group:"מנהלות",main:"ודא מטוס משוריין / מוזמן לטיסה",sub:""},
   {defId:"d011",phase:"יום לפני",group:"מנהלות",main:"תאום נחיתה בשדה יעד / עצירה (אם נדרש)",sub:""},
-  {defId:"d012",phase:"יום לפני",group:"בדיקת מז\"א",main:"בדוק TAF בשדה המראה ושדה נחיתה",sub:"",url:"https://eligrt.github.io/AirCheck/AirCheck_METAR.html",urlLabel:"AirCheck+ METAR / TAF"},
+  {defId:"d012",phase:"יום לפני",group:"בדיקת מז\"א",main:"בדוק TAF בשדה המראה ושדה נחיתה",sub:"",url:"https://eligrt.github.io/AirCheck/AirCheck_METAR.html",urlLabel:"AirCheck METAR / TAF"},
   {defId:"d013",phase:"יום לפני",group:"בדיקת מז\"א",main:"בדוק מפות רוח בנתיב",sub:"",url:"https://ims.gov.il/he/aviation",urlLabel:"IMS.GOV.IL"},
   {defId:"d014",phase:"יום לפני",group:"בדיקת מז\"א",main:"בדוק מפות SIG",sub:"",url:"https://ims.gov.il/he/aviation",urlLabel:"IMS.GOV.IL"},
   {defId:"d015",phase:"יום לפני",group:"בדיקת מז\"א",main:"אמת נתונים באפליקציית מז\"א",sub:""},
@@ -1143,10 +1151,10 @@ const CL=[
   {defId:"d027",phase:"הגעה למנחת ולמטוס",group:"הכנת קוקפיט",main:"מצלמות: מקם והפעל",sub:""},
   {defId:"d028",phase:"הגעה למנחת ולמטוס",group:"הכנת קוקפיט",main:"GPS - מקם והפעל",sub:""},
   {defId:"d029",phase:"הגעה למנחת ולמטוס",group:"הכנת קוקפיט",main:"אוזניות - בדוק סוללות",sub:""},
-  {defId:"d030",phase:"הגעה למנחת ולמטוס",group:"הכנת קוקפיט",main:"תדרוך נוסע (אם נדרש)",sub:"",url:"https://eligrt.github.io/AirCheck/passenger-briefing.html",urlLabel:"AirCheck+ Passenger Briefing"},
+  {defId:"d030",phase:"הגעה למנחת ולמטוס",group:"הכנת קוקפיט",main:"תדרוך נוסע (אם נדרש)",sub:"",url:"https://eligrt.github.io/AirCheck/passenger-briefing.html",urlLabel:"AirCheck Passenger Briefing"},
   {defId:"d044",phase:"הגעה למנחת ולמטוס",group:"הכנת קוקפיט",main:"מכשיר קשר נייד טעון ובתיק",sub:""},
   {defId:"d031",phase:"הגעה למנחת ולמטוס",group:"כללי",main:"עדכון בקרה בהמראה (אם נדרש)",sub:""},
-  {defId:"d032",phase:"הגעה למנחת ולמטוס",group:"כללי",main:"דאבל צ'ק מז\"א",sub:"METAR בשדה המראה ובשדה נחיתה",url:"https://eligrt.github.io/AirCheck/AirCheck_METAR.html",urlLabel:"AirCheck+ METAR / TAF"},
+  {defId:"d032",phase:"הגעה למנחת ולמטוס",group:"כללי",main:"דאבל צ'ק מז\"א",sub:"METAR בשדה המראה ובשדה נחיתה",url:"https://eligrt.github.io/AirCheck/AirCheck_METAR.html",urlLabel:"AirCheck METAR / TAF"},
   {defId:"d033",phase:"הגעה למנחת ולמטוס",group:"כללי",main:"בדיקה חוזרת ל NOTAM בשדות ובנתיבים",sub:"",url:"https://notam.liorbenhorin.xyz/",urlLabel:"NOTAM LL"},
   {defId:"d034",lean:true,phase:"סגירת טיסה",group:"ניירת",main:"ספר מטוס: סגירת שורה",sub:""},
   {defId:"d035",phase:"סגירת טיסה",group:"קיפול ציוד אישי",main:"מצלמות, IPAD, טלפון",sub:""},
@@ -1272,7 +1280,7 @@ function render(){
   // Sync stamp tail from settings on every render
   const stampEl=document.getElementById('stampInit');
   if(stampEl){const t=settings&&settings.tail?settings.tail:(localStorage.getItem(REG_KEY)||'');stampEl.textContent='PIC · 4X-'+(t||'HHH');}
-  const item=CL[current];if(!item)return;const phase=PHASE_IDX[item.phase];const group=phase?phase.groups.find(g=>g.name===item.group):null;document.getElementById('crumbPhase').textContent=item.phase;document.getElementById('crumbGroup').textContent=item.group;const numEl=document.getElementById('cardItemNum');numEl.innerHTML='ITEM <b>'+(current+1).toString().padStart(2,'0')+'</b><span> / '+CL.length+'</span>';const badge=document.getElementById('cardBadge');if(group){const pos=group.items.indexOf(current)+1;badge.textContent=pos+'/'+group.items.length+' בקבוצה';badge.style.display='';}else{badge.style.display='none';}document.getElementById('cardMain').textContent=item.main;{const cm=document.getElementById('cardMain');if(item._isNew){cm.textContent='';const nb=document.createElement('span');nb.className='badge-new';nb.style.marginLeft='6px';nb.textContent='NEW';cm.appendChild(nb);cm.appendChild(document.createTextNode(item.main));}}const subEl=document.getElementById('cardSub');subEl.textContent=item.sub||'';subEl.style.display=item.sub?'':'none';const linkEl=document.getElementById('cardLink');if(linkEl){const lastEl=item.sub?subEl:document.getElementById('cardMain');document.getElementById('cardMain').style.paddingBottom='';subEl.style.paddingBottom='';if(FEATURES.EXTERNAL_LINK&&item.url){const lbl=item.urlLabel||'פתח קישור';linkEl.innerHTML='';const btn=document.createElement('button');btn.className='card-link-btn';btn.type='button';btn.innerHTML='<i class="ti ti-external-link" aria-hidden="true"></i> '+lbl;if(isAirCheckFamilyUrl(item.url))btn.insertAdjacentHTML('beforeend','<span class="card-link-sticker" aria-hidden="true"><span class="card-link-sticker-ico"></span>AirCheck+</span>');
+  const item=CL[current];if(!item)return;const phase=PHASE_IDX[item.phase];const group=phase?phase.groups.find(g=>g.name===item.group):null;document.getElementById('crumbPhase').textContent=item.phase;document.getElementById('crumbGroup').textContent=item.group;const numEl=document.getElementById('cardItemNum');numEl.innerHTML='ITEM <b>'+(current+1).toString().padStart(2,'0')+'</b><span> / '+CL.length+'</span>';const badge=document.getElementById('cardBadge');if(group){const pos=group.items.indexOf(current)+1;badge.textContent=pos+'/'+group.items.length+' בקבוצה';badge.style.display='';}else{badge.style.display='none';}document.getElementById('cardMain').textContent=item.main;{const cm=document.getElementById('cardMain');if(item._isNew){cm.textContent='';const nb=document.createElement('span');nb.className='badge-new';nb.style.marginLeft='6px';nb.textContent='NEW';cm.appendChild(nb);cm.appendChild(document.createTextNode(item.main));}}const subEl=document.getElementById('cardSub');subEl.textContent=item.sub||'';subEl.style.display=item.sub?'':'none';const linkEl=document.getElementById('cardLink');if(linkEl){const lastEl=item.sub?subEl:document.getElementById('cardMain');document.getElementById('cardMain').style.paddingBottom='';subEl.style.paddingBottom='';if(FEATURES.EXTERNAL_LINK&&item.url){const lbl=item.urlLabel||'פתח קישור';linkEl.innerHTML='';const btn=document.createElement('button');btn.className='card-link-btn';btn.type='button';btn.innerHTML='<i class="ti ti-external-link" aria-hidden="true"></i> '+lbl;if(isAirCheckFamilyUrl(item.url))btn.insertAdjacentHTML('beforeend','<span class="card-link-sticker" aria-hidden="true"><span class="card-link-sticker-ico"></span>AirCheck</span>');
       btn.setAttribute('onclick','trackExternalLinkTap('+JSON.stringify(item.url)+','+JSON.stringify(lbl)+')');
       linkEl.appendChild(btn);linkEl.style.display='block';lastEl.style.paddingBottom='36px';}else{linkEl.style.display='none';}}
   // Persistent stamp — if this item was already checked off, the stamp
@@ -1640,10 +1648,10 @@ function doShareLean(){
   if(!leanItems.length){showToast('אין פריטי דיווח נחיתה מסומנים');return;}
   const now=new Date();
   const utcStr=String(now.getUTCHours()).padStart(2,'0')+':'+String(now.getUTCMinutes()).padStart(2,'0');
-  const ver=(document.getElementById('versionTap')?.textContent||'').replace('AirCheck+ · ','').replace(' · built by eligrt','');
+  const ver=APP_VERSION;
   const ltStr=String(now.getHours()).padStart(2,'0')+':'+String(now.getMinutes()).padStart(2,'0');
   let lines=[];
-  lines.push('🛩️ *AirCheck+ | דיווח נחיתה*');
+  lines.push('🛩️ *AirCheck | דיווח נחיתה*');
   lines.push('🕐 LT '+ltStr+' (UTC '+utcStr+')');
   lines.push('────────────────────');
   leanItems.forEach(it=>{
@@ -1651,11 +1659,11 @@ function doShareLean(){
     lines.push((status[i]==='done'?'✅':'🟡')+' '+it.main);
   });
   lines.push('────────────────────');
-  lines.push('Generated by AirCheck+');
+  lines.push('Generated by AirCheck');
   lines.push('Personal Flight Checklist · '+ver);
   lines.push('Built by eligrt');
   const text=lines.join('\n');
-  if(navigator.share){navigator.share({title:'AirCheck+ | דיווח נחיתה',text}).catch(()=>showShareFallback(text));}
+  if(navigator.share){navigator.share({title:'AirCheck | דיווח נחיתה',text}).catch(()=>showShareFallback(text));}
   else{showShareFallback(text);}
 }
 function showShareFallback(text){if(navigator.clipboard){navigator.clipboard.writeText(text).catch(()=>{});}showToast('הטקסט הועתק ללוח');}
@@ -1738,7 +1746,7 @@ function showAllDoneOverlay(lastPhase,noCount){
   }
   if(isRankUp&&rankUp){
     rankUp.style.display='';
-    rankUp.innerHTML='<div class="rankup-icon-wrap"><div class="rankup-icon">'+rankData.current.icon+'</div></div><div class="rankup-title" style="direction:rtl;">ברכות לרגל קבלת דרגת <span dir="ltr">AirCheck+</span> חדשה</div><div class="rankup-name">'+rankData.current.name+'</div><div class="rankup-sub" style="direction:rtl;">השלמת '+cc+' צ׳קליסטים מלאים. כל הכבוד!</div>';
+    rankUp.innerHTML='<div class="rankup-icon-wrap"><div class="rankup-icon">'+rankData.current.icon+'</div></div><div class="rankup-title" style="direction:rtl;">ברכות לרגל קבלת דרגת <span dir="ltr">AirCheck</span> חדשה</div><div class="rankup-name">'+rankData.current.name+'</div><div class="rankup-sub" style="direction:rtl;">השלמת '+cc+' צ׳קליסטים מלאים. כל הכבוד!</div>';
   }else if(rankUp){rankUp.style.display='none';}
   showScreen('screenSummary');
 }
@@ -1773,8 +1781,8 @@ function doShare(upToPhaseIdx,singlePhase){
   const total=scopedItems.length;
   const phaseName=isPhaseShare?PHASES[upToPhaseIdx].name:(document.getElementById('summaryStampPhase').textContent||'הצ׳קליסט');
   let lines=[];
-  const ver=(document.getElementById('versionTap')?.textContent||'').replace('AirCheck+ · ','').replace(' · built by eligrt','');
-  lines.push((skipped>0?'🟡':'✅')+' *AirCheck+ | סיכום'+(isPhaseShare?' שלב':'טיסה')+'*');
+  const ver=APP_VERSION;
+  lines.push((skipped>0?'🟡':'✅')+' *AirCheck | סיכום'+(isPhaseShare?' שלב':'טיסה')+'*');
   lines.push('🕐 LT '+localStr+' (UTC '+utcStr+')');
   lines.push('────────────────────');
   lines.push('📋 *'+phaseName+'* - '+done+'/'+total+(skipped>0?' ('+skipped+' דולגו)':''));
@@ -1793,12 +1801,12 @@ function doShare(upToPhaseIdx,singlePhase){
     lines.push('');
   });
   lines.push('────────────────────');
-  lines.push('Generated by AirCheck+');
+  lines.push('Generated by AirCheck');
   lines.push('Personal Flight Checklist · '+ver);
   lines.push('Built by eligrt');
   const text=lines.join('\n');
   if(navigator.share){
-    navigator.share({title:'AirCheck+ | סיכום טיסה',text}).catch(()=>showShareFallback(text));
+    navigator.share({title:'AirCheck | סיכום טיסה',text}).catch(()=>showShareFallback(text));
   }else{
     showShareFallback(text);
   }
@@ -2873,7 +2881,7 @@ function processXLSFile(file){
         const warnings=[];
         rows.forEach((r,i)=>{
           const c0=String(r[0]).trim(),c1=String(r[1]).trim(),c2=String(r[2]).trim();
-          // Skip metadata row (A1 — contains AirCheck+ version stamp)
+          // Skip metadata row (A1 — contains AirCheck version stamp)
           if(c0.toLowerCase().includes('aircheck'))return;
           // Skip header row
           if(c0.toLowerCase().includes('phase')&&c1.toLowerCase().includes('group'))return;
@@ -3027,7 +3035,7 @@ function confirmXLSImport(){
 function exportChecklist(){
   if(typeof XLSX==='undefined'){showToast('טוען ספריה...');return;}
   const wb=XLSX.utils.book_new();
-  const aoa=[['AirCheck+ — Personal Flight Checklist','','','','',''],['Phase','Group','Item','Sub','URL','URLLabel']];
+  const aoa=[['AirCheck — Personal Flight Checklist','','','','',''],['Phase','Group','Item','Sub','URL','URLLabel']];
   let prevPhase='',prevGroup='';
   CL.forEach(it=>{
     aoa.push([it.phase!==prevPhase?it.phase:'',it.group!==prevGroup?it.group:'',it.main,it.sub||'',it.url||'',it.urlLabel||'']);
@@ -3036,7 +3044,7 @@ function exportChecklist(){
   const ws=XLSX.utils.aoa_to_sheet(aoa);
   ws['!cols']=[{wch:28},{wch:22},{wch:36},{wch:30},{wch:36},{wch:20}];
   XLSX.utils.book_append_sheet(wb,ws,'Checklist');
-  XLSX.writeFile(wb,'AirCheck+_Export.xlsx');
+  XLSX.writeFile(wb,'AirCheck_Export.xlsx');
   showToast('✓ הקובץ יוצא בהצלחה - בדוק את ההורדות');
 }
 function exportEditorToXLS(){
@@ -3046,8 +3054,8 @@ function exportEditorToXLS(){
     const wb=XLSX.utils.book_new();
     const today=new Date();
     const exportDate=String(today.getDate()).padStart(2,'0')+'/'+String(today.getMonth()+1).padStart(2,'0')+'/'+today.getFullYear();
-    const ver=document.querySelector('#versionTap')?.textContent?.replace('AirCheck+ · ','').replace(' · built by eligrt','')||'';
-    const a1stamp='AirCheck+ · Personal Flight Checklist · '+ver+' · built by eligrt · Exported: '+exportDate;
+    const ver=APP_VERSION;
+    const a1stamp='AirCheck · Personal Flight Checklist · '+ver+' · built by eligrt · Exported: '+exportDate;
     p.profiles.forEach(prof=>{
       const list=prof.list||[];
       const aoa=[[a1stamp],['Phase','Group','Item','Sub','URL','URLLabel','Lean']];
@@ -3063,7 +3071,7 @@ function exportEditorToXLS(){
       const sheetName=prof.name.replace(/[\\\/\?\*\[\]\:]/g,'').substring(0,31)||'רשימה';
       XLSX.utils.book_append_sheet(wb,ws,sheetName);
     });
-    XLSX.writeFile(wb,'AirCheck+_Export.xlsx');
+    XLSX.writeFile(wb,'AirCheck_Export.xlsx');
     showToast('✓ הקובץ יוצא בהצלחה - '+p.profiles.length+' רשימות');
   }catch(e){
     showToast('שגיאה בייצוא: '+e.message);
@@ -3167,7 +3175,7 @@ function checkWhatsNew(){
   _whatsNewShownThisSession=true;
   const el=document.getElementById('whatsNewOverlay');
   const verEl=document.getElementById('whatsNewVer');
-  if(verEl)verEl.textContent='AirCheck+ · v'+WHATS_NEW_VER;
+  if(verEl)verEl.textContent='AirCheck · v'+WHATS_NEW_VER;
   if(el)el.style.display='flex';setTimeout(wnCheckScroll,100);
 }
 function wnCheckScroll(){
@@ -3590,7 +3598,7 @@ function buildRankStrip(n){
   if(current){
     html+='<div class="rank-header-current">';
     html+='<div class="rank-header-left"><div class="rank-header-icon">'+current.icon+'</div><div class="rank-header-rankname">'+current.name+'</div></div>';
-    html+='<div class="rank-header-right"><div class="rank-header-label">דרגת ה-<span dir="ltr">AirCheck+</span> שלך</div></div>';
+    html+='<div class="rank-header-right"><div class="rank-header-label">דרגת ה-<span dir="ltr">AirCheck</span> שלך</div></div>';
     html+='</div>';
   }
   // Entire strip section is LTR
@@ -3909,7 +3917,7 @@ function splashSecondaryAction(){
       const listType=getListType();
 
       // App version — parsed from the footer, same source used elsewhere in the app
-      const appVersion=(document.getElementById('versionTap')?.textContent||'').replace('AirCheck+ · ','').replace(' · built by eligrt','')||existing.appVersion||'';
+      const appVersion=APP_VERSION;
 
       // Event-specific timestamps — only the field matching this call's eventType updates, others carry forward
       const lastOpenedAt=eventType==='open'?now:(existing.lastOpenedAt||null);
@@ -4153,8 +4161,8 @@ function splashSecondaryAction(){
       <div style="background:var(--ink);padding:14px 18px 13px;display:flex;align-items:center;gap:12px;direction:rtl;">
         <div style="flex-shrink:0;width:38px;height:38px;background:rgba(244,236,220,.07);border:1px solid rgba(200,160,74,.25);border-radius:7px;display:flex;align-items:center;justify-content:center;font-size:20px;">✈</div>
         <div style="flex:1;">
-          <div style="font-family:var(--font-mono);font-size:8px;color:rgba(244,236,220,.4);letter-spacing:.18em;text-transform:uppercase;margin-bottom:3px;direction:ltr;unicode-bidi:bidi-override;">AirCheck+ · INSTALL</div>
-          <div style="font-size:14px;font-weight:700;color:var(--paper);direction:rtl;line-height:1.35;">ידעת שאפשר להתקין את AirCheck+?</div>
+          <div style="font-family:var(--font-mono);font-size:8px;color:rgba(244,236,220,.4);letter-spacing:.18em;text-transform:uppercase;margin-bottom:3px;direction:ltr;unicode-bidi:bidi-override;">AirCheck · INSTALL</div>
+          <div style="font-size:14px;font-weight:700;color:var(--paper);direction:rtl;line-height:1.35;">ידעת שאפשר להתקין את AirCheck?</div>
         </div>
       </div>
       <!-- Body -->
@@ -4196,7 +4204,7 @@ function splashSecondaryAction(){
       <div style="background:var(--ink);padding:14px 18px 13px;display:flex;align-items:center;gap:12px;direction:rtl;">
         <div style="font-size:26px;line-height:1;">❤️</div>
         <div style="flex:1;">
-          <div style="font-family:var(--font-mono);font-size:8px;color:rgba(244,236,220,.4);letter-spacing:.18em;text-transform:uppercase;margin-bottom:3px;direction:ltr;unicode-bidi:bidi-override;">AirCheck+ · SUPPORT</div>
+          <div style="font-family:var(--font-mono);font-size:8px;color:rgba(244,236,220,.4);letter-spacing:.18em;text-transform:uppercase;margin-bottom:3px;direction:ltr;unicode-bidi:bidi-override;">AirCheck · SUPPORT</div>
           <div style="font-size:14px;font-weight:700;color:var(--paper);direction:rtl;line-height:1.35;">הצ׳קליסט שמעל הצ׳קליסט</div>
         </div>
       </div>
@@ -4228,7 +4236,7 @@ function splashSecondaryAction(){
   <div id="whatsNewOverlay" style="display:none;position:absolute;inset:0;background:rgba(26,19,8,.82);z-index:700;align-items:center;justify-content:center;padding:20px;backdrop-filter:blur(3px);overflow-y:auto;">
     <div style="background:var(--paper);background-image:repeating-linear-gradient(0deg,transparent 0,transparent 27px,rgba(28,61,110,.055) 27px,rgba(28,61,110,.055) 28px);border:2px solid var(--gold);border-radius:8px;width:100%;max-width:320px;max-height:88vh;overflow-y:auto;overflow-x:hidden;scrollbar-width:none;box-shadow:0 20px 60px rgba(0,0,0,.4);animation:popupFadeIn .25s cubic-bezier(.34,1.2,.64,1);direction:rtl;">
       <div style="background:var(--ink);padding:12px 18px 10px;text-align:center;">
-        <div style="font-family:var(--font-mono);font-size:9px;color:rgba(244,236,220,.45);letter-spacing:.2em;text-transform:uppercase;margin-bottom:5px;" id="whatsNewVer">AirCheck+ · v2.09</div>
+        <div style="font-family:var(--font-mono);font-size:9px;color:rgba(244,236,220,.45);letter-spacing:.2em;text-transform:uppercase;margin-bottom:5px;" id="whatsNewVer">AirCheck · v2.09</div>
         <div style="font-size:15px;font-weight:700;color:var(--paper);line-height:1.3;">עדכון גרסה יצא מהתנור 🔥</div>
         <div style="font-size:11px;color:rgba(244,236,220,.6);margin-top:3px;">רגע לפני שמתחילים, בואו תכירו מה חדש</div>
       </div>
