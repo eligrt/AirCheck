@@ -1,12 +1,14 @@
 <!DOCTYPE html>
-<!-- AirCheck+ · AirCheck_METAR.html · v1.56 · built by eligrt -->
+<!-- AirCheck+ · AirCheck_METAR.html · v1.59 · built by eligrt -->
 <html lang="he" dir="rtl">
 <head>
 <meta charset="UTF-8">
 <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
 <meta http-equiv="Pragma" content="no-cache">
 <meta http-equiv="Expires" content="0">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
 <title>AirCheck+ · METAR / TAF</title>
 <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Hebrew:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
 <style>
@@ -22,17 +24,17 @@
 html,body{min-height:100%;background:var(--paper);font-family:var(--font-ui);color:var(--ink);}
 body{display:flex;flex-direction:column;height:100svh;overflow:hidden;}
 
-/* ── HEADER ── */
-.header{
-  background:var(--ink);padding:10px 16px 8px;
-  display:flex;align-items:center;justify-content:space-between;
-  position:sticky;top:0;z-index:10;
-}
-.header-right{display:flex;flex-direction:column;}
-.header-title{font-size:18px;font-weight:700;color:#f4ecdc;font-family:var(--font-mono);letter-spacing:.04em;}
-.header-sub{font-family:var(--font-ui);font-size:12px;color:rgba(244,236,220,.6);margin-top:3px;}
-.back-btn{background:transparent;border:1px solid rgba(244,236,220,.35);border-radius:6px;padding:7px 14px;font-family:var(--font-ui);font-size:13px;font-weight:600;color:rgba(244,236,220,.8);cursor:pointer;white-space:nowrap;}
-.back-btn:active{opacity:.8;}
+/* ── HEADER (family: icon, title, subtitle, UTC) ── */
+.header{background:var(--ink);padding:10px 16px;display:flex;align-items:center;justify-content:space-between;direction:ltr;min-height:58px;position:sticky;top:0;z-index:10;flex-shrink:0}
+.hdr-rail{display:flex;align-items:center;gap:10px;min-width:0}
+.hdr-glyph{width:38px;height:38px;flex:0 0 38px;border-radius:9px;overflow:hidden;border:1px solid var(--gold);background:var(--paper)}
+.hdr-glyph img{width:100%;height:100%;display:block;object-fit:cover}
+.hdr-title{direction:ltr;text-align:left}
+.hdr-title h1{font-size:16.5px;line-height:1.25;font-weight:700;letter-spacing:-.1px;color:var(--paper)}
+.hdr-title p{color:var(--gold-lite);font-weight:500;margin-top:1px;line-height:1.3;font-size:10.5px}
+.hdr-clock{display:flex;align-items:baseline;gap:6px;color:var(--paper);font-family:var(--font-mono);direction:ltr}
+.hdr-clock-lbl{font-size:10px;opacity:.75;letter-spacing:.18em}
+.utc{font-size:21px;font-weight:700;line-height:1}
 
 /* ── PILL STRIP ── */
 .pill-wrap{background:var(--paper);padding:6px 16px 8px;border-bottom:1px solid var(--paper-edge);}
@@ -197,6 +199,37 @@ body{display:flex;flex-direction:column;height:100svh;overflow:hidden;}
   #rotateGuard .rg-icon{font-size:52px;color:#fff;line-height:1;margin-bottom:18px;}
   #rotateGuard .rg-text{font-size:17px;color:#fff;line-height:1.65;margin:0;}
 }
+/* LSA-ALIGN v1 START - shared chassis: scroll, header inset, footer. Do not edit per app; update the machine instead. */
+:root{
+  --lsa-hdr-min:58px;                                   /* navy header content height */
+  --lsa-foot-h:33px;                                    /* footer content height */
+  --lsa-foot-pad:max(8px,calc(env(safe-area-inset-bottom,0px) - 16px)); /* sits low, clear of the home bar */
+}
+*{overscroll-behavior:none;}                            /* no rubber-band, no scroll chaining */
+html,body{overscroll-behavior:none;}
+.lsa-hdr{box-sizing:border-box;min-height:calc(var(--lsa-hdr-min) + env(safe-area-inset-top,0px));padding-top:calc(10px + env(safe-area-inset-top,0px));padding-bottom:10px;}
+.lsa-foot{box-sizing:border-box;flex:0 0 auto;display:grid;grid-template-columns:minmax(0,1fr) auto minmax(0,1fr);align-items:center;direction:ltr;
+  height:calc(var(--lsa-foot-h) + var(--lsa-foot-pad));padding:0 12px var(--lsa-foot-pad);margin:0;
+  background:var(--paper-hi,#fbf6e8);border-top:1px solid var(--gold-lite,#d4b878);
+  font-family:var(--font-mono,var(--mono,'JetBrains Mono',monospace));font-size:9px;font-weight:400;letter-spacing:.04em;line-height:1.2;
+  color:var(--ink-faint,#8a7a5a);text-transform:none;text-align:center;position:relative;z-index:5;}
+.lsa-foot.sp{position:absolute;left:0;right:0;bottom:0;}
+.lsa-foot-ver{grid-column:2;max-width:100%;min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.lsa-foot-ver a{color:inherit;text-decoration:none;}
+.lsa-foot-slot{grid-column:1;justify-self:start;min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;opacity:.75;font-size:9px;letter-spacing:.04em;background:none;border:0;padding:0;font-family:inherit;color:inherit;}
+.lsa-foot-slot:empty{visibility:hidden;}
+button.lsa-foot-slot{cursor:pointer;padding:8px 0;}
+.lsa-foot-reload{grid-column:3;justify-self:end;background:none;border:0;padding:8px 0;margin:0;font-family:var(--font-ui,'IBM Plex Sans Hebrew',sans-serif);font-size:11px;letter-spacing:.02em;
+  color:var(--ink-muted,#5a4a3a);text-decoration:underline;text-underline-offset:2px;opacity:.75;cursor:pointer;white-space:nowrap;}
+.lsa-foot-reload:active{opacity:.4;}
+.lsa-skip{position:absolute;left:0;right:0;bottom:calc(var(--lsa-foot-h) + var(--lsa-foot-pad) + 14px);text-align:center;font-family:var(--font-mono,var(--mono,'JetBrains Mono',monospace));font-size:9px;letter-spacing:.18em;color:var(--ink-faint,#8a7a5a);text-transform:uppercase;pointer-events:none;}
+#splash.lobby .lsa-skip{display:none;}
+/* header clock: time on top, UTC label beneath (all apps) */
+.hdr-clock,.strip-clock{display:flex!important;flex-direction:column!important;align-items:center!important;gap:3px!important;}
+.hdr-clock>.hdr-clock-lbl,.strip-clock>.strip-clock-lbl{order:2;font-size:9px!important;line-height:1;letter-spacing:.22em;margin:0!important;}
+.hdr-clock>:not(.hdr-clock-lbl),.strip-clock>:not(.strip-clock-lbl){order:1;}
+.hdr-clock-row{display:flex;flex-direction:column-reverse!important;align-items:center!important;gap:3px!important;}
+/* LSA-ALIGN v1 END */
 </style>
 </head>
 <body>
@@ -213,12 +246,13 @@ body{display:flex;flex-direction:column;height:100svh;overflow:hidden;}
   </div>
 </div>
 
-<div class="header">
-  <div class="header-right">
-    <div class="header-title">METAR / TAF</div>
+<header class="header lsa-hdr">
+  <div class="hdr-rail">
+    <div class="hdr-glyph"><img alt="METAR" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAIAAAACACAIAAABMXPacAAAY9klEQVR42u19eYyd13XfOefe+23vvXnvzUYOORxSpEiKkihRkmVZki0riuNs9YIqTlIngQu3QQOkcJAGXdACaYAWQROgKIq4QFullR14T2RbVq1IqpdKsiXatCVxkcSdHA7J4ewzb/2We8/pH29GpmhKIqn3ZuNcfH88goO3nN85557zO+eei43pYRELgLC2FnsJotYiVsStAbAkAACABsCFZ20t/kJak8HSrjUA1gBYA2BtrQGwBsDaWgNgDYDrOycSaWVGi7z0muznFRFlST54DQABQNI+khKXsUsWmRS4vgEQRmUEpDp2sDl7Jt93U1TeIs6KMCCuAdB56ZMGUHMjL5756aPMqQnKW+75g3zvTnBWxC0OBtftJowijMpj16yMHbTxrNZBWhutjr0qAEAki7UhX99REKKIY5eS9kgHSIZdshaGvluhXuUuiogKREQcACCqDn/c6t4DRFgyACRUgHTFcb28xet3Er04ZotISHoNAARxgEp7RQDhtCliEXXHcisUtkjahHlgdlmzZUvXMQDikAySss1ZQNR+oRXUI5kOYIDCmdIhIKaNaSKjTcjOsli8+gLXqgBAAASQVOXC/qnTzwNSz5YHiutvFxBxGdI72gG+xeu38nOWTCACM8M/nD23T3v53m0PRd3bMLWAcrVbwmoAQMRpL9esjJw7+JXa+BFUujF5jPf8bnnoXgs1Yfd2iinc2n7fEC6IvO1nCSkPUY8f+/vRQ39r05rLYptWh+76tAlKNq1f7X5Aq8IABLWf1CdtUjNhKVfakjQmzr78+ZnhvdrLIeLlZCoC0gqBEAkAW3aESPNoXZ6bY1QayUwce2r00NeAOSxu1n4+bcyk8RwqX4Sv1gJWAwAExEk9331jrnQD29imVS/szpLKyMuPTg/vVX7+zTIREMF50aPy835hAABFBJUJujaRCYBaQRRdEmEhaSIzfvTpcwe+DEjkRS6dA+ZC766wsIHTOqK62i1nVeQBRNbFOugauO238303Z3EFRLSXc2nt7Eufmxneq7y8tDYKaclRkQlJ+XHlXHXskLBVXsQ21X6XyyqVC6/Y5rQyoTIBAAq7lvRJGSRv4thT5w9+CckQGQDI4kr3DQ+su+nXSHnOJdcQj2J96uSqaMxCdpkJS42Z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"></div>
+    <div class="hdr-title"><h1>METAR / TAF</h1><p>Airport weather</p></div>
   </div>
-  <button class="back-btn" onclick="backToApp()">חזרה ל&nbsp;&nbsp;<span dir="ltr">AirCheck+</span></button>
-</div>
+  <div class="hdr-clock"><span class="hdr-clock-lbl">UTC</span><span class="utc">--:--</span></div>
+</header>
 
 <div class="pill-wrap">
   <div class="metar-pill-strip" id="metarPillStrip">
@@ -303,12 +337,7 @@ body{display:flex;flex-direction:column;height:100svh;overflow:hidden;}
   </div>
 </div>
 
-<div class="metar-footer">
-  <button class="metar-refresh-btn" onclick="fetchMetar(true)">↻ רענן</button>
-  <div class="metar-age-footer" id="metarAgeFooter">—</div>
-</div>
-
-<div class="page-footer" dir="ltr">AirCheck+ · METAR / TAF · v1.56 · built by eligrt</div>
+<div class="lsa-foot" dir="ltr"><button class="lsa-foot-slot" id="metarAgeFooter" onclick="fetchMetar(true)" aria-label="Refresh METAR data">↻ …</button><span class="lsa-foot-ver">METAR / TAF · v1.59 · built by eligrt</span><button type="button" class="lsa-foot-reload" onclick="lsaReload()">טען מחדש</button></div>
 
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/12.14.0/firebase-app.js";
@@ -360,6 +389,17 @@ window._towerReady = true;
 document.dispatchEvent(new Event('towerReady'));
 </script>
 
+<script>
+/* LSA-ALIGN v1 JS START */
+async function lsaReload(){
+  try{
+    if('caches' in window){const k=await caches.keys();await Promise.all(k.map(x=>caches.delete(x)));}
+    if(navigator.serviceWorker){const r=await navigator.serviceWorker.getRegistrations();await Promise.all(r.map(x=>x.unregister()));}
+  }catch(e){}
+  const u=new URL(location.href);u.searchParams.set('r',Date.now().toString(36));location.replace(u.href);
+}
+/* LSA-ALIGN v1 JS END */
+</script>
 <script>
 const METAR_STATION_KEY='aircheck_metar_station';
 const METAR_CUSTOM_KEY='aircheck_metar_custom';
@@ -551,7 +591,7 @@ async function fetchMetar(force){
   const icao=getMetarIcao();
   if(!force&&_metarCache.icao===icao&&_metarCache.fetchedAt&&(Date.now()-_metarCache.fetchedAt)<600000){renderMetarCards();return;}
   document.getElementById('metarCardsWrap').innerHTML='<div class="metar-loading">FETCHING ...</div>';
-  document.getElementById('metarAgeFooter').textContent='—';
+  document.getElementById('metarAgeFooter').textContent='↻ …';
   try{
     const res=await fetch('https://aircheck-metar.eligrt.workers.dev/?icao='+icao);
     const data=await res.json();
@@ -634,6 +674,14 @@ function parseMetarRaw(raw,obsTimeStr,icao){
   return m;
 }
 
+function metarAgeShort(obsTimeStr){
+  if(!obsTimeStr)return'-';
+  const diffMin=Math.round((Date.now()-new Date(obsTimeStr).getTime())/60000);
+  if(isNaN(diffMin))return'-';
+  if(diffMin<1)return'NOW';
+  if(diffMin<60)return diffMin+' MIN';
+  return Math.round(diffMin/60)+' H';
+}
 function metarAgeStr(obsTimeStr){
   if(!obsTimeStr)return'—';
   try{
@@ -675,7 +723,7 @@ function renderMetarCards(){
   if(m){
     const noMetarNote=m.noMetar?`<div style="background:rgba(245,158,11,.1);border:1px solid rgba(245,158,11,.3);border-radius:4px;padding:7px 10px;margin-bottom:8px;font-size:11px;color:var(--amber);direction:rtl;font-family:var(--font-ui);">אין תחנת מדידה בהרצליה · QNH לפי LLBG</div>`:'';
     const ageStr=metarAgeStr(m.obsTime);
-    ageFooter.textContent=ageStr;
+    ageFooter.textContent='↻ '+metarAgeShort(m.obsTime);
     const raw=m.rawOb||'';
     const qnh=m.qnh?String(m.qnh):(()=>{const q=raw.match(/Q(\d{4})/);return q?q[1]:'—';})();
     const qnhHg=m.altimHg?m.altimHg.toFixed(2):'—';
@@ -844,6 +892,11 @@ function maybeShowImsDisclaimer(){
   }
 }
 document.addEventListener('DOMContentLoaded', maybeShowImsDisclaimer);
+
+(function utcTick(){
+  function tick(){const d=new Date();const t=String(d.getUTCHours()).padStart(2,'0')+':'+String(d.getUTCMinutes()).padStart(2,'0');document.querySelectorAll('.utc').forEach(e=>e.textContent=t);}
+  tick();setInterval(tick,5000);
+})();
 
 (function init(){
   const sel=localStorage.getItem(METAR_STATION_KEY)||'LLBG';
