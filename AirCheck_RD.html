@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <!-- ═══════════════════════════════════════
-     AirCheck · v2.20.009 · built by eligrt
+     AirCheck · v2.20.011 · built by eligrt
      ═══════════════════════════════════════ -->
 <html lang="he" dir="rtl">
 <head>
@@ -17,7 +17,7 @@
 <script>
 /* Single source of truth for app identity. Footers, share texts, exports and Firebase appVersion all read these. */
 const APP_NAME='AirCheck';
-const APP_VERSION='v2.20.009';
+const APP_VERSION='v2.20.011';
 const APP_STAMP=APP_NAME+' · '+APP_VERSION+' · built by eligrt';
 document.addEventListener('DOMContentLoaded',function(){document.querySelectorAll('.app-stamp').forEach(function(e){e.textContent=APP_STAMP;});});
 </script>
@@ -41,7 +41,8 @@ document.addEventListener('DOMContentLoaded',function(){document.querySelectorAl
 }
 *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent;user-select:none;-webkit-user-select:none;-webkit-touch-callout:none;touch-action:manipulation;}
 html,body{height:100%;height:var(--app-h,100%);background:#1a1a1c;font-family:var(--font-ui);color:var(--ink-body);overflow:hidden;}
-#app{height:100%;display:flex;flex-direction:column;max-width:430px;margin:0 auto;position:relative;background:var(--paper);background-image:repeating-linear-gradient(0deg,transparent 0,transparent 27px,var(--paper-line) 27px,var(--paper-line) 28px);overflow:hidden;}
+#app{height:100%;display:flex;flex-direction:column;width:100%;margin:0 auto;position:relative;background:var(--paper);background-image:repeating-linear-gradient(0deg,transparent 0,transparent 27px,var(--paper-line) 27px,var(--paper-line) 28px);overflow:hidden;}
+@media (min-width:600px){#app{max-width:430px;}}   /* phones: edge to edge. Only a desktop window gets the 430px column */
 .screen{display:none;flex-direction:column;flex:1;overflow:hidden;}
 .screen.active{display:flex;}
 
@@ -631,6 +632,10 @@ html,body{height:100%;height:var(--app-h,100%);background:#1a1a1c;font-family:va
 }
 *{overscroll-behavior:none;}                            /* no rubber-band, no scroll chaining */
 html,body{overscroll-behavior:none;}
+/* AirCheck screens: top bars sit below the status bar / notch (iPhone home-screen app) */
+.settings-header{padding-top:calc(10px + env(safe-area-inset-top,0px));}
+.editor-topbar{padding-top:calc(10px + env(safe-area-inset-top,0px));}
+.summary-strip{padding-top:calc(8px + env(safe-area-inset-top,0px));}
 .lsa-hdr{box-sizing:border-box;min-height:calc(var(--lsa-hdr-min) + env(safe-area-inset-top,0px));padding-top:calc(10px + env(safe-area-inset-top,0px));padding-bottom:10px;}
 .lsa-foot{box-sizing:border-box;flex:0 0 auto;display:grid;grid-template-columns:minmax(0,1fr) auto minmax(0,1fr);align-items:center;direction:ltr;
   height:calc(var(--lsa-foot-h) + var(--lsa-foot-pad));padding:0 12px var(--lsa-foot-pad);margin:0;
@@ -674,6 +679,12 @@ button.lsa-foot-slot{cursor:pointer;padding:8px 0;}
 
 
 
+.hdr-fam .hdr-actions{margin-inline:auto}
+.hdr-edit{box-shadow:0 3px 0 var(--stamp-red)!important}
+.hdr-edit .edit-sub{color:#f0a496;font-family:var(--font-mono);letter-spacing:.14em;font-weight:700}
+.hdr-actions .editor-dirty-center{position:static;transform:none}
+.hdr-actions .editor-dirty-badge{font-size:9px;padding:3px 6px;white-space:nowrap}
+.hdr-actions .strip-pill-admin{color:#f0a496}
 .lsa-foot{margin-top:auto}
 </style>
 </head>
@@ -716,7 +727,7 @@ button.lsa-foot-slot{cursor:pointer;padding:8px 0;}
   // page, iOS can restore the app with a stale, shorter viewport, leaving a
   // black strip at the bottom. Re-measure the real height on every return.
   (function(){
-    function fixAppH(){try{document.documentElement.style.setProperty('--app-h',window.innerHeight+'px');}catch(e){}}
+    function fixAppH(){try{var h=window.innerHeight;if(window.navigator.standalone===true)h=Math.max(h,screen.height);document.documentElement.style.setProperty('--app-h',h+'px');}catch(e){}}
     function refit(){fixAppH();setTimeout(fixAppH,250);setTimeout(fixAppH,800);}
     fixAppH();
     window.addEventListener('resize',fixAppH);
@@ -904,13 +915,7 @@ button.lsa-foot-slot{cursor:pointer;padding:8px 0;}
 
   <!-- ══ SUMMARY SCREEN ══ -->
   <div class="screen" id="screenSummary">
-    <div class="summary-strip" style="direction:ltr;">
-      <div class="summary-strip-col">
-        <span class="summary-strip-label">UTC</span>
-        <span class="summary-strip-val" id="summaryUtc">--:--</span>
-      </div>
-
-    </div>
+    <div class="flight-strip lsa-hdr hdr-fam"><div class="hdr-rail"><div class="hdr-glyph" aria-hidden="true"><img class="rd-icon" alt=""></div><div class="hdr-title"><h1>AirCheck+</h1><p>Summary</p></div></div><div class="hdr-actions"></div><div class="hdr-clock"><span class="hdr-clock-lbl">UTC</span><span class="hdr-utc" id="summaryUtc">--:--</span></div></div>
 
 
     <div id="summaryRankBar" class="rank-progress-bar" style="display:none;"><div class="rp-icon" id="summaryRankIcon">—</div><div class="rp-info"><div class="rp-line1" id="summaryRankLine1"></div><div class="rp-line2" id="summaryRankLine2"></div><div class="rp-bar"><div class="rp-bar-fill" id="summaryRankBarFill" style="width:0%;"></div></div></div></div>
@@ -957,11 +962,7 @@ button.lsa-foot-slot{cursor:pointer;padding:8px 0;}
 
   <!-- ══ SETTINGS SCREEN ══ -->
   <div class="screen" id="screenSettings">
-    <div class="settings-header">
-      <button class="settings-back" onclick="closeSettings()">‹</button>
-      <span class="settings-title">הגדרות</span>
-      <div style="width:22px"></div>
-    </div>
+    <div class="flight-strip lsa-hdr hdr-fam"><div class="hdr-rail"><div class="hdr-glyph" aria-hidden="true"><img class="rd-icon" alt=""></div><div class="hdr-title"><h1>AirCheck+</h1><p>הגדרות</p></div></div><div class="hdr-actions"><button class="strip-pill strip-pill-gold" onclick="closeSettings()" aria-label="חזרה">חזרה &rsaquo;</button></div><div class="hdr-clock"><span class="hdr-clock-lbl">UTC</span><span class="hdr-utc">--:--</span></div></div>
 
     <div class="settings-body">
 
@@ -1057,18 +1058,7 @@ button.lsa-foot-slot{cursor:pointer;padding:8px 0;}
     <div class="lsa-foot" dir="ltr"><span class="lsa-foot-slot"></span><span class="lsa-foot-ver app-stamp"></span><button type="button" class="lsa-foot-reload" onclick="reloadApp()">טען מחדש</button></div>
   </div>
   <div class="screen" id="screenEditor">
-    <div class="editor-topbar">
-      <div class="editor-topbar-start">
-        <div class="editor-mode-tag">
-          <span class="editor-mode-label">EDIT MODE</span>
-        </div>
-      </div>
-      <div class="editor-dirty-center" id="editorDirtyCenter" style="display:none;">
-        <div class="editor-blink"></div>
-        <span class="editor-dirty-badge" id="editorDirtyBadge">שינויים שלא נשמרו</span>
-      </div>
-      <button class="editor-save-btn" onclick="requestCloseEditor()">EXIT</button>
-    </div>
+    <div class="flight-strip lsa-hdr hdr-fam hdr-edit"><div class="hdr-rail"><div class="hdr-glyph" aria-hidden="true"><img class="rd-icon" alt=""></div><div class="hdr-title"><h1>AirCheck+</h1><p class="edit-sub">EDIT MODE</p></div></div><div class="hdr-actions"><div class="editor-dirty-center" id="editorDirtyCenter" style="display:none;"><div class="editor-blink"></div><span class="editor-dirty-badge" id="editorDirtyBadge">שינויים שלא נשמרו</span></div><button class="strip-pill strip-pill-admin" onclick="requestCloseEditor()">EXIT</button></div><div class="hdr-clock"><span class="hdr-clock-lbl">UTC</span><span class="hdr-utc">--:--</span></div></div>
     <!-- Profile tab strip -->
     <div class="profile-tab-strip" id="profileTabStrip" style="display:none;"></div>
     <!-- Active tab action bar -->
@@ -4326,6 +4316,6 @@ async function lsaReload(){
 /* LSA-ALIGN v1 JS END */
 </script>
 <script>(function(){function t(){var d=new Date(),v=('0'+d.getUTCHours()).slice(-2)+':'+('0'+d.getUTCMinutes()).slice(-2);document.querySelectorAll('.hdr-utc').forEach(function(e){e.textContent=v})}t();setInterval(t,1000)})();</script>
-<script>(function(){var l=document.querySelector('link[rel=icon]');var i=document.getElementById('rdIcon');if(l&&i)i.src=l.href})();</script>
+<script>(function(){var l=document.querySelector('link[rel=icon]');var i=document.querySelectorAll('.rd-icon');if(l)i.forEach(function(e){e.src=l.href});var r=document.getElementById('rdIcon');if(l&&r)r.src=l.href})();</script>
 </body>
 </html>
