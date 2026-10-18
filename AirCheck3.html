@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <!-- ═══════════════════════════════════════
-     AirCheck · v3.00.004 · built by eligrt
+     AirCheck · v3.00.020 · built by eligrt
      ═══════════════════════════════════════ -->
 <html lang="he" dir="rtl">
 <head>
@@ -35,7 +35,7 @@ if(force){['aircheck_rd_v1'].forEach(function(n){r.call(localStorage,P+n);});try
 <script>
 /* Single source of truth for app identity. Footers, share texts, exports and Firebase appVersion all read these. */
 const APP_NAME='AirCheck';
-const APP_VERSION='v3.00.004';
+const APP_VERSION='v3.00.020';
 const APP_STAMP=APP_NAME+' · '+APP_VERSION+' · built by eligrt';
 document.addEventListener('DOMContentLoaded',function(){document.querySelectorAll('.app-stamp').forEach(function(e){e.textContent=APP_STAMP;});});
 </script>
@@ -258,6 +258,8 @@ button.lsa-foot-slot{cursor:pointer;padding:8px 0;}
 
 .rw{touch-action:manipulation;user-select:none;-webkit-user-select:none;-webkit-tap-highlight-color:transparent}
 .rw:active{transform:translateY(2px)}
+.nosb{scrollbar-width:none!important}
+.nosb::-webkit-scrollbar{display:none!important}
 .lscroll{scrollbar-width:thin;scrollbar-color:#c8a04a #efe3c2;overscroll-behavior:none}
 .lscroll::-webkit-scrollbar{width:7px}
 .lscroll::-webkit-scrollbar-thumb{background:#c8a04a;border-radius:4px}
@@ -278,7 +280,7 @@ button.lsa-foot-slot{cursor:pointer;padding:8px 0;}
 @keyframes caretBlink{50%{border-color:transparent}}
 @keyframes subDrain{from{width:100%}to{width:0}}
 @keyframes subPop{0%{transform:scale(.4)}60%{transform:scale(1.25)}100%{transform:scale(1)}}
-@keyframes stampBump{0%{transform:scale(1.55) rotate(-9deg);opacity:0}55%{transform:scale(.97) rotate(-7deg);opacity:1}78%{transform:scale(1.02) rotate(-7deg)}100%{transform:scale(1) rotate(-7deg);opacity:1}}
+@keyframes stampBump{0%{transform:scale(1.8) rotate(-9deg);opacity:0}55%{transform:scale(1.16) rotate(-7deg);opacity:.85}78%{transform:scale(1.22) rotate(-7deg)}100%{transform:scale(1.2) rotate(-7deg);opacity:.8}}
 @keyframes cardThump{0%,45%{transform:translateY(0)}60%{transform:translateY(2px)}100%{transform:translateY(0)}}
 @keyframes planeIn{0%{opacity:0}100%{opacity:1}}
 @keyframes twinkle{0%,100%{opacity:.15;transform:scale(.5)}50%{opacity:1;transform:scale(1.3)}}
@@ -472,7 +474,7 @@ const CL=[
 {defId:"d027",phase:"הגעה למנחת ולמטוס",group:"הכנת קוקפיט",main:"מצלמות: מקם והפעל",sub:""},
 {defId:"d028",phase:"הגעה למנחת ולמטוס",group:"הכנת קוקפיט",main:"GPS - מקם והפעל",sub:""},
 {defId:"d029",phase:"הגעה למנחת ולמטוס",group:"הכנת קוקפיט",main:"אוזניות - בדוק סוללות",sub:""},
-{defId:"d030",phase:"הגעה למנחת ולמטוס",group:"הכנת קוקפיט",main:"תדרוך נוסע (אם נדרש)",sub:"",url:"https://eligrt.github.io/AirCheck/passenger-briefing.html",urlLabel:"AirCheck Passenger Briefing",subTitle:"תדרוך נוסע",subList:["חגורות בטיחות - איך סוגרים ופותחים", "יציאת חירום - דלת וחלון", "לא נוגעים בבקרות ובדוושות", "כיבוי אש וערכת עזרה ראשונה", "טלפון במצב טיסה, ללא עישון"]},
+{defId:"d030",phase:"הגעה למנחת ולמטוס",group:"הכנת קוקפיט",main:"תדרוך נוסע (אם נדרש)",sub:"",url:"",subTitle:"תדרוך נוסע",subList:["לא נוגעים בכלום ללא אישור טייס", "חגורות בטיחות לאורך כל הטיסה", "תרגול פתיחת חגורות", "תרגול פתיחת חופה", "מיקום מטף כיבוי אש", "קוקפיט שקט בהמראה ונחיתה", "משהו מוזר? אל תניח - דבר! (שקט הפיל מטוסים)", "כששומעים משהו בקשר - שותקים", "מרגישים לא טוב / לא נעים - מיד לומר", "מיקום פתחי אוורור", "תפעול שקית הקאה", "שאלות? חששות?"],subHeads:{"0": {"t": "בטיחות", "i": "⚠️", "tone": "red"}, "5": {"t": "תקשורת", "i": "📻", "tone": "amber"}, "8": {"t": "נוחות", "i": "😊", "tone": "green"}}},
 {defId:"d044",phase:"הגעה למנחת ולמטוס",group:"הכנת קוקפיט",main:"מכשיר קשר נייד טעון ובתיק",sub:""},
 {defId:"d031",phase:"הגעה למנחת ולמטוס",group:"כללי",main:"עדכון בקרה בהמראה (אם נדרש)",sub:""},
 {defId:"d032",phase:"הגעה למנחת ולמטוס",group:"כללי",main:"דאבל צ'ק מז\"א",sub:"METAR בשדה המראה ובשדה נחיתה",url:"https://eligrt.github.io/AirCheck/AirCheck_METAR.html",urlLabel:"AirCheck METAR / TAF"},
@@ -747,6 +749,8 @@ changed=true;
 });
 if(changed)saveProfiles();
 }
+const AC_LEGACY={d030:[{main:'תדרוך נוסע (אם נדרש)',sub:'',url:'https://eligrt.github.io/AirCheck/passenger-briefing.html',urlLabel:'AirCheck Passenger Briefing'}]};
+function acIsLegacy(it,def){const L=AC_LEGACY[def.defId];if(!L)return false;return L.some(l=>norm(it.main)===norm(l.main)&&norm(it.sub||'')===norm(l.sub)&&norm(it.url||'')===norm(l.url)&&norm(it.urlLabel||'')===norm(l.urlLabel));}
 function backfillDefIds(){
 let changed=false;
 const defByKey={};
@@ -807,6 +811,7 @@ if(!def){
 if(!it.touched){list.splice(i,1);changed=true;}
 continue; // touched orphan: keep as-is
 }
+if(it.touched&&acIsLegacy(it,def)){it.touched=false;}
 if(!it.touched){
 list[i]={...def,touched:false,_isNew:it._isNew};
 changed=true;
@@ -1073,6 +1078,7 @@ if(item._isNew)edIt._isNew=true;
 if(item.lean)edIt.lean=true;
 if(item.subList)edIt.subList=item.subList;
 if(item.subTitle)edIt.subTitle=item.subTitle;
+if(item.subHeads)edIt.subHeads=item.subHeads;
 p.gMap[item.group].items.push(edIt);
 });
 return phases;
@@ -1088,6 +1094,7 @@ if(it._isNew)clIt._isNew=true;
 if(it.lean)clIt.lean=true;
 if(it.subList)clIt.subList=it.subList;
 if(it.subTitle)clIt.subTitle=it.subTitle;
+if(it.subHeads)clIt.subHeads=it.subHeads;
 list.push(clIt);
 })));
 return list;
@@ -1243,6 +1250,7 @@ const txt=document.createElement('div');txt.className='ed-item-text';
 const main=document.createElement('div');main.className='ed-item-main';main.textContent=it.main;txt.appendChild(main);
 if(it.sub){const sub=document.createElement('div');sub.className='ed-item-sub';sub.textContent=it.sub;txt.appendChild(sub);}
 if(FEATURES.EXTERNAL_LINK&&it.url){const linkInd=document.createElement('div');linkInd.className='ed-item-link';linkInd.textContent='🔗 '+(it.urlLabel||it.url);txt.appendChild(linkInd);}
+if(it.subList&&it.subList.length){const sl=document.createElement('div');sl.className='ed-item-link';sl.textContent='תת-רשימה · '+it.subList.length+' נקודות';txt.appendChild(sl);}
 if(wontSync){const chip=document.createElement('div');chip.className='ed-item-chip';chip.textContent='פריט אישי - אינו מתעדכן אוטו׳';txt.appendChild(chip);}
 const newBadge=it._isNew?(()=>{const nb=document.createElement('span');nb.className='badge-new';nb.textContent='NEW';return nb;})():null;
 const editBtn=document.createElement('button');editBtn.className='ed-icon on-paper';editBtn.textContent='✎';
@@ -1273,6 +1281,7 @@ if(!resetActive)return;
 const def=CL_DEFAULT.find(d=>d.defId===it.defId);
 if(!def)return;
 it.main=def.main;it.sub=def.sub||'';it.url=def.url||'';it.urlLabel=def.urlLabel||'';
+if(def.subList){it.subList=def.subList;it.subTitle=def.subTitle;it.subHeads=def.subHeads;}else{delete it.subList;delete it.subTitle;delete it.subHeads;}
 it.touched=false;delete it._edTouched;
 markEdDirty();renderEditor();
 };
@@ -1596,6 +1605,7 @@ const key=`${norm(it.main)}|${norm(it.group)}|${norm(it.phase)}`;
 const def=defByKey[key];
 if(!def)return it; // genuinely custom — no match
 const identical=norm(it.sub||'')===norm(def.sub||'')&&norm(it.url||'')===norm(def.url||'')&&norm(it.urlLabel||'')===norm(def.urlLabel||'');
+if(!identical&&acIsLegacy(it,def))return {...def,touched:false};
 return {...it,defId:def.defId,touched:!identical};
 })
 }));
@@ -1933,19 +1943,13 @@ return inst;
 <div style="flex:none;overflow:hidden;max-height:{{pbH}}px;opacity:{{pbO}};transition:max-height .6s cubic-bezier(.22,.61,.36,1),opacity .45s ease;">
 <div style="flex:none;padding:0 14px 8px;display:flex;gap:8px;">
 <sc-for list="{{phases}}" as="ph">
-<button type="button" onClick="{{ph.go}}" style="flex:1;min-width:0;min-height:48px;padding:0;border:0;background:transparent;cursor:pointer;display:flex;flex-direction:column;gap:4px;text-align:start;">
+<button type="button" onPointerDown="{{ph.down}}" onPointerUp="{{ph.up}}" onPointerLeave="{{ph.up}}" onPointerCancel="{{ph.up}}" onContextMenu="{{ph.up}}" style="flex:1;min-width:0;min-height:48px;padding:0;border:0;background:transparent;cursor:default;display:flex;flex-direction:column;gap:4px;text-align:start;touch-action:manipulation;-webkit-touch-callout:none;-webkit-user-select:none;user-select:none;">
 <span style="font-size:12.5px;line-height:1.35;font-weight:{{ph.w}};color:{{ph.fg}};text-decoration:{{ph.deco}};text-decoration-color:#c8a04a;text-decoration-thickness:3px;text-underline-offset:4px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">{{ph.name}}</span>
-<span style="position:relative;display:block;height:24px;border-radius:5px;background:#2a2218;overflow:hidden;">
+<span style="position:relative;display:block;height:24px;border-radius:5px;background:#2a2218;">
 <span style="position:absolute;top:50%;left:4px;right:4px;border-top:2px dashed rgba(244,236,220,.4);" aria-hidden="true"></span>
-<span style="position:absolute;top:0;left:0;right:0;bottom:0;display:flex;">
+<span style="position:absolute;top:0;left:0;right:0;bottom:0;display:flex;border-radius:5px;overflow:hidden;">
 <sc-for list="{{ph.pips}}" as="pp">
-<span style="flex:1;display:flex;align-items:center;justify-content:center;background:{{pp.bg}};border-left:1px solid rgba(26,19,8,.45);">
-<sc-if value="{{pp.isCur}}">
-<svg width="22" height="22" viewBox="0 0 34 34" style="transform:rotate(-90deg);display:block;flex:none;" aria-hidden="true"><path d="M17 2 C18.7 2 19.5 4.2 19.5 7 L19.5 13.2 L31 19 L31 22.2 L19.5 19.8 L19.5 26 L23.4 28.4 L23.4 31 L17 29.6 L10.6 31 L10.6 28.4 L14.5 26 L14.5 19.8 L3 22.2 L3 19 L14.5 13.2 L14.5 7 C14.5 4.2 15.3 2 17 2 Z" fill="#ffffff" stroke="#1a1308" stroke-width="1.5" stroke-linejoin="round"></path><circle cx="4.2" cy="20.6" r="4.6" fill="#ef4444" opacity=".5"></circle><circle cx="29.8" cy="20.6" r="4.6" fill="#39ff8a" opacity=".5"></circle><circle cx="4.2" cy="20.6" r="2.9" fill="#ef4444" stroke="#1a1308" stroke-width=".7"></circle><circle cx="29.8" cy="20.6" r="2.9" fill="#39ff8a" stroke="#1a1308" stroke-width=".7"></circle></svg>
-</sc-if>
-</span>
-</sc-for>
-</span>
+<span style="flex:1;display:flex;align-items:center;justify-content:center;background:{{pp.bg}};border-left:1px solid rgba(26,19,8,.45);"></span></sc-for></span><span style="position:absolute;top:0;left:0;right:0;bottom:0;display:flex;pointer-events:none;"><sc-for list="{{ph.pips}}" as="pp"><span style="flex:1;position:relative;min-width:0;"><sc-if value="{{pp.isCur}}"><svg viewBox="0 0 34 34" style="position:absolute;left:50%;top:1px;width:22px;height:22px;transform:translateX(-50%) rotate(-90deg);z-index:2;filter:drop-shadow(0 1px 1px rgba(26,19,8,.6));" aria-hidden="true"><path d="M17 2 C18.7 2 19.5 4.2 19.5 7 L19.5 13.2 L31 19 L31 22.2 L19.5 19.8 L19.5 26 L23.4 28.4 L23.4 31 L17 29.6 L10.6 31 L10.6 28.4 L14.5 26 L14.5 19.8 L3 22.2 L3 19 L14.5 13.2 L14.5 7 C14.5 4.2 15.3 2 17 2 Z" fill="#ffffff" stroke="#1a1308" stroke-width="1.5" stroke-linejoin="round"></path><circle cx="4.2" cy="20.6" r="4.6" fill="#ef4444" opacity=".5"></circle><circle cx="29.8" cy="20.6" r="4.6" fill="#39ff8a" opacity=".5"></circle><circle cx="4.2" cy="20.6" r="2.9" fill="#ef4444" stroke="#1a1308" stroke-width=".7"></circle><circle cx="29.8" cy="20.6" r="2.9" fill="#39ff8a" stroke="#1a1308" stroke-width=".7"></circle></svg></sc-if></span></sc-for></span></span>
 </span>
 <span dir="ltr" style="font-family:'JetBrains Mono',monospace;font-size:11px;color:#5a4a3a;text-align:end;">{{ph.count}}</span>
 </button>
@@ -1958,11 +1962,11 @@ return inst;
 <sc-for list="{{railPhases}}" as="rp">
 <div style="flex-grow:{{rp.grow}};flex-shrink:1;flex-basis:0;min-height:0;width:20px;display:flex;flex-direction:column;gap:2px;">
 <sc-for list="{{rp.segs}}" as="sg">
-<button type="button" onClick="{{sg.go}}" aria-label="{{sg.label}}" style="position:relative;flex:1;min-height:3px;width:20px;padding:0;border:0;background:transparent;cursor:pointer;"><span style="position:absolute;left:7px;right:7px;top:0;bottom:0;border-radius:3px;background:{{sg.bg}};"></span>
+<div aria-hidden="true" style="position:relative;flex:1;min-height:3px;width:20px;"><span style="position:absolute;left:7px;right:7px;top:0;bottom:0;border-radius:3px;background:{{sg.bg}};"></span>
 <sc-if value="{{sg.isCur}}">
 <svg width="22" height="22" viewBox="0 0 34 34" style="position:absolute;left:50%;top:50%;margin:-11px 0 0 -11px;transform:rotate(180deg);z-index:2;filter:drop-shadow(0 1px 1px rgba(26,19,8,.5));" aria-hidden="true"><path d="M17 2 C18.7 2 19.5 4.2 19.5 7 L19.5 13.2 L31 19 L31 22.2 L19.5 19.8 L19.5 26 L23.4 28.4 L23.4 31 L17 29.6 L10.6 31 L10.6 28.4 L14.5 26 L14.5 19.8 L3 22.2 L3 19 L14.5 13.2 L14.5 7 C14.5 4.2 15.3 2 17 2 Z" fill="#ffffff" stroke="#1a1308" stroke-width="1.5" stroke-linejoin="round"></path><circle cx="4.2" cy="20.6" r="4.6" fill="#ef4444" opacity=".5"></circle><circle cx="29.8" cy="20.6" r="4.6" fill="#39ff8a" opacity=".5"></circle><circle cx="4.2" cy="20.6" r="2.9" fill="#ef4444" stroke="#1a1308" stroke-width=".7"></circle><circle cx="29.8" cy="20.6" r="2.9" fill="#39ff8a" stroke="#1a1308" stroke-width=".7"></circle></svg>
 </sc-if>
-</button>
+</div>
 </sc-for>
 </div>
 </sc-for>
@@ -1975,23 +1979,23 @@ return inst;
 </div>
 <div style="position:relative;flex:none;margin-bottom:14px;">
 <sc-if value="{{showUnder}}">
-<div style="position:absolute;z-index:1;top:0;left:0;right:0;box-sizing:border-box;min-height:204px;padding:32px 18px 16px;background:#fbf6e8;border:2px solid #c8a04a;border-radius:14px;box-shadow:0 5px 0 -1px #e3d4ad,0 10px 0 -3px #c8a04a,0 14px 20px rgba(28,61,110,.14);">
+<div style="position:absolute;z-index:1;top:0;left:0;right:0;box-sizing:border-box;min-height:212px;padding:26px 18px 13px;display:flex;flex-direction:column;background:#fbf6e8;border:2px solid #c8a04a;border-radius:14px;box-shadow:0 5px 0 -1px #e3d4ad,0 10px 0 -3px #c8a04a,0 14px 20px rgba(28,61,110,.14);"><sc-if value="{{underDone}}"><div style="position:absolute;top:-2px;left:-2px;right:-2px;bottom:-2px;z-index:2;box-sizing:border-box;padding:30px 18px 18px;background:#eaf2de;border:2px solid #1f6f3f;border-radius:14px;box-shadow:inset 0 0 0 5px #eaf2de,inset 0 0 0 7px rgba(31,111,63,.4),0 5px 0 -1px #c9dcb8,0 10px 0 -3px #1f6f3f,0 14px 20px rgba(28,61,110,.14);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px;text-align:center;" aria-hidden="true"><div style="width:100%;display:flex;align-items:center;gap:8px;"><span style="flex:1;border-top:3px dashed rgba(31,111,63,.5);"></span><svg width="26" height="26" viewBox="0 0 34 34" style="transform:rotate(-90deg);flex:none;"><path d="M17 2 C18.7 2 19.5 4.2 19.5 7 L19.5 13.2 L31 19 L31 22.2 L19.5 19.8 L19.5 26 L23.4 28.4 L23.4 31 L17 29.6 L10.6 31 L10.6 28.4 L14.5 26 L14.5 19.8 L3 22.2 L3 19 L14.5 13.2 L14.5 7 C14.5 4.2 15.3 2 17 2 Z" fill="#ffffff" stroke="#1a1308" stroke-width="1.5" stroke-linejoin="round"></path></svg><span style="flex:1;border-top:3px dashed rgba(31,111,63,.5);"></span></div><div style="padding:4px 10px;color:#1f6f3f;"><div dir="ltr" style="font-family:'JetBrains Mono',monospace;font-size:14px;font-weight:700;letter-spacing:.14em;">SECTION COMPLETED</div><div style="font-size:30px;line-height:1.2;font-weight:700;">השלב הושלם</div></div><div style="font-size:16px;font-weight:600;color:#1c3d6e;">{{underDonePhase}}</div><div style="font-size:14px;line-height:1.4;color:#5a4a3a;">{{underDoneNote}}</div></div></sc-if>
 <div style="display:flex;align-items:center;justify-content:space-between;">
 <span dir="ltr" style="font-family:'JetBrains Mono',monospace;font-size:12px;font-weight:700;color:#5a4a3a;letter-spacing:.06em;">{{underNum}}</span>
 <span style="display:flex;gap:6px;align-items:center;"><sc-if value="{{underIsSub}}"><span style="font-size:12px;font-weight:700;background:#1c3d6e;color:#f4ecdc;padding:3px 9px;border-radius:8px;">תת-רשימה</span></sc-if><sc-if value="{{underGrpOn}}"><span style="font-size:12px;font-weight:600;background:#f1e2bc;color:#6f531d;padding:3px 9px;border-radius:8px;">{{underGrp}} בקבוצה</span></sc-if></span>
 </div>
-<div style="margin:14px 0 6px;font-size:26px;line-height:1.3;font-weight:700;color:#1c3d6e;">{{underMain}}</div>
+<div style="margin:10px 0 4px;font-size:26px;line-height:1.3;font-weight:700;color:#1c3d6e;">{{underMain}}</div>
 <div style="font-size:16px;line-height:1.4;color:#5a4a3a;">{{underSub}}</div>
 <sc-if value="{{underIsSub}}">
 <div style="margin:12px 0 0;border:1.5px solid #d6c48e;background:#f1e6c6;border-radius:12px;box-shadow:inset 0 3px 6px rgba(120,90,30,.16);min-height:52px;box-sizing:border-box;padding:4px 16px;display:flex;align-items:center;gap:12px;">
 <span style="flex:none;width:30px;height:30px;border-radius:50%;box-sizing:border-box;border:2px solid #8a7a5a;"></span>
-<span style="display:flex;flex-direction:column;"><span style="font-size:16px;font-weight:700;line-height:1.2;color:#1c3d6e;">{{flapTitle}}</span><span style="font-size:13px;line-height:1.3;font-weight:600;color:#5a4a3a;">{{underSubLine}}</span></span>
+<span style="display:flex;flex-direction:column;"><span style="font-size:16px;font-weight:700;line-height:1.2;color:#1c3d6e;">{{underFlapTitle}}</span><span style="font-size:13px;line-height:1.3;font-weight:600;color:#5a4a3a;">{{underSubLine}}</span></span>
 <span style="flex:1;"></span>
 <span style="flex:none;width:32px;height:32px;border-radius:50%;background:#1c3d6e;display:flex;align-items:center;justify-content:center;"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#f4ecdc" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 9l6 6l6 -6"></path></svg></span>
 </div>
 </sc-if>
 <sc-if value="{{underIsLink}}">
-<div style="position:relative;margin-top:22px;">
+<div style="position:relative;margin-top:auto;border-top:10px solid transparent;">
 <sc-if value="{{underIsOwn}}"><span dir="ltr" style="position:absolute;top:-9px;left:12px;height:18px;box-sizing:border-box;padding:0 8px;border-radius:9px;background:#1c3d6e;color:#f4ecdc;font-family:'JetBrains Mono',monospace;font-size:9.5px;font-weight:700;letter-spacing:.14em;line-height:18px;">AIRCHECK</span></sc-if>
 <div style="min-height:48px;box-sizing:border-box;padding:4px 14px;border:1.5px solid #d6c48e;background:#f1e6c6;border-radius:12px;display:flex;align-items:center;gap:12px;">
 <span style="font-size:15px;font-weight:700;color:#1c3d6e;">{{underLinkLabel}}</span>
@@ -2004,20 +2008,20 @@ return inst;
 </div>
 </sc-if>
 <svg viewBox="0 0 360 36" preserveAspectRatio="none" width="100%" height="36" style="position:absolute;top:-17px;left:0;z-index:5;overflow:visible;pointer-events:none;direction:ltr;" aria-hidden="true">
-<g><ellipse cx="22.0" cy="31" rx="5.5" ry="2.6" fill="#1c3d6e"></ellipse><path d="M17.0 31 L17.0 12 Q17.0 4 22.0 4 Q27.0 4 27.0 12 L27.0 27" fill="none" stroke="#c8a04a" stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round"></path><path d="M17.0 12 Q17.0 4 22.0 4" fill="none" stroke="#f1e2bc" stroke-width="1.2" stroke-linecap="round" opacity=".8"></path><ellipse cx="67.1" cy="31" rx="5.5" ry="2.6" fill="#1c3d6e"></ellipse><path d="M62.1 31 L62.1 12 Q62.1 4 67.1 4 Q72.1 4 72.1 12 L72.1 27" fill="none" stroke="#c8a04a" stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round"></path><path d="M62.1 12 Q62.1 4 67.1 4" fill="none" stroke="#f1e2bc" stroke-width="1.2" stroke-linecap="round" opacity=".8"></path><ellipse cx="112.3" cy="31" rx="5.5" ry="2.6" fill="#1c3d6e"></ellipse><path d="M107.3 31 L107.3 12 Q107.3 4 112.3 4 Q117.3 4 117.3 12 L117.3 27" fill="none" stroke="#c8a04a" stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round"></path><path d="M107.3 12 Q107.3 4 112.3 4" fill="none" stroke="#f1e2bc" stroke-width="1.2" stroke-linecap="round" opacity=".8"></path><ellipse cx="157.4" cy="31" rx="5.5" ry="2.6" fill="#1c3d6e"></ellipse><path d="M152.4 31 L152.4 12 Q152.4 4 157.4 4 Q162.4 4 162.4 12 L162.4 27" fill="none" stroke="#c8a04a" stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round"></path><path d="M152.4 12 Q152.4 4 157.4 4" fill="none" stroke="#f1e2bc" stroke-width="1.2" stroke-linecap="round" opacity=".8"></path><ellipse cx="202.6" cy="31" rx="5.5" ry="2.6" fill="#1c3d6e"></ellipse><path d="M197.6 31 L197.6 12 Q197.6 4 202.6 4 Q207.6 4 207.6 12 L207.6 27" fill="none" stroke="#c8a04a" stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round"></path><path d="M197.6 12 Q197.6 4 202.6 4" fill="none" stroke="#f1e2bc" stroke-width="1.2" stroke-linecap="round" opacity=".8"></path><ellipse cx="247.7" cy="31" rx="5.5" ry="2.6" fill="#1c3d6e"></ellipse><path d="M242.7 31 L242.7 12 Q242.7 4 247.7 4 Q252.7 4 252.7 12 L252.7 27" fill="none" stroke="#c8a04a" stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round"></path><path d="M242.7 12 Q242.7 4 247.7 4" fill="none" stroke="#f1e2bc" stroke-width="1.2" stroke-linecap="round" opacity=".8"></path><ellipse cx="292.8" cy="31" rx="5.5" ry="2.6" fill="#1c3d6e"></ellipse><path d="M287.8 31 L287.8 12 Q287.8 4 292.8 4 Q297.8 4 297.8 12 L297.8 27" fill="none" stroke="#c8a04a" stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round"></path><path d="M287.8 12 Q287.8 4 292.8 4" fill="none" stroke="#f1e2bc" stroke-width="1.2" stroke-linecap="round" opacity=".8"></path><ellipse cx="338.0" cy="31" rx="5.5" ry="2.6" fill="#1c3d6e"></ellipse><path d="M333.0 31 L333.0 12 Q333.0 4 338.0 4 Q343.0 4 343.0 12 L343.0 27" fill="none" stroke="#c8a04a" stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round"></path><path d="M333.0 12 Q333.0 4 338.0 4" fill="none" stroke="#f1e2bc" stroke-width="1.2" stroke-linecap="round" opacity=".8"></path></g>
+<g><ellipse cx="17.0" cy="30" rx="6.2" ry="2.8" fill="#1c3d6e"></ellipse><path d="M17.0 30 L17.0 11 C17.0 1.5 31.0 1.5 31.0 11 L31.0 17.4" fill="none" stroke="#c8a04a" stroke-width="3.4" stroke-linecap="butt" stroke-linejoin="round"></path><circle cx="17.0" cy="30" r="1.7" fill="#c8a04a"></circle><path d="M17.0 11 C17.0 4.5 20.0 3.6 23.0 3.6" fill="none" stroke="#f1e2bc" stroke-width="1.2" stroke-linecap="round" opacity=".8"></path><ellipse cx="62.1" cy="30" rx="6.2" ry="2.8" fill="#1c3d6e"></ellipse><path d="M62.1 30 L62.1 11 C62.1 1.5 76.1 1.5 76.1 11 L76.1 17.4" fill="none" stroke="#c8a04a" stroke-width="3.4" stroke-linecap="butt" stroke-linejoin="round"></path><circle cx="62.1" cy="30" r="1.7" fill="#c8a04a"></circle><path d="M62.1 11 C62.1 4.5 65.1 3.6 68.1 3.6" fill="none" stroke="#f1e2bc" stroke-width="1.2" stroke-linecap="round" opacity=".8"></path><ellipse cx="107.3" cy="30" rx="6.2" ry="2.8" fill="#1c3d6e"></ellipse><path d="M107.3 30 L107.3 11 C107.3 1.5 121.3 1.5 121.3 11 L121.3 17.4" fill="none" stroke="#c8a04a" stroke-width="3.4" stroke-linecap="butt" stroke-linejoin="round"></path><circle cx="107.3" cy="30" r="1.7" fill="#c8a04a"></circle><path d="M107.3 11 C107.3 4.5 110.3 3.6 113.3 3.6" fill="none" stroke="#f1e2bc" stroke-width="1.2" stroke-linecap="round" opacity=".8"></path><ellipse cx="152.4" cy="30" rx="6.2" ry="2.8" fill="#1c3d6e"></ellipse><path d="M152.4 30 L152.4 11 C152.4 1.5 166.4 1.5 166.4 11 L166.4 17.4" fill="none" stroke="#c8a04a" stroke-width="3.4" stroke-linecap="butt" stroke-linejoin="round"></path><circle cx="152.4" cy="30" r="1.7" fill="#c8a04a"></circle><path d="M152.4 11 C152.4 4.5 155.4 3.6 158.4 3.6" fill="none" stroke="#f1e2bc" stroke-width="1.2" stroke-linecap="round" opacity=".8"></path><ellipse cx="197.6" cy="30" rx="6.2" ry="2.8" fill="#1c3d6e"></ellipse><path d="M197.6 30 L197.6 11 C197.6 1.5 211.6 1.5 211.6 11 L211.6 17.4" fill="none" stroke="#c8a04a" stroke-width="3.4" stroke-linecap="butt" stroke-linejoin="round"></path><circle cx="197.6" cy="30" r="1.7" fill="#c8a04a"></circle><path d="M197.6 11 C197.6 4.5 200.6 3.6 203.6 3.6" fill="none" stroke="#f1e2bc" stroke-width="1.2" stroke-linecap="round" opacity=".8"></path><ellipse cx="242.7" cy="30" rx="6.2" ry="2.8" fill="#1c3d6e"></ellipse><path d="M242.7 30 L242.7 11 C242.7 1.5 256.7 1.5 256.7 11 L256.7 17.4" fill="none" stroke="#c8a04a" stroke-width="3.4" stroke-linecap="butt" stroke-linejoin="round"></path><circle cx="242.7" cy="30" r="1.7" fill="#c8a04a"></circle><path d="M242.7 11 C242.7 4.5 245.7 3.6 248.7 3.6" fill="none" stroke="#f1e2bc" stroke-width="1.2" stroke-linecap="round" opacity=".8"></path><ellipse cx="287.8" cy="30" rx="6.2" ry="2.8" fill="#1c3d6e"></ellipse><path d="M287.8 30 L287.8 11 C287.8 1.5 301.8 1.5 301.8 11 L301.8 17.4" fill="none" stroke="#c8a04a" stroke-width="3.4" stroke-linecap="butt" stroke-linejoin="round"></path><circle cx="287.8" cy="30" r="1.7" fill="#c8a04a"></circle><path d="M287.8 11 C287.8 4.5 290.8 3.6 293.8 3.6" fill="none" stroke="#f1e2bc" stroke-width="1.2" stroke-linecap="round" opacity=".8"></path><ellipse cx="333.0" cy="30" rx="6.2" ry="2.8" fill="#1c3d6e"></ellipse><path d="M333.0 30 L333.0 11 C333.0 1.5 347.0 1.5 347.0 11 L347.0 17.4" fill="none" stroke="#c8a04a" stroke-width="3.4" stroke-linecap="butt" stroke-linejoin="round"></path><circle cx="333.0" cy="30" r="1.7" fill="#c8a04a"></circle><path d="M333.0 11 C333.0 4.5 336.0 3.6 339.0 3.6" fill="none" stroke="#f1e2bc" stroke-width="1.2" stroke-linecap="round" opacity=".8"></path></g>
 </svg>
 <sc-if value="{{showItemCard}}">
-<div style="position:relative;z-index:2;transform-origin:top center;transform-style:preserve-3d;animation:{{cardAnim}};"><div style="position:absolute;top:0;left:0;right:0;bottom:0;border-radius:14px;border:2px solid #c8a04a;background:repeating-linear-gradient(#ebdfba,#ebdfba 27px,#ddcc98 28px);transform:rotateX(180deg);backface-visibility:hidden;-webkit-backface-visibility:hidden;animation:{{backAnim}};" aria-hidden="true"></div><div style="position:relative;box-sizing:border-box;min-height:204px;padding:32px 18px 16px;background:#fbf6e8;border:2px solid #c8a04a;border-radius:14px;box-shadow:0 5px 0 -1px #e3d4ad,0 10px 0 -3px #c8a04a,0 14px 20px rgba(28,61,110,.14);animation:{{frontAnim}};backface-visibility:hidden;-webkit-backface-visibility:hidden;">
+<div style="position:relative;z-index:2;transform-origin:top center;transform-style:preserve-3d;animation:{{cardAnim}};"><div style="position:absolute;top:0;left:0;right:0;bottom:0;border-radius:14px;border:2px solid #c8a04a;background:repeating-linear-gradient(#ebdfba,#ebdfba 27px,#ddcc98 28px);transform:rotateX(180deg);backface-visibility:hidden;-webkit-backface-visibility:hidden;animation:{{backAnim}};" aria-hidden="true"></div><div style="position:relative;box-sizing:border-box;min-height:212px;padding:26px 18px 13px;display:flex;flex-direction:column;background:#fbf6e8;border:2px solid #c8a04a;border-radius:14px;box-shadow:0 5px 0 -1px #e3d4ad,0 10px 0 -3px #c8a04a,0 14px 20px rgba(28,61,110,.14);animation:{{frontAnim}};backface-visibility:hidden;-webkit-backface-visibility:hidden;">
 <div style="display:flex;align-items:center;justify-content:space-between;">
 <span dir="ltr" style="font-family:'JetBrains Mono',monospace;font-size:12px;font-weight:700;color:#5a4a3a;letter-spacing:.06em;">ITEM {{itemNum}} / {{itemTotal}}</span>
 <span style="display:flex;gap:6px;align-items:center;"><sc-if value="{{item.isCurtainLink}}"><span style="font-size:12px;font-weight:700;background:#1c3d6e;color:#f4ecdc;padding:3px 9px;border-radius:8px;">תת-רשימה</span></sc-if><span style="font-size:12px;font-weight:600;background:#f1e2bc;color:#6f531d;padding:3px 9px;border-radius:8px;">{{groupPos}} בקבוצה</span></span>
 </div>
-<div style="margin:14px 0 6px;font-size:26px;line-height:1.3;font-weight:700;color:#1c3d6e;">{{item.main}}</div>
+<div style="margin:10px 0 4px;font-size:26px;line-height:1.3;font-weight:700;color:#1c3d6e;">{{item.main}}</div>
 <sc-if value="{{item.hasSub}}">
 <div style="font-size:16px;line-height:1.4;color:#5a4a3a;">{{item.sub}}</div>
 </sc-if>
 <sc-if value="{{item.hasLink}}">
-<div style="position:relative;margin-top:22px;">
+<div style="position:relative;margin-top:auto;border-top:10px solid transparent;">
 <sc-if value="{{item.isOwnLink}}"><span dir="ltr" style="position:absolute;z-index:1;top:-9px;left:12px;height:18px;box-sizing:border-box;padding:0 8px;border-radius:9px;background:#1c3d6e;color:#f4ecdc;font-family:'JetBrains Mono',monospace;font-size:9.5px;font-weight:700;letter-spacing:.14em;line-height:18px;pointer-events:none;">AIRCHECK</span></sc-if>
 <button type="button" onClick="{{item.open}}" style="width:100%;min-height:48px;box-sizing:border-box;padding:4px 14px;border:1.5px solid #d6c48e;background:#f1e6c6;border-radius:12px;display:flex;align-items:center;gap:12px;text-align:start;cursor:pointer;">
 <span style="font-size:15px;font-weight:700;line-height:1.2;color:#1c3d6e;">{{item.linkLabel}}</span>
@@ -2047,7 +2051,7 @@ return inst;
 <div style="position:relative;height:172px;">
 <div id="curtainScroll" class="lscroll" onScroll="{{onSubScroll}}" style="position:absolute;top:0;left:0;right:0;bottom:0;overflow-y:auto;padding:6px 18px 0;">
 <sc-for list="{{points}}" as="pt">
-<button type="button" id="pt-{{pt.j}}" onClick="{{pt.toggle}}" style="position:relative;width:100%;padding:0;border:0;border-top:1px solid {{subRowLine}};background:transparent;text-align:start;cursor:pointer;display:flex;align-items:center;gap:10px;min-height:40px;box-sizing:border-box;">
+<sc-if value="{{pt.hasHead}}"><div style="margin:10px 0 2px;display:flex;align-items:center;gap:8px;padding:5px 10px;border-radius:8px;background:{{pt.headBg}};color:#fbf6e8;"><span style="font-size:15px;line-height:1;" aria-hidden="true">{{pt.headIcon}}</span><span style="flex:1;font-size:14px;font-weight:700;">{{pt.head}}</span></div></sc-if><button type="button" id="pt-{{pt.j}}" onClick="{{pt.toggle}}" style="position:relative;width:100%;padding:0;border:0;border-top:1px solid {{subRowLine}};background:{{pt.rowBg}};margin:0 -8px;width:calc(100% + 16px) !important;padding:0 8px !important;text-align:start;cursor:pointer;display:flex;align-items:center;gap:10px;min-height:40px;box-sizing:border-box;">
 <span style="flex:none;width:22px;height:22px;border-radius:50%;box-sizing:border-box;display:flex;align-items:center;justify-content:center;background:{{pt.markBg}};border:{{pt.markBorder}};">
 <sc-if value="{{pt.isDone}}"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="{{pt.checkStroke}}" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12l5 5l10 -10"></path></svg></sc-if>
 </span>
@@ -2067,8 +2071,8 @@ return inst;
 </div>
 </sc-if>
 <sc-if value="{{showStamp}}">
-<div style="position:absolute;left:14px;bottom:{{stampBot}};border:3px solid #1f6f3f;border-radius:6px;padding:3px 10px;color:#1f6f3f;background:rgba(251,246,232,.9);transform:rotate(-7deg);animation:stampBump .6s cubic-bezier(.2,.7,.3,1) both;text-align:center;">
-<div dir="ltr" style="font-family:'JetBrains Mono',monospace;font-size:14px;font-weight:700;letter-spacing:.12em;">CHECKED</div>
+<div style="position:absolute;left:54px;bottom:{{stampBot}};z-index:3;pointer-events:none;border:3px solid #1f6f3f;border-radius:6px;padding:2px 9px;color:#1f6f3f;background:rgba(251,246,232,.85);transform:rotate(-7deg) scale(1.2);animation:stampBump .6s cubic-bezier(.2,.7,.3,1) both;text-align:center;">
+<div dir="ltr" style="font-family:'JetBrains Mono',monospace;font-size:13px;font-weight:700;letter-spacing:.12em;">CHECKED</div>
 <div dir="ltr" style="font-family:'JetBrains Mono',monospace;font-size:11px;font-weight:700;">{{stampTime}} UTC</div>
 </div>
 </sc-if>
@@ -2100,7 +2104,7 @@ return inst;
 </div>
 </sc-if>
 <sc-if value="{{showDoneCard}}">
-<div style="position:relative;z-index:2;transform-origin:top center;transform-style:preserve-3d;animation:{{cardAnim}};"><div style="position:absolute;top:0;left:0;right:0;bottom:0;border-radius:14px;border:2px solid #c8a04a;background:repeating-linear-gradient(#ebdfba,#ebdfba 27px,#ddcc98 28px);transform:rotateX(180deg);backface-visibility:hidden;-webkit-backface-visibility:hidden;" aria-hidden="true"></div><div style="position:relative;box-sizing:border-box;min-height:204px;padding:30px 18px 18px;background:#eaf2de;border:2px solid #1f6f3f;border-radius:14px;box-shadow:inset 0 0 0 5px #eaf2de,inset 0 0 0 7px rgba(31,111,63,.4),0 5px 0 -1px #c9dcb8,0 10px 0 -3px #1f6f3f,0 14px 20px rgba(28,61,110,.14);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px;text-align:center;backface-visibility:hidden;-webkit-backface-visibility:hidden;">
+<div style="position:relative;z-index:2;transform-origin:top center;transform-style:preserve-3d;animation:{{cardAnim}};"><div style="position:absolute;top:0;left:0;right:0;bottom:0;border-radius:14px;border:2px solid #c8a04a;background:repeating-linear-gradient(#ebdfba,#ebdfba 27px,#ddcc98 28px);transform:rotateX(180deg);backface-visibility:hidden;-webkit-backface-visibility:hidden;animation:{{backAnim}};" aria-hidden="true"></div><div style="position:relative;box-sizing:border-box;min-height:212px;padding:30px 18px 18px;background:#eaf2de;animation:{{frontAnim}};border:2px solid #1f6f3f;border-radius:14px;box-shadow:inset 0 0 0 5px #eaf2de,inset 0 0 0 7px rgba(31,111,63,.4),0 5px 0 -1px #c9dcb8,0 10px 0 -3px #1f6f3f,0 14px 20px rgba(28,61,110,.14);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px;text-align:center;backface-visibility:hidden;-webkit-backface-visibility:hidden;">
 <div style="width:100%;display:flex;align-items:center;gap:8px;"><span style="flex:1;border-top:3px dashed rgba(31,111,63,.5);"></span><svg width="26" height="26" viewBox="0 0 34 34" style="transform:rotate(-90deg);flex:none;" aria-hidden="true"><path d="M17 2 C18.7 2 19.5 4.2 19.5 7 L19.5 13.2 L31 19 L31 22.2 L19.5 19.8 L19.5 26 L23.4 28.4 L23.4 31 L17 29.6 L10.6 31 L10.6 28.4 L14.5 26 L14.5 19.8 L3 22.2 L3 19 L14.5 13.2 L14.5 7 C14.5 4.2 15.3 2 17 2 Z" fill="#ffffff" stroke="#1a1308" stroke-width="1.5" stroke-linejoin="round"></path></svg><span style="flex:1;border-top:3px dashed rgba(31,111,63,.5);"></span></div>
 <div style="padding:4px 10px;color:#1f6f3f;animation:drapeIn .35s ease-out both;">
 <div dir="ltr" style="font-family:'JetBrains Mono',monospace;font-size:14px;font-weight:700;letter-spacing:.14em;">{{doneEn}}</div>
@@ -2128,7 +2132,7 @@ return inst;
 </sc-if>
 <sc-if value="{{isListView}}">
 <div style="position:relative;flex:1;min-height:0;margin-top:2px;background:#fbf6e8;border:2px solid #c8a04a;border-radius:12px;overflow:hidden;">
-<div id="listScroll" class="lscroll" onScroll="{{onListScroll}}" onTouchMove="{{userScrolled}}" onWheel="{{userScrolled}}" style="position:absolute;top:0;left:0;right:0;bottom:0;overflow-y:auto;">
+<div id="listScroll" class="lscroll nosb" onScroll="{{onListScroll}}" onTouchMove="{{userScrolled}}" onWheel="{{userScrolled}}" style="position:absolute;top:0;left:0;right:0;bottom:0;overflow-y:auto;">
 <sc-for list="{{rows}}" as="row">
 <sc-if value="{{row.isPhase}}">
 <button type="button" onClick="{{row.toggle}}" aria-expanded="{{row.expanded}}" style="position:sticky;top:0;z-index:2;width:100%;height:32px;margin-bottom:{{row.mb}}px;box-shadow:{{row.sh}};box-sizing:border-box;padding:0 12px;border:0;background:#1c3d6e;color:#f4ecdc;display:flex;align-items:center;gap:8px;font-size:13px;font-weight:700;cursor:pointer;text-align:start;">
@@ -2165,7 +2169,7 @@ return inst;
 <sc-if value="{{row.showCurtain}}">
 <div style="display:grid;grid-template-rows:{{listRows}};visibility:{{listVis}};transition:grid-template-rows .42s cubic-bezier(.4,0,.2,1),visibility 0s linear {{listVisDelay}};"><div style="min-height:0;overflow:hidden;"><div style="margin:0 8px 6px;background:{{subBoxBg}};border:1.5px solid {{subBoxBd}};border-radius:10px;padding:0 10px;transition:background .5s ease,border-color .5s ease;">
 <sc-for list="{{points}}" as="pt">
-<button type="button" onClick="{{pt.toggle}}" style="width:100%;padding:0;border:0;border-top:1px solid {{subRowLine}};background:transparent;text-align:start;cursor:pointer;display:flex;align-items:center;gap:10px;height:44px;box-sizing:border-box;">
+<sc-if value="{{pt.hasHead}}"><div style="margin:8px 0 2px;display:flex;align-items:center;gap:8px;padding:4px 9px;border-radius:7px;background:{{pt.headBg}};color:#fbf6e8;"><span style="font-size:13px;line-height:1;" aria-hidden="true">{{pt.headIcon}}</span><span style="flex:1;font-size:13px;font-weight:700;">{{pt.head}}</span></div></sc-if><button type="button" onClick="{{pt.toggle}}" style="width:100%;padding:0;border:0;border-top:1px solid {{subRowLine}};background:{{pt.rowBg}};margin:0 -8px;width:calc(100% + 16px) !important;padding:0 8px !important;text-align:start;cursor:pointer;display:flex;align-items:center;gap:10px;height:44px;box-sizing:border-box;">
 <span style="flex:none;width:20px;height:20px;border-radius:50%;box-sizing:border-box;display:flex;align-items:center;justify-content:center;background:{{pt.markBg}};border:{{pt.markBorder}};">
 <sc-if value="{{pt.isDone}}"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="{{pt.checkStroke}}" stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12l5 5l10 -10"></path></svg></sc-if>
 </span>
@@ -2224,12 +2228,12 @@ return inst;
 </div>
 <div style="flex:none;overflow:hidden;max-height:{{nvH}}px;opacity:{{pbO}};transition:max-height .6s cubic-bezier(.22,.61,.36,1),opacity .45s ease;">
 <div style="flex:none;padding:10px 14px 4px;display:flex;gap:8px;">
-<button type="button" disabled="{{nav.prevDis}}" onClick="{{prev}}" style="flex:1.1;min-width:0;height:48px;padding:0 4px;border:2px solid {{nav.prevBd}};background:{{nav.prevBg}};color:{{nav.prevFg}};border-radius:10px;font-size:14px;font-weight:600;line-height:1.15;cursor:pointer;">&#8250; קודם</button>
+<button type="button" disabled="{{nav.prevDis}}" onClick="{{prev}}" style="flex:1.1;min-width:0;height:48px;padding:0 4px;border:2px solid {{nav.prevBd}};background:{{nav.prevBg}};color:{{nav.prevFg}};border-radius:10px;font-size:14px;font-weight:600;line-height:1.15;cursor:pointer;">&#8249; קודם</button>
 <button type="button" disabled="{{nav.unmDis}}" onClick="{{jumpSkipped}}" style="position:relative;flex:1;min-width:0;height:48px;padding:0 4px;border:2px solid {{nav.unmBd}};background:{{nav.unmBg}};color:{{nav.unmFg}};border-radius:10px;font-size:12.5px;font-weight:700;line-height:1.15;cursor:pointer;">חזור ללא<br>מסומן
 <sc-if value="{{hasSkipped}}"><span dir="ltr" style="position:absolute;top:-8px;right:-5px;min-width:20px;height:20px;box-sizing:border-box;padding:0 5px;border-radius:10px;background:#f59e0b;color:#1a1308;font-family:'JetBrains Mono',monospace;font-size:12px;font-weight:700;line-height:20px;text-align:center;">{{skippedCount}}</span></sc-if>
 </button>
 <button type="button" disabled="{{nav.uncDis}}" onClick="{{uncheck}}" style="flex:1;min-width:0;height:48px;padding:0 4px;border:2px solid {{nav.uncBd}};background:{{nav.uncBg}};color:{{nav.uncFg}};border-radius:10px;font-size:12.5px;font-weight:600;line-height:1.15;cursor:pointer;">בטל<br>סימון</button>
-<button type="button" disabled="{{nav.skipDis}}" onClick="{{skip}}" style="flex:1.1;min-width:0;height:48px;padding:0 4px;border:2px solid {{nav.skipBd}};background:{{nav.skipBg}};color:{{nav.skipFg}};border-radius:10px;font-size:14px;font-weight:600;line-height:1.15;cursor:pointer;">הבא &#8249;</button>
+<button type="button" disabled="{{nav.skipDis}}" onClick="{{skip}}" style="flex:1.1;min-width:0;height:48px;padding:0 4px;border:2px solid {{nav.skipBd}};background:{{nav.skipBg}};color:{{nav.skipFg}};border-radius:10px;font-size:14px;font-weight:600;line-height:1.15;cursor:pointer;">הבא &#8250;</button>
 </div>
 </div>
 <div class="lsa-foot" dir="ltr"><span class="lsa-foot-slot">PREPROD</span><span class="lsa-foot-ver">{{appStamp}}</span><button type="button" class="lsa-foot-reload" onClick="{{reloadDemo}}">טען מחדש</button></div>
@@ -2246,7 +2250,7 @@ return inst;
 <sc-if value="{{spFresh}}"><div style="flex:none;height:128px;" aria-hidden="true"></div></sc-if>
 <sc-if value="{{spInProgress}}">
 <div style="background:#fbf6e8;border:2px solid #c8a04a;border-radius:12px;padding:12px 14px;">
-<div dir="ltr" style="font-family:'JetBrains Mono',monospace;font-size:10.5px;font-weight:700;letter-spacing:.1em;color:#6f531d;">{{spPhase}}</div>
+<div dir="rtl" style="font-size:10.5px;font-weight:700;color:#6f531d;display:flex;align-items:baseline;gap:6px;"><span style="font-family:'IBM Plex Sans Hebrew',sans-serif;font-size:12px;">{{spPhaseName}}</span><span>&middot;</span><span dir="ltr" style="font-family:'JetBrains Mono',monospace;letter-spacing:.1em;">CURRENT PHASE</span></div>
 <div style="margin-top:3px;font-size:19px;line-height:1.3;font-weight:700;color:#1c3d6e;">{{spItem}}</div>
 <div style="position:relative;margin-top:12px;height:24px;border-radius:6px;background:#2a2218;overflow:hidden;">
 <span style="position:absolute;top:0;bottom:0;right:0;width:{{spPct}}%;background:#1f6f3f;" aria-hidden="true"></span>
@@ -2254,14 +2258,14 @@ return inst;
 <span style="position:absolute;top:0;bottom:0;right:35%;border-right:2px solid #f4ecdc;" aria-hidden="true"></span>
 <span style="position:absolute;top:0;bottom:0;right:71%;border-right:2px solid #f4ecdc;" aria-hidden="true"></span>
 <sc-for list="{{spMarks}}" as="mk">
-<span style="position:absolute;top:4px;bottom:4px;right:{{mk.r}}%;width:6px;margin-right:-3px;border-radius:2px;background:#f59e0b;" aria-hidden="true"></span>
+<span style="position:absolute;top:50%;right:{{mk.r}}%;width:7px;height:7px;margin:-3.5px -3.5px 0 0;border-radius:50%;background:#f59e0b;border:1.5px solid #f4ecdc;box-sizing:border-box;z-index:1;" aria-hidden="true"></span>
 </sc-for>
 <svg width="22" height="22" viewBox="0 0 34 34" style="position:absolute;top:1px;right:{{spPlaneRight}};transform:rotate(-90deg);" aria-hidden="true"><path d="M17 2 C18.7 2 19.5 4.2 19.5 7 L19.5 13.2 L31 19 L31 22.2 L19.5 19.8 L19.5 26 L23.4 28.4 L23.4 31 L17 29.6 L10.6 31 L10.6 28.4 L14.5 26 L14.5 19.8 L3 22.2 L3 19 L14.5 13.2 L14.5 7 C14.5 4.2 15.3 2 17 2 Z" fill="#f4ecdc" stroke="#1a1308" stroke-width="1.2" stroke-linejoin="round"></path></svg>
 </div>
 <div style="margin-top:7px;display:flex;justify-content:space-between;font-size:13px;color:#5a4a3a;">
 <span>{{spCount}} הושלמו · {{spPctLabel}}</span>
-<sc-if value="{{spHasSkipped}}"><span style="font-weight:700;color:#8a5200;">{{spSkipped}} ללא סימון</span></sc-if>
 </div>
+<sc-if value="{{spHasSkipped}}"><div style="margin-top:9px;display:flex;align-items:center;gap:8px;background:#f1e2bc;border:1px solid #c9a24a;border-radius:8px;padding:6px 10px;font-size:13px;font-weight:600;color:#8a5200;line-height:1.25;"><span style="display:inline-flex;width:20px;height:20px;border-radius:50%;background:#f59e0b;color:#fff;align-items:center;justify-content:center;font-weight:800;font-size:13px;flex:none;" aria-hidden="true">!</span><span>{{spSkipped}} פריטים דולגו - כדאי לחזור אליהם</span></div></sc-if>
 </div>
 </sc-if>
 <sc-if value="{{spShowLists}}"><div style="display:flex;gap:8px;">
@@ -2361,6 +2365,14 @@ return inst;
 <div class="lsa-foot" dir="ltr"><span class="lsa-foot-slot">PREPROD</span><span class="lsa-foot-ver">{{appStamp}}</span><button type="button" class="lsa-foot-reload" onClick="{{reloadDemo}}">טען מחדש</button></div>
 </div>
 </sc-if>
+<sc-if value="{{bkOpen}}">
+<div onClick="{{bkClose}}" style="position:absolute;top:0;left:0;right:0;bottom:0;z-index:20;"></div>
+<div style="position:absolute;z-index:21;top:{{bkTop}}px;left:{{bkLeft}}px;width:208px;box-sizing:border-box;background:#fbf6e8;border:2px solid #c8a04a;border-radius:12px;padding:12px;box-shadow:0 10px 28px rgba(26,19,8,.35);">
+<div style="font-size:12.5px;font-weight:700;color:#6f531d;margin-bottom:10px;text-align:center;">{{bkName}}</div>
+<button type="button" onClick="{{bkConfirm}}" style="width:100%;height:46px;border-radius:10px;font-size:16px;font-weight:700;cursor:pointer;border:{{bkBd}};background:{{bkBg}};color:{{bkFg}};">{{bkLabel}}</button>
+<button type="button" onClick="{{bkClose}}" style="width:100%;height:42px;margin-top:8px;border:2px solid #e3d4ad;border-radius:10px;background:transparent;color:#5a4a3a;font-size:15px;font-weight:600;cursor:pointer;">ביטול</button>
+</div>
+</sc-if>
 </div>
 </script>
 <script>
@@ -2383,7 +2395,7 @@ ITEMS=order.map(function(ci){
 var it=CL[ci],k,l;
 if(it.subList&&it.subList.length){k='curtain';l=it.subTitle||'תת-רשימה';}
 else if(it.url){k=isAirCheckFamilyUrl(it.url)?'own':'ext';l=it.urlLabel||it.url.replace(/^https?:\/\//,'').split('/')[0];}
-return {id:String(ci),ci:ci,ph:PH.indexOf(it.phase),g:it.group,m:it.main,s:it.sub||'',k:k,l:l,url:it.url||'',subList:(it.subList&&it.subList.length)?it.subList:null};
+return {id:String(ci),ci:ci,ph:PH.indexOf(it.phase),g:it.group,m:it.main,s:it.sub||'',k:k,l:l,url:it.url||'',subList:(it.subList&&it.subList.length)?it.subList:null,subHeads:it.subHeads||null};
 });
 }
 function ac3Init(){
@@ -2527,7 +2539,7 @@ if (this._ck !== k || this._co !== true) {
 const c = document.getElementById('curtainScroll');
 const kk = Math.min(k, BRIEF.length - 1);
 const r = document.getElementById('pt-' + (kk > 0 ? kk - 1 : 0));
-if (c && r) c.scrollTo({ top: Math.max(0, r.offsetTop - 2), behavior: 'smooth' });
+if (c && r) { const hh = r.previousElementSibling && r.previousElementSibling.firstElementChild; const tg = (hh && hh.offsetParent === r.offsetParent) ? hh : r; c.scrollTo({ top: Math.max(0, tg.offsetTop - 2), behavior: 'smooth' }); }
 }
 this._ck = this.curPt(s.pts); this._co = true;
 } else { this._co = false; }
@@ -2542,12 +2554,37 @@ if (this._subPend !== c) return;
 this._subPend = null;
 if (n.cur === c && n.curtainOpen && Object.keys(n.pts).length === BRIEF.length) this.setState({ curtainOpen: false, subCeleb: false, subWait: false });
 }
+bkDown(e, p) {
+this.bkUp();
+const r = e.currentTarget.getBoundingClientRect(); const h = document.getElementById('ac3root').firstElementChild.getBoundingClientRect();
+this._bt = setTimeout(() => { this._bt = null; this._bkAt = Date.now(); try { if (navigator.vibrate) navigator.vibrate(15); } catch (x) {} this.setState({ bulk: { p, left: r.left - h.left, top: r.bottom - h.top + 4 } }); }, 500);
+}
+bkUp() { if (this._bt) { clearTimeout(this._bt); this._bt = null; } }
+bkClose() { if (Date.now() - (this._bkAt || 0) < 450) return; this.setState({ bulk: null }); }
+bkConfirm() {
+const st = this.state; const b = st.bulk; if (!b) return; const p = b.p; const idx = this.phaseIdx(p);
+const done = { ...st.done }; const skipped = { ...st.skipped }; const times = { ...st.times };
+const allDone = idx.every(i => done[ITEMS[i].id]);
+const base = { bulk: null, amber: false, curtainOpen: false, flip: st.flip + 1 };
+if (allDone) {
+idx.forEach(i => { const id = ITEMS[i].id; delete done[id]; delete times[id]; skipped[id] = true; });
+this.setState({ ...base, done, skipped, times, cur: idx[0], sectionDone: false, finished: false }); return;
+}
+const t = this.hhmm();
+idx.forEach(i => { const id = ITEMS[i].id; done[id] = true; delete skipped[id]; if (!times[id]) times[id] = t; });
+const last = idx[idx.length - 1];
+const all = ITEMS.every(x => done[x.id] || skipped[x.id]);
+if (all) { this.setState({ ...base, done, skipped, times, cur: last, sectionDone: false, finished: true, view: 'card' }); return; }
+if (p < PH.length - 1) { this.setState({ ...base, done, skipped, times, cur: last, sectionDone: true, finished: false }); return; }
+this.setState({ ...base, done, skipped, times, cur: last, sectionDone: false, finished: false });
+}
+syncView(t) { try { const tr = t.getBoundingClientRect(); const mx = t.scrollHeight - t.clientHeight; const f = mx > 0 ? Math.max(0, Math.min(1, t.scrollTop / mx)) : 0; const top = tr.top + 36 + f * (tr.height - 40); let vi = null; for (let i = 0; i < ITEMS.length; i++) { const el = document.getElementById('row-' + i); if (!el) continue; if (el.getBoundingClientRect().bottom > top) { vi = i; break; } vi = i; } if (vi !== null && vi !== this.state.viewIdx) this.setState({ viewIdx: vi }); } catch (e) {} }
 hintSync() {
 try {
 const c = document.getElementById('curtainScroll');
 if (c) { const m = c.scrollHeight - c.scrollTop - c.clientHeight > 10; if (m !== this.state.subMore) this.setState({ subMore: m }); }
 const l = document.getElementById('listScroll');
-if (l) { const m = l.scrollHeight - l.scrollTop - l.clientHeight > 24; if (m !== this.state.listMore) this.setState({ listMore: m }); }
+if (l) { const m = l.scrollHeight - l.scrollTop - l.clientHeight > 24; if (m !== this.state.listMore) this.setState({ listMore: m }); this.syncView(l); }
 } catch (e) {}
 }
 confirmItem() {
@@ -2572,11 +2609,19 @@ for (const i of rng) { if (i < from && this.isOpen(i, done, skipped)) return i; 
 return -1;
 }
 hhmm() { const d = new Date(); return String(d.getUTCHours()).padStart(2, '0') + ':' + String(d.getUTCMinutes()).padStart(2, '0'); }
-complete(skip) {
+nextStep() {
+const st = this.state; const i = st.cur; const it = ITEMS[i];
+const open = this.isOpen(i, st.done, st.skipped);
+if (i + 1 >= ITEMS.length) return;
+const skipped = { ...st.skipped }; if (open) skipped[it.id] = true;
+this.setState({ skipped, amber: false, amberBack: null, cur: i + 1, sectionDone: false, finished: false, curtainOpen: false, flip: st.flip + 1 });
+}
+complete(skip, keep) {
 if (!skip) ac3Feedback();
 const st = this.state; const it = ITEMS[st.cur];
 const done = { ...st.done }; const skipped = { ...st.skipped }; const times = { ...st.times };
-if (skip) { skipped[it.id] = true; delete done[it.id]; }
+if (keep) { }
+else if (skip) { skipped[it.id] = true; delete done[it.id]; }
 else { done[it.id] = true; delete skipped[it.id]; times[it.id] = this.hhmm(); }
 const base = { done, skipped, times, curtainOpen: false, flip: st.flip + 1 };
 if (st.amber) {
@@ -2706,7 +2751,7 @@ const tickMode = this.props.tickMode ?? 'byView';
 const holdMs = ac3Hold();
 const poh = (this.props.doneStyle ?? 'poh') === 'poh';
 const pDone = { ...st.done }; let curP = st.cur;
-if (st.flipOut && st.stampOn && st.view === 'card') { pDone[it.id] = true; const nP = this.nextOpen(st.cur, pDone, st.skipped); if (nP >= 0 && nP !== st.cur) curP = nP; }
+if (st.stampOn && st.view === 'card') { pDone[it.id] = true; const nP = this.nextOpen(st.cur, pDone, st.skipped); if (nP >= 0 && nP !== st.cur) curP = nP; }
 const isDoneP = x => !!pDone[x.id];
 const pipBg = x => isDoneP(x) ? '#1f6f3f' : (isSkip(x) ? '#f59e0b' : 'transparent');
 const phases = PH.map((name, p) => {
@@ -2718,7 +2763,7 @@ name, count: d + '/' + idx.length,
 fg: cur ? '#1c3d6e' : '#5a4a3a', w: cur ? 700 : 500,
 deco: cur ? 'underline' : 'none',
 pips: idx.map(i => ({ bg: pipBg(ITEMS[i]), isCur: cur && i === curP })),
-go: () => this.jumpPhase(p)
+down: (e) => this.bkDown(e, p), up: () => this.bkUp()
 };
 });
 const railPhases = PH.map((name, p) => {
@@ -2727,7 +2772,7 @@ return {
 grow: idx.length,
 segs: idx.map(i => ({
 bg: isDoneP(ITEMS[i]) ? '#1f6f3f' : (isSkip(ITEMS[i]) ? '#f59e0b' : (i === curP && !st.finished ? '#c8a04a' : '#dccda4')),
-isCur: i === curP && !st.finished, go: () => this.railTap(i), label: 'פריט ' + (i + 1)
+isCur: i === ((st.viewIdx !== null && st.viewIdx !== undefined && st.viewIdx < ITEMS.length) ? st.viewIdx : curP) && !st.finished, label: 'פריט ' + (i + 1)
 }))
 };
 });
@@ -2745,10 +2790,11 @@ const cardChip = chipFor(it);
 if (it.k === 'curtain') cardChip.hasLink = false;
 const item = { main: it.m, sub: it.s, hasSub: !!it.s, ...cardChip, linkKind: it.k === 'own' ? 'כלי AirCheck · נפתח באפליקציה נפרדת' : 'אתר חיצוני · יוצא מהאפליקציה', open: () => this.openLink(st.cur) };
 const curPt = this.curPt(st.pts); const ptsN = Object.keys(st.pts).length; const briefDone = ptsN >= BRIEF.length;
+const SHD = (ITEMS[st.cur] && ITEMS[st.cur].subHeads) || null;
 const points = BRIEF.map((t, j) => {
 const d = !!st.pts[j]; const c = j === curPt;
 const dc = '#1f6f3f';
-return { j, t, toggle: () => this.togglePt(j), isDone: d, checkStroke: '#fff', markBg: d ? dc : (c ? '#fbf6e8' : 'transparent'), markBorder: d ? '2px solid ' + dc : (c ? '3px solid #c8a04a' : '2px solid #8a7a5a'), fg: c ? '#1c3d6e' : (d ? (poh ? '#7d7566' : '#6b5d45') : '#3b2f20'), w: c ? 700 : 500, deco: d && poh ? 'line-through' : 'none' };
+return { j, t, rowBg: c ? 'rgba(200,160,74,.26)' : 'transparent', hasHead: !!(SHD && SHD[j]), head: (SHD && SHD[j] && (SHD[j].t || SHD[j])) || '', headIcon: (SHD && SHD[j] && SHD[j].i) || '', headTag: (SHD && SHD[j] && SHD[j].tag) || '', headBg: ({ red: '#8a1a1a', amber: '#b07a00', green: '#1f5f33', blue: '#1c3d6e' })[(SHD && SHD[j] && SHD[j].tone) || 'blue'], headTagFg: ({ red: '#f0a8a0', amber: '#f3d58a', green: '#8fd3a4', blue: '#a9bde0' })[(SHD && SHD[j] && SHD[j].tone) || 'blue'], toggle: () => this.togglePt(j), isDone: d, checkStroke: '#fff', markBg: d ? dc : (c ? '#fbf6e8' : 'transparent'), markBorder: d ? '2px solid ' + dc : (c ? '3px solid #c8a04a' : '2px solid #8a7a5a'), fg: c ? '#1c3d6e' : (d ? (poh ? '#7d7566' : '#6b5d45') : '#3b2f20'), w: c ? 700 : 500, deco: d && poh ? 'line-through' : 'none' };
 });
 const rows = []; let lastPh = -1; let lastG = null;
 ITEMS.forEach((x, i) => {
@@ -2822,7 +2868,7 @@ const amber = { bd: '#f59e0b', bg: '#fdecc8', fg: '#6b3f00' };
 const pick = (dis, onCfg) => { const c = dis ? off : onCfg; return { dis, bd: c.bd, bg: c.bg, fg: c.fg }; };
 const nPrev = pick(st.cur === 0, on);
 const nUnc = pick(!curHandled && !st.sectionDone && !st.finished, on);
-const nSkip = pick(st.sectionDone || st.finished, on);
+const nSkip = pick(st.finished || (!st.sectionDone && st.cur >= ITEMS.length - 1), on);
 const nUnm = pick(skippedN === 0, amber);
 const nav = {
 prevDis: nPrev.dis, prevBd: nPrev.bd, prevBg: nPrev.bg, prevFg: nPrev.fg,
@@ -2860,7 +2906,7 @@ return {
 showSubTab: false, subTabLabel: st.curtainOpen ? 'תת-רשימה פתוחה בכרטיס' : 'תת-רשימה בכרטיס', subTabRot: 0,
 hintPadR: 14,
 backAnim: st.flipOut ? 'backIn 950ms linear both' : 'none', frontAnim: st.flipOut ? 'frontOut 950ms linear both' : (st.stampOn ? 'cardThump .5s ease-out both' : 'none'), cardAnim: st.flipOut ? 'pageFlip 950ms cubic-bezier(.5,0,.3,1) forwards' : 'none',
-showUnder: isCardView && !st.finished, underNum, underMain, underSub, underIsSub: uK === 'curtain', underIsLink: uK === 'ext' || uK === 'own', underIsOwn: uK === 'own', underIsExt: uK === 'ext', underLinkLabel: uLbl, underGrp: uGrp, underGrpOn: !!uGrp, underSubLine: 'תת-רשימה · ' + ((ITEMS[this.nextOpen(st.cur, st.done, st.skipped)] || {}).subList || []).length + ' נקודות · הקש לפתיחה',
+showUnder: isCardView && !st.finished, underDone: !st.sectionDone && !st.finished && underNum === 'END OF SECTION', underDonePhase: PH[it.ph], underDoneNote: phSkipped ? 'דילגת על ' + phSkipped + ' פריטים. אפשר לחזור אליהם' : 'כל פריטי השלב סומנו', underNum, underMain, underSub, underIsSub: uK === 'curtain', underIsLink: uK === 'ext' || uK === 'own', underIsOwn: uK === 'own', underIsExt: uK === 'ext', underLinkLabel: uLbl, underGrp: uGrp, underGrpOn: !!uGrp, underSubLine: 'תת-רשימה · ' + ((ITEMS[this.nextOpen(st.cur, st.done, st.skipped)] || {}).subList || []).length + ' נקודות · הקש לפתיחה',
 showSplash: st.screen === 'splash' || st.screen === 'settings', showSettings: st.screen === 'settings', showEditor: false, spInProgress, spFresh: !spInProgress,
 spMarks, spPlaneRight: 'calc(' + spPctNum + '% - 12px)', iconBg: IC[0], iconRim: IC[1], iconLine: IC[2], iconPlane: IC[3], iconPlaneStroke: IC[4],
 spOpenSettings: () => this.setState({ screen: 'settings' }),
@@ -2870,7 +2916,7 @@ stTail: st.tail, stAirfield: st.airfield, stTailLabel: '4X-' + (st.tail.replace(
 stToggles: [{ label: 'צליל בעת אישור', on: settings.sounds !== false, bg: settings.sounds !== false ? '#1f6f3f' : '#b9ad92', knob: settings.sounds !== false ? 3 : 21, flip: () => { settings.sounds = !(settings.sounds !== false); saveSettings(); this.setState({ _t: Date.now() }); } }, { label: 'רטט באישורי פעולה', on: settings.haptics !== false, bg: settings.haptics !== false ? '#1f6f3f' : '#b9ad92', knob: settings.haptics !== false ? 3 : 21, flip: () => { settings.haptics = !(settings.haptics !== false); saveSettings(); this.setState({ _t: Date.now() }); } }],
 stHold: [['קצר', 200], ['רגיל', 400], ['ארוך', 700]].map(([label, ms]) => { const on = ac3Hold() === ms; return { label, bg: on ? '#1c3d6e' : 'transparent', fg: on ? '#f4ecdc' : '#1c3d6e', pick: () => { settings.holdMs = ms; saveSettings(); this.setState({ _t: Date.now() }); } }; }),
 reloadDemo: () => reloadApp(), icoSrc: AC3_ICON, contact: () => window.open('mailto:eligrt@gmail.com', '_blank'), utcNow: this.hhmm(), appStamp: APP_STAMP, spCanAdd: getProfiles().profiles.length < 3, spShowLists: FEATURES.MULTI_PROFILE, spAddList: () => openEditorForNewList(),
-spPhase: 'CURRENT PHASE · ' + PH[cur0.ph], spItem: cur0.m,
+spPhaseName: PH[cur0.ph], spItem: cur0.m,
 spPct: real ? Math.round(((st.cur + 1) / N) * 100) : 40, spCount: spDn + ' / ' + N, spPctLabel: Math.round((spDn / N) * 100) + '%',
 spHasSkipped: spSk > 0, spSkipped: spSk, spListName: '',
 spLists: (() => { const P = getProfiles(); const sel = st.splashList && P.profiles.some(z => z.id === st.splashList) ? st.splashList : P.activeProfile; return P.profiles.slice(0, 3).map(pr => { const on = pr.id === sel; return { name: pr.name, on, pillBg: on ? '#c8a04a' : 'transparent', pillBd: on ? '#c8a04a' : 'rgba(244,236,220,.45)', pillFg: on ? '#2a1f08' : '#f4ecdc', pick: () => this.setState({ splashList: pr.id }) }; }); })(),
@@ -2884,6 +2930,7 @@ showCard: () => this.switchView('card'),
 showList: () => this.switchView('list'),
 onListScroll: (e) => {
 const t = e && e.target; if (!t) return;
+this.syncView(t);
 const more = t.scrollHeight - t.scrollTop - t.clientHeight > 24;
 if (more !== this.state.listMore) this.setState({ listMore: more });
 },
@@ -2897,17 +2944,26 @@ showItemCard, showDoneCard, showFinishCard: st.finished && isCardView, finDone: 
 itemNum: pad(st.cur + 1), itemTotal: pad(N), groupPos: gpos + '/' + grp.length,
 item, showStamp: isDone(it) || st.stampOn, stampTime: st.times[it.id] || this.hhmm(), thumpAnim: (st.stampOn && !st.flipOut) ? 'cardThump .5s ease-out both' : 'none',
 doneEn, doneHe, donePhase: st.finished ? 'AirCheck' : PH[it.ph], doneNote,
-hasSubCard: hasFlap, curtainOpenB: st.curtainOpen, subRows: st.curtainOpen ? '1fr' : '0fr', subRot: st.curtainOpen ? 180 : 0, subBounce: st.curtainOpen ? 'none' : 'chevNudge 1.3s ease-in-out infinite', subPopAnim: briefDone ? 'subPop .7s cubic-bezier(.3,1.6,.5,1) both' : 'none', subStripBg: st.subCeleb ? '#c3e4bd' : 'transparent', subTickBg: briefDone ? '#1f6f3f' : 'transparent', subTickBd: briefDone ? '2px solid #1f6f3f' : '2px solid #8a7a5a', briefDoneB: briefDone, subRowLine: briefDone ? '#b4d6b0' : '#dccd9d', subCeleb: st.subCeleb, listRows: st.curtainOpen ? '1fr' : '0fr', listVis: st.curtainOpen ? 'visible' : 'hidden', listVisDelay: st.curtainOpen ? '0s' : '.42s', subDrain: st.subWait ? 'none' : 'subDrain 1500ms linear forwards', subBoxBg: briefDone ? '#dcefd6' : '#f1e6c6', subBoxBd: briefDone ? '#8fc29a' : '#d6c48e', subLine: briefDone ? 'תת-רשימה הושלמה' : (st.curtainOpen ? ptsN + '/' + BRIEF.length + ' · הקש על המסלול לסימון' : 'תת-רשימה · ' + BRIEF.length + ' נקודות · הקש לפתיחה'), subLineColor: briefDone ? '#1f6f3f' : '#5a4a3a', stampBot: '12px', subMoreOn: st.subMore && st.curtainOpen && !briefDone, onSubScroll: (e) => { const t = e && e.target; if (!t) return; const more = t.scrollHeight - t.scrollTop - t.clientHeight > 14; if (more !== this.state.subMore) this.setState({ subMore: more }); },
-flapTitle: it.l || 'תת-רשימה', flapCount: BRIEF.length,
+hasSubCard: hasFlap, curtainOpenB: st.curtainOpen, subRows: st.curtainOpen ? '1fr' : '0fr', subRot: st.curtainOpen ? 180 : 0, subBounce: st.curtainOpen ? 'none' : 'chevNudge 1.3s ease-in-out infinite', subPopAnim: briefDone ? 'subPop .7s cubic-bezier(.3,1.6,.5,1) both' : 'none', subStripBg: st.subCeleb ? '#c3e4bd' : 'transparent', subTickBg: briefDone ? '#1f6f3f' : 'transparent', subTickBd: briefDone ? '2px solid #1f6f3f' : '2px solid #8a7a5a', briefDoneB: briefDone, subRowLine: briefDone ? '#b4d6b0' : '#dccd9d', subCeleb: st.subCeleb, listRows: st.curtainOpen ? '1fr' : '0fr', listVis: st.curtainOpen ? 'visible' : 'hidden', listVisDelay: st.curtainOpen ? '0s' : '.42s', subDrain: st.subWait ? 'none' : 'subDrain 1500ms linear forwards', subBoxBg: briefDone ? '#dcefd6' : '#f1e6c6', subBoxBd: briefDone ? '#8fc29a' : '#d6c48e', subLine: briefDone ? 'תת-רשימה הושלמה' : (st.curtainOpen ? ptsN + '/' + BRIEF.length + ' · הקש על המסלול לסימון' : 'תת-רשימה · ' + BRIEF.length + ' נקודות · הקש לפתיחה'), subLineColor: briefDone ? '#1f6f3f' : '#5a4a3a', stampBot: '57px', subMoreOn: st.subMore && st.curtainOpen && !briefDone, onSubScroll: (e) => { const t = e && e.target; if (!t) return; const more = t.scrollHeight - t.scrollTop - t.clientHeight > 14; if (more !== this.state.subMore) this.setState({ subMore: more }); },
+flapTitle: it.l || 'תת-רשימה', underFlapTitle: uLbl || 'תת-רשימה', flapCount: BRIEF.length,
 points, briefDone, briefCount: ptsN + '/' + BRIEF.length,
 toggleCurtain: () => this.setState({ curtainOpen: !this.state.curtainOpen, subMore: true, subCeleb: false, subWait: false }),
 showNext: isCardView && showItemCard && !showCurtain && nextItems.length > 0, nextItems,
 rows, hintText, btn, nav,
 hasSkipped: skippedN > 0, skippedCount: skippedN,
-jumpSkipped: () => { const i = ITEMS.findIndex(x => isSkip(x)); if (i >= 0) this.enterAmber(i); },
+bkOpen: !!st.bulk, bkName: st.bulk ? PH[st.bulk.p] : '',
+bkAll: !!st.bulk && this.phaseIdx(st.bulk.p).every(i => isDone(ITEMS[i])),
+bkLabel: (st.bulk && this.phaseIdx(st.bulk.p).every(i => isDone(ITEMS[i]))) ? 'בטל סימון הכל' : 'סמן הכל',
+bkBg: (st.bulk && this.phaseIdx(st.bulk.p).every(i => isDone(ITEMS[i]))) ? 'transparent' : '#1c3d6e',
+bkFg: (st.bulk && this.phaseIdx(st.bulk.p).every(i => isDone(ITEMS[i]))) ? '#b94a3a' : '#f4ecdc',
+bkBd: (st.bulk && this.phaseIdx(st.bulk.p).every(i => isDone(ITEMS[i]))) ? '2px solid #b94a3a' : '2px solid #1c3d6e',
+bkTop: st.bulk ? st.bulk.top : 0,
+bkLeft: st.bulk ? Math.max(8, Math.min(st.bulk.left, (document.getElementById('ac3root').clientWidth || 390) - 216)) : 0,
+bkConfirm: () => this.bkConfirm(), bkClose: () => this.bkClose(),
+jumpSkipped: () => { const sk = []; ITEMS.forEach((x, i) => { if (isSkip(x)) sk.push(i); }); if (!sk.length) return; const i = sk.find(j => j > st.cur) ?? sk[0]; if (i === st.cur && !st.sectionDone && !st.finished) return; this.enterAmber(i); },
 prev: () => { if (st.cur > 0) this.goTo(st.cur - 1); },
 uncheck: () => this.uncheck(),
-skip: () => { if (!st.sectionDone && !st.finished) this.flipThen(() => this.complete(true)); },
+skip: () => { if (st.finished) return; if (st.sectionDone) { this.tick(); return; } this.flipThen(() => this.nextStep()); },
 reset: () => { this._t0 = null; this._t1 = null; if (this._ht) { clearTimeout(this._ht); this._ht = null; } this.setState({ ...START }); },
 hdrNew: () => { if (this._ht) { clearTimeout(this._ht); this._ht = null; } this.setState({ screen: 'splash', holding: false, spConfirm: true }); },
 goHome: () => { if (this._ht) { clearTimeout(this._ht); this._ht = null; } this.setState({ screen: 'splash', holding: false }); },
