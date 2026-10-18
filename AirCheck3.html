@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <!-- ═══════════════════════════════════════
-     AirCheck · v3.00.026 · built by eligrt
+     AirCheck · v3.00.027 · built by eligrt
      ═══════════════════════════════════════ -->
 <html lang="he" dir="rtl">
 <head>
@@ -35,7 +35,7 @@ if(force){['aircheck_rd_v1'].forEach(function(n){r.call(localStorage,P+n);});try
 <script>
 /* Single source of truth for app identity. Footers, share texts, exports and Firebase appVersion all read these. */
 const APP_NAME='AirCheck';
-const APP_VERSION='v3.00.026';
+const APP_VERSION='v3.00.027';
 const APP_STAMP=APP_NAME+' · '+APP_VERSION+' · built by eligrt';
 document.addEventListener('DOMContentLoaded',function(){document.querySelectorAll('.app-stamp').forEach(function(e){e.textContent=APP_STAMP;});});
 </script>
@@ -102,42 +102,11 @@ html,body{height:100%;height:var(--app-h,100%);background:#1a1a1c;font-family:va
 @keyframes toastOut{from{opacity:1;}to{opacity:0;}}
 .toast{position:absolute;bottom:80px;left:50%;transform:translateX(-50%);background:var(--ink);color:var(--paper);padding:10px 18px;border-radius:20px;font-size:13px;font-family:var(--font-ui);font-weight:600;white-space:nowrap;z-index:500;animation:toastIn .2s ease-out;box-shadow:0 4px 16px rgba(0,0,0,.35);}
 /* ── XLS IMPORT OVERLAY ── */
-#xlsImportOverlay{display:none;position:absolute;inset:0;z-index:400;align-items:center;justify-content:center;background:rgba(26,19,8,.85);backdrop-filter:blur(4px);padding:24px;}
-#xlsImportOverlay.open{display:flex;}
-.xls-import-box{background:var(--paper-hi);border:2px solid var(--amber);border-radius:8px;width:100%;max-width:340px;box-shadow:0 0 0 1px rgba(245,158,11,.15),0 20px 60px rgba(0,0,0,.5);overflow:hidden;display:flex;flex-direction:column;max-height:85vh;}
-.xls-import-header{background:var(--ink);padding:14px 16px;display:flex;align-items:center;justify-content:space-between;}
-.xls-import-title{font-family:var(--font-mono);font-size:11px;font-weight:700;letter-spacing:.2em;color:var(--paper);}
-.xls-import-close{background:transparent;border:none;color:rgba(244,236,220,.6);font-size:20px;cursor:pointer;line-height:1;padding:0;}
-.xls-import-body{padding:12px 16px;overflow-y:auto;max-height:55vh;-webkit-overflow-scrolling:touch;}
-.xls-import-body::-webkit-scrollbar{width:0;}
 /* Step 1: drop zone */
-.xls-dropzone{border:2px dashed var(--gold);border-radius:6px;padding:32px 20px;text-align:center;cursor:pointer;transition:background .15s;}
-.xls-dropzone:hover,.xls-dropzone.dragover{background:rgba(200,160,74,.08);}
-.xls-dropzone-icon{font-size:32px;margin-bottom:10px;display:block;}
-.xls-dropzone-label{font-size:14px;font-weight:700;color:var(--ink-body);margin-bottom:4px;}
-.xls-dropzone-sub{font-size:11px;color:var(--ink-muted);}
 /* Step 2: preview */
-.xls-preview-stat{display:flex;align-items:baseline;gap:8px;padding:12px 0;border-bottom:1px dashed var(--gold-lite);}
-.xls-preview-num{font-family:var(--font-mono);font-size:28px;font-weight:700;color:var(--ink);direction:ltr;}
-.xls-preview-label{font-size:13px;color:var(--ink-muted);}
-.xls-warning{margin-top:10px;padding:8px 10px;background:rgba(245,158,11,.1);border:1px solid rgba(245,158,11,.4);border-radius:3px;font-size:11px;color:#92620a;direction:rtl;}
 /* Step footer buttons */
-.xls-import-footer{display:flex;gap:8px;padding:16px 16px 18px;}
 /* Step ribbon */
-.xls-step-ribbon{display:flex;align-items:center;gap:6px;padding:10px 16px 0;direction:ltr;}
-.xls-step{display:flex;align-items:center;gap:5px;padding:4px 8px;border-radius:3px;border:1px solid var(--gold-lite);font-family:var(--font-mono);font-size:9px;font-weight:700;letter-spacing:.1em;color:var(--ink-muted);}
-.xls-step.active{background:var(--ink);border-color:var(--ink-dark);color:var(--paper);}
-.xls-step.done{background:var(--cleared);border-color:var(--cleared);color:var(--paper);}
-.xls-step.loaded{background:var(--cleared);border-color:var(--cleared);color:var(--paper);}
-.xls-step-line{flex:1;height:1px;background:var(--gold-lite);}
 /* Success step */
-.xls-success-stamp{display:flex;justify-content:center;margin:18px 0 16px;}
-.xls-success-stamp-box{border:3px solid var(--cleared);padding:8px 18px 10px;text-align:center;color:var(--cleared);font-family:var(--font-mono);transform:rotate(-6deg);}
-.xls-success-stamp-loaded{font-size:10px;letter-spacing:.3em;font-weight:700;margin-bottom:2px;}
-.xls-success-stamp-count{font-size:20px;font-weight:700;letter-spacing:.08em;}
-.xls-success-stamp-file{font-size:8px;letter-spacing:.12em;margin-top:3px;opacity:.75;}
-.xls-success-title{font-size:20px;font-weight:700;color:var(--ink-body);text-align:center;margin-bottom:6px;}
-.xls-success-sub{font-size:13px;color:var(--ink-muted);text-align:center;line-height:1.6;margin-bottom:20px;}
 /* ── SETTINGS SCREEN ── */
 #screenSettings{flex-direction:column;overflow:hidden;background:var(--paper);background-image:repeating-linear-gradient(0deg,transparent 0,transparent 27px,var(--paper-line) 27px,var(--paper-line) 28px);}
 #screenSettings::-webkit-scrollbar{width:0;}
@@ -236,7 +205,7 @@ button.lsa-foot-slot{cursor:pointer;padding:8px 0;}
 #e3 .e3-phb{flex:1;min-height:56px;border:0;background:transparent;color:#fff;text-align:start;padding:8px 14px;display:flex;flex-direction:column;justify-content:center;}
 #e3 .e3-phb .a{display:block;font-size:18px;font-weight:700;}
 #e3 .e3-phb .b{display:block;font-size:13px;opacity:.85;}
-#e3 .e3-fold{flex:none;width:52px;border:0;display:flex;align-items:center;justify-content:center;}
+#e3 .e3-fold{flex:none;width:52px;border:0;background:transparent;display:flex;align-items:center;justify-content:center;}
 #e3 .e3-gr{display:flex;align-items:stretch;margin:12px 12px 0;overflow:hidden;position:relative;color:#175a32;}
 #e3 .e3-grb{flex:1;min-height:48px;border:0;background:transparent;color:#175a32;text-align:start;padding:8px 6px;display:flex;flex-direction:column;justify-content:center;}
 #e3 .e3-grb .a{display:block;font-size:16px;font-weight:700;}
@@ -251,8 +220,14 @@ button.lsa-foot-slot{cursor:pointer;padding:8px 0;}
 #e3 .e3-add.i{border:2px dashed #c8a04a;background:#fbf6e8;color:#7a5a1a;}
 #e3 .e3-add.g{margin-top:16px;border:2px dashed #1f6f3f;background:rgba(31,111,63,.16);color:#175a32;}
 #e3 .e3-add.p{margin-top:18px;min-height:56px;font-size:17px;border:2px dashed #1c3d6e;background:rgba(28,61,110,.14);color:#1c3d6e;}
-#e3 .e3-xls{display:flex;gap:8px;margin:22px 12px 0;}
-#e3 .e3-xls button{flex:1;min-height:52px;border:1.5px solid #8a6a2a;border-radius:10px;background:#fff;color:#6b4f12;font-size:16px;font-weight:700;}
+#e3 .e3-xl{margin:26px 16px 6px;font-size:13px;font-weight:700;color:#7a6a4a;letter-spacing:.04em;}
+#e3 .e3-xlist{margin:0 12px;border-top:1px solid #d9c9a0;border-bottom:1px solid #d9c9a0;display:flex;flex-direction:column;}
+#e3 .e3-xr{display:flex;align-items:center;gap:14px;min-height:60px;padding:6px 4px;border:0;background:transparent;color:#1a1308;text-align:start;width:100%;}
+#e3 .e3-xr+.e3-xr{border-top:1px solid #e6dab8;}
+#e3 .e3-xr svg{flex:none;}
+#e3 .e3-xr .m{flex:1;min-width:0;}
+#e3 .e3-xr b{display:block;font-size:17px;font-weight:600;}
+#e3 .e3-xr small{display:block;font-size:13px;color:#6b5c3f;margin-top:1px;}
 #e3 .e3-bar{flex:none;background:#fbf6e8;border-top:2px solid #c8a04a;padding:8px 12px 10px;}
 #e3 .e3-bg{display:grid;grid-template-columns:1.3fr 1fr 1fr 1fr;gap:6px;}
 #e3 .e3-bb{min-height:60px;border-radius:10px;font-size:15px;font-weight:700;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;padding:4px;}
@@ -302,6 +277,22 @@ button.lsa-foot-slot{cursor:pointer;padding:8px 0;}
 #e3 .e3-row2 .e3-xb{flex:1;}
 #e3 .e3-col3 .e3-xb{min-height:56px;}
 #e3 .e3-ghost{position:absolute;left:12px;right:12px;z-index:40;pointer-events:none;display:flex;align-items:center;gap:10px;min-height:56px;box-sizing:border-box;padding:8px 14px;border:2px solid #c8a04a;border-radius:12px;box-shadow:0 14px 30px rgba(26,19,8,.4);transform:rotate(-1.2deg) scale(1.02);}
+/* import popup */
+#xiOv{display:none;position:fixed;inset:0;z-index:600;direction:rtl;font-family:var(--font-ui);}
+#xiOv.open{display:block;}
+#xiOv .xi-scrim{position:absolute;inset:0;width:100%;border:0;padding:0;background:rgba(26,19,8,.38);}
+#xiOv .xi-sheet{position:absolute;left:12px;right:12px;top:calc(env(safe-area-inset-top,0px) + 70px);max-height:calc(100% - env(safe-area-inset-top,0px) - 90px);overflow-y:auto;background:#fbf6e8;border:2px solid #1c3d6e;border-radius:16px;padding:16px;display:flex;flex-direction:column;gap:12px;box-sizing:border-box;box-shadow:0 12px 32px rgba(26,19,8,.35);color:#1a1308;}
+#xiOv .xi-t{font-size:19px;font-weight:700;}
+#xiOv .xi-file{font-size:14px;color:#5a4a3a;direction:ltr;text-align:end;overflow-wrap:anywhere;}
+#xiOv .xi-big{font-size:22px;font-weight:700;color:#175a32;}
+#xiOv .xi-row{display:flex;justify-content:space-between;gap:10px;padding:10px 12px;background:#fff;border:1px solid #e3d4ad;border-radius:10px;font-size:16px;}
+#xiOv .xi-row span:last-child{color:#5a4a3a;flex:none;}
+#xiOv .xi-m{margin:0;font-size:16px;line-height:1.45;}
+#xiOv .xi-w{color:#6b3f00;}
+#xiOv .xi-b{min-height:54px;border-radius:10px;font-family:inherit;font-size:17px;font-weight:700;cursor:pointer;}
+#xiOv .xi-b.p{border:0;background:#1c3d6e;color:#fff;}
+#xiOv .xi-b.n{border:1.5px solid #8a6a2a;background:#fff;color:#6b4f12;}
+#xiOv .xi-err{width:44px;height:44px;border-radius:50%;background:#fff1d6;border:2px solid #c27a0e;color:#6b3f00;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:24px;}
 </style>
 </head>
 <body>
@@ -379,21 +370,7 @@ document.addEventListener('visibilitychange',function(){if(!document.hidden)refi
     </div>
   </div>
 
-  <!-- XLS IMPORT OVERLAY -->
-  <div id="xlsImportOverlay">
-    <div class="xls-import-box">
-      <div class="xls-import-header">
-        <span class="xls-import-title" id="xlsImportTitle">IMPORT · XLS</span>
-        <button class="xls-import-close" onclick="closeXLSImport()">✕</button>
-      </div>
-      <div class="xls-import-body" id="xlsImportBody">
-        <!-- populated by JS -->
-      </div>
-      <div class="xls-import-footer" id="xlsImportFooter">
-        <!-- populated by JS -->
-      </div>
-    </div>
-  </div>
+  <div id="xiOv"></div>
 
   <input type="file" id="xlsImportInput"  accept=".xlsx,.xls" style="display:none" onchange="handleXLSImport(this)">
 
@@ -433,7 +410,7 @@ const CL=[
 {defId:"d027",phase:"הגעה למנחת ולמטוס",group:"הכנת קוקפיט",main:"מצלמות: מקם והפעל",sub:""},
 {defId:"d028",phase:"הגעה למנחת ולמטוס",group:"הכנת קוקפיט",main:"GPS - מקם והפעל",sub:""},
 {defId:"d029",phase:"הגעה למנחת ולמטוס",group:"הכנת קוקפיט",main:"אוזניות - בדוק סוללות",sub:""},
-{defId:"d030",phase:"הגעה למנחת ולמטוס",group:"הכנת קוקפיט",main:"תדרוך נוסע (אם נדרש)",sub:"",url:"",subTitle:"תדרוך נוסע",subList:["לא נוגעים בכלום ללא אישור טייס", "חגורות בטיחות לאורך כל הטיסה", "תרגול פתיחת חגורות", "תרגול פתיחת חופה", "מיקום מטף כיבוי אש", "קוקפיט שקט בהמראה ונחיתה", "משהו מוזר? אל תניח - דבר! (שקט הפיל מטוסים)", "כששומעים משהו בקשר - שותקים", "מרגישים לא טוב / לא נעים - מיד לומר", "מיקום פתחי אוורור", "תפעול שקית הקאה", "שאלות? חששות?"],subHeads:{"0": {"t": "בטיחות", "i": "⚠️", "tone": "red"}, "5": {"t": "תקשורת", "i": "📻", "tone": "amber"}, "8": {"t": "נוחות", "i": "😊", "tone": "green"}}},
+{defId:"d030",phase:"הגעה למנחת ולמטוס",group:"הכנת קוקפיט",main:"תדרוך נוסע (אם נדרש)",sub:"",url:"",subTitle:"תדרוך נוסע",subList:["לא נוגעים בכלום ללא אישור טייס", "חגורות בטיחות לאורך כל הטיסה", "תרגול פתיחת חגורות", "תרגול פתיחת חופה", "מיקום מטף כיבוי אש", "קוקפיט שקט בהמראה ונחיתה", "אל תניח - דבר! (שקט הפיל מטוסים)", "כששומעים משהו בקשר - שותקים", "מרגישים לא טוב / לא נעים - מיד לומר", "מיקום פתחי אוורור", "תפעול שקית הקאה", "שאלות? חששות?"],subHeads:{"0": {"t": "בטיחות", "i": "⚠️", "tone": "red"}, "5": {"t": "תקשורת", "i": "📻", "tone": "amber"}, "8": {"t": "נוחות", "i": "😊", "tone": "green"}}},
 {defId:"d044",phase:"הגעה למנחת ולמטוס",group:"הכנת קוקפיט",main:"מכשיר קשר נייד טעון ובתיק",sub:""},
 {defId:"d031",phase:"הגעה למנחת ולמטוס",group:"כללי",main:"עדכון בקרה בהמראה (אם נדרש)",sub:""},
 {defId:"d032",phase:"הגעה למנחת ולמטוס",group:"כללי",main:"דאבל צ'ק מז\"א",sub:"METAR בשדה המראה ובשדה נחיתה",url:"https://eligrt.github.io/AirCheck/AirCheck_METAR.html",urlLabel:"AirCheck METAR / TAF"},
@@ -824,7 +801,7 @@ const hasOverflow=list.scrollHeight>list.clientHeight+2;
 const atBottom=list.scrollTop+list.clientHeight>=list.scrollHeight-2;
 fade.classList.toggle('show',hasOverflow&&!atBottom);
 }
-/* ============ AirCheck list editor (v3.00.026) ============
+/* ============ AirCheck list editor (v3.00.027) ============
    All screen text is in E_LANG. English is added later as E_LANG.en. */
 const E_LANG={he:{
 back:'חזרה',cancel:'ביטול',ok:'אישור',save:'שמור שינויים',saved:'נשמר',
@@ -861,7 +838,14 @@ pickColor:'צבע הכותרת',pickIcon:'סמל',
 colRed:'אדום',colAmber:'כתום',colGreen:'ירוק',colBlue:'כחול',
 icoWarn:'אזהרה',icoRadio:'קשר',icoSmile:'נוחות',icoInfo:'מידע',
 delPointTitle:'למחוק את הנקודה?',delHeadingTitle:'למחוק את הכותרת?',delRowMsg:'"{n}" יימחק.',
-xlsImport:'📥 ייבא XLS',xlsExport:'📤 ייצא XLS'
+xlsHead:'גיבוי והעברה',xlsImport:'ייבוא מקובץ Excel',xlsImportSub:'טעינת רשימה מהטלפון',xlsExport:'ייצוא ל-Excel',xlsExportSub:'שמירת הרשימות בקובץ',
+xiTitle:'ייבוא מקובץ Excel',xiFoundItems:'נמצאו {n} פריטים',xiFoundLists:'נמצאו {n} רשימות',xiItemsN:'{n} פריטים',
+xiReplaceOne:'הרשימה שלך תוחלף בתוכן הקובץ.',xiReplaceAllOne:'כל הרשימות שלך ({n}) יוחלפו ברשימה מהקובץ.',xiReplaceMany:'הרשימות שלך יוחלפו בתוכן הקובץ.',
+xiMax3:'אפשר לשמור עד 3 רשימות. ייובאו שלוש הראשונות.',xiSkipped:'{n} שורות בקובץ דולגו.',
+xiReplaceBtn:'החלף את הרשימה',xiReplaceBtnMany:'החלף את הרשימות',xiCancel:'ביטול',
+xiBadTitle:'הקובץ לא מתאים',xiBadMsg:'לא נמצאה בו רשימה של AirCheck. אפשר לבחור קובץ שיוצא מהאפליקציה.',
+xiReadErr:'אי אפשר היה לקרוא את הקובץ. אפשר לבחור קובץ אחר.',xiPickOther:'בחירת קובץ אחר',xiLoading:'הספרייה עדיין נטענת, נסה שוב בעוד רגע.',
+xiDoneOne:'✓ הרשימה נטענה',xiDoneMany:'✓ הרשימות נטענו',xlsExportDone:'✓ הקובץ מוכן - {n} רשימות',xlsExportErr:'שגיאה בייצוא'
 }};
 let E_LNG='he';
 function eT(k,n){let s=E_LANG[E_LNG]&&E_LANG[E_LNG][k];if(s===undefined)s=E_LANG.he[k];if(s===undefined)return k;return n===undefined?s:s.replace('{n}',n);}
@@ -1004,8 +988,8 @@ eRender();
 showScreen('screenEditor');
 }
 function openEditorForNewList(){openEditor(true);openNewProfileModal();}
-function closeEditor(){ED.active=false;ED.sheet=null;loadList();if(_editorFromSettings){openSettings();}else{showScreen('screenChecklist');}}
-function eLeaveAfterSave(){ED.active=false;ED.sheet=null;if(_editorFromSettings){openSettings();}else{showScreen('screenChecklist');render();}}
+function closeEditor(){acClearResume();ED.active=false;ED.sheet=null;loadList();if(_editorFromSettings){openSettings();}else{showScreen('screenChecklist');}}
+function eLeaveAfterSave(){acClearResume();ED.active=false;ED.sheet=null;if(_editorFromSettings){openSettings();}else{showScreen('screenChecklist');render();}}
 function requestCloseEditor(el){
 if(!eDirty()){closeEditor();return;}
 eOpenSheet({type:'exit',title:eT('exitTitle'),msg:eT('exitMsg')},el||document.getElementById('e3'));
@@ -1369,8 +1353,8 @@ return o;
 /* ---------- draw ---------- */
 function hRow(r){
 if(r.isPh)return '<div style="margin:'+r.mt+'px '+r.mx+'px 0;height:'+r.h+'px" class="e3-slot"></div>';
-if(r.isPhase)return '<div data-rk="'+r.key+'" class="e3-ph" style="background:'+r.bg+';outline:'+r.ring+';outline-offset:-3px;opacity:'+r.dim+'"><button type="button" class="e3-dh" style="background:rgba(255,255,255,.12);color:#fff" data-d="'+eH(r.onDrag)+'" aria-label="'+eT('dragAria')+'">'+E_DOTS+'</button><button type="button" class="e3-phb" data-h="'+eH(r.onTap)+'"><span class="a">'+eEsc(r.label)+'</span><span class="b">'+eEsc(r.count)+'</span></button><button type="button" class="e3-fold" style="background:rgba(255,255,255,.12)" data-h="'+eH(r.onFold)+'" aria-label="'+eT('foldAria')+'">'+eSvg(r.foldOpen?'<path d="M6 9l6 6 6-6"/>':'<path d="M15 6l-6 6 6 6"/>',24,'#fff',2.6)+'</button></div>';
-if(r.isGroup)return '<div data-rk="'+r.key+'" class="e3-gr" style="border-radius:'+r.radius+';z-index:'+r.z+';background:'+r.bg+';box-shadow:'+r.drop+';opacity:'+r.dim+'"><button type="button" class="e3-dh" style="color:#4a8a63" data-d="'+eH(r.onDrag)+'" aria-label="'+eT('dragAria')+'">'+E_DOTS+'</button><button type="button" class="e3-grb" data-h="'+eH(r.onTap)+'"><span class="a">'+eEsc(r.label)+'</span>'+(r.showCount?'<span class="b">'+eEsc(r.count)+'</span>':'')+'</button><button type="button" class="e3-fold" style="background:rgba(23,90,50,.10)" data-h="'+eH(r.onFold)+'" aria-label="'+eT('foldGroupAria')+'">'+eSvg(r.foldOpen?'<path d="M6 9l6 6 6-6"/>':'<path d="M15 6l-6 6 6 6"/>',24,'#175a32',2.6)+'</button></div>';
+if(r.isPhase)return '<div data-rk="'+r.key+'" class="e3-ph" style="background:'+r.bg+';outline:'+r.ring+';outline-offset:-3px;opacity:'+r.dim+'"><button type="button" class="e3-dh e3-dv" style="color:#fff;border-inline-end:1px solid rgba(255,255,255,.28)" data-d="'+eH(r.onDrag)+'" aria-label="'+eT('dragAria')+'">'+E_DOTS+'</button><button type="button" class="e3-phb" data-h="'+eH(r.onTap)+'"><span class="a">'+eEsc(r.label)+'</span><span class="b">'+eEsc(r.count)+'</span></button><button type="button" class="e3-fold" style="border-inline-start:1px solid rgba(255,255,255,.28)" data-h="'+eH(r.onFold)+'" aria-label="'+eT('foldAria')+'">'+eSvg(r.foldOpen?'<path d="M6 9l6 6 6-6"/>':'<path d="M15 6l-6 6 6 6"/>',24,'#fff',3)+'</button></div>';
+if(r.isGroup)return '<div data-rk="'+r.key+'" class="e3-gr" style="border-radius:'+r.radius+';z-index:'+r.z+';background:'+r.bg+';box-shadow:'+r.drop+';opacity:'+r.dim+'"><button type="button" class="e3-dh" style="color:#4a8a63;border-inline-end:1px solid rgba(23,90,50,.25)" data-d="'+eH(r.onDrag)+'" aria-label="'+eT('dragAria')+'">'+E_DOTS+'</button><button type="button" class="e3-grb" data-h="'+eH(r.onTap)+'"><span class="a">'+eEsc(r.label)+'</span>'+(r.showCount?'<span class="b">'+eEsc(r.count)+'</span>':'')+'</button><button type="button" class="e3-fold" style="border-inline-start:1px solid rgba(23,90,50,.25)" data-h="'+eH(r.onFold)+'" aria-label="'+eT('foldGroupAria')+'">'+eSvg(r.foldOpen?'<path d="M6 9l6 6 6-6"/>':'<path d="M15 6l-6 6 6 6"/>',24,'#175a32',2.6)+'</button></div>';
 if(r.isItem){
 let tags='';
 if(r.tagNew)tags+='<span class="e3-tag" style="background:#f59e0b;color:#1a1308;font-weight:700">'+eT('tagNew')+'</span>';
@@ -1454,7 +1438,10 @@ h+='<div class="e3-tabs">'+m.tabs.map(tb=>'<button type="button" class="e3-tab" 
 +(ED.lists.length<3?'<button type="button" class="e3-tabadd" aria-label="'+eT('addListAria')+'" data-h="'+eH(()=>openNewProfileModal())+'">'+eSvg('<path d="M12 5v14M5 12h14"/>',24,'#8a6a2a',2.6)+'</button>':'')+'</div><div class="e3-line"></div>';
 h+='<div class="e3-hint">'+eT('barHint')+'</div>';
 h+='<div class="e3-scroll" data-scroll="1">'+m.out.map(hRow).join('')
-+'<div class="e3-xls"><button type="button" data-h="'+eH(()=>triggerXLSImport())+'">'+eT('xlsImport')+'</button><button type="button" data-h="'+eH(()=>exportEditorToXLS())+'">'+eT('xlsExport')+'</button></div></div>';
++'<div class="e3-xl">'+eT('xlsHead')+'</div><div class="e3-xlist">'
++'<button type="button" class="e3-xr" data-h="'+eH(()=>triggerXLSImport())+'">'+eSvg('<path d="M12 4v11M7.5 10.5L12 15l4.5-4.5M5 19h14"/>',28,'#1c3d6e',1.7)+'<span class="m"><b>'+eT('xlsImport')+'</b><small>'+eT('xlsImportSub')+'</small></span>'+eSvg('<path d="M15 6l-6 6 6 6"/>',22,'#a89874',2)+'</button>'
++'<button type="button" class="e3-xr" data-h="'+eH(()=>exportEditorToXLS())+'">'+eSvg('<path d="M12 15V4M7.5 8.5L12 4l4.5 4.5M5 19h14"/>',28,'#1c3d6e',1.7)+'<span class="m"><b>'+eT('xlsExport')+'</b><small>'+eT('xlsExportSub')+'</small></span>'+eSvg('<path d="M15 6l-6 6 6 6"/>',22,'#a89874',2)+'</button>'
++'</div></div></div>';
 return h;
 }
 function hItem(it){
@@ -1522,36 +1509,55 @@ root.addEventListener('keydown',ev=>{if(ev.key==='Enter'&&ev.target.id==='e3Shee
 document.addEventListener('DOMContentLoaded',eBind);
 
 let xlsParsedList=null;
-function triggerXLSImport(){
-showXLSStep1();
-document.getElementById('xlsImportOverlay').classList.add('open');
-}
-function closeXLSImport(){
-document.getElementById('xlsImportOverlay').classList.remove('open');
-xlsParsedList=null;
-}
-function showXLSStep1(){setStepRibbon(1);
-const body=document.getElementById('xlsImportBody');
-const footer=document.getElementById('xlsImportFooter');
-body.innerHTML=`
-<div class="xls-dropzone" id="xlsDropzone" onclick="document.getElementById('xlsImportInput').click()">
-<span class="xls-dropzone-icon">📋</span>
-<div class="xls-dropzone-label">בחר קובץ XLS / XLSX</div>
-<div class="xls-dropzone-sub">Phase · Group · Item · Sub</div>
-</div>`;
-footer.innerHTML=`<button class="btn btn-ghost" style="flex:1" onclick="closeXLSImport()">ביטול</button>`;
-const dz=document.getElementById('xlsDropzone');
-dz.addEventListener('dragover',e=>{e.preventDefault();dz.classList.add('dragover');});
-dz.addEventListener('dragleave',()=>dz.classList.remove('dragover'));
-dz.addEventListener('drop',e=>{
-e.preventDefault();dz.classList.remove('dragover');
-const f=e.dataTransfer.files[0];if(f)processXLSFile(f);
-});
-}
+/* ---- import: pick a file, see one summary, replace or cancel ---- */
+function triggerXLSImport(){const i=document.getElementById('xlsImportInput');if(i){i.value='';i.click();}}
+function closeXLSImport(){const o=document.getElementById('xiOv');if(o){o.classList.remove('open');o.innerHTML='';}xlsParsedList=null;}
 function handleXLSImport(input){
 if(!input.files||!input.files[0])return;
-processXLSFile(input.files[0]);
-input.value='';
+const f=input.files[0];input.value='';
+processXLSFile(f);
+}
+function xiShow(html){
+const o=document.getElementById('xiOv');
+o.innerHTML='<button type="button" class="xi-scrim" onclick="closeXLSImport()" tabindex="-1" aria-hidden="true"></button><div class="xi-sheet" dir="rtl">'+html+'</div>';
+o.classList.add('open');
+}
+function xlsShowError(msg){
+xlsParsedList=null;
+xiShow('<div class="xi-err">!</div><div class="xi-t">'+eT('xiBadTitle')+'</div><p class="xi-m">'+eEsc(msg)+'</p>'
++'<button type="button" class="xi-b p" onclick="triggerXLSImport()">'+eT('xiPickOther')+'</button>'
++'<button type="button" class="xi-b n" onclick="closeXLSImport()">'+eT('xiCancel')+'</button>');
+}
+function xlsShowSummary(profiles,warnings,fileName){
+const shown=profiles.slice(0,3);
+const total=shown.reduce((a,pr)=>a+pr.list.length,0);
+const existing=getProfiles().profiles.length;
+const many=shown.length>1;
+let h='<div class="xi-t">'+eT('xiTitle')+'</div>';
+h+='<div class="xi-file">'+eEsc(fileName||'')+'</div>';
+h+='<div class="xi-big">'+(many?eT('xiFoundLists',shown.length):eT('xiFoundItems',total))+'</div>';
+if(many)h+=shown.map(pr=>'<div class="xi-row"><span>'+eEsc(pr.name)+'</span><span>'+eT('xiItemsN',pr.list.length)+'</span></div>').join('');
+h+='<p class="xi-m">'+(many?eT('xiReplaceMany'):(existing>1?eT('xiReplaceAllOne',existing):eT('xiReplaceOne')))+'</p>';
+if(profiles.length>3)h+='<p class="xi-m xi-w">'+eT('xiMax3')+'</p>';
+if(warnings&&warnings.length)h+='<p class="xi-m xi-w">'+eT('xiSkipped',warnings.length)+'</p>';
+h+='<button type="button" class="xi-b p" onclick="confirmXLSImport()">'+(many?eT('xiReplaceBtnMany'):eT('xiReplaceBtn'))+'</button>';
+h+='<button type="button" class="xi-b n" onclick="closeXLSImport()">'+eT('xiCancel')+'</button>';
+xiShow(h);
+}
+/* ---- keep the editor open when the phone leaves the app to save a file ---- */
+function acMarkResume(){try{localStorage.setItem('ac3_resume',JSON.stringify({t:Date.now(),fromSettings:!!_editorFromSettings,draft:{lists:ED.lists,listId:ED.listId,nid:ED.nid}}));}catch(e){}}
+function acClearResume(){try{localStorage.removeItem('ac3_resume');}catch(e){}}
+function acResumeEditor(){
+let r=null;try{r=JSON.parse(localStorage.getItem('ac3_resume')||'null');}catch(e){}
+if(!r)return;
+acClearResume();
+if(!r.t||Date.now()-r.t>20*60*1000)return;
+openEditor(!!r.fromSettings);
+if(r.draft&&Array.isArray(r.draft.lists)&&r.draft.lists.length){
+ED.lists=r.draft.lists;ED.nid=Math.max(ED.nid,r.draft.nid||0);
+if(ED.lists.some(l=>l.id===r.draft.listId))ED.listId=r.draft.listId;
+eFoldAll();eRender();
+}
 }
 function xlsHeadCols(row){
 const c={phase:0,group:1,main:2,sub:3,url:4,label:5,lean:6,type:-1,style:-1,id:-1,edited:-1};
@@ -1593,6 +1599,7 @@ cur={phase:ph,group:gr,main:main,sub:cell(cols.sub),url:cell(cols.url),urlLabel:
 if(cell(cols.lean)==='✓')cur.lean=true;
 const id=cell(cols.id);if(id)cur._id=id;
 if(cell(cols.edited)==='✓')cur._ed=true;
+if(cols.edited>=0)cur._edc=true;
 newList.push(cur);
 }else if(r[2]&&(!ph||!gr)){warnings.push('שורה '+(i+1)+': חסר שלב או קבוצה');}
 });
@@ -1600,10 +1607,7 @@ newList.forEach(it=>{if(it.subList&&!it.subList.length){delete it.subList;delete
 return{list:newList,warnings};
 }
 function processXLSFile(file){
-if(typeof XLSX==='undefined'){
-document.getElementById('xlsImportBody').innerHTML='<div class="xls-warning">⏳ טוען ספריה... נסה שוב</div>';
-return;
-}
+if(typeof XLSX==='undefined'){xlsShowError(eT('xiLoading'));return;}
 const reader=new FileReader();
 reader.onload=e=>{
 try{
@@ -1619,78 +1623,15 @@ importedProfiles.push({name:sheetName,list:res.list,warnings:res.warnings});
 allWarnings.push(...res.warnings.map(w=>sheetName+': '+w));
 }
 });
-if(!importedProfiles.length){
-document.getElementById('xlsImportBody').innerHTML='<div class="xls-warning">⚠ לא נמצאו פריטים תקינים בקובץ. ודא שהעמודות: Phase, Group, Item, Sub</div>';
-return;
-}
+if(!importedProfiles.length){xlsShowError(eT('xiBadMsg'));return;}
 xlsParsedList=importedProfiles;
-showXLSStep2Multi(importedProfiles,allWarnings,file.name);
+xlsShowSummary(importedProfiles,allWarnings,file.name);
 }catch(ex){
-document.getElementById('xlsImportBody').innerHTML='<div class="xls-warning">⚠ שגיאה בקריאת הקובץ. ודא שהקובץ תקין.</div>';
+xlsShowError(eT('xiReadErr'));
 console.error(ex);
 }
 };
 reader.readAsArrayBuffer(file);
-}
-function setStepRibbon(active){
-const labels=[['01','FILE'],['02','PREVIEW'],['03','LOADED']];
-const html=labels.map((l,i)=>{
-const cls=i+1<active?'done':i+1===active&&active===3?'loaded':i+1===active?'active':'';
-const sep=i<2?'<div class="xls-step-line"></div>':'';
-return `<div class="xls-step ${cls}"><span>${l[0]}</span><span>${l[1]}</span></div>${sep}`;
-}).join('');
-let ribbon=document.getElementById('xlsRibbon');
-if(!ribbon){
-ribbon=document.createElement('div');ribbon.id='xlsRibbon';ribbon.className='xls-step-ribbon';
-document.getElementById('xlsImportBody').parentNode.insertBefore(ribbon,document.getElementById('xlsImportBody'));
-}
-ribbon.innerHTML=html;
-}
-function showXLSStep2Multi(profiles,warnings,filename){
-setStepRibbon(2);
-const totalItems=profiles.reduce((s,p)=>s+p.list.length,0);
-let warnHTML=warnings.length?`<div class="xls-warning">⚠ ${warnings.length} שורות דולגו</div>`:'';
-let profilesHTML=profiles.map(prof=>{
-const phaseSet=new Set(prof.list.map(it=>it.phase));
-return `<div style="padding:8px 0;border-bottom:1px dashed var(--gold-lite);">
-<div style="font-weight:700;font-size:13px;color:var(--ink-body);margin-bottom:2px;">${prof.name}</div>
-<div style="font-family:var(--font-mono);font-size:10px;color:var(--ink-muted);">${prof.list.length} פריטים · ${phaseSet.size} שלבים</div>
-</div>`;
-}).join('');
-document.getElementById('xlsImportBody').innerHTML=`
-<div style="padding:10px 0 6px;">
-<div class="xls-preview-stat">
-<span class="xls-preview-num">${totalItems}</span>
-<span class="xls-preview-label">פריטים · ${profiles.length} רשימות</span>
-</div>
-<div style="font-family:var(--font-mono);font-size:9px;color:var(--ink-faint);letter-spacing:.1em;margin:6px 0 10px;direction:ltr;">SOURCE: ${filename}</div>
-<div style="margin-bottom:8px;">${profilesHTML}</div>
-<div style="font-size:10px;color:var(--stamp-red);font-family:var(--font-mono);letter-spacing:.04em;padding:6px 0;">⚠ ייבוא יחליף את כל הרשימות הקיימות</div>
-${warnHTML}
-</div>`;
-document.getElementById('xlsImportFooter').innerHTML=`
-<button class="btn btn-ghost" style="flex:1" onclick="showXLSStep1()">‹ חזור</button>
-<button class="btn btn-ink" style="flex:1" onclick="confirmXLSImport()">טען רשימות ✓</button>`;
-}
-function showXLSStep3(list,filename){
-setStepRibbon(3);
-const isMulti=typeof filename==='string'&&filename.includes('רשימות');
-const itemCount=Array.isArray(list)?list.length:list;
-const phaseSet=Array.isArray(list)?new Set(list.map(it=>it.phase)):new Set();
-document.getElementById('xlsImportBody').innerHTML=`
-<div style="padding:0 0 8px;display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:220px;">
-<div class="xls-success-stamp">
-<div class="xls-success-stamp-box">
-<div class="xls-success-stamp-loaded">LOADED</div>
-<div class="xls-success-stamp-count" style="direction:ltr;">${isMulti?filename.split('·')[1]?.trim()||filename:itemCount+' ITEMS'}</div>
-<div class="xls-success-stamp-file">${isMulti?filename.split('·')[0]?.trim():filename}</div>
-</div>
-</div>
-<div class="xls-success-title">הרשימות נטענו ✓</div>
-<div class="xls-success-sub">${isMulti?filename:''+itemCount+' פריטים · '+phaseSet.size+' שלבים'}<br/>מוכן לטיסה</div>
-</div>`;
-document.getElementById('xlsImportFooter').innerHTML=`
-<button class="btn btn-ink" style="flex:1" onclick="closeXLSImport()">התחל טיסה <span style="display:inline-block;transform:scaleX(-1)">✈</span></button>`;
 }
 /* Turns the rows of one sheet into a stored list. A default item is recognised by its ID, or (old files) by name, group and phase.
    Anything that differs from the default is marked as the pilot's own change, so an update never overwrites it. */
@@ -1699,14 +1640,16 @@ const byId={};CL_DEFAULT.forEach(d=>{byId[d.defId]=d;});
 const byKey={};CL_DEFAULT.forEach(d=>{byKey[`${norm(d.main)}|${norm(d.group)}|${norm(d.phase)}`]=d;});
 const used=new Set();
 return rows.map(raw=>{
-const it=Object.assign({},raw);const ed=!!it._ed;
-delete it._id;delete it._ed;
+const it=Object.assign({},raw);const ed=!!it._ed;const edc=!!it._edc;
+delete it._id;delete it._ed;delete it._edc;
 let def=null;
 if(raw._id&&byId[raw._id]&&!used.has(raw._id))def=byId[raw._id];
 if(!def){const k=byKey[`${norm(it.main)}|${norm(it.group)}|${norm(it.phase)}`];if(k&&!used.has(k.defId))def=k;}
 if(!def)return it;
 used.add(def.defId);
 if(acIsLegacy(it,def))return Object.assign({},def,{touched:false});
+/* the file says this item was not changed by the pilot, so it follows the current default (updates keep flowing) */
+if(edc&&!ed&&raw._id===def.defId)return Object.assign({},def,{touched:false});
 it.defId=def.defId;
 it.touched=ed||!eSameAsDef(it,def);
 return it;
@@ -1730,8 +1673,7 @@ CL.length=0;firstProf.list.forEach(it=>CL.push(it));
 buildIndex();clearState();
 updateRunwayProfileLabel();
 xlsParsedList=null;
-const totalItems=imported.reduce((s,pr)=>s+pr.list.length,0);
-showXLSStep3(imported.length+' רשימות',imported.length+' רשימות · '+totalItems+' פריטים');
+closeXLSImport();showToast(p.profiles.length>1?eT('xiDoneMany'):eT('xiDoneOne'));
 if(ED.active){eLoadAll();_editorActiveProfileId=ED.listId;eRender();}
 else{render();}
 }
@@ -1769,12 +1711,35 @@ let base=sheetName,n=2;while(names.indexOf(sheetName)>=0){sheetName=base.substri
 names.push(sheetName);
 XLSX.utils.book_append_sheet(wb,ws,sheetName);
 });
-XLSX.writeFile(wb,'AirCheck_Export.xlsx');
-showToast('✓ הקובץ יוצא בהצלחה - '+ED.lists.length+' רשימות');
+const out=XLSX.write(wb,{bookType:'xlsx',type:'array'});
+xlsDeliverFile(out,'AirCheck_Export.xlsx',ED.lists.length);
 }catch(e){
-showToast('שגיאה בייצוא: '+e.message);
+showToast(eT('xlsExportErr')+': '+e.message);
 console.error('Export error:',e);
 }
+}
+
+/* Hand the file to the phone's share sheet (Save to Files). The app stays open, so the editor is still there afterwards.
+   Where sharing is not available the file is downloaded instead. */
+function xlsDeliverFile(out,name,n){
+const type='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet';
+const blob=new Blob([out],{type:type});
+const done=()=>showToast(eT('xlsExportDone',n));
+const download=()=>{
+const url=URL.createObjectURL(blob);const a=document.createElement('a');
+a.href=url;a.download=name;document.body.appendChild(a);a.click();a.remove();
+setTimeout(()=>URL.revokeObjectURL(url),8000);
+done();
+};
+acMarkResume();
+try{
+const file=new File([blob],name,{type:type});
+if(navigator.canShare&&navigator.canShare({files:[file]})){
+navigator.share({files:[file]}).then(done).catch(err=>{if(err&&err.name==='AbortError')return;download();});
+return;
+}
+}catch(e){}
+download();
 }
 function handleManyListsClick(e){if(e.target===document.getElementById('manyListsModal'))manyListsDecline();}
 function manyListsConfirm(){
@@ -1912,6 +1877,7 @@ if(window.syncPwaStats)window.syncPwaStats();
 }
 }
 checkPwaPopup();
+try{acResumeEditor();}catch(e){console.error(e);}
 });
 </script>
 <script>
@@ -2445,9 +2411,10 @@ return inst;
 </sc-for>
 <div style="padding:12px 14px 14px;">
 <div style="font-size:16px;color:#1c3d6e;font-weight:600;padding-bottom:8px;">זמן החזקת המסלול לאישור</div>
-<div style="display:flex;border:2px solid #c8a04a;border-radius:10px;overflow:hidden;">
+<div style="position:relative;display:flex;height:52px;border:2px solid #c8a04a;border-radius:26px;background:#fff;overflow:hidden;">
+<span style="position:absolute;top:3px;bottom:3px;width:calc((100% - 6px) / 3);inset-inline-start:calc(3px + {{holdIdx}} * (100% - 6px) / 3);border-radius:23px;background:#1c3d6e;transition:inset-inline-start .3s cubic-bezier(.3,.8,.3,1);" aria-hidden="true"></span>
 <sc-for list="{{stHold}}" as="hd">
-<button type="button" onClick="{{hd.pick}}" style="flex:1;height:44px;border:0;background:{{hd.bg}};color:{{hd.fg}};font-size:15px;font-weight:600;cursor:pointer;">{{hd.label}}</button>
+<button type="button" onClick="{{hd.pick}}" style="position:relative;flex:1;height:100%;border:0;background:transparent;color:{{hd.fg}};font-size:16px;font-weight:700;cursor:pointer;transition:color .25s;">{{hd.label}}</button>
 </sc-for>
 </div>
 </div>
@@ -2697,8 +2664,9 @@ confirmItem() {
 const st = this.state;
 if (st.view !== 'card' || st.screen !== 'checklist') { this.complete(false); return; }
 this.setState({ stampOn: true });
+ac3Feedback();
 this._stampAt = Date.now();
-const go = () => this.flipThen(() => { this.complete(false); this.setState({ stampOn: false }); });
+const go = () => this.flipThen(() => { this.complete(false, false, true); this.setState({ stampOn: false }); });
 if (this._down) this._pend = go; else setTimeout(go, 620);
 }
 flipThen(fn, kind) {
@@ -2722,8 +2690,8 @@ if (i + 1 >= ITEMS.length) return;
 const skipped = { ...st.skipped }; if (open) skipped[it.id] = true;
 this.setState({ skipped, amber: false, amberBack: null, cur: i + 1, sectionDone: false, finished: false, curtainOpen: false, flip: st.flip + 1 });
 }
-complete(skip, keep) {
-if (!skip) ac3Feedback();
+complete(skip, keep, noFx) {
+if (!skip && !noFx) ac3Feedback();
 const st = this.state; const it = ITEMS[st.cur];
 const done = { ...st.done }; const skipped = { ...st.skipped }; const times = { ...st.times };
 if (keep) { }
@@ -2772,7 +2740,7 @@ setTimeout(() => this.setState(v === 'list' ? { view: 'list', listMore: true, vi
 }
 togglePt(j) {
 const st = this.state; const pts = { ...st.pts };
-if (pts[j]) { delete pts[j]; this._subPend = null; } else pts[j] = true;
+if (pts[j]) { delete pts[j]; this._subPend = null; } else { pts[j] = true; ac3Feedback(); }
 this.setState({ pts });
 if (Object.keys(pts).length === BRIEF.length) {
 const c = st.cur;
@@ -3020,7 +2988,7 @@ setBack: () => this.setState({ screen: 'splash' }),
 openEditor: () => openEditor(true),
 stTail: st.tail, stAirfield: st.airfield, stTailLabel: '4X-' + (st.tail.replace(/^4X-?/i, '') || '???'),
 stToggles: [{ label: 'צליל בעת אישור', on: settings.sounds !== false, bg: settings.sounds !== false ? '#1f6f3f' : '#b9ad92', knob: settings.sounds !== false ? 3 : 21, flip: () => { settings.sounds = !(settings.sounds !== false); saveSettings(); this.setState({ _t: Date.now() }); } }, { label: 'רטט באישורי פעולה', on: settings.haptics !== false, bg: settings.haptics !== false ? '#1f6f3f' : '#b9ad92', knob: settings.haptics !== false ? 3 : 21, flip: () => { settings.haptics = !(settings.haptics !== false); saveSettings(); this.setState({ _t: Date.now() }); } }],
-stHold: [['קצר', 200], ['רגיל', 400], ['ארוך', 700]].map(([label, ms]) => { const on = ac3Hold() === ms; return { label, bg: on ? '#1c3d6e' : 'transparent', fg: on ? '#f4ecdc' : '#1c3d6e', pick: () => { settings.holdMs = ms; saveSettings(); this.setState({ _t: Date.now() }); } }; }),
+holdIdx: [200, 400, 700].indexOf(ac3Hold()), stHold: [['קצר', 200], ['רגיל', 400], ['ארוך', 700]].map(([label, ms]) => { const on = ac3Hold() === ms; return { label, bg: on ? '#1c3d6e' : 'transparent', fg: on ? '#f4ecdc' : '#1c3d6e', pick: () => { settings.holdMs = ms; saveSettings(); this.setState({ _t: Date.now() }); } }; }),
 reloadDemo: () => reloadApp(), icoSrc: AC3_ICON, contact: () => window.open('mailto:eligrt@gmail.com', '_blank'), utcNow: this.hhmm(), appStamp: APP_STAMP, spCanAdd: getProfiles().profiles.length < 3, spShowLists: FEATURES.MULTI_PROFILE, spAddList: () => openEditorForNewList(),
 spPhaseName: PH[cur0.ph], spItem: cur0.m,
 spPct: real ? Math.round(((st.cur + 1) / N) * 100) : 40, spCount: spDn + ' / ' + N, spPctLabel: Math.round((spDn / N) * 100) + '%',
