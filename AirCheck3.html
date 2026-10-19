@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <!-- ═══════════════════════════════════════
-     AirCheck · v3.00.030 · built by eligrt
+     AirCheck · v3.00.031 · built by eligrt
      ═══════════════════════════════════════ -->
 <html lang="he" dir="rtl">
 <head>
@@ -35,7 +35,7 @@ if(force){['aircheck_rd_v1'].forEach(function(n){r.call(localStorage,P+n);});try
 <script>
 /* Single source of truth for app identity. Footers, share texts, exports and Firebase appVersion all read these. */
 const APP_NAME='AirCheck';
-const APP_VERSION='v3.00.030';
+const APP_VERSION='v3.00.031';
 const APP_STAMP=APP_NAME+' · '+APP_VERSION+' · built by eligrt';
 document.addEventListener('DOMContentLoaded',function(){document.querySelectorAll('.app-stamp').forEach(function(e){e.textContent=APP_STAMP;});});
 </script>
@@ -823,7 +823,7 @@ const hasOverflow=list.scrollHeight>list.clientHeight+2;
 const atBottom=list.scrollTop+list.clientHeight>=list.scrollHeight-2;
 fade.classList.toggle('show',hasOverflow&&!atBottom);
 }
-/* ============ AirCheck list editor (v3.00.030) ============
+/* ============ AirCheck list editor (v3.00.031) ============
    All screen text is in E_LANG. English is added later as E_LANG.en. */
 const E_LANG={he:{
 back:'חזרה',cancel:'ביטול',ok:'אישור',save:'שמור שינויים',saved:'נשמר',
@@ -2996,7 +2996,7 @@ const off = { bd: '#e9dfc6', bg: '#f0e8d6', fg: '#a29780' };
 const on = { bd: '#e3d4ad', bg: '#fbf6e8', fg: '#1c3d6e' };
 const amber = { bd: '#f59e0b', bg: '#fdecc8', fg: '#6b3f00' };
 const pick = (dis, onCfg) => { const c = dis ? off : onCfg; return { dis, bd: c.bd, bg: c.bg, fg: c.fg }; };
-const nPrev = pick(st.cur === 0, on);
+const nPrev = pick(st.cur === 0 && !(st.amber && ITEMS.some((x, k) => isSkip(x) && k !== st.cur)), on);
 const nUnc = pick(!curHandled && !st.sectionDone && !st.finished, on);
 const nSkip = pick(st.finished || (!st.sectionDone && st.cur >= ITEMS.length - 1), on);
 const nUnm = pick(skippedN === 0, amber);
@@ -3092,8 +3092,8 @@ bkBd: (st.bulk && this.phaseIdx(st.bulk.p).every(i => isDone(ITEMS[i]))) ? '2px 
 bkTop: st.bulk ? st.bulk.top : 0,
 bkLeft: st.bulk ? Math.max(8, Math.min(st.bulk.left, (document.getElementById('ac3root').clientWidth || 390) - 216)) : 0,
 bkConfirm: () => this.bkConfirm(), bkClose: () => this.bkClose(),
-jumpSkipped: () => { const sk = []; ITEMS.forEach((x, i) => { if (isSkip(x)) sk.push(i); }); if (!sk.length) return; const i = sk.find(j => j > st.cur) ?? sk[0]; if (i === st.cur && !st.sectionDone && !st.finished) return; this.enterAmber(i); },
-prev: () => { if (st.cur > 0) this.goTo(st.cur - 1); },
+jumpSkipped: () => { const sk = []; ITEMS.forEach((x, i) => { if (isSkip(x)) sk.push(i); }); if (!sk.length) return; const i = st.amber ? (sk.find(j => j > st.cur) ?? sk[0]) : sk[0]; if (st.amber && i === st.cur && !st.sectionDone && !st.finished) return; this.enterAmber(i); },
+prev: () => { if (st.amber) { const sk = []; ITEMS.forEach((x, i) => { if (isSkip(x)) sk.push(i); }); const pv = sk.filter(j => j < st.cur); const t = pv.length ? pv[pv.length - 1] : sk[sk.length - 1]; if (t !== undefined && t !== st.cur) this.setState({ cur: t, curtainOpen: false, flip: st.flip + 1 }); return; } if (st.cur > 0) this.goTo(st.cur - 1); },
 uncheck: () => this.uncheck(),
 skip: () => { if (st.finished) return; if (st.sectionDone) { this.tick(); return; } this.flipThen(() => this.nextStep(), 'next'); },
 reset: () => { this._t0 = null; this._t1 = null; if (this._ht) { clearTimeout(this._ht); this._ht = null; } this.setState({ ...START }); },
