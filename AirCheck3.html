@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <!-- ═══════════════════════════════════════
-     AirCheck · v3.00.031 · built by eligrt
+     AirCheck · v3.00.032 · built by eligrt
      ═══════════════════════════════════════ -->
 <html lang="he" dir="rtl">
 <head>
@@ -35,7 +35,7 @@ if(force){['aircheck_rd_v1'].forEach(function(n){r.call(localStorage,P+n);});try
 <script>
 /* Single source of truth for app identity. Footers, share texts, exports and Firebase appVersion all read these. */
 const APP_NAME='AirCheck';
-const APP_VERSION='v3.00.031';
+const APP_VERSION='v3.00.032';
 const APP_STAMP=APP_NAME+' · '+APP_VERSION+' · built by eligrt';
 document.addEventListener('DOMContentLoaded',function(){document.querySelectorAll('.app-stamp').forEach(function(e){e.textContent=APP_STAMP;});});
 </script>
@@ -823,7 +823,7 @@ const hasOverflow=list.scrollHeight>list.clientHeight+2;
 const atBottom=list.scrollTop+list.clientHeight>=list.scrollHeight-2;
 fade.classList.toggle('show',hasOverflow&&!atBottom);
 }
-/* ============ AirCheck list editor (v3.00.031) ============
+/* ============ AirCheck list editor (v3.00.032) ============
    All screen text is in E_LANG. English is added later as E_LANG.en. */
 const E_LANG={he:{
 back:'חזרה',cancel:'ביטול',ok:'אישור',save:'שמור שינויים',saved:'נשמר',
@@ -2735,7 +2735,7 @@ const st = this.state; const i = st.cur; const it = ITEMS[i];
 const open = this.isOpen(i, st.done, st.skipped);
 if (st.amber) {
 const sk = []; ITEMS.forEach((x, k) => { if (st.skipped[x.id] && k !== i) sk.push(k); });
-if (sk.length) { this.setState({ cur: sk.find(k => k > i) ?? sk[0], curtainOpen: false, flip: st.flip + 1 }); return; }
+if (sk.length) { this.setState({ amberFresh: false, cur: sk.find(k => k > i) ?? sk[0], curtainOpen: false, flip: st.flip + 1 }); return; }
 const b = st.amberBack;
 const back = (b !== null && b !== undefined) ? (this.isOpen(b, st.done, st.skipped) ? b : this.nextOpen(b, st.done, st.skipped)) : -1;
 const at = (b !== null && b !== undefined) ? b : i;
@@ -2758,7 +2758,7 @@ else { done[it.id] = true; delete skipped[it.id]; times[it.id] = this.hhmm(); }
 const base = { done, skipped, times, curtainOpen: false, flip: st.flip + 1 };
 if (st.amber) {
 const sk = []; ITEMS.forEach((x, i) => { if (skipped[x.id] && i !== st.cur) sk.push(i); });
-if (sk.length) { this.setState({ ...base, cur: sk.find(i => i > st.cur) ?? sk[0] }); return; }
+if (sk.length) { this.setState({ ...base, amberFresh: !skip, cur: sk.find(i => i > st.cur) ?? sk[0] }); return; }
 const b = st.amberBack;
 const back = (b !== null && b !== undefined) ? (this.isOpen(b, done, skipped) ? b : this.nextOpen(b, done, skipped)) : -1;
 if (back < 0) this.setState({ ...base, amber: false, amberBack: null, cur: (b !== null && b !== undefined) ? b : st.cur, ...this.endOf((b !== null && b !== undefined) ? b : st.cur) });
@@ -2863,7 +2863,7 @@ this.setState({ skipped, amber: false, cur: i, sectionDone: false, finished: fal
 }
 enterAmber(i) {
 const st = this.state;
-this.setState({ cur: i, amber: true, amberBack: st.amber ? st.amberBack : st.cur, sectionDone: false, finished: false, curtainOpen: false, flip: st.flip + 1 });
+this.setState({ cur: i, amber: true, amberFresh: false, amberBack: st.amber ? st.amberBack : st.cur, sectionDone: false, finished: false, curtainOpen: false, flip: st.flip + 1 });
 }
 renderVals() {
 const st = this.state;
@@ -3092,8 +3092,8 @@ bkBd: (st.bulk && this.phaseIdx(st.bulk.p).every(i => isDone(ITEMS[i]))) ? '2px 
 bkTop: st.bulk ? st.bulk.top : 0,
 bkLeft: st.bulk ? Math.max(8, Math.min(st.bulk.left, (document.getElementById('ac3root').clientWidth || 390) - 216)) : 0,
 bkConfirm: () => this.bkConfirm(), bkClose: () => this.bkClose(),
-jumpSkipped: () => { const sk = []; ITEMS.forEach((x, i) => { if (isSkip(x)) sk.push(i); }); if (!sk.length) return; const i = st.amber ? (sk.find(j => j > st.cur) ?? sk[0]) : sk[0]; if (st.amber && i === st.cur && !st.sectionDone && !st.finished) return; this.enterAmber(i); },
-prev: () => { if (st.amber) { const sk = []; ITEMS.forEach((x, i) => { if (isSkip(x)) sk.push(i); }); const pv = sk.filter(j => j < st.cur); const t = pv.length ? pv[pv.length - 1] : sk[sk.length - 1]; if (t !== undefined && t !== st.cur) this.setState({ cur: t, curtainOpen: false, flip: st.flip + 1 }); return; } if (st.cur > 0) this.goTo(st.cur - 1); },
+jumpSkipped: () => { const sk = []; ITEMS.forEach((x, i) => { if (isSkip(x)) sk.push(i); }); if (!sk.length) return; const fresh = !st.amber || st.amberFresh; const i = fresh ? sk[0] : (sk.find(j => j > st.cur) ?? sk[0]); if (i === st.cur && st.amber && !st.sectionDone && !st.finished) { if (st.amberFresh) this.setState({ amberFresh: false }); return; } this.enterAmber(i); },
+prev: () => { if (st.amber) { const sk = []; ITEMS.forEach((x, i) => { if (isSkip(x)) sk.push(i); }); const pv = sk.filter(j => j < st.cur); const t = pv.length ? pv[pv.length - 1] : sk[sk.length - 1]; if (t !== undefined && t !== st.cur) this.setState({ amberFresh: false, cur: t, curtainOpen: false, flip: st.flip + 1 }); return; } if (st.cur > 0) this.goTo(st.cur - 1); },
 uncheck: () => this.uncheck(),
 skip: () => { if (st.finished) return; if (st.sectionDone) { this.tick(); return; } this.flipThen(() => this.nextStep(), 'next'); },
 reset: () => { this._t0 = null; this._t1 = null; if (this._ht) { clearTimeout(this._ht); this._ht = null; } this.setState({ ...START }); },
