@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <!-- ═══════════════════════════════════════
-     AirCheck · v3.00.028 · built by eligrt
+     AirCheck · v3.00.029 · built by eligrt
      ═══════════════════════════════════════ -->
 <html lang="he" dir="rtl">
 <head>
@@ -35,7 +35,7 @@ if(force){['aircheck_rd_v1'].forEach(function(n){r.call(localStorage,P+n);});try
 <script>
 /* Single source of truth for app identity. Footers, share texts, exports and Firebase appVersion all read these. */
 const APP_NAME='AirCheck';
-const APP_VERSION='v3.00.028';
+const APP_VERSION='v3.00.029';
 const APP_STAMP=APP_NAME+' · '+APP_VERSION+' · built by eligrt';
 document.addEventListener('DOMContentLoaded',function(){document.querySelectorAll('.app-stamp').forEach(function(e){e.textContent=APP_STAMP;});});
 </script>
@@ -823,7 +823,7 @@ const hasOverflow=list.scrollHeight>list.clientHeight+2;
 const atBottom=list.scrollTop+list.clientHeight>=list.scrollHeight-2;
 fade.classList.toggle('show',hasOverflow&&!atBottom);
 }
-/* ============ AirCheck list editor (v3.00.028) ============
+/* ============ AirCheck list editor (v3.00.029) ============
    All screen text is in E_LANG. English is added later as E_LANG.en. */
 const E_LANG={he:{
 back:'חזרה',cancel:'ביטול',ok:'אישור',save:'שמור שינויים',saved:'נשמר',
@@ -2094,7 +2094,7 @@ return inst;
 </div>
 <div style="position:relative;flex:none;margin-bottom:14px;">
 <sc-if value="{{showUnder}}">
-<div style="position:absolute;z-index:1;top:0;left:0;right:0;box-sizing:border-box;min-height:212px;padding:26px 18px 13px;display:flex;flex-direction:column;background:#fbf6e8;border:2px solid #c8a04a;border-radius:14px;box-shadow:0 5px 0 -1px #e3d4ad,0 10px 0 -3px #c8a04a,0 14px 20px rgba(28,61,110,.14);"><sc-if value="{{underDone}}"><div style="position:absolute;top:-2px;left:-2px;right:-2px;bottom:-2px;z-index:2;box-sizing:border-box;padding:30px 18px 18px;background:#eaf2de;border:2px solid #1f6f3f;border-radius:14px;box-shadow:inset 0 0 0 5px #eaf2de,inset 0 0 0 7px rgba(31,111,63,.4),0 5px 0 -1px #c9dcb8,0 10px 0 -3px #1f6f3f,0 14px 20px rgba(28,61,110,.14);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px;text-align:center;" aria-hidden="true"><div style="width:100%;display:flex;align-items:center;gap:8px;"><span style="flex:1;border-top:3px dashed rgba(31,111,63,.5);"></span><svg width="26" height="26" viewBox="0 0 34 34" style="transform:rotate(-90deg);flex:none;"><path d="M17 2 C18.7 2 19.5 4.2 19.5 7 L19.5 13.2 L31 19 L31 22.2 L19.5 19.8 L19.5 26 L23.4 28.4 L23.4 31 L17 29.6 L10.6 31 L10.6 28.4 L14.5 26 L14.5 19.8 L3 22.2 L3 19 L14.5 13.2 L14.5 7 C14.5 4.2 15.3 2 17 2 Z" fill="#ffffff" stroke="#1a1308" stroke-width="1.5" stroke-linejoin="round"></path></svg><span style="flex:1;border-top:3px dashed rgba(31,111,63,.5);"></span></div><div style="padding:4px 10px;color:#1f6f3f;"><div dir="ltr" style="font-family:'JetBrains Mono',monospace;font-size:14px;font-weight:700;letter-spacing:.14em;">SECTION COMPLETED</div><div style="font-size:30px;line-height:1.2;font-weight:700;">השלב הושלם</div></div><div style="font-size:16px;font-weight:600;color:#1c3d6e;">{{underDonePhase}}</div><div style="font-size:14px;line-height:1.4;color:#5a4a3a;">{{underDoneNote}}</div></div></sc-if>
+<div style="position:absolute;z-index:1;top:0;left:0;right:0;box-sizing:border-box;min-height:212px;padding:26px 18px 13px;display:flex;flex-direction:column;background:#fbf6e8;border:2px solid #c8a04a;border-radius:14px;box-shadow:0 5px 0 -1px #e3d4ad,0 10px 0 -3px #c8a04a,0 14px 20px rgba(28,61,110,.14);"><sc-if value="{{underDone}}"><div style="position:absolute;top:-2px;left:-2px;right:-2px;bottom:-2px;z-index:2;box-sizing:border-box;padding:30px 18px 18px;background:#eaf2de;border:2px solid #1f6f3f;border-radius:14px;box-shadow:inset 0 0 0 5px #eaf2de,inset 0 0 0 7px rgba(31,111,63,.4),0 5px 0 -1px #c9dcb8,0 10px 0 -3px #1f6f3f,0 14px 20px rgba(28,61,110,.14);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px;text-align:center;" aria-hidden="true"><div style="width:100%;display:flex;align-items:center;gap:8px;"><span style="flex:1;border-top:3px dashed rgba(31,111,63,.5);"></span><svg width="26" height="26" viewBox="0 0 34 34" style="transform:rotate(-90deg);flex:none;"><path d="M17 2 C18.7 2 19.5 4.2 19.5 7 L19.5 13.2 L31 19 L31 22.2 L19.5 19.8 L19.5 26 L23.4 28.4 L23.4 31 L17 29.6 L10.6 31 L10.6 28.4 L14.5 26 L14.5 19.8 L3 22.2 L3 19 L14.5 13.2 L14.5 7 C14.5 4.2 15.3 2 17 2 Z" fill="#ffffff" stroke="#1a1308" stroke-width="1.5" stroke-linejoin="round"></path></svg><span style="flex:1;border-top:3px dashed rgba(31,111,63,.5);"></span></div><div style="padding:4px 10px;color:#1f6f3f;"><div dir="ltr" style="font-family:'JetBrains Mono',monospace;font-size:14px;font-weight:700;letter-spacing:.14em;">SECTION COMPLETED</div><div style="font-size:30px;line-height:1.2;font-weight:700;">השלב הושלם</div></div><div style="font-size:16px;font-weight:600;color:#1c3d6e;">{{underDonePhase}}</div><sc-if value="{{underHasSkip}}"><div style="display:flex;align-items:center;gap:8px;background:#f1e2bc;border:1px solid #c9a24a;border-radius:8px;padding:6px 10px;font-size:13px;font-weight:600;color:#8a5200;line-height:1.25;text-align:start;"><span style="display:inline-flex;width:20px;height:20px;border-radius:50%;background:#f59e0b;color:#fff;align-items:center;justify-content:center;font-weight:800;font-size:13px;flex:none;" aria-hidden="true">!</span><span>{{underSkipText}}</span></div></sc-if><sc-if value="{{underNoSkip}}"><div style="font-size:14px;line-height:1.4;color:#5a4a3a;">{{underDoneNote}}</div></sc-if></div></sc-if>
 <div style="display:flex;align-items:center;justify-content:space-between;">
 <span dir="ltr" style="font-family:'JetBrains Mono',monospace;font-size:12px;font-weight:700;color:#5a4a3a;letter-spacing:.06em;">{{underNum}}</span>
 <span style="display:flex;gap:6px;align-items:center;"><sc-if value="{{underIsSub}}"><span style="font-size:12px;font-weight:700;background:#1c3d6e;color:#f4ecdc;padding:3px 9px;border-radius:8px;">תת-רשימה</span></sc-if><sc-if value="{{underGrpOn}}"><span style="font-size:12px;font-weight:600;background:#f1e2bc;color:#6f531d;padding:3px 9px;border-radius:8px;">{{underGrp}} בקבוצה</span></sc-if></span>
@@ -2218,12 +2218,12 @@ return inst;
 <sc-if value="{{showDoneCard}}">
 <div style="position:relative;z-index:2;transform-origin:top center;transform-style:preserve-3d;animation:{{cardAnim}};"><div style="position:absolute;top:0;left:0;right:0;bottom:0;border-radius:14px;border:2px solid #c8a04a;background:repeating-linear-gradient(#ebdfba,#ebdfba 27px,#ddcc98 28px);transform:rotateX(180deg);backface-visibility:hidden;-webkit-backface-visibility:hidden;animation:{{backAnim}};" aria-hidden="true"></div><div style="position:relative;box-sizing:border-box;min-height:212px;padding:30px 18px 18px;background:#eaf2de;animation:{{frontAnim}};border:2px solid #1f6f3f;border-radius:14px;box-shadow:inset 0 0 0 5px #eaf2de,inset 0 0 0 7px rgba(31,111,63,.4),0 5px 0 -1px #c9dcb8,0 10px 0 -3px #1f6f3f,0 14px 20px rgba(28,61,110,.14);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px;text-align:center;backface-visibility:hidden;-webkit-backface-visibility:hidden;">
 <div style="width:100%;display:flex;align-items:center;gap:8px;"><span style="flex:1;border-top:3px dashed rgba(31,111,63,.5);"></span><svg width="26" height="26" viewBox="0 0 34 34" style="transform:rotate(-90deg);flex:none;" aria-hidden="true"><path d="M17 2 C18.7 2 19.5 4.2 19.5 7 L19.5 13.2 L31 19 L31 22.2 L19.5 19.8 L19.5 26 L23.4 28.4 L23.4 31 L17 29.6 L10.6 31 L10.6 28.4 L14.5 26 L14.5 19.8 L3 22.2 L3 19 L14.5 13.2 L14.5 7 C14.5 4.2 15.3 2 17 2 Z" fill="#ffffff" stroke="#1a1308" stroke-width="1.5" stroke-linejoin="round"></path></svg><span style="flex:1;border-top:3px dashed rgba(31,111,63,.5);"></span></div>
-<div style="padding:4px 10px;color:#1f6f3f;animation:drapeIn .35s ease-out both;">
+<div style="padding:4px 10px;color:#1f6f3f;">
 <div dir="ltr" style="font-family:'JetBrains Mono',monospace;font-size:14px;font-weight:700;letter-spacing:.14em;">{{doneEn}}</div>
 <div style="font-size:30px;line-height:1.2;font-weight:700;">{{doneHe}}</div>
 </div>
 <div style="font-size:16px;font-weight:600;color:#1c3d6e;">{{donePhase}}</div>
-<div style="font-size:14px;line-height:1.4;color:#5a4a3a;">{{doneNote}}</div>
+<sc-if value="{{doneHasSkip}}"><div style="display:flex;align-items:center;gap:8px;background:#f1e2bc;border:1px solid #c9a24a;border-radius:8px;padding:6px 10px;font-size:13px;font-weight:600;color:#8a5200;line-height:1.25;text-align:start;"><span style="display:inline-flex;width:20px;height:20px;border-radius:50%;background:#f59e0b;color:#fff;align-items:center;justify-content:center;font-weight:800;font-size:13px;flex:none;" aria-hidden="true">!</span><span>{{doneSkipText}}</span></div></sc-if><sc-if value="{{doneNoSkip}}"><div style="font-size:14px;line-height:1.4;color:#5a4a3a;">{{doneNote}}</div></sc-if>
 </div>
 </div>
 </sc-if>
@@ -2735,6 +2735,7 @@ const st = this.state; const i = st.cur; const it = ITEMS[i];
 const open = this.isOpen(i, st.done, st.skipped);
 if (i + 1 >= ITEMS.length) return;
 const skipped = { ...st.skipped }; if (open) skipped[it.id] = true;
+if (ITEMS[i + 1].ph !== it.ph) { this.setState({ skipped, amber: false, amberBack: null, curtainOpen: false, flip: st.flip + 1, ...this.endOf(i) }); return; }
 this.setState({ skipped, amber: false, amberBack: null, cur: i + 1, sectionDone: false, finished: false, curtainOpen: false, flip: st.flip + 1 });
 }
 complete(skip, keep, noFx) {
@@ -2997,6 +2998,8 @@ unmDis: nUnm.dis, unmBd: nUnm.bd, unmBg: nUnm.bg, unmFg: nUnm.fg
 };
 const phSkipped = this.phaseIdx(it.ph).filter(i => isSkip(ITEMS[i])).length;
 const doneEn = st.finished ? 'FLIGHT COMPLETED' : 'SECTION COMPLETED';
+const skTxt = n => n === 1 ? 'פריט אחד דולג - כדאי לחזור אליו' : n + ' פריטים דולגו - כדאי לחזור אליהם';
+const underSk = (st.flipOut && st.flipKind === 'next') ? phSkipped + (isSkip(it) ? 0 : 1) : phSkipped - (isSkip(it) ? 1 : 0);
 const doneHe = st.finished ? 'הטיסה הושלמה' : 'השלב הושלם';
 const doneNote = st.finished ? (skippedN ? 'דילגת על ' + skippedN + ' פריטים. אפשר לחזור אליהם מהרשימה' : 'כל הפריטים סומנו') : (phSkipped ? 'דילגת על ' + phSkipped + ' פריטים. אפשר לחזור אליהם' : 'כל פריטי השלב סומנו');
 const isCardView = st.view === 'card';
@@ -3011,7 +3014,7 @@ const hasFlap = isCardView && showItemCard && it.k === 'curtain';
 const showCurtain = hasFlap && st.curtainOpen;
 let uCnt = 0; let underNum = '', underMain = '', underSub = '', uK = '', uLbl = '', uGrp = '';
 if (st.sectionDone) { if (it.ph < PH.length - 1) { underNum = 'NEXT SECTION'; underMain = PH[it.ph + 1]; } else { underNum = 'END'; underMain = 'סיום טיסה'; } }
-else if (!st.finished) { const nI = (st.flipOut && st.flipKind === 'next') ? (st.cur + 1 < N ? st.cur + 1 : -1) : (st.amber ? this.amberNext(st) : this.nextOpen(st.cur, st.done, st.skipped)); if (nI >= 0 && nI !== st.cur) { underNum = 'ITEM ' + pad(nI + 1) + ' / ' + pad(N); underMain = ITEMS[nI].m; underSub = ITEMS[nI].s; uK = ITEMS[nI].k || ''; uLbl = ITEMS[nI].k === 'own' ? 'פתח את ' + ITEMS[nI].l : (ITEMS[nI].l || ''); const gg = ITEMS.filter(z => z.ph === ITEMS[nI].ph && z.g === ITEMS[nI].g); uCnt = (ITEMS[nI].subList || []).length; uGrp = (gg.indexOf(ITEMS[nI]) + 1) + '/' + gg.length; } else { underNum = 'END OF SECTION'; underMain = 'השלב הושלם'; } }
+else if (!st.finished) { const nI = (st.flipOut && st.flipKind === 'next') ? (st.cur + 1 < N && ITEMS[st.cur + 1].ph === it.ph ? st.cur + 1 : -1) : (st.amber ? this.amberNext(st) : this.nextOpen(st.cur, st.done, st.skipped)); if (nI >= 0 && nI !== st.cur) { underNum = 'ITEM ' + pad(nI + 1) + ' / ' + pad(N); underMain = ITEMS[nI].m; underSub = ITEMS[nI].s; uK = ITEMS[nI].k || ''; uLbl = ITEMS[nI].k === 'own' ? 'פתח את ' + ITEMS[nI].l : (ITEMS[nI].l || ''); const gg = ITEMS.filter(z => z.ph === ITEMS[nI].ph && z.g === ITEMS[nI].g); uCnt = (ITEMS[nI].subList || []).length; uGrp = (gg.indexOf(ITEMS[nI]) + 1) + '/' + gg.length; } else { underNum = 'END OF SECTION'; underMain = 'השלב הושלם'; } }
 const real = doneN + skippedN > 0; const forceP = (this.props.splashDemo ?? 'auto') === 'inProgress';
 const spInProgress = real || forceP;
 const spSk = real ? skippedN : 1; const spDn = real ? doneN : 6;
@@ -3025,7 +3028,7 @@ return {
 showSubTab: false, subTabLabel: st.curtainOpen ? 'תת-רשימה פתוחה בכרטיס' : 'תת-רשימה בכרטיס', subTabRot: 0,
 hintPadR: 14,
 backAnim: st.flipOut ? 'backIn 950ms linear both' : 'none', frontAnim: st.flipOut ? 'frontOut 950ms linear both' : (st.stampOn ? 'cardThump .5s ease-out both' : 'none'), cardAnim: st.flipOut ? 'pageFlip 950ms cubic-bezier(.5,0,.3,1) forwards' : 'none',
-showUnder: isCardView && !st.finished, underDone: !st.sectionDone && !st.finished && underNum === 'END OF SECTION', underDonePhase: PH[it.ph], underDoneNote: (phSkipped - (isSkip(it) ? 1 : 0)) > 0 ? 'דילגת על ' + (phSkipped - (isSkip(it) ? 1 : 0)) + ' פריטים. אפשר לחזור אליהם' : 'כל פריטי השלב סומנו', underNum, underMain, underSub, underIsSub: uK === 'curtain', underIsLink: uK === 'ext' || uK === 'own', underIsOwn: uK === 'own', underIsExt: uK === 'ext', underLinkLabel: uLbl, underGrp: uGrp, underGrpOn: !!uGrp, underSubLine: uCnt + ' נקודות · הקש לפתיחה',
+doneHasSkip: !st.finished && phSkipped > 0, doneNoSkip: st.finished || phSkipped === 0, doneSkipText: skTxt(phSkipped), underHasSkip: underSk > 0, underNoSkip: underSk <= 0, underSkipText: skTxt(underSk), showUnder: isCardView && !st.finished, underDone: !st.sectionDone && !st.finished && underNum === 'END OF SECTION', underDonePhase: PH[it.ph], underDoneNote: (phSkipped - (isSkip(it) ? 1 : 0)) > 0 ? 'דילגת על ' + (phSkipped - (isSkip(it) ? 1 : 0)) + ' פריטים. אפשר לחזור אליהם' : 'כל פריטי השלב סומנו', underNum, underMain, underSub, underIsSub: uK === 'curtain', underIsLink: uK === 'ext' || uK === 'own', underIsOwn: uK === 'own', underIsExt: uK === 'ext', underLinkLabel: uLbl, underGrp: uGrp, underGrpOn: !!uGrp, underSubLine: uCnt + ' נקודות · הקש לפתיחה',
 showSplash: st.screen === 'splash' || st.screen === 'settings', showSettings: st.screen === 'settings', showEditor: false, spInProgress, spFresh: !spInProgress,
 spMarks, spPlaneRight: 'calc(' + spPctNum + '% - 12px)', iconBg: IC[0], iconRim: IC[1], iconLine: IC[2], iconPlane: IC[3], iconPlaneStroke: IC[4],
 spOpenSettings: () => this.setState({ screen: 'settings' }),
