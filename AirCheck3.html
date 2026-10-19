@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <!-- ═══════════════════════════════════════
-     AirCheck · v3.00.027 · built by eligrt
+     AirCheck · v3.00.028 · built by eligrt
      ═══════════════════════════════════════ -->
 <html lang="he" dir="rtl">
 <head>
@@ -35,7 +35,7 @@ if(force){['aircheck_rd_v1'].forEach(function(n){r.call(localStorage,P+n);});try
 <script>
 /* Single source of truth for app identity. Footers, share texts, exports and Firebase appVersion all read these. */
 const APP_NAME='AirCheck';
-const APP_VERSION='v3.00.027';
+const APP_VERSION='v3.00.028';
 const APP_STAMP=APP_NAME+' · '+APP_VERSION+' · built by eligrt';
 document.addEventListener('DOMContentLoaded',function(){document.querySelectorAll('.app-stamp').forEach(function(e){e.textContent=APP_STAMP;});});
 </script>
@@ -293,6 +293,27 @@ button.lsa-foot-slot{cursor:pointer;padding:8px 0;}
 #xiOv .xi-b.p{border:0;background:#1c3d6e;color:#fff;}
 #xiOv .xi-b.n{border:1.5px solid #8a6a2a;background:#fff;color:#6b4f12;}
 #xiOv .xi-err{width:44px;height:44px;border-radius:50%;background:#fff1d6;border:2px solid #c27a0e;color:#6b3f00;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:24px;}
+/* popups keep a gap under the red header */
+#xiOv .xi-sheet{top:calc(env(safe-area-inset-top,0px) + 100px);max-height:calc(100% - env(safe-area-inset-top,0px) - 120px);}
+/* wrong-file popup looks like a warning */
+#xiOv.warn .xi-scrim{background:rgba(26,19,8,.55);}
+#xiOv.warn .xi-sheet{background:#fff3df;border:3px solid #c0302a;}
+#xiOv.warn .xi-t{color:#9b2c24;}
+#xiOv.warn .xi-err{width:52px;height:52px;background:#c0302a;border:0;color:#fff;font-size:30px;}
+/* new list popup */
+#newProfileModal{background:rgba(26,19,8,.38)!important;backdrop-filter:none!important;-webkit-backdrop-filter:none!important;align-items:flex-start!important;justify-content:center!important;padding:calc(env(safe-area-inset-top,0px) + 100px) 12px 12px!important;box-sizing:border-box;direction:rtl;font-family:var(--font-ui);}
+#newProfileModal .np-sheet{width:100%;max-width:420px;background:#fbf6e8;border:2px solid #1c3d6e;border-radius:16px;padding:16px;display:flex;flex-direction:column;gap:12px;box-sizing:border-box;box-shadow:0 12px 32px rgba(26,19,8,.35);color:#1a1308;}
+#newProfileModal .np-t{font-size:19px;font-weight:700;}
+#newProfileModal .np-q{font-size:16px;}
+#newProfileModal .np-opts{display:flex;gap:8px;}
+#newProfileModal .np-opt{flex:1;min-height:64px;padding:8px;border:2px solid #c8a04a;border-radius:10px;background:#fff;color:#1a1308;font-family:inherit;font-size:17px;font-weight:700;line-height:1.25;cursor:pointer;}
+#newProfileModal .np-opt.selected{border-color:#1c3d6e;background:#dde7f7;color:#1c3d6e;}
+#newProfileModal .np-l{font-size:15px;font-weight:600;}
+#newProfileModal .np-in{min-height:54px;box-sizing:border-box;border:1.5px solid #c8a04a;border-radius:10px;background:#fff;padding:0 12px;font-family:inherit;font-size:18px;color:#1a1308;width:100%;direction:rtl;user-select:text;-webkit-user-select:text;}
+#newProfileModal .np-b{min-height:54px;border-radius:10px;font-family:inherit;font-size:17px;font-weight:700;cursor:pointer;}
+#newProfileModal .np-b.p{border:0;background:#1c3d6e;color:#fff;}
+#newProfileModal .np-b.p:disabled{opacity:.4;cursor:default;}
+#newProfileModal .np-b.n{border:1.5px solid #8a6a2a;background:#fff;color:#6b4f12;}
 </style>
 </head>
 <body>
@@ -741,6 +762,7 @@ badgeEl.style.display='none';
 let _editorActiveProfileId=null;
 let _npFromType='default';
 function openNewProfileModal(){
+npRender();
 _npFromType='default';
 document.getElementById('startFromDefault').classList.add('selected');
 document.getElementById('startFromScratch').classList.remove('selected');
@@ -801,7 +823,7 @@ const hasOverflow=list.scrollHeight>list.clientHeight+2;
 const atBottom=list.scrollTop+list.clientHeight>=list.scrollHeight-2;
 fade.classList.toggle('show',hasOverflow&&!atBottom);
 }
-/* ============ AirCheck list editor (v3.00.027) ============
+/* ============ AirCheck list editor (v3.00.028) ============
    All screen text is in E_LANG. English is added later as E_LANG.en. */
 const E_LANG={he:{
 back:'חזרה',cancel:'ביטול',ok:'אישור',save:'שמור שינויים',saved:'נשמר',
@@ -845,7 +867,8 @@ xiMax3:'אפשר לשמור עד 3 רשימות. ייובאו שלוש הראש�
 xiReplaceBtn:'החלף את הרשימה',xiReplaceBtnMany:'החלף את הרשימות',xiCancel:'ביטול',
 xiBadTitle:'הקובץ לא מתאים',xiBadMsg:'לא נמצאה בו רשימה של AirCheck. אפשר לבחור קובץ שיוצא מהאפליקציה.',
 xiReadErr:'אי אפשר היה לקרוא את הקובץ. אפשר לבחור קובץ אחר.',xiPickOther:'בחירת קובץ אחר',xiLoading:'הספרייה עדיין נטענת, נסה שוב בעוד רגע.',
-xiDoneOne:'✓ הרשימה נטענה',xiDoneMany:'✓ הרשימות נטענו',xlsExportDone:'✓ הקובץ מוכן - {n} רשימות',xlsExportErr:'שגיאה בייצוא'
+xiDoneOne:'✓ הרשימה נטענה',xiDoneMany:'✓ הרשימות נטענו',xlsExportDone:'✓ הקובץ מוכן - {n} רשימות',xlsExportErr:'שגיאה בייצוא',
+npTitle:'רשימה חדשה',npAsk:'במה להתחיל?',npDefault:'רשימת ברירת המחדל',npEmpty:'רשימה ריקה',npName:'שם הרשימה',npHint:'לדוגמה: בדיקת כשירות',npCreate:'צור רשימה'
 }};
 let E_LNG='he';
 function eT(k,n){let s=E_LANG[E_LNG]&&E_LANG[E_LNG][k];if(s===undefined)s=E_LANG.he[k];if(s===undefined)return k;return n===undefined?s:s.replace('{n}',n);}
@@ -1050,6 +1073,8 @@ const root=document.getElementById('e3');const rr=root.getBoundingClientRect();c
 return{top:br.top-rr.top,bottom:br.bottom-rr.top,H:rr.height};
 }catch(err){return{top:380,bottom:430,H:844};}
 }
+/* a popup never sits right under the red header: it keeps a gap of about 28px */
+function eSheetMinTop(){try{const root=document.getElementById('e3');const hd=root.querySelector('.e3-hd');if(hd)return Math.round(hd.getBoundingClientRect().bottom-root.getBoundingClientRect().top+28);}catch(e){}return 96;}
 function eOpenSheet(cfg,el){
 ED.sheet=cfg;ED.anchor=eAnchor(el);ED.sheetText=cfg.text||'';ED.sheetColor=cfg.color||'red';ED.sheetIcon=cfg.icon||'warning';
 eRender();
@@ -1392,6 +1417,7 @@ let top;
 if(a.bottom+8+est<=H-8)top=a.bottom+8;else if(a.top-8-est>=8)top=a.top-8-est;else top=Math.max(8,H-8-est);
 /* a box with a text field sits in the upper part, so the keyboard never covers it */
 if((sh.type==='text'||sh.type==='heading')&&top>120)top=120;
+top=Math.max(top,eSheetMinTop());
 top=Math.round(top);
 let body='<div class="e3-sht">'+eEsc(sh.title)+'</div>';
 if(sh.msg)body+='<div class="e3-shm">'+eEsc(sh.msg)+'</div>';
@@ -1517,16 +1543,18 @@ if(!input.files||!input.files[0])return;
 const f=input.files[0];input.value='';
 processXLSFile(f);
 }
-function xiShow(html){
+function xiShow(html,warn){
 const o=document.getElementById('xiOv');
+o.className=(o.className||'').replace(/\bwarn\b/g,'').trim();
 o.innerHTML='<button type="button" class="xi-scrim" onclick="closeXLSImport()" tabindex="-1" aria-hidden="true"></button><div class="xi-sheet" dir="rtl">'+html+'</div>';
+if(warn)o.classList.add('warn');
 o.classList.add('open');
 }
 function xlsShowError(msg){
 xlsParsedList=null;
 xiShow('<div class="xi-err">!</div><div class="xi-t">'+eT('xiBadTitle')+'</div><p class="xi-m">'+eEsc(msg)+'</p>'
 +'<button type="button" class="xi-b p" onclick="triggerXLSImport()">'+eT('xiPickOther')+'</button>'
-+'<button type="button" class="xi-b n" onclick="closeXLSImport()">'+eT('xiCancel')+'</button>');
++'<button type="button" class="xi-b n" onclick="closeXLSImport()">'+eT('xiCancel')+'</button>',true);
 }
 function xlsShowSummary(profiles,warnings,fileName){
 const shown=profiles.slice(0,3);
@@ -1558,6 +1586,18 @@ ED.lists=r.draft.lists;ED.nid=Math.max(ED.nid,r.draft.nid||0);
 if(ED.lists.some(l=>l.id===r.draft.listId))ED.listId=r.draft.listId;
 eFoldAll();eRender();
 }
+}
+
+/* ---- new list popup: same look as the other popups ---- */
+function npRender(){
+const b=document.getElementById('npBox');if(!b)return;
+b.innerHTML='<div class="np-t">'+eT('npTitle')+'</div><div class="np-q">'+eT('npAsk')+'</div>'
++'<div class="np-opts"><button type="button" class="np-opt selected" id="startFromDefault" onmousedown="event.preventDefault()" onclick="npSelectFrom(\'default\')">'+eT('npDefault')+'</button>'
++'<button type="button" class="np-opt" id="startFromScratch" onmousedown="event.preventDefault()" onclick="npSelectFrom(\'scratch\')">'+eT('npEmpty')+'</button></div>'
++'<label class="np-l" for="newProfileNameInput">'+eT('npName')+'</label>'
++'<input id="newProfileNameInput" class="np-in" type="text" placeholder="'+eEsc(eT('npHint'))+'" oninput="npUpdateConfirm()">'
++'<button type="button" class="np-b p" id="newProfileConfirmBtn" onclick="npConfirm()" disabled>'+eT('npCreate')+'</button>'
++'<button type="button" class="np-b n" onclick="npClose()">'+eT('xiCancel')+'</button>';
 }
 function xlsHeadCols(row){
 const c={phase:0,group:1,main:2,sub:3,url:4,label:5,lean:6,type:-1,style:-1,id:-1,edited:-1};
@@ -2582,6 +2622,13 @@ class Component extends DCLogic {
 state = { ...START, ...ac3Init() };
 setState(p) { const prev = this.state || {}; let np = typeof p === 'function' ? p(prev) : p; np = ac3Pre(prev, np); super.setState(np); ac3Post(prev, this.state); }
 subDone(x) { if (!x || !x.subList) return false; const p = (ITEMS[this.state.cur] === x) ? this.state.pts : (ptsAll[x.id] || {}); return Object.keys(p).length >= x.subList.length; }
+amberNext(st) {
+const sk = []; ITEMS.forEach((x, i) => { if (st.skipped[x.id] && i !== st.cur) sk.push(i); });
+if (sk.length) return sk.find(i => i > st.cur) ?? sk[0];
+const b = st.amberBack;
+if (b !== null && b !== undefined) return this.isOpen(b, st.done, st.skipped) ? b : this.nextOpen(b, st.done, st.skipped);
+return -1;
+}
 endOf(i) { return ITEMS[i].ph >= PH.length - 1 ? { finished: true, sectionDone: false, view: 'card' } : { sectionDone: true }; }
 curPt(pts) { for (let j = 0; j < BRIEF.length; j++) { if (!pts[j]) return j; } return BRIEF.length; }
 componentDidUpdate() {
@@ -2709,9 +2756,7 @@ return;
 }
 const nxt = this.nextOpen(st.cur, done, skipped);
 if (nxt < 0) {
-const skp = []; ITEMS.forEach((x, i) => { if (x.ph === it.ph && skipped[x.id] && i !== st.cur) skp.push(i); });
-if (skp.length) this.setState({ ...base, amber: true, amberBack: st.cur, cur: skp[0] });
-else this.setState({ ...base, ...this.endOf(st.cur) });
+this.setState({ ...base, ...this.endOf(st.cur) });
 } else this.setState({ ...base, cur: nxt });
 }
 tick() {
@@ -2966,7 +3011,7 @@ const hasFlap = isCardView && showItemCard && it.k === 'curtain';
 const showCurtain = hasFlap && st.curtainOpen;
 let uCnt = 0; let underNum = '', underMain = '', underSub = '', uK = '', uLbl = '', uGrp = '';
 if (st.sectionDone) { if (it.ph < PH.length - 1) { underNum = 'NEXT SECTION'; underMain = PH[it.ph + 1]; } else { underNum = 'END'; underMain = 'סיום טיסה'; } }
-else if (!st.finished) { const nI = (st.flipOut && st.flipKind === 'next') ? (st.cur + 1 < N ? st.cur + 1 : -1) : this.nextOpen(st.cur, st.done, st.skipped); if (nI >= 0 && nI !== st.cur) { underNum = 'ITEM ' + pad(nI + 1) + ' / ' + pad(N); underMain = ITEMS[nI].m; underSub = ITEMS[nI].s; uK = ITEMS[nI].k || ''; uLbl = ITEMS[nI].k === 'own' ? 'פתח את ' + ITEMS[nI].l : (ITEMS[nI].l || ''); const gg = ITEMS.filter(z => z.ph === ITEMS[nI].ph && z.g === ITEMS[nI].g); uCnt = (ITEMS[nI].subList || []).length; uGrp = (gg.indexOf(ITEMS[nI]) + 1) + '/' + gg.length; } else { underNum = 'END OF SECTION'; underMain = 'השלב הושלם'; } }
+else if (!st.finished) { const nI = (st.flipOut && st.flipKind === 'next') ? (st.cur + 1 < N ? st.cur + 1 : -1) : (st.amber ? this.amberNext(st) : this.nextOpen(st.cur, st.done, st.skipped)); if (nI >= 0 && nI !== st.cur) { underNum = 'ITEM ' + pad(nI + 1) + ' / ' + pad(N); underMain = ITEMS[nI].m; underSub = ITEMS[nI].s; uK = ITEMS[nI].k || ''; uLbl = ITEMS[nI].k === 'own' ? 'פתח את ' + ITEMS[nI].l : (ITEMS[nI].l || ''); const gg = ITEMS.filter(z => z.ph === ITEMS[nI].ph && z.g === ITEMS[nI].g); uCnt = (ITEMS[nI].subList || []).length; uGrp = (gg.indexOf(ITEMS[nI]) + 1) + '/' + gg.length; } else { underNum = 'END OF SECTION'; underMain = 'השלב הושלם'; } }
 const real = doneN + skippedN > 0; const forceP = (this.props.splashDemo ?? 'auto') === 'inProgress';
 const spInProgress = real || forceP;
 const spSk = real ? skippedN : 1; const spDn = real ? doneN : 6;
@@ -2980,7 +3025,7 @@ return {
 showSubTab: false, subTabLabel: st.curtainOpen ? 'תת-רשימה פתוחה בכרטיס' : 'תת-רשימה בכרטיס', subTabRot: 0,
 hintPadR: 14,
 backAnim: st.flipOut ? 'backIn 950ms linear both' : 'none', frontAnim: st.flipOut ? 'frontOut 950ms linear both' : (st.stampOn ? 'cardThump .5s ease-out both' : 'none'), cardAnim: st.flipOut ? 'pageFlip 950ms cubic-bezier(.5,0,.3,1) forwards' : 'none',
-showUnder: isCardView && !st.finished, underDone: !st.sectionDone && !st.finished && underNum === 'END OF SECTION', underDonePhase: PH[it.ph], underDoneNote: phSkipped ? 'דילגת על ' + phSkipped + ' פריטים. אפשר לחזור אליהם' : 'כל פריטי השלב סומנו', underNum, underMain, underSub, underIsSub: uK === 'curtain', underIsLink: uK === 'ext' || uK === 'own', underIsOwn: uK === 'own', underIsExt: uK === 'ext', underLinkLabel: uLbl, underGrp: uGrp, underGrpOn: !!uGrp, underSubLine: uCnt + ' נקודות · הקש לפתיחה',
+showUnder: isCardView && !st.finished, underDone: !st.sectionDone && !st.finished && underNum === 'END OF SECTION', underDonePhase: PH[it.ph], underDoneNote: (phSkipped - (isSkip(it) ? 1 : 0)) > 0 ? 'דילגת על ' + (phSkipped - (isSkip(it) ? 1 : 0)) + ' פריטים. אפשר לחזור אליהם' : 'כל פריטי השלב סומנו', underNum, underMain, underSub, underIsSub: uK === 'curtain', underIsLink: uK === 'ext' || uK === 'own', underIsOwn: uK === 'own', underIsExt: uK === 'ext', underLinkLabel: uLbl, underGrp: uGrp, underGrpOn: !!uGrp, underSubLine: uCnt + ' נקודות · הקש לפתיחה',
 showSplash: st.screen === 'splash' || st.screen === 'settings', showSettings: st.screen === 'settings', showEditor: false, spInProgress, spFresh: !spInProgress,
 spMarks, spPlaneRight: 'calc(' + spPctNum + '% - 12px)', iconBg: IC[0], iconRim: IC[1], iconLine: IC[2], iconPlane: IC[3], iconPlaneStroke: IC[4],
 spOpenSettings: () => this.setState({ screen: 'settings' }),
@@ -3189,31 +3234,7 @@ syncToFirebase('open');
   
 
   <!-- ══ NEW PROFILE MODAL ══ -->
-  <div id="newProfileModal" onclick="handleNewProfileClick(event)" style="display:none;position:absolute;inset:0;background:rgba(26,19,8,.8);z-index:520;align-items:center;justify-content:center;padding:24px;backdrop-filter:blur(3px);">
-    <div class="modal-box" style="text-align:center;align-self:center;">
-      <div class="modal-title">רשימה חדשה</div>
-      <div class="modal-sub" style="margin-bottom:13px;">במה להתחיל?</div>
-      <div dir="rtl" style="display:flex;gap:8px;margin-bottom:13px;">
-        <button class="start-from-btn selected" id="startFromDefault" onmousedown="event.preventDefault()" onclick="npSelectFrom('default')" style="flex:1;text-align:center;margin-bottom:0;padding:11px 8px;">
-          <div class="start-from-btn-title" style="line-height:1.3;">רשימת<br>ברירת המחדל</div>
-        </button>
-        <button class="start-from-btn" id="startFromScratch" onmousedown="event.preventDefault()" onclick="npSelectFrom('scratch')" style="flex:1;text-align:center;margin-bottom:0;padding:11px 8px;">
-          <div class="start-from-btn-title" style="line-height:1.3;">רשימה<br>ריקה</div>
-        </button>
-      </div>
-      <div style="height:1px;background:var(--gold-lite);margin:0 0 11px;opacity:.7;"></div>
-      <div style="text-align:right;direction:rtl;margin-bottom:12px;">
-        <div style="font-size:11px;color:var(--ink-muted);margin-bottom:6px;font-family:var(--font-mono);letter-spacing:.08em;">שם הרשימה</div>
-        <div style="border-bottom:1.5px dashed rgba(28,61,110,.4);padding-bottom:3px;">
-          <input id="newProfileNameInput" type="text" placeholder="לדוגמה: בדיקת כשירות"
-            style="background:transparent;border:none;outline:none;font-family:var(--font-ui);font-size:15px;font-weight:600;color:var(--ink-body);width:100%;caret-color:var(--gold);direction:rtl;"
-            oninput="npUpdateConfirm()">
-        </div>
-      </div>
-      <button class="btn btn-ink" id="newProfileConfirmBtn" onclick="npConfirm()" style="margin-bottom:7px;" disabled>צור רשימה ›</button>
-      <button class="btn btn-ghost" onclick="npClose()">ביטול</button>
-    </div>
-  </div>
+  <div id="newProfileModal" onclick="handleNewProfileClick(event)" style="display:none;position:absolute;inset:0;z-index:520;"><div class="np-sheet" id="npBox" dir="rtl"></div></div>
 
   <!-- ══ RENAME PROFILE MODAL ══ -->
   <div id="manyListsModal" onclick="handleManyListsClick(event)" style="display:none;position:absolute;inset:0;background:rgba(26,19,8,.8);z-index:520;align-items:center;justify-content:center;padding:24px;backdrop-filter:blur(3px);">
