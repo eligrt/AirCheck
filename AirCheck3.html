@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <!-- ═══════════════════════════════════════
-     AirCheck · v3.00.032 · built by eligrt
+     AirCheck · v3.00.033 · built by eligrt
      ═══════════════════════════════════════ -->
 <html lang="he" dir="rtl">
 <head>
@@ -35,7 +35,7 @@ if(force){['aircheck_rd_v1'].forEach(function(n){r.call(localStorage,P+n);});try
 <script>
 /* Single source of truth for app identity. Footers, share texts, exports and Firebase appVersion all read these. */
 const APP_NAME='AirCheck';
-const APP_VERSION='v3.00.032';
+const APP_VERSION='v3.00.033';
 const APP_STAMP=APP_NAME+' · '+APP_VERSION+' · built by eligrt';
 document.addEventListener('DOMContentLoaded',function(){document.querySelectorAll('.app-stamp').forEach(function(e){e.textContent=APP_STAMP;});});
 </script>
@@ -169,6 +169,7 @@ button.lsa-foot-slot{cursor:pointer;padding:8px 0;}
 @keyframes chevNudge{0%,100%{transform:translateY(-3px)}50%{transform:translateY(3px)}}
 @keyframes typeIn{from{width:0}to{width:100%}}
 @keyframes caretBlink{50%{border-color:transparent}}
+@keyframes caretGone{to{border-color:transparent}}
 @keyframes subDrain{from{width:100%}to{width:0}}
 @keyframes subPop{0%{transform:scale(.4)}60%{transform:scale(1.25)}100%{transform:scale(1)}}
 @keyframes stampBump{0%{transform:scale(1.8) rotate(-9deg);opacity:0}55%{transform:scale(1.16) rotate(-7deg);opacity:.85}78%{transform:scale(1.22) rotate(-7deg)}100%{transform:scale(1.2) rotate(-7deg);opacity:.8}}
@@ -823,7 +824,7 @@ const hasOverflow=list.scrollHeight>list.clientHeight+2;
 const atBottom=list.scrollTop+list.clientHeight>=list.scrollHeight-2;
 fade.classList.toggle('show',hasOverflow&&!atBottom);
 }
-/* ============ AirCheck list editor (v3.00.032) ============
+/* ============ AirCheck list editor (v3.00.033) ============
    All screen text is in E_LANG. English is added later as E_LANG.en. */
 const E_LANG={he:{
 back:'חזרה',cancel:'ביטול',ok:'אישור',save:'שמור שינויים',saved:'נשמר',
@@ -2312,7 +2313,7 @@ return inst;
 <span>{{subTabLabel}}</span>
 </div>
 </sc-if>
-<button type="button" class="rw" onPointerDown="{{btn.down}}" onPointerUp="{{btn.up}}" onPointerLeave="{{btn.up}}" onPointerCancel="{{btn.up}}" onClick="{{btn.click}}" aria-label="{{btn.label}}" style="position:relative;width:100%;height:72px;border:0;border-radius:10px;overflow:visible;cursor:pointer;display:flex;align-items:center;gap:10px;padding:0 56px;background:{{btn.body}};box-shadow:inset 0 0 0 2px #1a1308,0 3px 0 #1a1308;">
+<button type="button" class="rw" onPointerDown="{{btn.down}}" onPointerUp="{{btn.up}}" onPointerLeave="{{btn.up}}" onPointerCancel="{{btn.up}}" onClick="{{btn.click}}" disabled="{{btn.dis}}" aria-label="{{btn.label}}" style="position:relative;width:100%;height:72px;border:0;border-radius:10px;overflow:visible;cursor:pointer;display:flex;align-items:center;gap:10px;padding:0 56px;background:{{btn.body}};box-shadow:inset 0 0 0 2px #1a1308,0 3px 0 #1a1308;">
 <span style="position:absolute;top:6px;bottom:6px;left:6px;right:6px;border-top:2px solid rgba(244,236,220,.5);border-bottom:2px solid rgba(244,236,220,.5);" aria-hidden="true"></span>
 <span style="position:absolute;top:11px;bottom:11px;right:8px;display:flex;flex-direction:column;justify-content:space-between;" aria-hidden="true">
 <span style="width:16px;height:3px;background:#f4ecdc;opacity:.8;"></span><span style="width:16px;height:3px;background:#f4ecdc;opacity:.8;"></span><span style="width:16px;height:3px;background:#f4ecdc;opacity:.8;"></span><span style="width:16px;height:3px;background:#f4ecdc;opacity:.8;"></span><span style="width:16px;height:3px;background:#f4ecdc;opacity:.8;"></span><span style="width:16px;height:3px;background:#f4ecdc;opacity:.8;"></span><span style="width:16px;height:3px;background:#f4ecdc;opacity:.8;"></span>
@@ -2356,7 +2357,7 @@ return inst;
 <img src="{{icoSrc}}" width="132" height="132" alt="" style="display:block;border-radius:30px;border:2px solid #c8a04a;box-shadow:0 8px 18px rgba(28,61,110,.22);">
 <div dir="ltr" style="margin-top:8px;font-family:'JetBrains Mono',monospace;font-size:28px;font-weight:700;color:#1c3d6e;letter-spacing:-.5px;">AirCheck <span style="color:#a8741a;font-size:44px;line-height:1;text-shadow:0 0 10px rgba(200,160,74,.7);">3</span></div>
 <div dir="ltr" style="font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.18em;color:#8a6a2a;text-transform:uppercase;">personal flight checklist</div>
-<div dir="ltr" style="min-height:18px;max-width:100%;"><div style="display:inline-block;overflow:hidden;white-space:nowrap;width:0;border-right:2px solid rgba(28,61,110,.6);font-family:'JetBrains Mono',monospace;font-size:11px;font-style:italic;color:#5a4a3a;letter-spacing:.04em;animation:typeIn 2.4s steps(40,end) .6s forwards,caretBlink .8s step-end infinite;">"the checklist on top of the checklist"</div></div>
+<div dir="ltr" style="min-height:18px;max-width:100%;"><div style="display:inline-block;overflow:hidden;white-space:nowrap;width:0;border-right:2px solid rgba(28,61,110,.6);font-family:'JetBrains Mono',monospace;font-size:11px;font-style:italic;color:#5a4a3a;letter-spacing:.04em;animation:typeIn 2.4s steps(40,end) .6s forwards,caretGone .01s linear 3s forwards;">"the checklist on top of the checklist"</div></div>
 </div>
 <div style="flex:1;min-height:0;margin-top:-150px;position:relative;padding:14px 18px 0;display:flex;flex-direction:column;gap:12px;overflow:hidden;">
 <sc-if value="{{spFresh}}"><div style="flex:none;height:128px;" aria-hidden="true"></div></sc-if>
@@ -2886,7 +2887,7 @@ const isDoneP = x => !!pDone[x.id];
 const pipBg = x => isDoneP(x) ? '#1f6f3f' : (isSkip(x) ? '#f59e0b' : 'transparent');
 const phases = PH.map((name, p) => {
 const idx = this.phaseIdx(p);
-const d = idx.filter(i => isDoneP(ITEMS[i]) || isSkip(ITEMS[i])).length;
+const d = idx.filter(i => isDoneP(ITEMS[i])).length;
 const cur = ITEMS[curP].ph === p && !st.finished;
 return {
 name, count: d + '/' + idx.length,
@@ -2929,7 +2930,7 @@ return { j, t, rowBg: c ? '#f8e4ae' : 'transparent', rowRad: c ? '10px' : '0', l
 const rows = []; let lastPh = -1; let lastG = null;
 ITEMS.forEach((x, i) => {
 if (x.ph !== lastPh) {
-const idx = this.phaseIdx(x.ph); const d = idx.filter(k => isDone(ITEMS[k]) || isSkip(ITEMS[k])).length;
+const idx = this.phaseIdx(x.ph); const d = idx.filter(k => isDone(ITEMS[k])).length;
 rows.push({ key: 'p' + x.ph, isPhase: true, isGroup: false, isItem: false, name: PH[x.ph], count: d + '/' + idx.length, expanded: !st.collapsed[x.ph], mb: st.collapsed[x.ph] ? 5 : 0, sh: st.collapsed[x.ph] ? '0 2px 0 #c8a04a' : 'none', rot: st.collapsed[x.ph] ? 90 : 0, toggle: () => this.setState({ collapsed: { ...this.state.collapsed, [x.ph]: !this.state.collapsed[x.ph] } }) });
 lastPh = x.ph; lastG = null;
 }
@@ -2971,13 +2972,15 @@ if (st.finished) { btn = { ...green, label: 'טיסה חדשה', sub: '' }; hint
 else if (st.sectionDone) {
 btn = lastPhase ? { ...green, label: 'סיום טיסה', sub: '' } : { ...green, label: 'לשלב הבא', sub: PH[it.ph + 1] };
 hintText = 'השלב הושלם. אפשר להמשיך';
+} else if (st.view === 'card' && isDone(it)) { btn = { ...normal, dis: true, body: '#7a7262', fg: '#d9d2bf' }; hintText = 'הפריט כבר סומן';
 } else if (it.k === 'curtain' && briefDone) { btn = { ...green, label: 'אשר כרטיס', sub: 'תת-רשימה הושלמה' }; hintText = 'תת-רשימה הושלמה. החזק את המסלול לאישור הכרטיס'; }
 else if (it.k === 'curtain' && !st.curtainOpen) { hintText = 'יש תת-רשימה - פתח, או המשך'; }
 else if (it.k === 'curtain' && st.curtainOpen && !briefDone) { btn = { ...normal, label: 'סמן נקודה ' + (curPt + 1) + '/' + BRIEF.length }; hintText = 'אותו מסלול מסמן כל נקודה'; }
 else if (it.k === 'curtain' && briefDone) { btn = { ...green, label: 'המשך', sub: 'תת-רשימה הושלמה' }; hintText = 'תת-רשימה הושלמה. אפשר להמשיך'; }
-btn.hasSub = !!btn.sub;
+btn.hasSub = !!btn.sub; btn.dis = !!btn.dis;
 btn.holding = st.holding; btn.holdMs = holdMs; btn.showPlane = true; btn.planeAnim = st.fly ? 'takeoffRun 850ms ease-out forwards' : (st.holding ? 'planeRun ' + holdMs + 'ms linear forwards' : 'planeIn 500ms ease-out both');
 btn.down = () => {
+if (btn.dis) return;
 this._down = true;
 if (!holdMode || this._ht) return;
 this.setState({ holding: true });
@@ -2990,7 +2993,7 @@ if (this._pend) { const g = this._pend; this._pend = null; setTimeout(g, Math.ma
 if (this._ht) { clearTimeout(this._ht); this._ht = null; }
 if (this.state.holding) this.setState({ holding: false });
 };
-btn.click = (e) => { if (!holdMode) { this.setState({ fly: true }); this.tick(); setTimeout(() => this.setState({ fly: false }), 900); } else if (e && e.detail === 0) this.tick(); };
+btn.click = (e) => { if (btn.dis) return; if (!holdMode) { this.setState({ fly: true }); this.tick(); setTimeout(() => this.setState({ fly: false }), 900); } else if (e && e.detail === 0) this.tick(); };
 const curHandled = isDone(it) || isSkip(it);
 const off = { bd: '#e9dfc6', bg: '#f0e8d6', fg: '#a29780' };
 const on = { bd: '#e3d4ad', bg: '#fbf6e8', fg: '#1c3d6e' };
@@ -3028,11 +3031,12 @@ else if (!st.finished) { const nI = (st.amber && st.flipOut && st.flipKind === '
 const real = doneN + skippedN > 0; const forceP = (this.props.splashDemo ?? 'auto') === 'inProgress';
 const spInProgress = real || forceP;
 const spSk = real ? skippedN : 1; const spDn = real ? doneN : 6;
-const cur0 = real ? it : (ITEMS[1] || ITEMS[0]);
+let spFur = -1; ITEMS.forEach((x, i) => { if (st.done[x.id] || st.skipped[x.id]) spFur = i; }); const spResume = spFur < 0 ? 0 : Math.min(spFur + 1, N - 1);
+const cur0 = real ? ITEMS[spResume] : (ITEMS[1] || ITEMS[0]);
 const icStyle = this.props.iconStyle ?? 'runway';
 const IC = { runway: ['#2a2218', '#c8a04a', 'rgba(244,236,220,.55)', '#ffffff', '#1a1308'], cream: ['#f4ecdc', '#c8a04a', '#d9c79a', '#1c3d6e', '#0f2447'], gold: ['#c8a04a', '#f4ecdc', '#e8d19b', '#ffffff', '#6f531d'] }[icStyle];
 const spMarks = real ? ITEMS.map((x, i) => isSkip(x) ? { r: ((i + 0.5) / N) * 100 } : null).filter(Boolean) : [{ r: 22 }, { r: 31 }];
-const spPctNum = real ? Math.round(((st.cur + 1) / N) * 100) : 40;
+const spPctNum = real ? Math.round(((spFur + 1) / N) * 100) : 40;
 if (st.amber && !st.sectionDone && !st.finished) hintText = 'ללא מסומן: פריט אחר פריט. בסוף חוזרים למקום שהיית בו';
 return {
 showSubTab: false, subTabLabel: st.curtainOpen ? 'תת-רשימה פתוחה בכרטיס' : 'תת-רשימה בכרטיס', subTabRot: 0,
@@ -3049,11 +3053,11 @@ stToggles: [{ label: 'צליל בעת אישור', on: settings.sounds !== false
 holdIdx: [200, 400, 700].indexOf(ac3Hold()), stHold: [['קצר', 200], ['רגיל', 400], ['ארוך', 700]].map(([label, ms]) => { const on = ac3Hold() === ms; return { label, bg: on ? '#1c3d6e' : 'transparent', fg: on ? '#f4ecdc' : '#1c3d6e', pick: () => { settings.holdMs = ms; saveSettings(); this.setState({ _t: Date.now() }); } }; }),
 reloadDemo: () => reloadApp(), icoSrc: AC3_ICON, contact: () => window.open('mailto:eligrt@gmail.com', '_blank'), utcNow: this.hhmm(), appStamp: APP_STAMP, spCanAdd: getProfiles().profiles.length < 3, spShowLists: FEATURES.MULTI_PROFILE, spAddList: () => openEditorForNewList(),
 spPhaseName: PH[cur0.ph], spItem: cur0.m,
-spPct: real ? Math.round(((st.cur + 1) / N) * 100) : 40, spCount: spDn + ' / ' + N, spPctLabel: Math.round((spDn / N) * 100) + '%',
+spPct: spPctNum, spCount: spDn + ' / ' + N, spPctLabel: Math.round((spDn / N) * 100) + '%',
 spHasSkipped: spSk > 0, spSkipped: spSk, spListName: '',
 spLists: (() => { const P = getProfiles(); const sel = st.splashList && P.profiles.some(z => z.id === st.splashList) ? st.splashList : P.activeProfile; return P.profiles.slice(0, 3).map(pr => { const on = pr.id === sel; return { name: pr.name, on, pillBg: on ? '#c8a04a' : 'transparent', pillBd: on ? '#c8a04a' : 'rgba(244,236,220,.45)', pillFg: on ? '#2a1f08' : '#f4ecdc', pick: () => this.setState({ splashList: pr.id }) }; }); })(),
 spMainLabel: spInProgress ? 'המשך טיסה \u203A' : 'התחל טיסה',
-spStart: () => { const P = getProfiles(); const sel = st.splashList && P.profiles.some(z => z.id === st.splashList) ? st.splashList : P.activeProfile; if (spInProgress) showScreen('screenChecklist'); else ac3NewFlight(sel); },
+spStart: () => { const P = getProfiles(); const sel = st.splashList && P.profiles.some(z => z.id === st.splashList) ? st.splashList : P.activeProfile; if (spInProgress) { if (real && !st.finished && (st.cur !== spResume || st.sectionDone || st.amber)) this.setState({ cur: spResume, sectionDone: false, amber: false, amberBack: null, curtainOpen: false }); showScreen('screenChecklist'); } else ac3NewFlight(sel); },
 spAskNew: () => this.setState({ spConfirm: true }), spConfirm: st.spConfirm,
 spNewYes: () => { const P = getProfiles(); const sel = st.splashList && P.profiles.some(z => z.id === st.splashList) ? st.splashList : P.activeProfile; ac3NewFlight(sel); },
 spNewNo: () => this.setState({ spConfirm: false }),
