@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <!-- ═══════════════════════════════════════
-     AirCheck · v3.00.034 · built by eligrt
+     AirCheck · v3.00.035 · built by eligrt
      ═══════════════════════════════════════ -->
 <html lang="he" dir="rtl">
 <head>
@@ -35,7 +35,7 @@ if(force){['aircheck_rd_v1'].forEach(function(n){r.call(localStorage,P+n);});try
 <script>
 /* Single source of truth for app identity. Footers, share texts, exports and Firebase appVersion all read these. */
 const APP_NAME='AirCheck';
-const APP_VERSION='v3.00.034';
+const APP_VERSION='v3.00.035';
 const APP_STAMP=APP_NAME+' · '+APP_VERSION+' · built by eligrt';
 document.addEventListener('DOMContentLoaded',function(){document.querySelectorAll('.app-stamp').forEach(function(e){e.textContent=APP_STAMP;});});
 </script>
@@ -824,7 +824,7 @@ const hasOverflow=list.scrollHeight>list.clientHeight+2;
 const atBottom=list.scrollTop+list.clientHeight>=list.scrollHeight-2;
 fade.classList.toggle('show',hasOverflow&&!atBottom);
 }
-/* ============ AirCheck list editor (v3.00.034) ============
+/* ============ AirCheck list editor (v3.00.035) ============
    All screen text is in E_LANG. English is added later as E_LANG.en. */
 const E_LANG={he:{
 back:'חזרה',cancel:'ביטול',ok:'אישור',save:'שמור שינויים',saved:'נשמר',
@@ -2202,17 +2202,17 @@ return inst;
 <span style="position:absolute;left:16px;bottom:96px;animation:ceremonyFly 2.8s cubic-bezier(.3,.6,.4,1) .3s both;" aria-hidden="true">
 <svg width="34" height="34" viewBox="0 0 34 34" style="transform:rotate(52deg);display:block;"><path d="M17 2 C18.7 2 19.5 4.2 19.5 7 L19.5 13.2 L31 19 L31 22.2 L19.5 19.8 L19.5 26 L23.4 28.4 L23.4 31 L17 29.6 L10.6 31 L10.6 28.4 L14.5 26 L14.5 19.8 L3 22.2 L3 19 L14.5 13.2 L14.5 7 C14.5 4.2 15.3 2 17 2 Z" fill="#ffffff" stroke="#1a1308" stroke-width="1.5" stroke-linejoin="round"></path><circle cx="4.2" cy="20.6" r="4.6" fill="#ef4444" opacity=".5"></circle><circle cx="29.8" cy="20.6" r="4.6" fill="#39ff8a" opacity=".5"></circle><circle cx="4.2" cy="20.6" r="2.9" fill="#ef4444" stroke="#1a1308" stroke-width=".7"></circle><circle cx="29.8" cy="20.6" r="2.9" fill="#39ff8a" stroke="#1a1308" stroke-width=".7"></circle></svg>
 </span>
-<div dir="ltr" style="font-family:'JetBrains Mono',monospace;font-size:11px;font-weight:700;letter-spacing:.2em;color:#6f531d;">LANDED SAFE &#183; {{finUtc}} UTC</div>
+<div dir="ltr" style="font-family:'JetBrains Mono',monospace;font-size:11px;font-weight:700;letter-spacing:.2em;color:#6f531d;">CHECKLIST COMPLETE &#183; {{finUtc}} UTC</div>
 <div style="border:4px solid #1f6f3f;border-radius:10px;padding:8px 24px;color:#1f6f3f;transform:rotate(-5deg);animation:stampIn .5s ease-out .15s both;">
-<div dir="ltr" style="font-family:'JetBrains Mono',monospace;font-size:14px;font-weight:700;letter-spacing:.14em;">FLIGHT COMPLETED</div>
-<div style="font-size:32px;line-height:1.2;font-weight:700;">הטיסה הושלמה</div>
+<div dir="ltr" style="font-family:'JetBrains Mono',monospace;font-size:13px;font-weight:700;letter-spacing:.06em;">CHECKLIST COMPLETED</div>
+<div style="font-size:32px;line-height:1.2;font-weight:700;">הצ'קליסט הושלם</div>
 </div>
-<div style="font-size:19px;font-weight:700;color:#1c3d6e;margin-top:4px;">נחיתה בטוחה. כל הכבוד!</div>
-<div style="font-size:14px;line-height:1.4;color:#5a4a3a;">כל שלבי הצ'קליסט נסגרו. נתראה בטיסה הבאה.</div>
+<div style="font-size:19px;font-weight:700;color:#1c3d6e;margin-top:4px;">כל הכבוד!</div>
+<sc-if value="{{finNoSkip}}"><div style="font-size:14px;line-height:1.4;color:#5a4a3a;">כל שלבי הצ'קליסט נסגרו. נתראה בטיסה הבאה.</div></sc-if><sc-if value="{{finHasSkip}}"><div style="display:flex;align-items:center;gap:8px;background:#f1e2bc;border:1px solid #c9a24a;border-radius:8px;padding:6px 10px;font-size:13px;font-weight:600;color:#8a5200;line-height:1.25;text-align:start;"><span style="display:inline-flex;width:20px;height:20px;border-radius:50%;background:#f59e0b;color:#fff;align-items:center;justify-content:center;font-weight:800;font-size:13px;flex:none;" aria-hidden="true">!</span><span>{{finSkipText}}</span></div></sc-if>
 <div style="display:flex;gap:8px;width:100%;margin-top:auto;">
 <div style="flex:1;background:#f1e2bc;border-radius:10px;padding:8px 4px;"><div dir="ltr" style="font-family:'JetBrains Mono',monospace;font-size:20px;font-weight:700;color:#1f6f3f;">{{finDone}}</div><div style="font-size:12px;color:#5a4a3a;">סומנו</div></div>
 <div style="flex:1;background:#f1e2bc;border-radius:10px;padding:8px 4px;"><div dir="ltr" style="font-family:'JetBrains Mono',monospace;font-size:20px;font-weight:700;color:#8a5200;">{{finSkipped}}</div><div style="font-size:12px;color:#5a4a3a;">ללא סימון</div></div>
-<div style="flex:1;background:#f1e2bc;border-radius:10px;padding:8px 4px;"><div dir="ltr" style="font-family:'JetBrains Mono',monospace;font-size:20px;font-weight:700;color:#1c3d6e;">{{finTime}}</div><div style="font-size:12px;color:#5a4a3a;">משך הטיסה</div></div>
+<div style="flex:1;background:#f1e2bc;border-radius:10px;padding:8px 4px;"><div dir="ltr" style="font-family:'JetBrains Mono',monospace;font-size:20px;font-weight:700;color:#1c3d6e;">{{finTime}}</div><div style="font-size:12px;color:#5a4a3a;">משך הצ'קליסט</div></div>
 </div>
 </div>
 </sc-if>
@@ -2245,6 +2245,7 @@ return inst;
 </sc-if>
 <sc-if value="{{isListView}}">
 <div style="position:relative;flex:1;min-height:0;margin-top:2px;background:#fbf6e8;border:2px solid #c8a04a;border-radius:12px;overflow:hidden;">
+<div id="lsThumb" aria-hidden="true" style="position:absolute;z-index:3;left:3px;top:4px;width:4px;height:0;border-radius:2px;background:#c8a04a;opacity:0;pointer-events:none;transition:opacity .2s;"></div>
 <div id="listScroll" class="lscroll nosb" onScroll="{{onListScroll}}" onTouchMove="{{userScrolled}}" onWheel="{{userScrolled}}" style="position:absolute;top:0;left:0;right:0;bottom:0;overflow-y:auto;">
 <sc-for list="{{rows}}" as="row">
 <sc-if value="{{row.isPhase}}">
@@ -2700,7 +2701,8 @@ if (all) { this.setState({ ...base, done, skipped, times, cur: last, sectionDone
 if (p < PH.length - 1) { this.setState({ ...base, done, skipped, times, cur: last, sectionDone: true, finished: false }); return; }
 this.setState({ ...base, done, skipped, times, cur: last, sectionDone: false, finished: false });
 }
-syncView(t) { try { const tr = t.getBoundingClientRect(); const mx = t.scrollHeight - t.clientHeight; const f = mx > 0 ? Math.max(0, Math.min(1, t.scrollTop / mx)) : 0; const top = tr.top + 36 + f * (tr.height - 40); let vi = null; for (let i = 0; i < ITEMS.length; i++) { const el = document.getElementById('row-' + i); if (!el) continue; if (el.getBoundingClientRect().bottom > top) { vi = i; break; } vi = i; } if (vi !== null && vi !== this.state.viewIdx) this.setState({ viewIdx: vi }); } catch (e) {} }
+syncView(t) { try { const tr = t.getBoundingClientRect(); const mx = t.scrollHeight - t.clientHeight; const f = mx > 0 ? Math.max(0, Math.min(1, t.scrollTop / mx)) : 0; const top = tr.top + 36 + f * (tr.height - 40); let vi = null; for (let i = 0; i < ITEMS.length; i++) { const el = document.getElementById('row-' + i); if (!el) continue; if (el.getBoundingClientRect().bottom > top) { vi = i; break; } vi = i; } const th = document.getElementById('lsThumb'); if (th) { if (mx > 0) { const hh = Math.max(36, (t.clientHeight / t.scrollHeight) * (tr.height - 8)); th.style.height = hh + 'px'; th.style.top = (4 + f * (tr.height - 8 - hh)) + 'px'; th.style.opacity = '1'; } else th.style.opacity = '0'; }
+if (vi !== null && vi !== this.state.viewIdx) this.setState({ viewIdx: vi }); } catch (e) {} }
 hintSync() {
 try {
 const c = document.getElementById('curtainScroll');
@@ -2782,7 +2784,7 @@ else this.setState({ amber: false, amberBack: null, curtainOpen: false, ...this.
 tick() {
 const st = this.state;
 if (st.stampOn || st.flipOut) return;
-if (st.finished) { this._t0 = null; this._t1 = null; ac3NewFlight(); return; }
+if (st.finished) { this._t0 = null; this._t1 = null; this.setState({ screen: 'splash', holding: false }); return; }
 if (st.sectionDone) {
 this.flipThen(() => {
 const p = ITEMS[st.cur].ph;
@@ -2916,7 +2918,7 @@ return {
 grow: idx.length,
 segs: idx.map(i => ({
 bg: isDoneP(ITEMS[i]) ? '#1f6f3f' : (isSkip(ITEMS[i]) ? '#f59e0b' : (i === curP && !st.finished ? '#c8a04a' : '#dccda4')),
-isCur: i === ((st.viewIdx !== null && st.viewIdx !== undefined && st.viewIdx < ITEMS.length) ? st.viewIdx : curP) && !st.finished, label: 'פריט ' + (i + 1)
+isCur: i === curP && !st.finished, label: 'פריט ' + (i + 1)
 }))
 };
 });
@@ -2981,7 +2983,7 @@ const normal = { label: 'סמן והמשך', sub: '', body: '#2a2218', fg: '#f4e
 const green = { body: '#1e4a31', fg: '#ffffff' };
 let btn = { ...normal };
 let hintText = holdMode ? 'לחץ והחזק את המסלול לאישור' : 'הקש על המסלול לאישור';
-if (st.finished) { btn = { ...green, label: 'טיסה חדשה', sub: '' }; hintText = 'כל הפריטים טופלו. אפשר להתחיל מחדש'; }
+if (st.finished) { btn = { ...green, label: 'סיום', sub: '' }; hintText = 'כל הפריטים טופלו. אפשר לחזור למסך הפתיחה'; }
 else if (st.sectionDone) {
 btn = lastPhase ? { ...green, label: 'סיום טיסה', sub: '' } : { ...green, label: 'לשלב הבא', sub: PH[it.ph + 1] };
 hintText = 'השלב הושלם. אפשר להמשיך';
@@ -3023,10 +3025,10 @@ skipDis: nSkip.dis, skipBd: nSkip.bd, skipBg: nSkip.bg, skipFg: nSkip.fg,
 unmDis: nUnm.dis, unmBd: nUnm.bd, unmBg: nUnm.bg, unmFg: nUnm.fg
 };
 const phSkipped = this.phaseIdx(it.ph).filter(i => isSkip(ITEMS[i])).length;
-const doneEn = st.finished ? 'FLIGHT COMPLETED' : 'SECTION COMPLETED';
+const doneEn = st.finished ? 'CHECKLIST COMPLETED' : 'SECTION COMPLETED';
 const skTxt = n => n === 1 ? 'פריט אחד דולג - כדאי לחזור אליו' : n + ' פריטים דולגו - כדאי לחזור אליהם';
 const underSk = (st.flipOut && st.flipKind === 'next') ? phSkipped + (isSkip(it) ? 0 : 1) : phSkipped - (isSkip(it) ? 1 : 0);
-const doneHe = st.finished ? 'הטיסה הושלמה' : 'השלב הושלם';
+const doneHe = st.finished ? "הצ'קליסט הושלם" : 'השלב הושלם';
 const doneNote = st.finished ? (skippedN ? 'דילגת על ' + skippedN + ' פריטים. אפשר לחזור אליהם מהרשימה' : 'כל הפריטים סומנו') : (phSkipped ? 'דילגת על ' + phSkipped + ' פריטים. אפשר לחזור אליהם' : 'כל פריטי השלב סומנו');
 const isCardView = st.view === 'card';
 const tCard = (st.viewT || st.view) === 'card';
@@ -3089,7 +3091,7 @@ countLabel: pad(Object.keys(pDone).length) + '/' + pad(N), pctLabel: Math.round(
 phases, railPhases, railOrder: railSide === 'right' ? 0 : 2,
 crumbPhase: PH[it.ph], crumbGroup: it.g,
 flipAnim: st.flip % 2 === 0 ? 'flipA' : 'flipB',
-showItemCard, showDoneCard, showFinishCard: st.finished && isCardView, finDone: doneN, finSkipped: skippedN, finTime, finUtc: this.hhmm(),
+showItemCard, showDoneCard, showFinishCard: st.finished && isCardView, finHasSkip: skippedN > 0, finNoSkip: skippedN === 0, finSkipText: skTxt(skippedN), finDone: doneN, finSkipped: skippedN, finTime, finUtc: this.hhmm(),
 itemNum: pad(st.cur + 1), itemTotal: pad(N), groupPos: gpos + '/' + grp.length,
 item, showStamp: isDone(it) || st.stampOn, stampTime: st.times[it.id] || this.hhmm(), thumpAnim: (st.stampOn && !st.flipOut) ? 'cardThump .5s ease-out both' : 'none',
 doneEn, doneHe, donePhase: st.finished ? 'AirCheck' : PH[it.ph], doneNote,
