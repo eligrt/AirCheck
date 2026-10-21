@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <!-- ═══════════════════════════════════════
-     AirCheck · v3.00.033 · built by eligrt
+     AirCheck · v3.00.034 · built by eligrt
      ═══════════════════════════════════════ -->
 <html lang="he" dir="rtl">
 <head>
@@ -35,7 +35,7 @@ if(force){['aircheck_rd_v1'].forEach(function(n){r.call(localStorage,P+n);});try
 <script>
 /* Single source of truth for app identity. Footers, share texts, exports and Firebase appVersion all read these. */
 const APP_NAME='AirCheck';
-const APP_VERSION='v3.00.033';
+const APP_VERSION='v3.00.034';
 const APP_STAMP=APP_NAME+' · '+APP_VERSION+' · built by eligrt';
 document.addEventListener('DOMContentLoaded',function(){document.querySelectorAll('.app-stamp').forEach(function(e){e.textContent=APP_STAMP;});});
 </script>
@@ -824,7 +824,7 @@ const hasOverflow=list.scrollHeight>list.clientHeight+2;
 const atBottom=list.scrollTop+list.clientHeight>=list.scrollHeight-2;
 fade.classList.toggle('show',hasOverflow&&!atBottom);
 }
-/* ============ AirCheck list editor (v3.00.033) ============
+/* ============ AirCheck list editor (v3.00.034) ============
    All screen text is in E_LANG. English is added later as E_LANG.en. */
 const E_LANG={he:{
 back:'חזרה',cancel:'ביטול',ok:'אישור',save:'שמור שינויים',saved:'נשמר',
@@ -2271,6 +2271,7 @@ return inst;
 <sc-if value="{{row.hasSub}}"><span style="font-size:12px;line-height:1.3;color:#5a4a3a;text-decoration:{{row.deco}};white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">{{row.sub}}</span></sc-if>
 </span>
 </button>
+<sc-if value="{{row.showUntick}}"><button type="button" onClick="{{row.untick}}" style="flex:none;height:34px;padding:0 12px;margin-inline-end:4px;border:2px solid #e3d4ad;background:#fbf6e8;color:#1c3d6e;border-radius:9px;font-size:13px;font-weight:700;cursor:pointer;">בטל סימון</button></sc-if>
 <sc-if value="{{row.hasLink}}">
 <button type="button" onClick="{{row.open}}" aria-label="{{row.linkLabel}}" style="flex:none;width:44px;height:44px;border:0;background:transparent;display:flex;align-items:center;justify-content:center;cursor:pointer;">
 <sc-if value="{{row.isCurtainLink}}"><span style="width:24px;height:24px;border-radius:50%;background:{{row.chipCircle}};display:flex;align-items:center;justify-content:center;animation:{{row.chipAnim}};"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#f4ecdc" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" style="transform:rotate({{row.chipRot}}deg);transition:transform .35s ease;" aria-hidden="true"><path d="M6 9l6 6l6 -6"></path></svg></span></sc-if>
@@ -2755,7 +2756,7 @@ const st = this.state; const it = ITEMS[st.cur];
 const done = { ...st.done }; const skipped = { ...st.skipped }; const times = { ...st.times };
 if (keep) { }
 else if (skip) { skipped[it.id] = true; delete done[it.id]; }
-else { done[it.id] = true; delete skipped[it.id]; times[it.id] = this.hhmm(); }
+else { done[it.id] = true; delete skipped[it.id]; times[it.id] = this.hhmm(); for (let k = 0; k < st.cur; k++) { const o = ITEMS[k].id; if (!done[o] && !skipped[o]) skipped[o] = true; } }
 const base = { done, skipped, times, curtainOpen: false, flip: st.flip + 1 };
 if (st.amber) {
 const sk = []; ITEMS.forEach((x, i) => { if (skipped[x.id] && i !== st.cur) sk.push(i); });
@@ -2770,6 +2771,13 @@ const nxt = this.nextOpen(st.cur, done, skipped);
 if (nxt < 0) {
 this.setState({ ...base, ...this.endOf(st.cur) });
 } else this.setState({ ...base, cur: nxt });
+}
+moveOn() {
+const st = this.state; let n = -1;
+for (let k = st.cur + 1; k < ITEMS.length; k++) { if (this.isOpen(k, st.done, st.skipped)) { n = k; break; } }
+const lastOfPhase = st.cur + 1 >= ITEMS.length || ITEMS[st.cur + 1].ph !== ITEMS[st.cur].ph;
+if (n >= 0 && !(lastOfPhase && ITEMS[n].ph !== ITEMS[st.cur].ph)) this.setState({ cur: n, amber: false, amberBack: null, sectionDone: false, finished: false, curtainOpen: false, flip: st.flip + 1 });
+else this.setState({ amber: false, amberBack: null, curtainOpen: false, ...this.endOf(st.cur) });
 }
 tick() {
 const st = this.state;
@@ -2786,6 +2794,7 @@ this.setState({ cur: first === undefined ? rng[0] : first, sectionDone: false, f
 return;
 }
 const it = ITEMS[st.cur];
+if (st.done[it.id]) { this.moveOn(); return; }
 if (it.k === 'curtain' && st.curtainOpen && this.curPt(st.pts) < BRIEF.length) { this.togglePt(this.curPt(st.pts)); return; }
 this.confirmItem();
 }
@@ -2812,11 +2821,15 @@ setTimeout(() => { if (this._subPend === c && !this._down) this.closeSub(c); }, 
 uncheck() {
 const st = this.state; const id = ITEMS[st.cur].id;
 const done = { ...st.done }; const skipped = { ...st.skipped };
-delete done[id]; delete skipped[id];
+const later = ITEMS.some((x, k) => k > st.cur && (done[x.id] || skipped[x.id]));
+delete done[id]; if (later) skipped[id] = true; else delete skipped[id];
 const clr = ITEMS[st.cur].k === 'curtain' ? { pts: {}, subCeleb: false, subWait: false } : {};
 this.setState({ ...clr, done, skipped, sectionDone: false, finished: false, curtainOpen: false, flip: st.flip + 1 });
 }
 rowTap(i) {
+const st0 = this.state; if (i === st0.cur && !st0.sectionDone && !st0.finished) return;
+this.setState({ cur: i, amber: false, sectionDone: false, finished: false, curtainOpen: false });
+return;
 const st = this.state; const id = ITEMS[i].id;
 const done = { ...st.done }; const skipped = { ...st.skipped }; const times = { ...st.times };
 if (done[id]) {
@@ -2953,7 +2966,7 @@ showCurtain: c && x.k === 'curtain',
 chipRot: (c && x.k === 'curtain' && st.curtainOpen) ? 180 : 0,
 chipCircle: (x.k === 'curtain' && this.subDone(x)) ? '#1f6f3f' : '#1c3d6e',
 chipAnim: (c && x.k === 'curtain' && !st.curtainOpen && !d && Object.keys(st.pts).length < BRIEF.length) ? 'chevNudge 1.3s ease-in-out infinite' : 'none',
-go: () => this.rowTap(i),
+go: () => this.rowTap(i), showUntick: c && d, untick: () => this.uncheck(),
 open: () => this.openLink(i)
 });
 });
@@ -2972,7 +2985,7 @@ if (st.finished) { btn = { ...green, label: 'טיסה חדשה', sub: '' }; hint
 else if (st.sectionDone) {
 btn = lastPhase ? { ...green, label: 'סיום טיסה', sub: '' } : { ...green, label: 'לשלב הבא', sub: PH[it.ph + 1] };
 hintText = 'השלב הושלם. אפשר להמשיך';
-} else if (st.view === 'card' && isDone(it)) { btn = { ...normal, dis: true, body: '#7a7262', fg: '#d9d2bf' }; hintText = 'הפריט כבר סומן';
+} else if (isDone(it)) { btn = { ...green, label: 'המשך', sub: '' }; hintText = holdMode ? 'הפריט כבר סומן. החזק את המסלול להמשיך' : 'הפריט כבר סומן. הקש על המסלול להמשיך';
 } else if (it.k === 'curtain' && briefDone) { btn = { ...green, label: 'אשר כרטיס', sub: 'תת-רשימה הושלמה' }; hintText = 'תת-רשימה הושלמה. החזק את המסלול לאישור הכרטיס'; }
 else if (it.k === 'curtain' && !st.curtainOpen) { hintText = 'יש תת-רשימה - פתח, או המשך'; }
 else if (it.k === 'curtain' && st.curtainOpen && !briefDone) { btn = { ...normal, label: 'סמן נקודה ' + (curPt + 1) + '/' + BRIEF.length }; hintText = 'אותו מסלול מסמן כל נקודה'; }
