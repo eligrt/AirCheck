@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <!-- ═══════════════════════════════════════
-     AirCheck · v3.00.035 · built by eligrt
+     AirCheck · v3.00.037 · built by eligrt
      ═══════════════════════════════════════ -->
 <html lang="he" dir="rtl">
 <head>
@@ -35,7 +35,7 @@ if(force){['aircheck_rd_v1'].forEach(function(n){r.call(localStorage,P+n);});try
 <script>
 /* Single source of truth for app identity. Footers, share texts, exports and Firebase appVersion all read these. */
 const APP_NAME='AirCheck';
-const APP_VERSION='v3.00.035';
+const APP_VERSION='v3.00.037';
 const APP_STAMP=APP_NAME+' · '+APP_VERSION+' · built by eligrt';
 document.addEventListener('DOMContentLoaded',function(){document.querySelectorAll('.app-stamp').forEach(function(e){e.textContent=APP_STAMP;});});
 </script>
@@ -824,7 +824,7 @@ const hasOverflow=list.scrollHeight>list.clientHeight+2;
 const atBottom=list.scrollTop+list.clientHeight>=list.scrollHeight-2;
 fade.classList.toggle('show',hasOverflow&&!atBottom);
 }
-/* ============ AirCheck list editor (v3.00.035) ============
+/* ============ AirCheck list editor (v3.00.037) ============
    All screen text is in E_LANG. English is added later as E_LANG.en. */
 const E_LANG={he:{
 back:'חזרה',cancel:'ביטול',ok:'אישור',save:'שמור שינויים',saved:'נשמר',
@@ -2737,7 +2737,7 @@ hhmm() { const d = new Date(); return String(d.getUTCHours()).padStart(2, '0') +
 nextStep() {
 const st = this.state; const i = st.cur; const it = ITEMS[i];
 const open = this.isOpen(i, st.done, st.skipped);
-if (st.amber) {
+if (false) {
 const sk = []; ITEMS.forEach((x, k) => { if (st.skipped[x.id] && k !== i) sk.push(k); });
 if (sk.length) { this.setState({ amberFresh: false, cur: sk.find(k => k > i) ?? sk[0], curtainOpen: false, flip: st.flip + 1 }); return; }
 const b = st.amberBack;
@@ -2784,7 +2784,7 @@ else this.setState({ amber: false, amberBack: null, curtainOpen: false, ...this.
 tick() {
 const st = this.state;
 if (st.stampOn || st.flipOut) return;
-if (st.finished) { this._t0 = null; this._t1 = null; this.setState({ screen: 'splash', holding: false }); return; }
+if (st.finished) { this._t0 = null; this._t1 = null; const goSp = () => { this._splashAt = Date.now(); this.setState({ screen: 'splash', holding: false }); }; if (this._down) { this._pend = goSp; this._stampAt = Date.now() - 450; } else goSp(); return; }
 if (st.sectionDone) {
 this.flipThen(() => {
 const p = ITEMS[st.cur].ph;
@@ -3042,7 +3042,7 @@ const hasFlap = isCardView && showItemCard && it.k === 'curtain';
 const showCurtain = hasFlap && st.curtainOpen;
 let uCnt = 0; let underNum = '', underMain = '', underSub = '', uK = '', uLbl = '', uGrp = '';
 if (st.sectionDone) { if (it.ph < PH.length - 1) { underNum = 'NEXT SECTION'; underMain = PH[it.ph + 1]; } else { underNum = 'END'; underMain = 'סיום טיסה'; } }
-else if (!st.finished) { const nI = (st.amber && st.flipOut && st.flipKind === 'next') ? this.amberNext(st) : (st.flipOut && st.flipKind === 'next') ? (st.cur + 1 < N && ITEMS[st.cur + 1].ph === it.ph ? st.cur + 1 : -1) : (st.amber ? this.amberNext(st) : this.nextOpen(st.cur, st.done, st.skipped)); if (nI >= 0 && nI !== st.cur) { underNum = 'ITEM ' + pad(nI + 1) + ' / ' + pad(N); underMain = ITEMS[nI].m; underSub = ITEMS[nI].s; uK = ITEMS[nI].k || ''; uLbl = ITEMS[nI].k === 'own' ? 'פתח את ' + ITEMS[nI].l : (ITEMS[nI].l || ''); const gg = ITEMS.filter(z => z.ph === ITEMS[nI].ph && z.g === ITEMS[nI].g); uCnt = (ITEMS[nI].subList || []).length; uGrp = (gg.indexOf(ITEMS[nI]) + 1) + '/' + gg.length; } else { underNum = 'END OF SECTION'; underMain = 'השלב הושלם'; } }
+else if (!st.finished) { const nI = (st.flipOut && st.flipKind === 'next') ? (st.cur + 1 < N && ITEMS[st.cur + 1].ph === it.ph ? st.cur + 1 : -1) : (st.amber ? this.amberNext(st) : this.nextOpen(st.cur, st.done, st.skipped)); if (nI >= 0 && nI !== st.cur) { underNum = 'ITEM ' + pad(nI + 1) + ' / ' + pad(N); underMain = ITEMS[nI].m; underSub = ITEMS[nI].s; uK = ITEMS[nI].k || ''; uLbl = ITEMS[nI].k === 'own' ? 'פתח את ' + ITEMS[nI].l : (ITEMS[nI].l || ''); const gg = ITEMS.filter(z => z.ph === ITEMS[nI].ph && z.g === ITEMS[nI].g); uCnt = (ITEMS[nI].subList || []).length; uGrp = (gg.indexOf(ITEMS[nI]) + 1) + '/' + gg.length; } else { underNum = 'END OF SECTION'; underMain = 'השלב הושלם'; } }
 const real = doneN + skippedN > 0; const forceP = (this.props.splashDemo ?? 'auto') === 'inProgress';
 const spInProgress = real || forceP;
 const spSk = real ? skippedN : 1; const spDn = real ? doneN : 6;
@@ -3072,9 +3072,10 @@ spPct: spPctNum, spCount: spDn + ' / ' + N, spPctLabel: Math.round((spDn / N) * 
 spHasSkipped: spSk > 0, spSkipped: spSk, spListName: '',
 spLists: (() => { const P = getProfiles(); const sel = st.splashList && P.profiles.some(z => z.id === st.splashList) ? st.splashList : P.activeProfile; return P.profiles.slice(0, 3).map(pr => { const on = pr.id === sel; return { name: pr.name, on, pillBg: on ? '#c8a04a' : 'transparent', pillBd: on ? '#c8a04a' : 'rgba(244,236,220,.45)', pillFg: on ? '#2a1f08' : '#f4ecdc', pick: () => this.setState({ splashList: pr.id }) }; }); })(),
 spMainLabel: spInProgress ? 'המשך טיסה \u203A' : 'התחל טיסה',
-spStart: () => { const P = getProfiles(); const sel = st.splashList && P.profiles.some(z => z.id === st.splashList) ? st.splashList : P.activeProfile; if (spInProgress) { if (real && !st.finished && (st.cur !== spResume || st.sectionDone || st.amber)) this.setState({ cur: spResume, sectionDone: false, amber: false, amberBack: null, curtainOpen: false }); showScreen('screenChecklist'); } else ac3NewFlight(sel); },
-spAskNew: () => this.setState({ spConfirm: true }), spConfirm: st.spConfirm,
-spNewYes: () => { const P = getProfiles(); const sel = st.splashList && P.profiles.some(z => z.id === st.splashList) ? st.splashList : P.activeProfile; ac3NewFlight(sel); },
+spStart: () => { if (Date.now() - (this._splashAt || 0) < 800) return; const P = getProfiles(); const sel = st.splashList && P.profiles.some(z => z.id === st.splashList) ? st.splashList : P.activeProfile; if (spInProgress) { if (real && !st.finished && (st.cur !== spResume || st.sectionDone || st.amber)) this.setState({ cur: spResume, sectionDone: false, amber: false, amberBack: null, curtainOpen: false }); showScreen('screenChecklist'); } else ac3NewFlight(sel); },
+spAskNew: () => { if (Date.now() - (this._splashAt || 0) < 800) return; this.setState({ spConfirm: true }); },
+spAskNew0: () => this.setState({ spConfirm: true }), spConfirm: st.spConfirm,
+spNewYes: () => { if (Date.now() - (this._splashAt || 0) < 800) return; const P = getProfiles(); const sel = st.splashList && P.profiles.some(z => z.id === st.splashList) ? st.splashList : P.activeProfile; ac3NewFlight(sel); },
 spNewNo: () => this.setState({ spConfirm: false }),
 isCardView, isListView: !isCardView, vaName: st.vaTog ? 'viewInA' : 'viewInB', pbH: tCard ? 120 : 0, nvH: tCard ? 90 : 0, pbO: tCard ? 1 : 0, vaOp: st.vaOut ? 0 : 1, vaTy: st.vaOut ? 12 : 0,
 showCard: () => this.switchView('card'),
