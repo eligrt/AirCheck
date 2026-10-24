@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <!-- ═══════════════════════════════════════
-     AirCheck · v3.00.038 · built by eligrt
+     AirCheck · v3.00.039 · built by eligrt
      ═══════════════════════════════════════ -->
 <html lang="he" dir="rtl">
 <head>
@@ -35,7 +35,7 @@ if(force){['aircheck_rd_v1'].forEach(function(n){r.call(localStorage,P+n);});try
 <script>
 /* Single source of truth for app identity. Footers, share texts, exports and Firebase appVersion all read these. */
 const APP_NAME='AirCheck';
-const APP_VERSION='v3.00.038';
+const APP_VERSION='v3.00.039';
 const APP_STAMP=APP_NAME+' · '+APP_VERSION+' · built by eligrt';
 document.addEventListener('DOMContentLoaded',function(){document.querySelectorAll('.app-stamp').forEach(function(e){e.textContent=APP_STAMP;});});
 </script>
@@ -167,8 +167,10 @@ button.lsa-foot-slot{cursor:pointer;padding:8px 0;}
 .lsa-foot-reload{font-family:'IBM Plex Sans Hebrew',sans-serif}
 .lsa-hdr.hdr-fam .hdr-clock-lbl{font-size:9px;letter-spacing:.22em;opacity:.75}
 /* LSA-ALIGN v1 END */
-/* v3.00.038: desktop keeps the dark frame beside the 430px column (app-specific, outside the shared block) */
+/* v3.00.039: desktop keeps the dark frame beside the 430px column (app-specific, outside the shared block) */
 @media (min-width:600px){body{background:#1a1a1c;}}
+/* v3.00.039: while the start screen is up, html/body are cream so the iPhone status bar fade is cream, not navy */
+html:has(.ac3-splash-top),body:has(.ac3-splash-top){background:#f7f0e0;}
 
 /* LSA header family v2: icon+name LEFT,optional middle{direction:ltr!important;justify-content:space-between;align-items:center;}
 .lsa-foot{margin-top:auto}
@@ -851,7 +853,7 @@ const hasOverflow=list.scrollHeight>list.clientHeight+2;
 const atBottom=list.scrollTop+list.clientHeight>=list.scrollHeight-2;
 fade.classList.toggle('show',hasOverflow&&!atBottom);
 }
-/* ============ AirCheck list editor (v3.00.038) ============
+/* ============ AirCheck list editor (v3.00.039) ============
    All screen text is in E_LANG. English is added later as E_LANG.en. */
 const E_LANG={he:{
 back:'חזרה',cancel:'ביטול',ok:'אישור',save:'שמור שינויים',saved:'נשמר',
@@ -2382,7 +2384,7 @@ return inst;
 <!-- START SCREEN (overlay) -->
 <sc-if value="{{showSplash}}">
 <div style="position:absolute;top:0;left:0;right:0;bottom:0;z-index:40;background:linear-gradient(#1c3d6e 0%,#1c3d6e 55%,#14284f 100%);display:flex;flex-direction:column;">
-<div style="flex:none;padding:calc(34px + env(safe-area-inset-top,0px)) 18px 250px;background:linear-gradient(#f7f0e0 0%,#efe3c2 48%,rgb(238,227,194) 49.6%,rgb(236,225,194) 51.2%,rgb(233,223,193) 52.9%,rgb(229,220,193) 54.5%,rgb(224,216,192) 56.1%,rgb(217,211,191) 57.8%,rgb(210,206,189) 59.4%,rgb(202,200,188) 61.0%,rgb(194,194,186) 62.6%,rgb(185,187,184) 64.2%,rgb(176,180,181) 65.9%,rgb(166,173,179) 67.5%,rgb(157,165,176) 69.1%,rgb(147,158,172) 70.8%,rgb(137,150,169) 72.4%,rgb(127,142,165) 74.0%,rgb(117,134,161) 75.6%,rgb(107,127,157) 77.2%,rgb(98,119,152) 78.9%,rgb(89,112,148) 80.5%,rgb(80,105,143) 82.1%,rgb(72,98,139) 83.8%,rgb(64,92,134) 85.4%,rgb(57,86,130) 87.0%,rgb(51,80,126) 88.6%,rgb(45,76,122) 90.2%,rgb(40,71,119) 91.9%,rgb(36,68,116) 93.5%,rgb(33,65,113) 95.1%,rgb(30,63,112) 96.8%,rgb(29,61,110) 98.4%,rgb(28,61,110) 100.0%);display:flex;flex-direction:column;align-items:center;gap:6px;">
+<div class="ac3-splash-top" style="flex:none;padding:calc(34px + env(safe-area-inset-top,0px)) 18px 250px;background:linear-gradient(#f7f0e0 0%,#efe3c2 48%,rgb(238,227,194) 49.6%,rgb(236,225,194) 51.2%,rgb(233,223,193) 52.9%,rgb(229,220,193) 54.5%,rgb(224,216,192) 56.1%,rgb(217,211,191) 57.8%,rgb(210,206,189) 59.4%,rgb(202,200,188) 61.0%,rgb(194,194,186) 62.6%,rgb(185,187,184) 64.2%,rgb(176,180,181) 65.9%,rgb(166,173,179) 67.5%,rgb(157,165,176) 69.1%,rgb(147,158,172) 70.8%,rgb(137,150,169) 72.4%,rgb(127,142,165) 74.0%,rgb(117,134,161) 75.6%,rgb(107,127,157) 77.2%,rgb(98,119,152) 78.9%,rgb(89,112,148) 80.5%,rgb(80,105,143) 82.1%,rgb(72,98,139) 83.8%,rgb(64,92,134) 85.4%,rgb(57,86,130) 87.0%,rgb(51,80,126) 88.6%,rgb(45,76,122) 90.2%,rgb(40,71,119) 91.9%,rgb(36,68,116) 93.5%,rgb(33,65,113) 95.1%,rgb(30,63,112) 96.8%,rgb(29,61,110) 98.4%,rgb(28,61,110) 100.0%);display:flex;flex-direction:column;align-items:center;gap:6px;">
 <img src="{{icoSrc}}" width="132" height="132" alt="" style="display:block;border-radius:30px;border:2px solid #c8a04a;box-shadow:0 8px 18px rgba(28,61,110,.22);">
 <div dir="ltr" style="margin-top:8px;font-family:'JetBrains Mono',monospace;font-size:28px;font-weight:700;color:#1c3d6e;letter-spacing:-.5px;">AirCheck <span style="color:#a8741a;font-size:44px;line-height:1;text-shadow:0 0 10px rgba(200,160,74,.7);">3</span></div>
 <div dir="ltr" style="font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.18em;color:#8a6a2a;text-transform:uppercase;">personal flight checklist</div>
