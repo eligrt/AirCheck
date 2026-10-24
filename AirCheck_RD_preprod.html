@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <!-- ═══════════════════════════════════════
-     AirCheck · v2.20.014 · built by eligrt
+     AirCheck · v2.20.015 · built by eligrt
      ═══════════════════════════════════════ -->
 <html lang="he" dir="rtl">
 <head>
@@ -17,7 +17,7 @@
 <script>
 /* Single source of truth for app identity. Footers, share texts, exports and Firebase appVersion all read these. */
 const APP_NAME='AirCheck';
-const APP_VERSION='v2.20.014';
+const APP_VERSION='v2.20.015';
 const APP_STAMP=APP_NAME+' · '+APP_VERSION+' · built by eligrt';
 document.addEventListener('DOMContentLoaded',function(){document.querySelectorAll('.app-stamp').forEach(function(e){e.textContent=APP_STAMP;});});
 </script>
@@ -48,7 +48,7 @@ html,body{height:100%;height:var(--app-h,100%);background:#1a1a1c;font-family:va
 
 /* ── SPLASH SCREEN ── */
 #screenSplash{flex-direction:column;overflow:hidden;background:linear-gradient(180deg,#0e2348 0%,#1c3d6e 40%,#4a6a8a 52%,#c0b090 62%,#f4ecdc 70%,#f4ecdc 100%);}
-.splash-hero{flex-shrink:0;background:transparent;padding:24px 18px 0;display:flex;flex-direction:column;align-items:center;gap:8px;}
+.splash-hero{flex-shrink:0;background:transparent;padding:calc(24px + env(safe-area-inset-top,0px) + 56px) 18px 0;display:flex;flex-direction:column;align-items:center;gap:8px;}
 .splash-logo-wrap{width:220px;height:220px;border-radius:0;overflow:hidden;flex-shrink:0;}
 .splash-logo-wrap img{width:220px;height:220px;object-fit:contain;display:block;}
 .splash-app-title{font-family:var(--font-mono);font-size:28px;font-weight:700;color:var(--paper);direction:ltr;letter-spacing:-.5px;}
@@ -679,7 +679,7 @@ button.lsa-foot-slot{cursor:pointer;padding:8px 0;}
 .lsa-foot-reload{font-family:'IBM Plex Sans Hebrew',sans-serif}
 .lsa-hdr.hdr-fam .hdr-clock-lbl{font-size:9px;letter-spacing:.22em;opacity:.75}
 /* LSA-ALIGN v1 END */
-/* v2.20.014: desktop keeps the dark frame beside the 430px column (app-specific, outside the shared block) */
+/* v2.20.015: desktop keeps the dark frame beside the 430px column (app-specific, outside the shared block) */
 @media (min-width:600px){body{background:#1a1a1c;}}
 
 /* LSA header family v2: icon+name LEFT, optional middle, UTC RIGHT */
