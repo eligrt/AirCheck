@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <!-- ═══════════════════════════════════════
-     AirCheck · v3.00.037 · built by eligrt
+     AirCheck · v3.00.038 · built by eligrt
      ═══════════════════════════════════════ -->
 <html lang="he" dir="rtl">
 <head>
@@ -35,7 +35,7 @@ if(force){['aircheck_rd_v1'].forEach(function(n){r.call(localStorage,P+n);});try
 <script>
 /* Single source of truth for app identity. Footers, share texts, exports and Firebase appVersion all read these. */
 const APP_NAME='AirCheck';
-const APP_VERSION='v3.00.037';
+const APP_VERSION='v3.00.038';
 const APP_STAMP=APP_NAME+' · '+APP_VERSION+' · built by eligrt';
 document.addEventListener('DOMContentLoaded',function(){document.querySelectorAll('.app-stamp').forEach(function(e){e.textContent=APP_STAMP;});});
 </script>
@@ -116,16 +116,19 @@ html,body{height:100%;height:var(--app-h,100%);background:#1a1a1c;font-family:va
 #rotateGuard .rg-icon{font-size:52px;color:#fff;line-height:1;margin-bottom:18px;}
 #rotateGuard .rg-text{font-size:17px;color:#fff;line-height:1.65;margin:0;}}
 
-/* LSA-ALIGN v1 START - shared chassis: scroll, header inset, footer. Do not edit per app;
-update the machine instead. */
+/* LSA-ALIGN v1 START - shared chassis: scroll, header inset, footer. Do not edit per app; update the machine instead. */
 :root{
   --lsa-hdr-min:58px;                                   /* navy header content height */
   --lsa-foot-h:33px;                                    /* footer content height */
   --lsa-foot-pad:max(8px,calc(env(safe-area-inset-bottom,0px) - 16px)); /* sits low, clear of the home bar */
+  --lsa-navy:#1c3d6e;                                   /* body/html background: colours the iPhone status bar fade */
+  --lsa-hdr-extra:min(12px,env(safe-area-inset-top,0px)); /* 12px on iPhone only, 0 on desktop and browser tabs */
 }
-*{overscroll-behavior:none;}
-/* no rubber-band,no scroll chaining */
+*{overscroll-behavior:none;}                            /* no rubber-band, no scroll chaining */
 html,body{overscroll-behavior:none;}
+body{background:var(--lsa-navy);}                       /* app containers must carry their own paper background */
+@media (max-width:599px){html{background:var(--lsa-navy);}}
+.lsa-hdr{box-sizing:border-box;min-height:calc(var(--lsa-hdr-min) + env(safe-area-inset-top,0px) + var(--lsa-hdr-extra));padding-top:calc(10px + env(safe-area-inset-top,0px) + var(--lsa-hdr-extra));padding-bottom:10px;}
 .lsa-foot{box-sizing:border-box;flex:0 0 auto;display:grid;grid-template-columns:minmax(0,1fr) auto minmax(0,1fr);align-items:center;direction:ltr;
   height:calc(var(--lsa-foot-h) + var(--lsa-foot-pad));padding:0 12px var(--lsa-foot-pad);margin:0;
   background:var(--paper-hi,#fbf6e8);border-top:1px solid var(--gold-lite,#d4b878);
@@ -140,8 +143,32 @@ button.lsa-foot-slot{cursor:pointer;padding:8px 0;}
 .lsa-foot-reload{grid-column:3;justify-self:end;background:none;border:0;padding:8px 0;margin:0;font-family:var(--font-ui,'IBM Plex Sans Hebrew',sans-serif);font-size:11px;letter-spacing:.02em;
   color:var(--ink-muted,#5a4a3a);text-decoration:underline;text-underline-offset:2px;opacity:.75;cursor:pointer;white-space:nowrap;}
 .lsa-foot-reload:active{opacity:.4;}
-/* header clock: time on top{display:flex!important;flex-direction:column!important;align-items:center!important;gap:3px!important;}
+.lsa-skip{position:absolute;left:0;right:0;bottom:calc(var(--lsa-foot-h) + var(--lsa-foot-pad) + 14px);text-align:center;font-family:var(--font-mono,var(--mono,'JetBrains Mono',monospace));font-size:9px;letter-spacing:.18em;color:var(--ink-faint,#8a7a5a);text-transform:uppercase;pointer-events:none;}
+#splash.lobby .lsa-skip{display:none;}
+/* header clock: time on top, UTC label beneath (all apps) */
+.hdr-clock,.strip-clock{display:flex!important;flex-direction:column!important;align-items:center!important;gap:3px!important;}
+.hdr-clock>.hdr-clock-lbl,.strip-clock>.strip-clock-lbl{order:2;font-size:9px!important;line-height:1;letter-spacing:.22em;margin:0!important;}
+.hdr-clock>:not(.hdr-clock-lbl),.strip-clock>:not(.strip-clock-lbl){order:1;}
+.hdr-clock-row{display:flex;flex-direction:column-reverse!important;align-items:center!important;gap:3px!important;}
+/* header family v2: icon+name LEFT, optional middle, UTC RIGHT (add class hdr-fam next to lsa-hdr) */
+.hdr-fam{direction:ltr!important;display:flex;justify-content:space-between;align-items:center;background:var(--ink);padding-left:16px;padding-right:16px;gap:6px}
+.hdr-fam .hdr-rail{display:flex;align-items:center;gap:10px;min-width:0}
+.hdr-fam .hdr-glyph{display:block;width:38px;height:38px;flex:0 0 38px;border-radius:9px;overflow:hidden;border:1px solid var(--gold);background:var(--paper)}
+.hdr-fam .hdr-glyph img{width:100%;height:100%;display:block;object-fit:cover}
+.hdr-fam .hdr-title{direction:ltr;text-align:left}
+.hdr-fam .hdr-title h1{font-size:16.5px;line-height:1.25;font-weight:700;letter-spacing:-.1px;color:var(--paper);margin:0;white-space:nowrap}
+.hdr-fam .hdr-title p{color:var(--gold-lite);font-weight:500;margin:1px 0 0;line-height:1.3;font-size:10.5px}
+.hdr-fam .hdr-clock{color:var(--paper);font-family:var(--font-mono,monospace);direction:ltr;flex:0 0 auto}
+.hdr-fam .hdr-utc{font-size:21px;font-weight:700;line-height:1}
+/* fonts pinned in every app: header text IBM Plex Sans Hebrew, clock and footer JetBrains Mono */
+.hdr-fam .hdr-title h1,.hdr-fam .hdr-title p{font-family:'IBM Plex Sans Hebrew',sans-serif}
+.hdr-fam .hdr-clock,.hdr-fam .hdr-utc,.hdr-fam .hdr-clock-lbl{font-family:'JetBrains Mono',monospace}
+.lsa-foot,.lsa-foot-ver,.lsa-foot-slot{font-family:'JetBrains Mono',monospace}
+.lsa-foot-reload{font-family:'IBM Plex Sans Hebrew',sans-serif}
+.lsa-hdr.hdr-fam .hdr-clock-lbl{font-size:9px;letter-spacing:.22em;opacity:.75}
 /* LSA-ALIGN v1 END */
+/* v3.00.038: desktop keeps the dark frame beside the 430px column (app-specific, outside the shared block) */
+@media (min-width:600px){body{background:#1a1a1c;}}
 
 /* LSA header family v2: icon+name LEFT,optional middle{direction:ltr!important;justify-content:space-between;align-items:center;}
 .lsa-foot{margin-top:auto}
@@ -189,7 +216,7 @@ button.lsa-foot-slot{cursor:pointer;padding:8px 0;}
 #e3{position:relative;flex:1;min-height:0;display:flex;flex-direction:column;background:#f4ecdc;color:#1a1308;font-family:var(--font-ui);overflow:hidden;}
 #e3 button{font-family:inherit;cursor:pointer;}
 #e3 input{font-family:inherit;user-select:text;-webkit-user-select:text;}
-#e3 .e3-hd{flex:none;background:#c0302a;color:#fff;padding:calc(10px + env(safe-area-inset-top,0px)) 12px 10px;min-height:68px;box-sizing:border-box;display:flex;align-items:center;gap:8px;}
+#e3 .e3-hd{flex:none;background:#c0302a;color:#fff;padding:calc(10px + env(safe-area-inset-top,0px) + var(--lsa-hdr-extra,0px)) 12px 10px;min-height:calc(68px + var(--lsa-hdr-extra,0px));box-sizing:border-box;display:flex;align-items:center;gap:8px;}
 #e3 .e3-ht{flex:1;text-align:center;font-weight:700;font-size:18px;}
 #e3 .e3-hb{flex:none;min-width:48px;min-height:48px;background:transparent;border:0;color:#fff;font-size:16px;display:flex;align-items:center;gap:4px;padding:0 4px;}
 #e3 .e3-sv{flex:none;min-height:48px;padding:0 14px;border:0;border-radius:10px;font-weight:700;font-size:15px;display:flex;align-items:center;justify-content:center;gap:6px;}
@@ -824,7 +851,7 @@ const hasOverflow=list.scrollHeight>list.clientHeight+2;
 const atBottom=list.scrollTop+list.clientHeight>=list.scrollHeight-2;
 fade.classList.toggle('show',hasOverflow&&!atBottom);
 }
-/* ============ AirCheck list editor (v3.00.037) ============
+/* ============ AirCheck list editor (v3.00.038) ============
    All screen text is in E_LANG. English is added later as E_LANG.en. */
 const E_LANG={he:{
 back:'חזרה',cancel:'ביטול',ok:'אישור',save:'שמור שינויים',saved:'נשמר',
@@ -2020,7 +2047,7 @@ return inst;
 </script>
 <script id="ac3tpl" type="text/plain">
 <div dir="rtl" style="position:relative;width:100%;flex:1;min-height:0;box-sizing:border-box;overflow:hidden;background:#f4ecdc;color:#1c3d6e;font-family:'IBM Plex Sans Hebrew',sans-serif;display:flex;flex-direction:column;user-select:none;-webkit-user-select:none;-webkit-touch-callout:none;">
-<div dir="ltr" style="flex:none;box-sizing:border-box;min-height:calc(58px + env(safe-area-inset-top,0px));padding:calc(10px + env(safe-area-inset-top,0px)) 16px 10px;background:#1c3d6e;box-shadow:0 3px 0 #0e2348;display:flex;align-items:center;justify-content:space-between;gap:8px;position:relative;z-index:10;">
+<div dir="ltr" style="flex:none;box-sizing:border-box;min-height:calc(58px + env(safe-area-inset-top,0px) + var(--lsa-hdr-extra,0px));padding:calc(10px + env(safe-area-inset-top,0px) + var(--lsa-hdr-extra,0px)) 16px 10px;background:#1c3d6e;box-shadow:0 3px 0 #0e2348;display:flex;align-items:center;justify-content:space-between;gap:8px;position:relative;z-index:10;">
 <div style="display:flex;align-items:center;gap:10px;min-width:0;">
 <img src="{{icoSrc}}" width="38" height="38" alt="" style="flex:0 0 38px;display:block;border-radius:9px;border:1px solid #c8a04a;object-fit:cover;">
 <div style="text-align:left;">
@@ -2421,7 +2448,7 @@ return inst;
 <!-- SETTINGS -->
 <sc-if value="{{showSettings}}">
 <div style="position:absolute;top:0;left:0;right:0;bottom:0;z-index:45;background:#f4ecdc;display:flex;flex-direction:column;">
-<div dir="ltr" style="flex:none;box-sizing:border-box;min-height:calc(58px + env(safe-area-inset-top,0px));padding:calc(10px + env(safe-area-inset-top,0px)) 16px 10px;background:#1c3d6e;box-shadow:0 3px 0 #0e2348;display:flex;align-items:center;justify-content:space-between;gap:8px;position:relative;z-index:10;flex:none;">
+<div dir="ltr" style="flex:none;box-sizing:border-box;min-height:calc(58px + env(safe-area-inset-top,0px) + var(--lsa-hdr-extra,0px));padding:calc(10px + env(safe-area-inset-top,0px) + var(--lsa-hdr-extra,0px)) 16px 10px;background:#1c3d6e;box-shadow:0 3px 0 #0e2348;display:flex;align-items:center;justify-content:space-between;gap:8px;position:relative;z-index:10;flex:none;">
 <div style="display:flex;align-items:center;gap:10px;min-width:0;">
 <img src="{{icoSrc}}" width="38" height="38" alt="" style="flex:0 0 38px;display:block;border-radius:9px;border:1px solid #c8a04a;object-fit:cover;">
 <div style="text-align:left;">
@@ -3344,11 +3371,11 @@ syncToFirebase('open');
 <script>
 /* LSA-ALIGN v1 JS START */
 async function lsaReload(){
-try{
-if('caches' in window){const k=await caches.keys();await Promise.all(k.map(x=>caches.delete(x)));}
-if(navigator.serviceWorker){const r=await navigator.serviceWorker.getRegistrations();await Promise.all(r.map(x=>x.unregister()));}
-}catch(e){}
-const u=new URL(location.href);u.searchParams.set('r',Date.now().toString(36));location.replace(u.href);
+  try{
+    if('caches' in window){const k=await caches.keys();await Promise.all(k.map(x=>caches.delete(x)));}
+    if(navigator.serviceWorker){const r=await navigator.serviceWorker.getRegistrations();await Promise.all(r.map(x=>x.unregister()));}
+  }catch(e){}
+  const u=new URL(location.href);u.searchParams.set('r',Date.now().toString(36));location.replace(u.href);
 }
 /* LSA-ALIGN v1 JS END */
 </script>
