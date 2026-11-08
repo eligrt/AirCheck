@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <!-- ═══════════════════════════════════════
-     AirCheck · v3.00.039 · built by eligrt
+     AirCheck · v3.00.040 · built by eligrt
      ═══════════════════════════════════════ -->
 <html lang="he" dir="rtl">
 <head>
@@ -35,7 +35,7 @@ if(force){['aircheck_rd_v1'].forEach(function(n){r.call(localStorage,P+n);});try
 <script>
 /* Single source of truth for app identity. Footers, share texts, exports and Firebase appVersion all read these. */
 const APP_NAME='AirCheck';
-const APP_VERSION='v3.00.039';
+const APP_VERSION='v3.00.040';
 const APP_STAMP=APP_NAME+' · '+APP_VERSION+' · built by eligrt';
 document.addEventListener('DOMContentLoaded',function(){document.querySelectorAll('.app-stamp').forEach(function(e){e.textContent=APP_STAMP;});});
 </script>
@@ -167,9 +167,9 @@ button.lsa-foot-slot{cursor:pointer;padding:8px 0;}
 .lsa-foot-reload{font-family:'IBM Plex Sans Hebrew',sans-serif}
 .lsa-hdr.hdr-fam .hdr-clock-lbl{font-size:9px;letter-spacing:.22em;opacity:.75}
 /* LSA-ALIGN v1 END */
-/* v3.00.039: desktop keeps the dark frame beside the 430px column (app-specific, outside the shared block) */
+/* v3.00.040: desktop keeps the dark frame beside the 430px column (app-specific, outside the shared block) */
 @media (min-width:600px){body{background:#1a1a1c;}}
-/* v3.00.039: while the start screen is up, html/body are cream so the iPhone status bar fade is cream, not navy */
+/* v3.00.040: while the start screen is up, html/body are cream so the iPhone status bar fade is cream, not navy */
 html:has(.ac3-splash-top),body:has(.ac3-splash-top){background:#f7f0e0;}
 
 /* LSA header family v2: icon+name LEFT,optional middle{direction:ltr!important;justify-content:space-between;align-items:center;}
@@ -383,6 +383,53 @@ window.addEventListener('resize',fixAppH);
 window.addEventListener('pageshow',refit);
 window.addEventListener('focus',refit);
 document.addEventListener('visibilitychange',function(){if(!document.hidden)refit();});
+})();
+</script>
+<script>
+/* v3.00.040 TEMPORARY DEBUG: scroll reset on return + on-device event log (Settings > Debug). Remove the log before public release. */
+(function(){
+var KEY='ac3_dbglog',MAX=200,buf=[],tmr=null,T0=Date.now();
+try{buf=JSON.parse(localStorage.getItem(KEY)||'[]');if(!Array.isArray(buf))buf=[];}catch(e){buf=[];}
+function r(n){return Math.round(n*10)/10;}
+function top(el){try{return el?r(el.getBoundingClientRect().top):'-';}catch(e){return '-';}}
+function snap(){
+ try{
+  var de=document.documentElement,vv=window.visualViewport,ft='-',f=document.querySelectorAll('.lsa-foot');
+  for(var i=0;i<f.length;i++){var b=f[i].getBoundingClientRect();if(b.width>0&&b.height>0){ft=r(b.bottom);break;}}
+  var root=document.getElementById('ac3root');
+  var hd=root&&root.querySelector('div[dir="ltr"]'),lg=root&&root.querySelector('img'),rw=root&&root.querySelector('button.rw');
+  return 'sy='+r(window.scrollY)+' dt='+r(de.scrollTop)+' bt='+r(document.body.scrollTop)+' app='+top(document.getElementById('app'))+' hdr='+top(hd)+' logo='+top(lg)+' runway='+top(rw)+' footBottom='+ft+' ih='+window.innerHeight+' sh='+screen.height+' appH='+(de.style.getPropertyValue('--app-h')||'-')+' vv='+(vv?r(vv.height)+'/'+r(vv.offsetTop)+'/'+r(vv.pageTop):'-');
+ }catch(e){return 'snap error';}
+}
+function save(){if(tmr)return;tmr=setTimeout(function(){tmr=null;try{localStorage.setItem(KEY,JSON.stringify(buf));}catch(e){}},400);}
+function log(ev){buf.push({t:Date.now(),e:ev,s:snap()});if(buf.length>MAX)buf.splice(0,buf.length-MAX);save();}
+function resetScroll(why){
+ try{
+  var de=document.documentElement,sy=window.scrollY,dt=de.scrollTop,bt=document.body.scrollTop;
+  if(sy||dt||bt){window.scrollTo(0,0);de.scrollTop=0;document.body.scrollTop=0;log('RESET page scroll was '+r(sy)+'/'+r(dt)+'/'+r(bt)+' ('+why+')');}
+ }catch(e){}
+}
+function back(why){log(why);resetScroll(why);[120,400,900,1600].forEach(function(ms){setTimeout(function(){resetScroll(why+' +'+ms);},ms);});}
+window.ac3Dbg=log;
+window.ac3DbgCopy=function(){
+ var head='AirCheck debug log '+(typeof APP_VERSION!=='undefined'?APP_VERSION:'')+'\nnow='+new Date().toISOString()+'\nstandalone='+(navigator.standalone===true)+' dpr='+window.devicePixelRatio+'\nua='+navigator.userAgent+'\nlegend: sy/dt/bt=page scroll, app/hdr/logo/runway=top px, footBottom, ih=inner height, sh=screen height, appH=layout height, vv=visual viewport height/offsetTop/pageTop\n';
+ var lines=buf.map(function(x){var d=new Date(x.t);return d.toISOString().slice(11,23)+'  '+x.e+'  |  '+x.s;});
+ var txt=head+'\n'+lines.join('\n');
+ var done=function(ok){var l=document.getElementById('dbgCopyLbl');if(l){l.textContent=ok?('הועתק - '+buf.length+' אירועים'):'ההעתקה נכשלה';setTimeout(function(){l.textContent='העתק יומן';},2500);}};
+ var fb=function(){try{var ta=document.createElement('textarea');ta.value=txt;ta.style.cssText='position:fixed;top:0;left:0;opacity:0;';document.body.appendChild(ta);ta.focus();ta.select();var ok=document.execCommand('copy');document.body.removeChild(ta);done(ok);}catch(e){done(false);}};
+ try{if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(txt).then(function(){done(true);},fb);}else fb();}catch(e){fb();}
+};
+log('START');
+window.addEventListener('pageshow',function(e){back('pageshow'+(e.persisted?' (from cache)':''));});
+window.addEventListener('pagehide',function(){log('pagehide');});
+window.addEventListener('focus',function(){back('focus');});
+window.addEventListener('blur',function(){log('blur');});
+window.addEventListener('resize',function(){log('resize');resetScroll('resize');});
+window.addEventListener('orientationchange',function(){log('orientationchange');});
+document.addEventListener('visibilitychange',function(){if(document.hidden)log('hidden');else back('visible');});
+window.addEventListener('scroll',function(){resetScroll('scroll event');},{passive:true});
+if(window.visualViewport){var vt=null;var vh=function(){if(vt)return;vt=setTimeout(function(){vt=null;var v=window.visualViewport;if(v.offsetTop||v.pageTop){log('viewport moved');resetScroll('viewport');}},150);};window.visualViewport.addEventListener('resize',vh);window.visualViewport.addEventListener('scroll',vh);}
+document.addEventListener('click',function(e){try{var el=e.target.closest('a,button,[onclick]')||e.target;var a=e.target.closest('a');var tx=(el.getAttribute('aria-label')||el.textContent||el.tagName||'').replace(/\s+/g,' ').trim().slice(0,28);log('tap: '+tx+(a&&a.href?' -> '+a.href.slice(0,60):''));}catch(x){}},true);
 })();
 </script>
 <div id="app">
@@ -853,7 +900,7 @@ const hasOverflow=list.scrollHeight>list.clientHeight+2;
 const atBottom=list.scrollTop+list.clientHeight>=list.scrollHeight-2;
 fade.classList.toggle('show',hasOverflow&&!atBottom);
 }
-/* ============ AirCheck list editor (v3.00.039) ============
+/* ============ AirCheck list editor (v3.00.040) ============
    All screen text is in E_LANG. English is added later as E_LANG.en. */
 const E_LANG={he:{
 back:'חזרה',cancel:'ביטול',ok:'אישור',save:'שמור שינויים',saved:'נשמר',
@@ -2399,8 +2446,9 @@ return inst;
 <div style="position:relative;margin-top:12px;height:24px;border-radius:6px;background:#2a2218;overflow:hidden;">
 <span style="position:absolute;top:0;bottom:0;right:0;width:{{spPct}}%;background:#1f6f3f;" aria-hidden="true"></span>
 <span style="position:absolute;top:50%;left:4px;right:4px;border-top:2px dashed rgba(244,236,220,.4);" aria-hidden="true"></span>
-<span style="position:absolute;top:0;bottom:0;right:35%;border-right:2px solid #f4ecdc;" aria-hidden="true"></span>
-<span style="position:absolute;top:0;bottom:0;right:71%;border-right:2px solid #f4ecdc;" aria-hidden="true"></span>
+<sc-for list="{{spDivs}}" as="dv">
+<span style="position:absolute;top:0;bottom:0;right:{{dv.r}}%;border-right:2px solid #f4ecdc;" aria-hidden="true"></span>
+</sc-for>
 <sc-for list="{{spMarks}}" as="mk">
 <span style="position:absolute;top:50%;right:{{mk.r}}%;width:7px;height:7px;margin:-3.5px -3.5px 0 0;border-radius:50%;background:#f59e0b;border:1.5px solid #f4ecdc;box-sizing:border-box;z-index:1;" aria-hidden="true"></span>
 </sc-for>
@@ -2504,6 +2552,15 @@ return inst;
 <button type="button" onClick="{{reloadDemo}}" style="width:100%;min-height:56px;padding:0 14px;border:0;background:transparent;display:flex;align-items:center;gap:12px;text-align:start;cursor:pointer;">
 <span style="font-size:16px;color:#1c3d6e;font-weight:600;">טען מחדש</span><span style="flex:1;"></span><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#8a7a5a" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 6l-6 6l6 6"></path></svg>
 </button>
+</div>
+</div>
+<div>
+<div style="font-size:12.5px;font-weight:700;letter-spacing:.04em;color:#b3261e;padding:0 2px 6px;">אבחון - זמני, למפתח בלבד</div>
+<div style="background:#fdecea;border:2px solid #b3261e;border-radius:12px;overflow:hidden;">
+<button type="button" onClick="{{dbgCopy}}" style="width:100%;min-height:56px;padding:0 14px;border:0;background:#b3261e;display:flex;align-items:center;justify-content:center;gap:12px;cursor:pointer;">
+<span id="dbgCopyLbl" style="font-size:16px;color:#fff;font-weight:700;">העתק יומן</span>
+</button>
+<div style="padding:8px 14px 10px;font-size:12.5px;line-height:1.4;color:#7a1a14;">יומן של 200 הפעולות האחרונות. מעתיקים ושולחים לאבחון. יוסר לפני השקה.</div>
 </div>
 </div>
 </div>
@@ -2861,18 +2918,6 @@ rowTap(i) {
 const st0 = this.state; if (i === st0.cur && !st0.sectionDone && !st0.finished) return;
 this.setState({ cur: i, amber: false, sectionDone: false, finished: false, curtainOpen: false });
 return;
-const st = this.state; const id = ITEMS[i].id;
-const done = { ...st.done }; const skipped = { ...st.skipped }; const times = { ...st.times };
-if (done[id]) {
-delete done[id];
-this.setState({ done, cur: i, sectionDone: false, finished: false, curtainOpen: false, ...(ITEMS[i].k === 'curtain' ? { pts: {}, subCeleb: false } : {}) });
-return;
-}
-for (let k = 0; k < i; k++) { const o = ITEMS[k].id; if (!done[o] && !skipped[o]) skipped[o] = true; }
-done[id] = true; delete skipped[id]; times[id] = this.hhmm();
-let nxt = -1;
-for (let k = i + 1; k < ITEMS.length; k++) { const o = ITEMS[k].id; if (!done[o] && !skipped[o]) { nxt = k; break; } }
-this.setState({ done, skipped, times, cur: nxt >= 0 ? nxt : i, amber: false, sectionDone: false, finished: false, curtainOpen: false });
 }
 goTo(i) {
 const st = this.state;
@@ -3080,7 +3125,8 @@ const cur0 = real ? ITEMS[spResume] : (ITEMS[1] || ITEMS[0]);
 const icStyle = this.props.iconStyle ?? 'runway';
 const IC = { runway: ['#2a2218', '#c8a04a', 'rgba(244,236,220,.55)', '#ffffff', '#1a1308'], cream: ['#f4ecdc', '#c8a04a', '#d9c79a', '#1c3d6e', '#0f2447'], gold: ['#c8a04a', '#f4ecdc', '#e8d19b', '#ffffff', '#6f531d'] }[icStyle];
 const spMarks = real ? ITEMS.map((x, i) => isSkip(x) ? { r: ((i + 0.5) / N) * 100 } : null).filter(Boolean) : [{ r: 22 }, { r: 31 }];
-const spPctNum = real ? Math.round(((spFur + 1) / N) * 100) : 40;
+const spDivs = PH.slice(0, -1).map((_, p) => ({ r: (ITEMS.filter(x => x.ph <= p).length / N) * 100 }));
+const spPctNum = real ? ((spFur + 1) / N) * 100 : 40;
 if (st.amber && !st.sectionDone && !st.finished) hintText = 'ללא מסומן: פריט אחר פריט. בסוף חוזרים למקום שהיית בו';
 return {
 showSubTab: false, subTabLabel: st.curtainOpen ? 'תת-רשימה פתוחה בכרטיס' : 'תת-רשימה בכרטיס', subTabRot: 0,
@@ -3088,14 +3134,14 @@ hintPadR: 14,
 backAnim: st.flipOut ? 'backIn 950ms linear both' : 'none', frontAnim: st.flipOut ? 'frontOut 950ms linear both' : (st.stampOn ? 'cardThump .5s ease-out both' : 'none'), cardAnim: st.flipOut ? 'pageFlip 950ms cubic-bezier(.5,0,.3,1) forwards' : 'none',
 doneHasSkip: !st.finished && phSkipped > 0, doneNoSkip: st.finished || phSkipped === 0, doneSkipText: skTxt(phSkipped), underHasSkip: underSk > 0, underNoSkip: underSk <= 0, underSkipText: skTxt(underSk), showUnder: isCardView && !st.finished, underDone: !st.sectionDone && !st.finished && underNum === 'END OF SECTION', underDonePhase: PH[it.ph], underDoneNote: (phSkipped - (isSkip(it) ? 1 : 0)) > 0 ? 'דילגת על ' + (phSkipped - (isSkip(it) ? 1 : 0)) + ' פריטים. אפשר לחזור אליהם' : 'כל פריטי השלב סומנו', underNum, underMain, underSub, underIsSub: uK === 'curtain', underIsLink: uK === 'ext' || uK === 'own', underIsOwn: uK === 'own', underIsExt: uK === 'ext', underLinkLabel: uLbl, underGrp: uGrp, underGrpOn: !!uGrp, underSubLine: uCnt + ' נקודות · הקש לפתיחה',
 showSplash: st.screen === 'splash' || st.screen === 'settings', showSettings: st.screen === 'settings', showEditor: false, spInProgress, spFresh: !spInProgress,
-spMarks, spPlaneRight: 'calc(' + spPctNum + '% - 12px)', iconBg: IC[0], iconRim: IC[1], iconLine: IC[2], iconPlane: IC[3], iconPlaneStroke: IC[4],
+spMarks, spDivs, spPlaneRight: 'calc(' + spPctNum + '% - 12px)', iconBg: IC[0], iconRim: IC[1], iconLine: IC[2], iconPlane: IC[3], iconPlaneStroke: IC[4],
 spOpenSettings: () => this.setState({ screen: 'settings' }),
 setBack: () => this.setState({ screen: 'splash' }),
 openEditor: () => openEditor(true),
 stTail: st.tail, stAirfield: st.airfield, stTailLabel: '4X-' + (st.tail.replace(/^4X-?/i, '') || '???'),
 stToggles: [{ label: 'צליל בעת אישור', on: settings.sounds !== false, bg: settings.sounds !== false ? '#1f6f3f' : '#b9ad92', knob: settings.sounds !== false ? 3 : 21, flip: () => { settings.sounds = !(settings.sounds !== false); saveSettings(); this.setState({ _t: Date.now() }); } }, { label: 'רטט באישורי פעולה', on: settings.haptics !== false, bg: settings.haptics !== false ? '#1f6f3f' : '#b9ad92', knob: settings.haptics !== false ? 3 : 21, flip: () => { settings.haptics = !(settings.haptics !== false); saveSettings(); this.setState({ _t: Date.now() }); } }],
 holdIdx: [200, 400, 700].indexOf(ac3Hold()), stHold: [['קצר', 200], ['רגיל', 400], ['ארוך', 700]].map(([label, ms]) => { const on = ac3Hold() === ms; return { label, bg: on ? '#1c3d6e' : 'transparent', fg: on ? '#f4ecdc' : '#1c3d6e', pick: () => { settings.holdMs = ms; saveSettings(); this.setState({ _t: Date.now() }); } }; }),
-reloadDemo: () => reloadApp(), icoSrc: AC3_ICON, contact: () => window.open('mailto:eligrt@gmail.com', '_blank'), utcNow: this.hhmm(), appStamp: APP_STAMP, spCanAdd: getProfiles().profiles.length < 3, spShowLists: FEATURES.MULTI_PROFILE, spAddList: () => openEditorForNewList(),
+reloadDemo: () => reloadApp(), dbgCopy: () => { if (window.ac3DbgCopy) window.ac3DbgCopy(); }, icoSrc: AC3_ICON, contact: () => window.open('mailto:eligrt@gmail.com', '_blank'), utcNow: this.hhmm(), appStamp: APP_STAMP, spCanAdd: getProfiles().profiles.length < 3, spShowLists: FEATURES.MULTI_PROFILE, spAddList: () => openEditorForNewList(),
 spPhaseName: PH[cur0.ph], spItem: cur0.m,
 spPct: spPctNum, spCount: spDn + ' / ' + N, spPctLabel: Math.round((spDn / N) * 100) + '%',
 spHasSkipped: spSk > 0, spSkipped: spSk, spListName: '',
