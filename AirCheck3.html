@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <!-- ═══════════════════════════════════════
-     AirCheck · v3.00.042 · built by eligrt
+     AirCheck · v3.00.043 · built by eligrt
      ═══════════════════════════════════════ -->
 <html lang="he" dir="rtl">
 <head>
@@ -35,7 +35,7 @@ if(force){['aircheck_rd_v1'].forEach(function(n){r.call(localStorage,P+n);});try
 <script>
 /* Single source of truth for app identity. Footers, share texts, exports and Firebase appVersion all read these. */
 const APP_NAME='AirCheck';
-const APP_VERSION='v3.00.042';
+const APP_VERSION='v3.00.043';
 const APP_STAMP=APP_NAME+' · '+APP_VERSION+' · built by eligrt';
 document.addEventListener('DOMContentLoaded',function(){document.querySelectorAll('.app-stamp').forEach(function(e){e.textContent=APP_STAMP;});});
 </script>
@@ -167,9 +167,9 @@ button.lsa-foot-slot{cursor:pointer;padding:8px 0;}
 .lsa-foot-reload{font-family:'IBM Plex Sans Hebrew',sans-serif}
 .lsa-hdr.hdr-fam .hdr-clock-lbl{font-size:9px;letter-spacing:.22em;opacity:.75}
 /* LSA-ALIGN v1 END */
-/* v3.00.042: desktop keeps the dark frame beside the 430px column (app-specific, outside the shared block) */
+/* v3.00.043: desktop keeps the dark frame beside the 430px column (app-specific, outside the shared block) */
 @media (min-width:600px){body{background:#1a1a1c;}}
-/* v3.00.042: while the start screen is up, html/body are cream so the iPhone status bar fade is cream, not navy */
+/* v3.00.043: while the start screen is up, html/body are cream so the iPhone status bar fade is cream, not navy */
 html:has(.ac3-splash-top),body:has(.ac3-splash-top){background:#f7f0e0;}
 
 /* LSA header family v2: icon+name LEFT,optional middle{direction:ltr!important;justify-content:space-between;align-items:center;}
@@ -190,11 +190,11 @@ html:has(.ac3-splash-top),body:has(.ac3-splash-top){background:#f7f0e0;}
 @keyframes flipB{0%{transform:perspective(900px) rotateX(-75deg);opacity:.3}100%{transform:perspective(900px) rotateX(0);opacity:1}}
 @keyframes stampIn{0%{transform:scale(1.9) rotate(-14deg);opacity:0}60%{transform:scale(.96) rotate(-7deg);opacity:1}100%{transform:scale(1) rotate(-7deg);opacity:1}}
 @keyframes drapeIn{0%{transform:translateY(-14px);opacity:0}100%{transform:translateY(0);opacity:1}}
-@keyframes planeRun{0%{transform:translateX(0)}100%{transform:translateX(-214px)}}
+@keyframes planeRun{0%{transform:translateX(0)}100%{transform:translateX(calc(var(--run,214px) * -1))}}
 @keyframes frontOut{0%,40%{opacity:1}46%,100%{opacity:0}}
 @keyframes backIn{0%,40%{opacity:0}46%,100%{opacity:1}}
 @keyframes pageFlip{0%{transform:perspective(900px) rotateX(0deg);opacity:1}70%{opacity:1}100%{transform:perspective(900px) rotateX(165deg) translateY(-4px);opacity:0}}
-@keyframes takeoffRun{0%{transform:translate(-214px,0) rotate(0deg) scale(1);opacity:1}100%{transform:translate(-440px,-80px) rotate(12deg) scale(1.12);opacity:0}}
+@keyframes takeoffRun{0%{transform:translate(calc(var(--run,214px) * -1),0) rotate(0deg) scale(1);opacity:1}100%{transform:translate(calc(var(--run,214px) * -1 - 226px),-80px) rotate(12deg) scale(1.12);opacity:0}}
 @keyframes chevNudge{0%,100%{transform:translateY(-3px)}50%{transform:translateY(3px)}}
 @keyframes typeIn{from{width:0}to{width:100%}}
 @keyframes caretBlink{50%{border-color:transparent}}
@@ -386,7 +386,7 @@ document.addEventListener('visibilitychange',function(){if(!document.hidden)refi
 })();
 </script>
 <script>
-/* v3.00.042: iPhone home-screen app sometimes reports safe-area insets as 0 after returning from another page (log of 8 Nov: header lost 62+12px, footer 10px).
+/* v3.00.043: iPhone home-screen app sometimes reports safe-area insets as 0 after returning from another page (log of 8 Nov: header lost 62+12px, footer 10px).
    Remember the real insets while they are valid and re-apply them when iOS reports 0. */
 (function(){
 var K1='ac3_sat',K2='ac3_sab',pr=null,de=document.documentElement;
@@ -406,17 +406,19 @@ function fix(){
  }catch(e){}
 }
 window.ac3FixInsets=fix;
+/* v3.00.043: the plane runs the whole runway on any phone width (run length = runway width - 148px, 214px on a 390 phone) */
+window.ac3SetRun=function(){try{var b=document.querySelector('button.rw');if(b&&b.clientWidth)de.style.setProperty('--run',Math.max(214,b.clientWidth-148)+'px');}catch(e){}};
 function back(){fix();[100,300,700,1500,3000].forEach(function(ms){setTimeout(fix,ms);});}
 fix();
 window.addEventListener('pageshow',back);
 window.addEventListener('focus',back);
-window.addEventListener('resize',fix);
+window.addEventListener('resize',function(){fix();if(window.ac3SetRun)window.ac3SetRun();});
 window.addEventListener('orientationchange',back);
 document.addEventListener('visibilitychange',function(){if(!document.hidden)back();});
 })();
 </script>
 <script>
-/* v3.00.042 TEMPORARY DEBUG: scroll reset on return + on-device event log (Settings > Debug). Remove the log before public release. */
+/* v3.00.043 TEMPORARY DEBUG: scroll reset on return + on-device event log (Settings > Debug). Remove the log before public release. */
 (function(){
 var KEY='ac3_dbglog',MAX=200,buf=[],tmr=null,T0=Date.now();
 try{buf=JSON.parse(localStorage.getItem(KEY)||'[]');if(!Array.isArray(buf))buf=[];}catch(e){buf=[];}
@@ -930,7 +932,7 @@ const hasOverflow=list.scrollHeight>list.clientHeight+2;
 const atBottom=list.scrollTop+list.clientHeight>=list.scrollHeight-2;
 fade.classList.toggle('show',hasOverflow&&!atBottom);
 }
-/* ============ AirCheck list editor (v3.00.042) ============
+/* ============ AirCheck list editor (v3.00.043) ============
    All screen text is in E_LANG. English is added later as E_LANG.en. */
 const E_LANG={he:{
 back:'חזרה',cancel:'ביטול',ok:'אישור',save:'שמור שינויים',saved:'נשמר',
@@ -2614,8 +2616,9 @@ var AC3_ICON='data:image/webp;base64,UklGRkITAABXRUJQVlA4IDYTAACQQQCdASqgAKAAPj0
 var AC3=null;
 var AC3_BRIEF_D030=['חגורות בטיחות - איך סוגרים ופותחים','יציאת חירום - דלת וחלון','לא נוגעים בבקרות ובדוושות','כיבוי אש וערכת עזרה ראשונה','טלפון במצב טיסה, ללא עישון'];
 function ac3Hold(){var ms=(settings&&settings.holdMs)||400;return ms<=200?200:(ms>=500?600:400);}
-/* v3.00.042: one speed setting. Hold 0.2/0.4/0.6s, card flip 0.5/0.9/1.3s; everything else (stamp pause, take-off, plane return) scales with the flip. */
-function ac3Scale(){return ({200:500,400:900,600:1300}[ac3Hold()]||900)/950;}
+/* v3.00.043: one speed setting. Hold 0.15/0.3/0.45s, card flip 0.4/0.7/1.0s; everything else (stamp pause, take-off, plane return) scales with the flip. */
+function ac3Scale(){return ({200:400,400:700,600:1000}[ac3Hold()]||700)/950;}
+function ac3HoldMs(){return {200:150,400:300,600:450}[ac3Hold()]||300;}
 function ac3Ms(n){return Math.round(n*ac3Scale());}
 function ac3Feedback(){try{if(settings&&settings.sounds!==false)playConfirmSound();hapticTap();}catch(e){}}
 function ac3BuildItems(){
@@ -3001,7 +3004,7 @@ const skippedN = ITEMS.filter(isSkip).length;
 const railSide = this.props.railSide ?? 'right';
 const extStyle = this.props.extStyle ?? 'inapp';
 const tickMode = this.props.tickMode ?? 'byView';
-const holdMs = ac3Hold();
+const holdMs = ac3HoldMs();
 const poh = (this.props.doneStyle ?? 'poh') === 'poh';
 const pDone = { ...st.done }; let curP = st.cur;
 if (st.stampOn && st.view === 'card') { pDone[it.id] = true; const nP = this.nextOpen(st.cur, pDone, st.skipped); if (nP >= 0 && nP !== st.cur) curP = nP; }
@@ -3105,8 +3108,9 @@ btn.down = () => {
 if (btn.dis) return;
 this._down = true;
 if (!holdMode || this._ht) return;
+if (window.ac3SetRun) window.ac3SetRun();
 this.setState({ holding: true });
-this._ht = setTimeout(() => { this._ht = null; this.setState({ holding: false, fly: true }); this.tick(); setTimeout(() => this.setState({ fly: false }), ac3Ms(900)); }, holdMs);
+this._ht = setTimeout(() => { this._ht = null; this.setState({ holding: false, fly: true }); requestAnimationFrame(() => setTimeout(() => this.tick(), 0)); setTimeout(() => this.setState({ fly: false }), ac3Ms(900)); }, holdMs);
 };
 btn.up = () => {
 this._down = false;
