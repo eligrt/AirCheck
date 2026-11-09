@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <!-- ═══════════════════════════════════════
-     AirCheck · v3.00.041 · built by eligrt
+     AirCheck · v3.00.042 · built by eligrt
      ═══════════════════════════════════════ -->
 <html lang="he" dir="rtl">
 <head>
@@ -35,7 +35,7 @@ if(force){['aircheck_rd_v1'].forEach(function(n){r.call(localStorage,P+n);});try
 <script>
 /* Single source of truth for app identity. Footers, share texts, exports and Firebase appVersion all read these. */
 const APP_NAME='AirCheck';
-const APP_VERSION='v3.00.041';
+const APP_VERSION='v3.00.042';
 const APP_STAMP=APP_NAME+' · '+APP_VERSION+' · built by eligrt';
 document.addEventListener('DOMContentLoaded',function(){document.querySelectorAll('.app-stamp').forEach(function(e){e.textContent=APP_STAMP;});});
 </script>
@@ -167,9 +167,9 @@ button.lsa-foot-slot{cursor:pointer;padding:8px 0;}
 .lsa-foot-reload{font-family:'IBM Plex Sans Hebrew',sans-serif}
 .lsa-hdr.hdr-fam .hdr-clock-lbl{font-size:9px;letter-spacing:.22em;opacity:.75}
 /* LSA-ALIGN v1 END */
-/* v3.00.041: desktop keeps the dark frame beside the 430px column (app-specific, outside the shared block) */
+/* v3.00.042: desktop keeps the dark frame beside the 430px column (app-specific, outside the shared block) */
 @media (min-width:600px){body{background:#1a1a1c;}}
-/* v3.00.041: while the start screen is up, html/body are cream so the iPhone status bar fade is cream, not navy */
+/* v3.00.042: while the start screen is up, html/body are cream so the iPhone status bar fade is cream, not navy */
 html:has(.ac3-splash-top),body:has(.ac3-splash-top){background:#f7f0e0;}
 
 /* LSA header family v2: icon+name LEFT,optional middle{direction:ltr!important;justify-content:space-between;align-items:center;}
@@ -386,7 +386,7 @@ document.addEventListener('visibilitychange',function(){if(!document.hidden)refi
 })();
 </script>
 <script>
-/* v3.00.041: iPhone home-screen app sometimes reports safe-area insets as 0 after returning from another page (log of 8 Nov: header lost 62+12px, footer 10px).
+/* v3.00.042: iPhone home-screen app sometimes reports safe-area insets as 0 after returning from another page (log of 8 Nov: header lost 62+12px, footer 10px).
    Remember the real insets while they are valid and re-apply them when iOS reports 0. */
 (function(){
 var K1='ac3_sat',K2='ac3_sab',pr=null,de=document.documentElement;
@@ -416,7 +416,7 @@ document.addEventListener('visibilitychange',function(){if(!document.hidden)back
 })();
 </script>
 <script>
-/* v3.00.041 TEMPORARY DEBUG: scroll reset on return + on-device event log (Settings > Debug). Remove the log before public release. */
+/* v3.00.042 TEMPORARY DEBUG: scroll reset on return + on-device event log (Settings > Debug). Remove the log before public release. */
 (function(){
 var KEY='ac3_dbglog',MAX=200,buf=[],tmr=null,T0=Date.now();
 try{buf=JSON.parse(localStorage.getItem(KEY)||'[]');if(!Array.isArray(buf))buf=[];}catch(e){buf=[];}
@@ -930,7 +930,7 @@ const hasOverflow=list.scrollHeight>list.clientHeight+2;
 const atBottom=list.scrollTop+list.clientHeight>=list.scrollHeight-2;
 fade.classList.toggle('show',hasOverflow&&!atBottom);
 }
-/* ============ AirCheck list editor (v3.00.041) ============
+/* ============ AirCheck list editor (v3.00.042) ============
    All screen text is in E_LANG. English is added later as E_LANG.en. */
 const E_LANG={he:{
 back:'חזרה',cancel:'ביטול',ok:'אישור',save:'שמור שינויים',saved:'נשמר',
@@ -2290,7 +2290,7 @@ return inst;
 </div>
 </div></sc-if>
 <sc-if value="{{showStamp}}">
-<div style="position:absolute;left:54px;bottom:{{stampBot}};z-index:3;pointer-events:none;border:3px solid #1f6f3f;border-radius:6px;padding:2px 9px;color:#1f6f3f;background:rgba(251,246,232,.85);transform:rotate(-7deg) scale(1.2);animation:stampBump .6s cubic-bezier(.2,.7,.3,1) both;text-align:center;">
+<div style="position:absolute;left:54px;bottom:{{stampBot}};z-index:3;pointer-events:none;border:3px solid #1f6f3f;border-radius:6px;padding:2px 9px;color:#1f6f3f;background:rgba(251,246,232,.85);transform:rotate(-7deg) scale(1.2);animation:stampBump {{stampDur}} cubic-bezier(.2,.7,.3,1) both;text-align:center;">
 <div dir="ltr" style="font-family:'JetBrains Mono',monospace;font-size:13px;font-weight:700;letter-spacing:.12em;">CHECKED</div>
 <div dir="ltr" style="font-family:'JetBrains Mono',monospace;font-size:11px;font-weight:700;">{{stampTime}} UTC</div>
 </div>
@@ -2560,7 +2560,7 @@ return inst;
 </button>
 </sc-for>
 <div style="padding:12px 14px 14px;">
-<div style="font-size:16px;color:#1c3d6e;font-weight:600;padding-bottom:8px;">זמן החזקת המסלול לאישור</div>
+<div style="font-size:16px;color:#1c3d6e;font-weight:600;padding-bottom:8px;">מהירות מעבר בין כרטיסים</div>
 <div style="position:relative;display:flex;height:52px;border:2px solid #c8a04a;border-radius:26px;background:#fff;overflow:hidden;">
 <span style="position:absolute;top:3px;bottom:3px;width:calc((100% - 6px) / 3);inset-inline-start:calc(3px + {{holdIdx}} * (100% - 6px) / 3);border-radius:23px;background:#1c3d6e;transition:inset-inline-start .3s cubic-bezier(.3,.8,.3,1);" aria-hidden="true"></span>
 <sc-for list="{{stHold}}" as="hd">
@@ -2613,7 +2613,10 @@ var AC3_ICON='data:image/webp;base64,UklGRkITAABXRUJQVlA4IDYTAACQQQCdASqgAKAAPj0
 /* ===== AirCheck 3 bridge: connects the new screens to the real data layer ===== */
 var AC3=null;
 var AC3_BRIEF_D030=['חגורות בטיחות - איך סוגרים ופותחים','יציאת חירום - דלת וחלון','לא נוגעים בבקרות ובדוושות','כיבוי אש וערכת עזרה ראשונה','טלפון במצב טיסה, ללא עישון'];
-function ac3Hold(){var ms=(settings&&settings.holdMs)||400;return ms<=200?200:(ms>=700?700:400);}
+function ac3Hold(){var ms=(settings&&settings.holdMs)||400;return ms<=200?200:(ms>=500?600:400);}
+/* v3.00.042: one speed setting. Hold 0.2/0.4/0.6s, card flip 0.5/0.9/1.3s; everything else (stamp pause, take-off, plane return) scales with the flip. */
+function ac3Scale(){return ({200:500,400:900,600:1300}[ac3Hold()]||900)/950;}
+function ac3Ms(n){return Math.round(n*ac3Scale());}
 function ac3Feedback(){try{if(settings&&settings.sounds!==false)playConfirmSound();hapticTap();}catch(e){}}
 function ac3BuildItems(){
 PH=PHASES.map(function(p){return p.name;});
@@ -2834,12 +2837,12 @@ this.setState({ stampOn: true });
 ac3Feedback();
 this._stampAt = Date.now();
 const go = () => this.flipThen(() => { this.complete(false, false, true); this.setState({ stampOn: false }); });
-if (this._down) this._pend = go; else setTimeout(go, 620);
+if (this._down) this._pend = go; else setTimeout(go, ac3Ms(620));
 }
 flipThen(fn, kind) {
 if (this.state.view !== 'card' || this.state.flipOut || this.state.screen !== 'checklist') { fn(); return; }
 this.setState({ flipOut: true, flipKind: kind || 'tick' });
-setTimeout(() => { fn(); this.setState({ flipOut: false }); }, 960);
+setTimeout(() => { fn(); this.setState({ flipOut: false }); }, ac3Ms(960));
 }
 phaseIdx(p) { const a = []; ITEMS.forEach((x, i) => { if (x.ph === p) a.push(i); }); return a; }
 isOpen(i, done, skipped) { const id = ITEMS[i].id; return !done[id] && !skipped[id]; }
@@ -2900,7 +2903,7 @@ else this.setState({ amber: false, amberBack: null, curtainOpen: false, ...this.
 tick() {
 const st = this.state;
 if (st.stampOn || st.flipOut) return;
-if (st.finished) { this._t0 = null; this._t1 = null; const goSp = () => { this._splashAt = Date.now(); this.setState({ screen: 'splash', holding: false }); }; if (this._down) { this._pend = goSp; this._stampAt = Date.now() - 450; } else goSp(); return; }
+if (st.finished) { this._t0 = null; this._t1 = null; const goSp = () => { this._splashAt = Date.now(); this.setState({ screen: 'splash', holding: false }); }; if (this._down) { this._pend = goSp; this._stampAt = Date.now() - 2000; } else goSp(); return; }
 if (st.sectionDone) {
 this.flipThen(() => {
 const p = ITEMS[st.cur].ph;
@@ -3097,18 +3100,18 @@ else if (it.k === 'curtain' && !st.curtainOpen) { hintText = 'יש תת-רשימ
 else if (it.k === 'curtain' && st.curtainOpen && !briefDone) { btn = { ...normal, label: 'סמן נקודה ' + (curPt + 1) + '/' + BRIEF.length }; hintText = 'אותו מסלול מסמן כל נקודה'; }
 else if (it.k === 'curtain' && briefDone) { btn = { ...green, label: 'המשך', sub: 'תת-רשימה הושלמה' }; hintText = 'תת-רשימה הושלמה. אפשר להמשיך'; }
 btn.hasSub = !!btn.sub; btn.dis = !!btn.dis;
-btn.holding = st.holding; btn.holdMs = holdMs; btn.showPlane = true; btn.planeAnim = st.fly ? 'takeoffRun 850ms ease-out forwards' : (st.holding ? 'planeRun ' + holdMs + 'ms linear forwards' : 'planeIn 500ms ease-out both');
+btn.holding = st.holding; btn.holdMs = holdMs; btn.showPlane = true; btn.planeAnim = st.fly ? 'takeoffRun ' + ac3Ms(850) + 'ms ease-out forwards' : (st.holding ? 'planeRun ' + holdMs + 'ms linear forwards' : 'planeIn ' + ac3Ms(500) + 'ms ease-out both');
 btn.down = () => {
 if (btn.dis) return;
 this._down = true;
 if (!holdMode || this._ht) return;
 this.setState({ holding: true });
-this._ht = setTimeout(() => { this._ht = null; this.setState({ holding: false, fly: true }); this.tick(); setTimeout(() => this.setState({ fly: false }), 900); }, holdMs);
+this._ht = setTimeout(() => { this._ht = null; this.setState({ holding: false, fly: true }); this.tick(); setTimeout(() => this.setState({ fly: false }), ac3Ms(900)); }, holdMs);
 };
 btn.up = () => {
 this._down = false;
 if (this._subPend !== undefined && this._subPend !== null) { const c0 = this._subPend; setTimeout(() => this.closeSub(c0), Math.max(0, 1100 - (Date.now() - (this._subT0 || 0)))); }
-if (this._pend) { const g = this._pend; this._pend = null; setTimeout(g, Math.max(0, 450 - (Date.now() - (this._stampAt || 0)))); }
+if (this._pend) { const g = this._pend; this._pend = null; setTimeout(g, Math.max(0, ac3Ms(450) - (Date.now() - (this._stampAt || 0)))); }
 if (this._ht) { clearTimeout(this._ht); this._ht = null; }
 if (this.state.holding) this.setState({ holding: false });
 };
@@ -3161,7 +3164,7 @@ if (st.amber && !st.sectionDone && !st.finished) hintText = 'ללא מסומן: 
 return {
 showSubTab: false, subTabLabel: st.curtainOpen ? 'תת-רשימה פתוחה בכרטיס' : 'תת-רשימה בכרטיס', subTabRot: 0,
 hintPadR: 14,
-backAnim: st.flipOut ? 'backIn 950ms linear both' : 'none', frontAnim: st.flipOut ? 'frontOut 950ms linear both' : (st.stampOn ? 'cardThump .5s ease-out both' : 'none'), cardAnim: st.flipOut ? 'pageFlip 950ms cubic-bezier(.5,0,.3,1) forwards' : 'none',
+backAnim: st.flipOut ? 'backIn ' + ac3Ms(950) + 'ms linear both' : 'none', frontAnim: st.flipOut ? 'frontOut ' + ac3Ms(950) + 'ms linear both' : (st.stampOn ? 'cardThump ' + (0.5 * Math.min(1, ac3Scale())).toFixed(2) + 's ease-out both' : 'none'), cardAnim: st.flipOut ? 'pageFlip ' + ac3Ms(950) + 'ms cubic-bezier(.5,0,.3,1) forwards' : 'none',
 doneHasSkip: !st.finished && phSkipped > 0, doneNoSkip: st.finished || phSkipped === 0, doneSkipText: skTxt(phSkipped), underHasSkip: underSk > 0, underNoSkip: underSk <= 0, underSkipText: skTxt(underSk), showUnder: isCardView && !st.finished, underDone: !st.sectionDone && !st.finished && underNum === 'END OF SECTION', underDonePhase: PH[it.ph], underDoneNote: (phSkipped - (isSkip(it) ? 1 : 0)) > 0 ? 'דילגת על ' + (phSkipped - (isSkip(it) ? 1 : 0)) + ' פריטים. אפשר לחזור אליהם' : 'כל פריטי השלב סומנו', underNum, underMain, underSub, underIsSub: uK === 'curtain', underIsLink: uK === 'ext' || uK === 'own', underIsOwn: uK === 'own', underIsExt: uK === 'ext', underLinkLabel: uLbl, underGrp: uGrp, underGrpOn: !!uGrp, underSubLine: uCnt + ' נקודות · הקש לפתיחה',
 showSplash: st.screen === 'splash' || st.screen === 'settings', showSettings: st.screen === 'settings', showEditor: false, spInProgress, spFresh: !spInProgress,
 spMarks, spDivs, spPlaneRight: 'calc(' + spPctNum + '% - 12px)', iconBg: IC[0], iconRim: IC[1], iconLine: IC[2], iconPlane: IC[3], iconPlaneStroke: IC[4],
@@ -3170,7 +3173,7 @@ setBack: () => this.setState({ screen: 'splash' }),
 openEditor: () => openEditor(true),
 stTail: st.tail, stAirfield: st.airfield, stTailLabel: '4X-' + (st.tail.replace(/^4X-?/i, '') || '???'),
 stToggles: [{ label: 'צליל בעת אישור', on: settings.sounds !== false, bg: settings.sounds !== false ? '#1f6f3f' : '#b9ad92', knob: settings.sounds !== false ? 3 : 21, flip: () => { settings.sounds = !(settings.sounds !== false); saveSettings(); this.setState({ _t: Date.now() }); } }, { label: 'רטט באישורי פעולה', on: settings.haptics !== false, bg: settings.haptics !== false ? '#1f6f3f' : '#b9ad92', knob: settings.haptics !== false ? 3 : 21, flip: () => { settings.haptics = !(settings.haptics !== false); saveSettings(); this.setState({ _t: Date.now() }); } }],
-holdIdx: [200, 400, 700].indexOf(ac3Hold()), stHold: [['קצר', 200], ['רגיל', 400], ['ארוך', 700]].map(([label, ms]) => { const on = ac3Hold() === ms; return { label, bg: on ? '#1c3d6e' : 'transparent', fg: on ? '#f4ecdc' : '#1c3d6e', pick: () => { settings.holdMs = ms; saveSettings(); this.setState({ _t: Date.now() }); } }; }),
+holdIdx: [200, 400, 600].indexOf(ac3Hold()), stHold: [['קצר', 200], ['רגיל', 400], ['ארוך', 600]].map(([label, ms]) => { const on = ac3Hold() === ms; return { label, bg: on ? '#1c3d6e' : 'transparent', fg: on ? '#f4ecdc' : '#1c3d6e', pick: () => { settings.holdMs = ms; saveSettings(); this.setState({ _t: Date.now() }); } }; }),
 reloadDemo: () => reloadApp(), dbgCopy: () => { if (window.ac3DbgCopy) window.ac3DbgCopy(); }, icoSrc: AC3_ICON, contact: () => window.open('mailto:eligrt@gmail.com', '_blank'), utcNow: this.hhmm(), appStamp: APP_STAMP, spCanAdd: getProfiles().profiles.length < 3, spShowLists: FEATURES.MULTI_PROFILE, spAddList: () => openEditorForNewList(),
 spPhaseName: PH[cur0.ph], spItem: cur0.m,
 spPct: spPctNum, spCount: spDn + ' / ' + N, spPctLabel: Math.round((spDn / N) * 100) + '%',
@@ -3199,7 +3202,7 @@ crumbPhase: PH[it.ph], crumbGroup: it.g,
 flipAnim: st.flip % 2 === 0 ? 'flipA' : 'flipB',
 showItemCard, showDoneCard, showFinishCard: st.finished && isCardView, finHasSkip: skippedN > 0, finNoSkip: skippedN === 0, finSkipText: skTxt(skippedN), finDone: doneN, finSkipped: skippedN, finTime, finUtc: this.hhmm(),
 itemNum: pad(st.cur + 1), itemTotal: pad(N), groupPos: gpos + '/' + grp.length,
-item, showStamp: isDone(it) || st.stampOn, stampTime: st.times[it.id] || this.hhmm(), thumpAnim: (st.stampOn && !st.flipOut) ? 'cardThump .5s ease-out both' : 'none',
+item, showStamp: isDone(it) || st.stampOn, stampTime: st.times[it.id] || this.hhmm(), thumpAnim: (st.stampOn && !st.flipOut) ? 'cardThump ' + (0.5 * Math.min(1, ac3Scale())).toFixed(2) + 's ease-out both' : 'none', stampDur: (0.6 * Math.min(1, ac3Scale())).toFixed(2) + 's',
 doneEn, doneHe, donePhase: st.finished ? 'AirCheck' : PH[it.ph], doneNote,
 hasSubCard: hasFlap, curtainOpenB: st.curtainOpen, subRows: st.curtainOpen ? '1fr' : '0fr', subRot: st.curtainOpen ? 180 : 0, subBounce: st.curtainOpen ? 'none' : 'chevNudge 1.3s ease-in-out infinite', subPopAnim: briefDone ? 'subPop .7s cubic-bezier(.3,1.6,.5,1) both' : 'none', subStripBg: st.subCeleb ? '#c3e4bd' : 'transparent', subTickBg: briefDone ? '#1f6f3f' : 'transparent', subTickBd: briefDone ? '2px solid #1f6f3f' : '2px solid #8a7a5a', briefDoneB: briefDone, subRowLine: briefDone ? '#a9d3a4' : '#c2cfa9', subCeleb: st.subCeleb, listRows: st.curtainOpen ? '1fr' : '0fr', listVis: st.curtainOpen ? 'visible' : 'hidden', listVisDelay: st.curtainOpen ? '0s' : '.42s', subDrain: st.subWait ? 'none' : 'subDrain 1500ms linear forwards', subBoxBg: briefDone ? '#cdebc6' : '#e3ead6', subBoxBd: briefDone ? '#7fbb8c' : '#a9b98c', subLine: briefDone ? 'תת-רשימה הושלמה' : (st.curtainOpen ? ptsN + '/' + BRIEF.length + ' נקודות' : BRIEF.length + ' נקודות · הקש לפתיחה'), subLineColor: briefDone ? '#1f6f3f' : '#1c3d6e', stampBot: '57px', subMoreOn: st.subMore && st.curtainOpen && !briefDone, onSubScroll: (e) => { const t = e && e.target; if (!t) return; const more = t.scrollHeight - t.scrollTop - t.clientHeight > 14; if (more !== this.state.subMore) this.setState({ subMore: more }); },
 flapTitle: it.l || 'תת-רשימה', underFlapTitle: uLbl || 'תת-רשימה', flapCount: BRIEF.length,
