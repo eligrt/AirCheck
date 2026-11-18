@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <!-- ═══════════════════════════════════════
-     AirCheck · v3.01.003 · built by eligrt
+     AirCheck · v3.01.004 · built by eligrt
      ═══════════════════════════════════════ -->
 <html lang="he" dir="rtl">
 <head>
@@ -35,12 +35,12 @@ if(force){['aircheck_rd_v1'].forEach(function(n){r.call(localStorage,P+n);});try
 <script>
 /* Single source of truth for app identity. Footers, share texts, exports and Firebase appVersion all read these. */
 const APP_NAME='AirCheck';
-const APP_VERSION='v3.01.003';
+const APP_VERSION='v3.01.004';
 const APP_STAMP=APP_NAME+' · '+APP_VERSION+' · built by eligrt';
 document.addEventListener('DOMContentLoaded',function(){document.querySelectorAll('.app-stamp').forEach(function(e){e.textContent=APP_STAMP;});});
 </script>
 <script>
-/* v3.01.003: language layer. UI only: lists are the pilot's own data and are never translated. */
+/* v3.01.004: language layer. UI only: lists are the pilot's own data and are never translated. */
 var AC_LANG=null;
 try{var _l=localStorage.getItem('aircheck_lang');if(_l==='he'||_l==='en')AC_LANG=_l;}catch(e){}
 if(!AC_LANG)document.documentElement.className+=' ac-needlang';
@@ -72,17 +72,18 @@ document.documentElement.className=document.documentElement.className.replace(/\
 acApplyLang();
 try{if(AC3)AC3.setState({_t:Date.now()});}catch(e){}
 }
-var sp=document.getElementById('acSplash');
-if(smooth&&AC3&&sp&&sp.getBoundingClientRect().width>0){
+var sb=document.getElementById('acSetBody'),sp=document.getElementById('acSplash');
+var els=sb?[sb,document.getElementById('acSetFoot')].filter(Boolean):(sp?[sp]:[]);
+if(smooth&&AC3&&els.length&&els[0].getBoundingClientRect().width>0){
 AC_BUSY=true;AC_TOG=l;
 var d=(l==='en')?1:-1,P='perspective(1100px) rotateY(';
-var bd=document.createElement('div');bd.id='acBackdrop';bd.style.cssText='position:absolute;top:0;left:0;right:0;bottom:0;z-index:39;background:linear-gradient(#1c3d6e,#14284f);';(document.getElementById('screenSplash')||document.body).appendChild(bd);
-function done(){sp.getAnimations().forEach(function(x){x.cancel();});if(bd.parentNode)bd.parentNode.removeChild(bd);AC_BUSY=false;}
+var bd=null,st=null;
+if(sb){var ov=document.getElementById('acSet');st=[ov,ov.style.background,sb.style.background];ov.style.background='#cdbf99';sb.style.background='#f4ecdc';}
+else{bd=document.createElement('div');bd.id='acBackdrop';bd.style.cssText='position:absolute;top:0;left:0;right:0;bottom:0;z-index:39;background:linear-gradient(#1c3d6e,#14284f);';(document.getElementById('screenSplash')||document.body).appendChild(bd);}
+function run(from,to,ms,ease){return Promise.all(els.map(function(el){return el.animate([{transform:P+from+'deg)'},{transform:P+to+'deg)'}],{duration:ms,easing:ease,fill:'forwards'}).finished;}));}
+function done(){els.forEach(function(el){el.getAnimations().forEach(function(x){x.cancel();});});if(bd&&bd.parentNode)bd.parentNode.removeChild(bd);if(st){st[0].style.background=st[1];sb.style.background=st[2];}AC_BUSY=false;}
 try{AC3.setState({_t:Date.now()});}catch(e){}
-sp.animate([{transform:P+'0deg)'},{transform:P+(d*90)+'deg)'}],{duration:430,easing:'cubic-bezier(.5,0,.9,.6)',fill:'forwards'}).finished.then(function(){
-commit();
-return sp.animate([{transform:P+(-d*90)+'deg)'},{transform:P+'0deg)'}],{duration:470,easing:'cubic-bezier(.1,.5,.3,1)',fill:'forwards'}).finished;
-}).then(done).catch(function(){commit();done();});
+run(0,d*90,430,'cubic-bezier(.5,0,.9,.6)').then(function(){commit();return run(-d*90,0,470,'cubic-bezier(.1,.5,.3,1)');}).then(done).catch(function(){commit();done();});
 }else{commit();}
 }
 document.addEventListener('DOMContentLoaded',function(){
@@ -396,7 +397,7 @@ html:has(.ac3-splash-top),body:has(.ac3-splash-top){background:#f7f0e0;}
 #newProfileModal .np-b.p:disabled{opacity:.4;cursor:default;}
 #newProfileModal .np-b.n{border:1.5px solid #8a6a2a;background:#fff;color:#6b4f12;}
 
-/* v3.01.003: first-launch language choice */
+/* v3.01.004: first-launch language choice */
 #langPick{display:none;position:fixed;inset:0;z-index:900;flex-direction:column;background:linear-gradient(#1c3d6e 0%,#1c3d6e 55%,#14284f 100%);}
 .ac-needlang #langPick{display:flex;}
 #langPick .lp-top{flex:none;padding:calc(34px + var(--sat,env(safe-area-inset-top,0px))) 18px 250px;background:linear-gradient(#f7f0e0 0%,#efe3c2 48%,rgb(233,223,193) 52%,rgb(210,206,189) 59%,rgb(150,160,180) 75%,#1c3d6e 100%);display:flex;flex-direction:column;align-items:center;gap:4px;text-align:center;}
@@ -1013,7 +1014,7 @@ const hasOverflow=list.scrollHeight>list.clientHeight+2;
 const atBottom=list.scrollTop+list.clientHeight>=list.scrollHeight-2;
 fade.classList.toggle('show',hasOverflow&&!atBottom);
 }
-/* ============ AirCheck list editor (v3.01.003) ============
+/* ============ AirCheck list editor (v3.01.004) ============
    All screen text is in E_LANG. English is added later as E_LANG.en. */
 const E_LANG={he:{
 back:'חזרה',cancel:'ביטול',ok:'אישור',save:'שמור שינויים',saved:'נשמר',
@@ -2616,7 +2617,7 @@ return inst;
 </sc-if>
 <!-- SETTINGS -->
 <sc-if value="{{showSettings}}">
-<div style="position:absolute;top:0;left:0;right:0;bottom:0;z-index:45;background:#f4ecdc;display:flex;flex-direction:column;">
+<div id="acSet" style="position:absolute;top:0;left:0;right:0;bottom:0;z-index:45;background:#f4ecdc;display:flex;flex-direction:column;">
 <div dir="ltr" style="flex:none;box-sizing:border-box;min-height:calc(58px + var(--sat,env(safe-area-inset-top,0px)) + var(--lsa-hdr-extra,0px));padding:calc(10px + var(--sat,env(safe-area-inset-top,0px)) + var(--lsa-hdr-extra,0px)) 16px 10px;background:#1c3d6e;box-shadow:0 3px 0 #0e2348;display:flex;align-items:center;justify-content:space-between;gap:8px;position:relative;z-index:10;flex:none;">
 <div style="display:flex;align-items:center;gap:10px;min-width:0;">
 <img src="{{icoSrc}}" width="38" height="38" alt="" style="flex:0 0 38px;display:block;border-radius:9px;border:1px solid #c8a04a;object-fit:cover;">
@@ -2637,7 +2638,7 @@ return inst;
 <span style="font-size:9px;line-height:1;letter-spacing:.22em;opacity:.75;">UTC</span>
 </div>
 </div>
-<div class="lscroll" dir="{{uiDir}}" style="flex:1;min-height:0;overflow-y:auto;padding:16px 16px 12px;display:flex;flex-direction:column;gap:18px;">
+<div id="acSetBody" class="lscroll" dir="{{uiDir}}" style="flex:1;min-height:0;overflow-y:auto;padding:16px 16px 12px;display:flex;flex-direction:column;gap:18px;">
 <div>
 <div style="font-size:12.5px;font-weight:700;letter-spacing:.04em;color:#6f531d;padding:0 2px 6px;">{{lblLang}}</div>
 <div style="background:#fbf6e8;border:2px solid #e3d4ad;border-radius:12px;overflow:hidden;padding:12px 14px 14px;">
@@ -2693,7 +2694,7 @@ return inst;
 </div>
 </div>
 </div>
-<div class="lsa-foot" dir="ltr"><span class="lsa-foot-slot">PREPROD</span><span class="lsa-foot-ver">{{appStamp}}</span><button type="button" class="lsa-foot-reload" onClick="{{reloadDemo}}">{{lblReload}}</button></div>
+<div id="acSetFoot" class="lsa-foot" dir="ltr"><span class="lsa-foot-slot">PREPROD</span><span class="lsa-foot-ver">{{appStamp}}</span><button type="button" class="lsa-foot-reload" onClick="{{reloadDemo}}">{{lblReload}}</button></div>
 </div>
 </sc-if>
 <sc-if value="{{bkOpen}}">
@@ -3276,7 +3277,7 @@ stTail: st.tail, stAirfield: st.airfield, stTailLabel: '4X-' + (st.tail.replace(
 uiDir: acDir(), lblAddList: acT('addList'), lblNewFlight: acT('newFlight'), lblSettingsEdit: acT('settingsEdit'), lblReload: acT('reload'), lblBack: acT('back'), lblLang: acT('setLang'), lblLangNote: acT('setLangNote'), lblInter: acT('setInter'), lblSpeed: acT('setSpeed'), lblData: acT('setData'), lblEdit: acT('setEdit'), lblContact: acT('setContact'),
 chevPath: AC_LANG === 'en' ? 'M9 6l6 6l-6 6' : 'M15 6l-6 6l6 6', backPath: AC_LANG === 'en' ? 'M15 6l-6 6l6 6' : 'M9 6l6 6l-6 6',
 langFlip: () => acFlipLang(), togLeft: (AC_TOG || AC_LANG || 'he') === 'en' ? '50px' : '3px', spNoConf: !st.spConfirm, togHeFg: (AC_TOG || AC_LANG || 'he') === 'he' ? '#f4ecdc' : '#5a4a3a', togEnFg: (AC_TOG || AC_LANG || 'he') === 'en' ? '#f4ecdc' : '#5a4a3a',
-langIdx: (AC_LANG || 'he') === 'en' ? 0 : 1, langSel: [['en', 'English'], ['he', 'עברית']].map(([c, label]) => { const on = (AC_LANG || 'he') === c; return { label, fg: on ? '#f4ecdc' : '#1c3d6e', pick: () => acSetLang(c) }; }),
+langIdx: (AC_TOG || AC_LANG || 'he') === 'en' ? 0 : 1, langSel: [['en', 'English'], ['he', 'עברית']].map(([c, label]) => { const on = (AC_TOG || AC_LANG || 'he') === c; return { label, fg: on ? '#f4ecdc' : '#1c3d6e', pick: () => { if ((AC_LANG || 'he') !== c) acSetLang(c, true); } }; }),
 stToggles: [{ label: acT('setSound'), on: settings.sounds !== false, bg: settings.sounds !== false ? '#1f6f3f' : '#b9ad92', knob: AC_LANG === 'en' ? (settings.sounds !== false ? 21 : 3) : (settings.sounds !== false ? 3 : 21), flip: () => { settings.sounds = !(settings.sounds !== false); saveSettings(); this.setState({ _t: Date.now() }); } }, { label: acT('setVibe'), on: settings.haptics !== false, bg: settings.haptics !== false ? '#1f6f3f' : '#b9ad92', knob: AC_LANG === 'en' ? (settings.haptics !== false ? 21 : 3) : (settings.haptics !== false ? 3 : 21), flip: () => { settings.haptics = !(settings.haptics !== false); saveSettings(); this.setState({ _t: Date.now() }); } }],
 holdIdx: [200, 400, 600].indexOf(ac3Hold()), stHold: [[acT('spShort'), 200], [acT('spNormal'), 400], [acT('spLong'), 600]].map(([label, ms]) => { const on = ac3Hold() === ms; return { label, bg: on ? '#1c3d6e' : 'transparent', fg: on ? '#f4ecdc' : '#1c3d6e', pick: () => { settings.holdMs = ms; saveSettings(); this.setState({ _t: Date.now() }); } }; }),
 reloadDemo: () => reloadApp(), dbgCopy: () => { if (window.ac3DbgCopy) window.ac3DbgCopy(); }, icoSrc: AC3_ICON, contact: () => window.open('mailto:eligrt@gmail.com', '_blank'), utcNow: this.hhmm(), appStamp: APP_STAMP, spCanAdd: getProfiles().profiles.length < 3, spShowLists: FEATURES.MULTI_PROFILE, spAddList: () => openEditorForNewList(),
