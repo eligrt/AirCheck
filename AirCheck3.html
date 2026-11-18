@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <!-- ═══════════════════════════════════════
-     AirCheck · v3.01.004 · built by eligrt
+     AirCheck · v3.01.015 · built by eligrt
      ═══════════════════════════════════════ -->
 <html lang="he" dir="rtl">
 <head>
@@ -35,33 +35,34 @@ if(force){['aircheck_rd_v1'].forEach(function(n){r.call(localStorage,P+n);});try
 <script>
 /* Single source of truth for app identity. Footers, share texts, exports and Firebase appVersion all read these. */
 const APP_NAME='AirCheck';
-const APP_VERSION='v3.01.004';
+const APP_VERSION='v3.01.015';
 const APP_STAMP=APP_NAME+' · '+APP_VERSION+' · built by eligrt';
 document.addEventListener('DOMContentLoaded',function(){document.querySelectorAll('.app-stamp').forEach(function(e){e.textContent=APP_STAMP;});});
 </script>
 <script>
-/* v3.01.004: language layer. UI only: lists are the pilot's own data and are never translated. */
+/* v3.01.015: language layer. UI only: lists are the pilot's own data and are never translated. */
 var AC_LANG=null;
 try{var _l=localStorage.getItem('aircheck_lang');if(_l==='he'||_l==='en')AC_LANG=_l;}catch(e){}
 if(!AC_LANG)document.documentElement.className+=' ac-needlang';
 else document.documentElement.setAttribute('lang',AC_LANG);
 var AC_TXT={
-he:{back:'חזרה',reload:'טען מחדש',start:'התחל טיסה',resume:'המשך טיסה',newFlight:'התחל טיסה חדשה',settingsEdit:'הגדרות ועריכת רשימות',addList:'+ הוסף רשימה',
+he:{nfQ:'להתחיל טיסה חדשה?',nfMsg:'הסימונים של הטיסה הנוכחית יימחקו. הרשימה עצמה לא תשתנה.',nfYes:'כן, התחל מחדש',rotMsg:'משיקולי בטיחות טיסה, האפליקציה עובדת במצב אנכי (portrait) בלבד. נא לסובב את המכשיר.',rotAria:'נא לסובב את המכשיר למצב אנכי',back:'חזרה',reload:'טען מחדש',start:'התחל טיסה',resume:'המשך טיסה',newFlight:'התחל טיסה חדשה',settingsEdit:'הגדרות ועריכת רשימות',addList:'+ הוסף רשימה',
  setLang:'שפה · Language',setLangNote:'תפריטים וכפתורים בלבד. הרשימות שלך נשארות בדיוק כפי שכתבת.',
  setInter:'אינטראקציה',setSound:'צליל בעת אישור',setVibe:'רטט באישורי פעולה',setSpeed:'מהירות מעבר בין כרטיסים',spShort:'קצר',spNormal:'רגיל',spLong:'ארוך',
- setData:'נתונים',setEdit:"עריכת הצ'קליסט",setContact:'יצירת קשר עם המפתח'},
-en:{back:'Back',reload:'Reload',start:'Start flight',resume:'Resume flight',newFlight:'New flight',settingsEdit:'Settings and list editing',addList:'+ Add list',
+ spDone:'הושלמו',spSk1:'פריט אחד דולג - כדאי לחזור אליו',spSkN:'{n} פריטים דולגו - כדאי לחזור אליהם',home:'פתיחה',homeAria:'חזרה למסך הפתיחה',viewLbl:'תצוגה',tabCards:'כרטיסים',tabList:'רשימה',railAria:'התקדמות בכל הצ\'קליסט',subList:'תת-רשימה',inGroup:'בקבוצה',nextUp:'בהמשך',openOwn:'פתח את ',hintOwn:'כלי AirCheck · אפליקציה נפרדת',hintExt:'אתר חיצוני · יוצא מהאפליקציה',hintSub:'תת-רשימה · {n} נקודות',subDoneT:'תת-רשימה הושלמה',kindOwn:'כלי AirCheck · נפתח באפליקציה נפרדת',itemN:'פריט {n}',btnMark:'סמן והמשך',holdHint:'לחץ והחזק את המסלול לאישור',tapHint:'הקש על המסלול לאישור',finish:'סיום',finHint:'כל הפריטים טופלו. אפשר לחזור למסך הפתיחה',finFlight:'סיום טיסה',toNext:'לשלב הבא',phDoneHint:'השלב הושלם. אפשר להמשיך',cont:'המשך',markedHold:'הפריט כבר סומן. החזק את המסלול להמשיך',markedTap:'הפריט כבר סומן. הקש על המסלול להמשיך',confirmCard:'אשר כרטיס',subDoneHint:'תת-רשימה הושלמה. החזק את המסלול לאישור הכרטיס',subExists:'יש תת-רשימה - פתח, או המשך',markPt:'סמן נקודה ',samePath:'אותו מסלול מסמן כל נקודה',subDoneCont:'תת-רשימה הושלמה. אפשר להמשיך',amberHint:'ללא מסומן: פריט אחר פריט. בסוף חוזרים למקום שהיית בו',skOne:'פריט אחד דולג - כדאי לחזור אליו',skMany:'{n} פריטים דולגו - כדאי לחזור אליהם',phDone:'השלב הושלם',clDone:'הצ\'קליסט הושלם',phOf:'שלב {a} מתוך {b}',allPh:'כל {b} השלבים',noteFinSk:'דילגת על {n} פריטים. אפשר לחזור אליהם מהרשימה',noteFinAll:'כל הפריטים סומנו',notePhSk:'דילגת על {n} פריטים. אפשר לחזור אליהם',notePhAll:'כל פריטי השלב סומנו',wellDone:'כל הכבוד!',allClosed:'כל שלבי הצ\'קליסט נסגרו. נתראה בטיסה הבאה.',ticked:'סומנו',skippedL:'ללא סימון',clTime:'משך הצ\'קליסט',prev:'קודם',back1:'חזור ללא',back2:'מסומן',unt1:'בטל',unt2:'סימון',next:'הבא',bkMark:'סמן הכל',bkUn:'בטל סימון הכל',cancel:'ביטול',untRow:'בטל סימון',ptsOf:'{a}/{b} נקודות',ptsTap:'{n} נקודות · הקש לפתיחה',setData:'נתונים',setEdit:"עריכת הצ'קליסט",setContact:'יצירת קשר עם המפתח'},
+en:{nfQ:'Start a new flight?',nfMsg:'The marks of the current flight will be cleared. The list itself will not change.',nfYes:'Yes, start over',rotMsg:'For flight safety, the app works in portrait mode only. Please rotate your device.',rotAria:'Please rotate the device to portrait',back:'Back',reload:'Reload',start:'Start flight',resume:'Resume flight',newFlight:'New flight',settingsEdit:'Settings and list editing',addList:'+ Add list',
  setLang:'Language · שפה',setLangNote:'Menus and buttons only. Your lists stay exactly as you wrote them.',
  setInter:'Interaction',setSound:'Sound on confirm',setVibe:'Vibrate on actions',setSpeed:'Card switch speed',spShort:'Short',spNormal:'Normal',spLong:'Long',
- setData:'Data',setEdit:'Edit checklist',setContact:'Contact the developer'}
+ spDone:'done',spSk1:'1 item skipped - worth going back to',spSkN:'{n} items skipped - worth going back to',home:'Home',homeAria:'Back to the opening screen',viewLbl:'View',tabCards:'Cards',tabList:'List',railAria:'Progress through the whole checklist',subList:'Sub-list',inGroup:'in group',nextUp:'Next up',openOwn:'Open ',hintOwn:'AirCheck tool · separate app',hintExt:'External site · leaves the app',hintSub:'Sub-list · {n} points',subDoneT:'Sub-list completed',kindOwn:'AirCheck tool · opens in a separate app',itemN:'Item {n}',btnMark:'Mark and continue',holdHint:'Press and hold the runway to confirm',tapHint:'Tap the runway to confirm',finish:'Finish',finHint:'All items handled. You can go back to Home',finFlight:'Finish flight',toNext:'To next phase',phDoneHint:'Phase complete. You can continue',cont:'Continue',markedHold:'Item already marked. Hold the runway to continue',markedTap:'Item already marked. Tap the runway to continue',confirmCard:'Confirm card',subDoneHint:'Sub-list marking completed',subExists:'Sub-list exists - open it or continue',markPt:'Mark point ',samePath:'The same runway marks every point',subDoneCont:'Sub-list completed. You can continue',amberHint:'Skipped items, one by one. At the end you return to where you were',skOne:'1 item skipped - worth a second look',skMany:'{n} items skipped - worth a second look',phDone:'Phase complete',clDone:'Checklist complete',phOf:'PHASE {a} OF {b}',allPh:'ALL {b} PHASES',noteFinSk:'You skipped {n} items. You can go back to them from the list',noteFinAll:'All items ticked',notePhSk:'You skipped {n} items. You can go back to them',notePhAll:'All items in this phase ticked',wellDone:'Well done!',allClosed:'All phases are closed. See you on the next flight.',ticked:'Ticked',skippedL:'Skipped',clTime:'Checklist time',prev:'Previous',back1:'Back to',back2:'skipped',unt1:'Untick',unt2:'',next:'Next',bkMark:'Mark all',bkUn:'Unmark all',cancel:'Cancel',untRow:'Untick',ptsOf:'{a}/{b} points',ptsTap:'{n} points · tap to open',setData:'Data',setEdit:'Edit checklist',setContact:'Contact the developer'}
 };
 function acT(k){var l=AC_LANG||'he';return (AC_TXT[l]&&AC_TXT[l][k]!=null)?AC_TXT[l][k]:(AC_TXT.he[k]!=null?AC_TXT.he[k]:k);}
 var AC_TOG=AC_LANG,AC_BUSY=false;
 function acDir(){return AC_LANG==='en'?'ltr':'rtl';}
-function acApplyLang(){
-document.documentElement.setAttribute('lang',AC_LANG||'he');
+function acApplyLang(){try{var rt=document.getElementById('rgText'),rg=document.getElementById('rotateGuard');if(rt)rt.textContent=acT('rotMsg');if(rg)rg.setAttribute('aria-label',acT('rotAria'));}catch(x){}
+document.documentElement.setAttribute('lang',AC_LANG||'he');document.documentElement.setAttribute('dir',acDir());try{var e3=document.getElementById('e3');if(e3)e3.setAttribute('dir',acDir());}catch(x){}
 document.querySelectorAll('.lsa-foot-reload').forEach(function(b){b.textContent=acT('reload');});
 }
+document.addEventListener('DOMContentLoaded',function(){try{acApplyLang();}catch(x){}});
 function acFlipLang(){if(AC_BUSY)return;acSetLang(((AC_TOG||AC_LANG||'he')==='he')?'en':'he',true);}
 function acSetLang(l,smooth){
 if(l!=='he'&&l!=='en')return;
@@ -119,7 +120,7 @@ html,body{height:100%;height:var(--app-h,100%);background:#1a1a1c;font-family:va
 #screenSplash{flex-direction:column;overflow:hidden;background:linear-gradient(180deg,#0e2348 0%,#1c3d6e 40%,#4a6a8a 52%,#c0b090 62%,#f4ecdc 70%,#f4ecdc 100%);}
 @keyframes popupFadeIn{from{opacity:0;transform:scale(.95);}to{opacity:1;transform:scale(1);}}
 /* ── PROFILES ── */
-.start-from-btn{width:100%;padding:12px 14px;border-radius:var(--r);border:1.5px solid var(--gold-lite);background:var(--paper);cursor:pointer;margin-bottom:8px;text-align:right;direction:rtl;}
+.start-from-btn{width:100%;padding:12px 14px;border-radius:var(--r);border:1.5px solid var(--gold-lite);background:var(--paper);cursor:pointer;margin-bottom:8px;text-align:start;}
 .start-from-btn.selected{background:rgba(200,160,74,.12);border-color:var(--gold);border-width:2px;}
 .start-from-btn-title{font-size:13px;font-weight:700;color:var(--ink-body);}
 /* ── MODALS ── */
@@ -259,6 +260,10 @@ html:has(.ac3-splash-top),body:has(.ac3-splash-top){background:#f7f0e0;}
 @keyframes twinkle{0%,100%{opacity:.15;transform:scale(.5)}50%{opacity:1;transform:scale(1.3)}}
 @keyframes ceremonyFly{0%{transform:translate(0,0);opacity:1}80%{opacity:1}100%{transform:translate(270px,-200px);opacity:0}}
 @keyframes fillRun{0%{width:0}100%{width:100%}}
+@keyframes planeRunE{0%{transform:translateX(0)}100%{transform:translateX(var(--run,214px))}}
+@keyframes takeoffRunE{0%{transform:translate(var(--run,214px),0) rotate(0deg) scale(1);opacity:1}100%{transform:translate(calc(var(--run,214px) + 226px),-80px) rotate(-12deg) scale(1.12);opacity:0}}
+@keyframes stampInE{0%{transform:scale(1.9) rotate(14deg);opacity:0}60%{transform:scale(.96) rotate(7deg);opacity:1}100%{transform:scale(1) rotate(5deg);opacity:1}}
+@keyframes stampBumpE{0%{transform:scale(1.8) rotate(9deg);opacity:0}55%{transform:scale(1.16) rotate(7deg);opacity:.85}78%{transform:scale(1.22) rotate(7deg)}100%{transform:scale(1.2) rotate(7deg);opacity:.8}}
 @keyframes chevBounce{0%,100%{transform:translateY(0);opacity:.35}50%{transform:translateY(6px);opacity:.95}}
 @media (prefers-reduced-motion: reduce){*{animation:none !important;transition:none !important}}
 #screenSplash button{font-family:inherit}
@@ -283,12 +288,12 @@ html:has(.ac3-splash-top),body:has(.ac3-splash-top){background:#f7f0e0;}
 #e3 .e3-scroll{flex:1;min-height:0;overflow-y:auto;padding:0 0 24px;-webkit-overflow-scrolling:touch;overscroll-behavior:contain;}
 #e3 .e3-slot{border:3px dashed #c8a04a;border-radius:10px;background:rgba(200,160,74,.22);box-sizing:border-box;}
 #e3 .e3-dh{flex:none;width:44px;border:0;background:transparent;display:flex;align-items:center;justify-content:center;touch-action:none;cursor:grab;}
-#e3 .e3-ph{display:flex;align-items:stretch;margin:14px 12px 0;border-radius:10px;overflow:hidden;color:#fff;}
+#e3 .e3-ph{display:flex;align-items:stretch;margin:14px 12px 0;border-radius:10px;overflow:hidden;overflow:clip;color:#fff;}
 #e3 .e3-phb{flex:1;min-height:56px;border:0;background:transparent;color:#fff;text-align:start;padding:8px 14px;display:flex;flex-direction:column;justify-content:center;}
 #e3 .e3-phb .a{display:block;font-size:18px;font-weight:700;}
 #e3 .e3-phb .b{display:block;font-size:13px;opacity:.85;}
 #e3 .e3-fold{flex:none;width:52px;border:0;background:transparent;display:flex;align-items:center;justify-content:center;}
-#e3 .e3-gr{display:flex;align-items:stretch;margin:12px 12px 0;overflow:hidden;position:relative;color:#175a32;}
+#e3 .e3-gr{display:flex;align-items:stretch;margin:12px 12px 0;overflow:hidden;overflow:clip;position:relative;color:#175a32;}
 #e3 .e3-grb{flex:1;min-height:48px;border:0;background:transparent;color:#175a32;text-align:start;padding:8px 6px;display:flex;flex-direction:column;justify-content:center;}
 #e3 .e3-grb .a{display:block;font-size:16px;font-weight:700;}
 #e3 .e3-grb .b{display:block;font-size:13px;opacity:.85;}
@@ -360,12 +365,12 @@ html:has(.ac3-splash-top),body:has(.ac3-splash-top){background:#f7f0e0;}
 #e3 .e3-col3 .e3-xb{min-height:56px;}
 #e3 .e3-ghost{position:absolute;left:12px;right:12px;z-index:40;pointer-events:none;display:flex;align-items:center;gap:10px;min-height:56px;box-sizing:border-box;padding:8px 14px;border:2px solid #c8a04a;border-radius:12px;box-shadow:0 14px 30px rgba(26,19,8,.4);transform:rotate(-1.2deg) scale(1.02);}
 /* import popup */
-#xiOv{display:none;position:fixed;inset:0;z-index:600;direction:rtl;font-family:var(--font-ui);}
+#xiOv{display:none;position:fixed;inset:0;z-index:600;font-family:var(--font-ui);}
 #xiOv.open{display:block;}
 #xiOv .xi-scrim{position:absolute;inset:0;width:100%;border:0;padding:0;background:rgba(26,19,8,.38);}
 #xiOv .xi-sheet{position:absolute;left:12px;right:12px;top:calc(var(--sat,env(safe-area-inset-top,0px)) + 70px);max-height:calc(100% - var(--sat,env(safe-area-inset-top,0px)) - 90px);overflow-y:auto;background:#fbf6e8;border:2px solid #1c3d6e;border-radius:16px;padding:16px;display:flex;flex-direction:column;gap:12px;box-sizing:border-box;box-shadow:0 12px 32px rgba(26,19,8,.35);color:#1a1308;}
 #xiOv .xi-t{font-size:19px;font-weight:700;}
-#xiOv .xi-file{font-size:14px;color:#5a4a3a;direction:ltr;text-align:end;overflow-wrap:anywhere;}
+#xiOv .xi-file{font-size:14px;color:#5a4a3a;direction:ltr;text-align:left;overflow-wrap:anywhere;}
 #xiOv .xi-big{font-size:22px;font-weight:700;color:#175a32;}
 #xiOv .xi-row{display:flex;justify-content:space-between;gap:10px;padding:10px 12px;background:#fff;border:1px solid #e3d4ad;border-radius:10px;font-size:16px;}
 #xiOv .xi-row span:last-child{color:#5a4a3a;flex:none;}
@@ -383,7 +388,7 @@ html:has(.ac3-splash-top),body:has(.ac3-splash-top){background:#f7f0e0;}
 #xiOv.warn .xi-t{color:#9b2c24;}
 #xiOv.warn .xi-err{width:52px;height:52px;background:#c0302a;border:0;color:#fff;font-size:30px;}
 /* new list popup */
-#newProfileModal{background:rgba(26,19,8,.38)!important;backdrop-filter:none!important;-webkit-backdrop-filter:none!important;align-items:flex-start!important;justify-content:center!important;padding:calc(var(--sat,env(safe-area-inset-top,0px)) + 100px) 12px 12px!important;box-sizing:border-box;direction:rtl;font-family:var(--font-ui);}
+#newProfileModal{background:rgba(26,19,8,.38)!important;backdrop-filter:none!important;-webkit-backdrop-filter:none!important;align-items:flex-start!important;justify-content:center!important;padding:calc(var(--sat,env(safe-area-inset-top,0px)) + 100px) 12px 12px!important;box-sizing:border-box;font-family:var(--font-ui);}
 #newProfileModal .np-sheet{width:100%;max-width:420px;background:#fbf6e8;border:2px solid #1c3d6e;border-radius:16px;padding:16px;display:flex;flex-direction:column;gap:12px;box-sizing:border-box;box-shadow:0 12px 32px rgba(26,19,8,.35);color:#1a1308;}
 #newProfileModal .np-t{font-size:19px;font-weight:700;}
 #newProfileModal .np-q{font-size:16px;}
@@ -391,13 +396,13 @@ html:has(.ac3-splash-top),body:has(.ac3-splash-top){background:#f7f0e0;}
 #newProfileModal .np-opt{flex:1;min-height:64px;padding:8px;border:2px solid #c8a04a;border-radius:10px;background:#fff;color:#1a1308;font-family:inherit;font-size:17px;font-weight:700;line-height:1.25;cursor:pointer;}
 #newProfileModal .np-opt.selected{border-color:#1c3d6e;background:#dde7f7;color:#1c3d6e;}
 #newProfileModal .np-l{font-size:15px;font-weight:600;}
-#newProfileModal .np-in{min-height:54px;box-sizing:border-box;border:1.5px solid #c8a04a;border-radius:10px;background:#fff;padding:0 12px;font-family:inherit;font-size:18px;color:#1a1308;width:100%;direction:rtl;user-select:text;-webkit-user-select:text;}
+#newProfileModal .np-in{min-height:54px;box-sizing:border-box;border:1.5px solid #c8a04a;border-radius:10px;background:#fff;padding:0 12px;font-family:inherit;font-size:18px;color:#1a1308;width:100%;user-select:text;-webkit-user-select:text;}
 #newProfileModal .np-b{min-height:54px;border-radius:10px;font-family:inherit;font-size:17px;font-weight:700;cursor:pointer;}
 #newProfileModal .np-b.p{border:0;background:#1c3d6e;color:#fff;}
 #newProfileModal .np-b.p:disabled{opacity:.4;cursor:default;}
 #newProfileModal .np-b.n{border:1.5px solid #8a6a2a;background:#fff;color:#6b4f12;}
 
-/* v3.01.004: first-launch language choice */
+/* v3.01.015: first-launch language choice */
 #langPick{display:none;position:fixed;inset:0;z-index:900;flex-direction:column;background:linear-gradient(#1c3d6e 0%,#1c3d6e 55%,#14284f 100%);}
 .ac-needlang #langPick{display:flex;}
 #langPick .lp-top{flex:none;padding:calc(34px + var(--sat,env(safe-area-inset-top,0px))) 18px 250px;background:linear-gradient(#f7f0e0 0%,#efe3c2 48%,rgb(233,223,193) 52%,rgb(210,206,189) 59%,rgb(150,160,180) 75%,#1c3d6e 100%);display:flex;flex-direction:column;align-items:center;gap:4px;text-align:center;}
@@ -416,7 +421,7 @@ html:has(.ac3-splash-top),body:has(.ac3-splash-top){background:#f7f0e0;}
         <path d="M17.5 20v-3h-3"/>
       </svg>
     </div>
-    <p class="rg-text">משיקולי בטיחות טיסה, האפליקציה עובדת במצב אנכי (portrait) בלבד. נא לסובב את המכשיר.</p>
+    <p class="rg-text" id="rgText">משיקולי בטיחות טיסה, האפליקציה עובדת במצב אנכי (portrait) בלבד. נא לסובב את המכשיר.</p>
   </div>
 </div>
 <script>
@@ -1014,12 +1019,12 @@ const hasOverflow=list.scrollHeight>list.clientHeight+2;
 const atBottom=list.scrollTop+list.clientHeight>=list.scrollHeight-2;
 fade.classList.toggle('show',hasOverflow&&!atBottom);
 }
-/* ============ AirCheck list editor (v3.01.004) ============
+/* ============ AirCheck list editor (v3.01.015) ============
    All screen text is in E_LANG. English is added later as E_LANG.en. */
 const E_LANG={he:{
 back:'חזרה',cancel:'ביטול',ok:'אישור',save:'שמור שינויים',saved:'נשמר',
-exitTitle:'יש שינויים שלא נשמרו',exitMsg:'מה לעשות עם השינויים שעשית ברשימה?',
-exitSave:'שמור שינויים וצא',exitDiscard:'צא בלי לשמור',exitStay:'המשך לערוך',
+loadingLib:'טוען ספרייה...',exitTitle:'לשמור את השינויים?',exitMsg:'',
+exitSave:'שמור וצא',exitDiscard:'צא בלי לשמור',exitStay:'המשך לערוך',
 modeTitle:'מה קורה כשלוחצים על השורה בטיסה?',modeLink:'קישור',modeSubs:'תת-רשימה',
 warnDropSubs:'לחיצה על "אישור" תמחק את תת-הרשימה הקיימת ({n} נקודות)',
 warnDropLink:'לחיצה על "אישור" תמחק את הקישור הקיים',
@@ -1062,12 +1067,14 @@ xiDoneOne:'✓ הרשימה נטענה',xiDoneMany:'✓ הרשימות נטענ�
 npTitle:'רשימה חדשה',npAsk:'במה להתחיל?',npDefault:'רשימת ברירת המחדל',npEmpty:'רשימה ריקה',npName:'שם הרשימה',npHint:'לדוגמה: בדיקת כשירות',npCreate:'צור רשימה'
 }};
 let E_LNG='he';
-function eT(k,n){let s=E_LANG[E_LNG]&&E_LANG[E_LNG][k];if(s===undefined)s=E_LANG.he[k];if(s===undefined)return k;return n===undefined?s:s.replace('{n}',n);}
+E_LANG.en={loadingLib:'Loading library...',back:'Back',cancel:'Cancel',ok:'OK',save:'Save changes',saved:'Saved',exitTitle:'Save your changes?',exitMsg:'',exitSave:'Save and exit',exitDiscard:'Exit without saving',exitStay:'Keep editing',modeTitle:'What happens when the row is tapped in flight?',modeLink:'Link',modeSubs:'Sub-list',warnDropSubs:'Pressing OK will delete the existing sub-list ({n} points)',warnDropLink:'Pressing OK will delete the existing link',title:'Edit list',barHint:'Tap a row or the list name to edit',barHintSub:'Tap a row to edit it',edit:'Edit',rename:'Rename',up:'Up',down:'Down',del:'Delete',earlier:'Earlier',later:'Later',dragAria:'Drag to change position',nItems:'items',nGroups:'groups',nPoints:'points',subList:'Sub-list',addItem:'+ Add item',addGroup:'+ Add group',addPhase:'+ Add phase',addListAria:'Add list',addPoint:'+ Add point',addHeading:'+ Add colored heading',foldAria:'Open or close the phase',foldGroupAria:'Open or close the group',tagChanged:'Changed by you',tagOwn:'Your item',tagNew:'New',renameListTitle:'Rename the list',newListHint:'List name',delListTitle:'Delete the list?',delListMsg:'The list "{n}" and everything in it will be deleted.',newItemTitle:'New item',newItemHint:'What to check?',newGroupTitle:'New group',newGroupHint:'Group name',newPhaseTitle:'New phase',newPhaseHint:'Phase name',renamePhaseTitle:'Rename the phase',renameGroupTitle:'Rename the group',delPhaseTitle:'Delete the phase?',delPhaseMsg:'The phase "{n}" and everything in it will be deleted.',delGroupTitle:'Delete the group?',delGroupMsg:'The group "{n}" and all its items will be deleted.',delItemTitle:'Delete this item?',delItemMsg:'The item "{n}" will be deleted from your list.',itemTitle:'Edit item',fMain:'What to check',fSub:'Explanation (optional)',fUrl:'Link address (optional)',fUrlLabel:'Link name (optional)',linkPre:'Link ·',subAdd:'+ Add sub-list',subEdit:'Edit sub-list',subRemove:'Remove',subRemoveTitle:'Remove the sub-list?',subRemoveMsg:'All its points and headings will be deleted.',resetBtn:'Restore default',subsTitle:'Edit sub-list',subsName:'Sub-list title (optional)',newPointTitle:'New point',newPointHint:'What to check in this point?',editPointTitle:'Edit point',newHeadingTitle:'New heading',editHeadingTitle:'Edit heading',headingHint:'Heading name, for example Safety',pickColor:'Heading color',pickIcon:'Icon',colRed:'Red',colAmber:'Amber',colGreen:'Green',colBlue:'Blue',icoWarn:'Warning',icoRadio:'Radio',icoSmile:'Comfort',icoInfo:'Info',delPointTitle:'Delete the point?',delHeadingTitle:'Delete the heading?',delRowMsg:'"{n}" will be deleted.',xlsHead:'Backup and transfer',xlsImport:'Import from Excel file',xlsImportSub:'Load a list from your phone',xlsExport:'Export to Excel',xlsExportSub:'Save your lists to a file',xiTitle:'Import from Excel file',xiFoundItems:'Found {n} items',xiFoundLists:'Found {n} lists',xiItemsN:'{n} items',xiReplaceOne:'Your list will be replaced with the file content.',xiReplaceAllOne:'All your lists ({n}) will be replaced with the list from the file.',xiReplaceMany:'Your lists will be replaced with the file content.',xiMax3:'You can keep up to 3 lists. The first three will be imported.',xiSkipped:'{n} rows in the file were skipped.',xiReplaceBtn:'Replace the list',xiReplaceBtnMany:'Replace the lists',xiCancel:'Cancel',xiBadTitle:'The file does not fit',xiBadMsg:'No AirCheck list was found in it. You can choose a file exported from the app.',xiReadErr:'The file could not be read. You can choose another file.',xiPickOther:'Choose another file',xiLoading:'The library is still loading, try again in a moment.',xiDoneOne:'✓ List loaded',xiDoneMany:'✓ Lists loaded',xlsExportDone:'✓ File ready - {n} lists',xlsExportErr:'Export error',npTitle:'New list',npAsk:'What to start with?',npDefault:'Default list',npEmpty:'Empty list',npName:'List name',npHint:'For example: Currency check',npCreate:'Create list'};
+
+function eT(k,n){const LG=(typeof AC_LANG!=='undefined'&&AC_LANG==='en')?'en':E_LNG;let s=E_LANG[LG]&&E_LANG[LG][k];if(s===undefined)s=E_LANG.he[k];if(s===undefined)return k;return n===undefined?s:s.replace('{n}',n);}
 const E_HEX={red:'#a32d24',amber:'#96590a',green:'#1f6f3f',blue:'#1c3d6e'};
 const E_EMOJI={warning:'⚠️',radio:'📻',smile:'😊',info:'ℹ️'};
 const E_TONES=['red','amber','green','blue'];
 const E_DOTS='<svg width="18" height="26" viewBox="0 0 18 26" fill="currentColor" aria-hidden="true"><circle cx="5" cy="5" r="2.2"/><circle cx="13" cy="5" r="2.2"/><circle cx="5" cy="13" r="2.2"/><circle cx="13" cy="13" r="2.2"/><circle cx="5" cy="21" r="2.2"/><circle cx="13" cy="21" r="2.2"/></svg>';
-function eSvg(inner,size,color,sw){return '<svg width="'+size+'" height="'+size+'" viewBox="0 0 24 24" fill="none" stroke="'+color+'" stroke-width="'+(sw||2.2)+'" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">'+inner+'</svg>';}
+function eSvg(inner,size,color,sw){if(typeof AC_LANG!=='undefined'&&AC_LANG==='en'){if(inner.indexOf('M9 6l6 6-6 6')>=0)inner=inner.replace('M9 6l6 6-6 6','M15 6l-6 6 6 6');else if(inner.indexOf('M15 6l-6 6 6 6')>=0)inner=inner.replace('M15 6l-6 6 6 6','M9 6l6 6-6 6');}return '<svg width="'+size+'" height="'+size+'" viewBox="0 0 24 24" fill="none" stroke="'+color+'" stroke-width="'+(sw||2.2)+'" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">'+inner+'</svg>';}
 const E_ICON_PATH={
 warning:'<path d="M12 4l9 16H3z"/><path d="M12 10v4M12 17h.01"/>',
 radio:'<circle cx="12" cy="12" r="1.6"/><path d="M7.8 7.8a6 6 0 0 0 0 8.4M16.2 7.8a6 6 0 0 1 0 8.4M4.9 4.9a10 10 0 0 0 0 14.2M19.1 4.9a10 10 0 0 1 0 14.2"/>',
@@ -1699,7 +1706,7 @@ h+='<div class="e3-subadd"><button type="button" data-rk="add-sp" class="p" data
 return h;
 }
 function eRender(){
-const root=document.getElementById('e3');if(!root)return;
+const root=document.getElementById('e3');if(!root)return;root.setAttribute('dir',acDir());
 if(ED.rendered==='list'||ED.rendered==='subs'){const sc0=root.querySelector('[data-scroll]');if(sc0)ED.scrollBy[ED.rendered]=sc0.scrollTop;}
 ED.h={};ED.hn=0;
 const ref=ED.screen!=='list'&&ED.editId?eFindItem(ED.editId):null;
@@ -1721,6 +1728,7 @@ root._eBound=true;
 root.addEventListener('click',ev=>{const t=ev.target.closest('[data-h]');if(!t||!root.contains(t))return;const fn=ED.h[t.getAttribute('data-h')];if(fn)fn(ev,t);});
 root.addEventListener('pointerdown',ev=>{const t=ev.target.closest('[data-d]');if(!t||!root.contains(t))return;const fn=ED.h[t.getAttribute('data-d')];if(fn)fn(ev,t);});
 root.addEventListener('input',ev=>{const t=ev.target.closest('[data-i]');if(!t)return;const fn=ED.h[t.getAttribute('data-i')];if(fn)fn(ev,t);});
+root.addEventListener('wheel',e=>{const el=e.target.closest&&e.target.closest('.e3-scroll');if(!el||!root.contains(el))return;if(e.ctrlKey||e.deltaY===0||el.scrollHeight<=el.clientHeight)return;let dy=e.deltaY;if(e.deltaMode===1)dy*=40;else if(e.deltaMode===2)dy*=el.clientHeight;const mx=el.scrollHeight-el.clientHeight;if(el._wt===undefined||Math.abs(el.scrollTop-(el._wl===undefined?el.scrollTop:el._wl))>3)el._wt=el.scrollTop;el._wt=Math.max(0,Math.min(mx,el._wt+dy));if(!el._wr){const step=()=>{const d=el._wt-el.scrollTop;if(Math.abs(d)<0.6){el.scrollTop=el._wt;el._wl=el.scrollTop;el._wr=0;return;}let mv=d*0.22;if(Math.abs(mv)<1)mv=d>0?Math.min(1,d):Math.max(-1,d);el.scrollTop=el.scrollTop+mv;el._wl=el.scrollTop;el._wr=requestAnimationFrame(step);};el._wr=requestAnimationFrame(step);}e.preventDefault();},{passive:false});
 root.addEventListener('keydown',ev=>{if(ev.key==='Enter'&&ev.target.id==='e3SheetInput'){ev.preventDefault();eSheetOk();}});
 }
 document.addEventListener('DOMContentLoaded',eBind);
@@ -1737,7 +1745,7 @@ processXLSFile(f);
 function xiShow(html,warn){
 const o=document.getElementById('xiOv');
 o.className=(o.className||'').replace(/\bwarn\b/g,'').trim();
-o.innerHTML='<button type="button" class="xi-scrim" onclick="closeXLSImport()" tabindex="-1" aria-hidden="true"></button><div class="xi-sheet" dir="rtl">'+html+'</div>';
+o.innerHTML='<button type="button" class="xi-scrim" onclick="closeXLSImport()" tabindex="-1" aria-hidden="true"></button><div class="xi-sheet" dir="'+acDir()+'">'+html+'</div>';
 if(warn)o.classList.add('warn');
 o.classList.add('open');
 }
@@ -1781,7 +1789,7 @@ eFoldAll();eRender();
 
 /* ---- new list popup: same look as the other popups ---- */
 function npRender(){
-const b=document.getElementById('npBox');if(!b)return;
+const b=document.getElementById('npBox');if(!b)return;b.setAttribute('dir',acDir());
 b.innerHTML='<div class="np-t">'+eT('npTitle')+'</div><div class="np-q">'+eT('npAsk')+'</div>'
 +'<div class="np-opts"><button type="button" class="np-opt selected" id="startFromDefault" onmousedown="event.preventDefault()" onclick="npSelectFrom(\'default\')">'+eT('npDefault')+'</button>'
 +'<button type="button" class="np-opt" id="startFromScratch" onmousedown="event.preventDefault()" onclick="npSelectFrom(\'scratch\')">'+eT('npEmpty')+'</button></div>'
@@ -1924,7 +1932,7 @@ if(heads[it.subList.length])head(heads[it.subList.length]);
 return aoa;
 }
 function exportEditorToXLS(){
-if(typeof XLSX==='undefined'){showToast('טוען ספריה...');return;}
+if(typeof XLSX==='undefined'){showToast(eT('loadingLib'));return;}
 try{
 const wb=XLSX.utils.book_new();
 const today=new Date();
@@ -2209,7 +2217,7 @@ return inst;
 })();
 </script>
 <script id="ac3tpl" type="text/plain">
-<div dir="rtl" style="position:relative;width:100%;flex:1;min-height:0;box-sizing:border-box;overflow:hidden;background:#f4ecdc;color:#1c3d6e;font-family:'IBM Plex Sans Hebrew',sans-serif;display:flex;flex-direction:column;user-select:none;-webkit-user-select:none;-webkit-touch-callout:none;">
+<div dir="{{uiDir}}" style="position:relative;width:100%;flex:1;min-height:0;box-sizing:border-box;overflow:hidden;background:#f4ecdc;color:#1c3d6e;font-family:'IBM Plex Sans Hebrew',sans-serif;display:flex;flex-direction:column;user-select:none;-webkit-user-select:none;-webkit-touch-callout:none;">
 <div dir="ltr" style="flex:none;box-sizing:border-box;min-height:calc(58px + var(--sat,env(safe-area-inset-top,0px)) + var(--lsa-hdr-extra,0px));padding:calc(10px + var(--sat,env(safe-area-inset-top,0px)) + var(--lsa-hdr-extra,0px)) 16px 10px;background:#1c3d6e;box-shadow:0 3px 0 #0e2348;display:flex;align-items:center;justify-content:space-between;gap:8px;position:relative;z-index:10;">
 <div style="display:flex;align-items:center;gap:10px;min-width:0;">
 <img src="{{icoSrc}}" width="38" height="38" alt="" style="flex:0 0 38px;display:block;border-radius:9px;border:1px solid #c8a04a;object-fit:cover;">
@@ -2219,9 +2227,9 @@ return inst;
 </div>
 </div>
 <div style="display:flex;align-items:center;gap:12px;margin-left:auto;">
-<button type="button" onClick="{{goHome}}" aria-label="חזרה למסך הפתיחה" style="min-width:48px;height:48px;padding:0 2px;border:0;background:transparent;color:#f4ecdc;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;cursor:pointer;">
+<button type="button" onClick="{{goHome}}" aria-label="{{lblHomeAria}}" style="min-width:48px;height:48px;padding:0 2px;border:0;background:transparent;color:#f4ecdc;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;cursor:pointer;">
 <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#f4ecdc" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12l-2 0l9 -9l9 9l-2 0"></path><path d="M5 12v7a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-7"></path><path d="M10 21v-6a2 2 0 0 1 4 0v6"></path></svg>
-<span dir="rtl" style="font-family:'IBM Plex Sans Hebrew',sans-serif;font-size:10.5px;font-weight:600;line-height:1;letter-spacing:.02em;opacity:.9;">פתיחה</span>
+<span dir="{{uiDir}}" style="font-family:'IBM Plex Sans Hebrew',sans-serif;font-size:10.5px;font-weight:600;line-height:1;letter-spacing:.02em;opacity:.9;">{{lblHome}}</span>
 </button>
 <div style="width:1px;height:30px;background:rgba(244,236,220,.25);" aria-hidden="true"></div>
 </div>
@@ -2231,16 +2239,16 @@ return inst;
 </div>
 </div>
 <div style="flex:none;padding:8px 14px 8px;display:flex;align-items:center;gap:10px;">
-<span style="font-size:13px;font-weight:600;color:#5a4a3a;">תצוגה</span>
+<span style="font-size:13px;font-weight:600;color:#5a4a3a;">{{lblView}}</span>
 <div style="position:relative;display:flex;gap:4px;padding:4px;border-radius:14px;background:#1c3d6e;box-shadow:inset 0 2px 4px rgba(0,0,0,.35);">
-<span aria-hidden="true" style="position:absolute;top:4px;right:4px;width:98px;height:40px;border-radius:10px;background:#f4ecdc;box-shadow:0 2px 0 #c8a04a;transform:translateX({{thumbX}}px);transition:transform .5s cubic-bezier(.45,.05,.2,1);"></span>
+<span aria-hidden="true" style="position:absolute;top:4px;inset-inline-start:4px;width:98px;height:40px;border-radius:10px;background:#f4ecdc;box-shadow:0 2px 0 #c8a04a;transform:translateX({{thumbX}}px);transition:transform .5s cubic-bezier(.45,.05,.2,1);"></span>
 <button type="button" onClick="{{showCard}}" aria-pressed="{{isCardView}}" style="height:40px;width:98px;box-sizing:border-box;padding:0;border:0;border-radius:10px;display:flex;align-items:center;justify-content:center;gap:7px;font-size:15px;font-weight:700;cursor:pointer;position:relative;z-index:1;background:transparent;color:{{cardTabFg}};transition:color .4s ease;">
 <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="9" width="18" height="12" rx="2"></rect><path d="M6 5.5h12"></path></svg>
-<span>כרטיסים</span>
+<span>{{lblTabCards}}</span>
 </button>
 <button type="button" onClick="{{showList}}" aria-pressed="{{isListView}}" style="height:40px;width:98px;box-sizing:border-box;padding:0;border:0;border-radius:10px;display:flex;align-items:center;justify-content:center;gap:7px;font-size:15px;font-weight:700;cursor:pointer;position:relative;z-index:1;background:transparent;color:{{listTabFg}};transition:color .4s ease;">
 <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 6h11"></path><path d="M4 12h11"></path><path d="M4 18h11"></path><path d="M19 6h.01"></path><path d="M19 12h.01"></path><path d="M19 18h.01"></path></svg>
-<span>רשימה</span>
+<span>{{lblTabList}}</span>
 </button>
 </div>
 <div style="flex:1;"></div>
@@ -2250,12 +2258,12 @@ return inst;
 <div style="flex:none;padding:0 14px 8px;display:flex;gap:8px;">
 <sc-for list="{{phases}}" as="ph">
 <button type="button" onPointerDown="{{ph.down}}" onPointerUp="{{ph.up}}" onPointerLeave="{{ph.up}}" onPointerCancel="{{ph.up}}" onContextMenu="{{ph.up}}" style="flex:1;min-width:0;min-height:48px;padding:0;border:0;background:transparent;cursor:default;display:flex;flex-direction:column;gap:4px;text-align:start;touch-action:manipulation;-webkit-touch-callout:none;-webkit-user-select:none;user-select:none;">
-<span style="font-size:12.5px;line-height:1.35;font-weight:{{ph.w}};color:{{ph.fg}};text-decoration:{{ph.deco}};text-decoration-color:#c8a04a;text-decoration-thickness:3px;text-underline-offset:4px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">{{ph.name}}</span>
+<span dir="auto" style="font-size:12.5px;line-height:1.35;font-weight:{{ph.w}};color:{{ph.fg}};text-decoration:{{ph.deco}};text-decoration-color:#c8a04a;text-decoration-thickness:3px;text-underline-offset:4px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;text-align:{{tAlign}};">{{ph.name}}</span>
 <span style="position:relative;display:block;height:24px;border-radius:5px;background:#2a2218;">
 <span style="position:absolute;top:50%;left:4px;right:4px;border-top:2px dashed rgba(244,236,220,.4);" aria-hidden="true"></span>
 <span style="position:absolute;top:0;left:0;right:0;bottom:0;display:flex;border-radius:5px;overflow:hidden;">
 <sc-for list="{{ph.pips}}" as="pp">
-<span style="flex:1;display:flex;align-items:center;justify-content:center;background:{{pp.bg}};border-left:1px solid rgba(26,19,8,.45);"></span></sc-for></span><span style="position:absolute;top:0;left:0;right:0;bottom:0;display:flex;pointer-events:none;"><sc-for list="{{ph.pips}}" as="pp"><span style="flex:1;position:relative;min-width:0;"><sc-if value="{{pp.isCur}}"><svg viewBox="0 0 34 34" style="position:absolute;left:50%;top:1px;width:22px;height:22px;transform:translateX(-50%) rotate(-90deg);z-index:2;filter:drop-shadow(0 1px 1px rgba(26,19,8,.6));" aria-hidden="true"><path d="M17 2 C18.7 2 19.5 4.2 19.5 7 L19.5 13.2 L31 19 L31 22.2 L19.5 19.8 L19.5 26 L23.4 28.4 L23.4 31 L17 29.6 L10.6 31 L10.6 28.4 L14.5 26 L14.5 19.8 L3 22.2 L3 19 L14.5 13.2 L14.5 7 C14.5 4.2 15.3 2 17 2 Z" fill="#ffffff" stroke="#1a1308" stroke-width="1.5" stroke-linejoin="round"></path><circle cx="4.2" cy="20.6" r="4.6" fill="#ef4444" opacity=".5"></circle><circle cx="29.8" cy="20.6" r="4.6" fill="#39ff8a" opacity=".5"></circle><circle cx="4.2" cy="20.6" r="2.9" fill="#ef4444" stroke="#1a1308" stroke-width=".7"></circle><circle cx="29.8" cy="20.6" r="2.9" fill="#39ff8a" stroke="#1a1308" stroke-width=".7"></circle></svg></sc-if></span></sc-for></span></span>
+<span style="flex:1;display:flex;align-items:center;justify-content:center;background:{{pp.bg}};border-left:1px solid rgba(26,19,8,.45);"></span></sc-for></span><span style="position:absolute;top:0;left:0;right:0;bottom:0;display:flex;pointer-events:none;"><sc-for list="{{ph.pips}}" as="pp"><span style="flex:1;position:relative;min-width:0;"><sc-if value="{{pp.isCur}}"><svg viewBox="0 0 34 34" style="position:absolute;left:50%;top:1px;width:22px;height:22px;transform:translateX(-50%) rotate({{pipRot}});z-index:2;filter:drop-shadow(0 1px 1px rgba(26,19,8,.6));" aria-hidden="true"><path d="M17 2 C18.7 2 19.5 4.2 19.5 7 L19.5 13.2 L31 19 L31 22.2 L19.5 19.8 L19.5 26 L23.4 28.4 L23.4 31 L17 29.6 L10.6 31 L10.6 28.4 L14.5 26 L14.5 19.8 L3 22.2 L3 19 L14.5 13.2 L14.5 7 C14.5 4.2 15.3 2 17 2 Z" fill="#ffffff" stroke="#1a1308" stroke-width="1.5" stroke-linejoin="round"></path><circle cx="4.2" cy="20.6" r="4.6" fill="#ef4444" opacity=".5"></circle><circle cx="29.8" cy="20.6" r="4.6" fill="#39ff8a" opacity=".5"></circle><circle cx="4.2" cy="20.6" r="2.9" fill="#ef4444" stroke="#1a1308" stroke-width=".7"></circle><circle cx="29.8" cy="20.6" r="2.9" fill="#39ff8a" stroke="#1a1308" stroke-width=".7"></circle></svg></sc-if></span></sc-for></span></span>
 </span>
 <span dir="ltr" style="font-family:'JetBrains Mono',monospace;font-size:11px;color:#5a4a3a;text-align:end;">{{ph.count}}</span>
 </button>
@@ -2264,7 +2272,7 @@ return inst;
 </div>
 <div style="flex:1;min-height:0;display:flex;gap:10px;padding:0 14px;">
 <sc-if value="{{isListView}}">
-<div role="img" aria-label="התקדמות בכל הצ'קליסט" style="order:{{railOrder}};flex:none;width:20px;display:flex;flex-direction:column;align-items:center;gap:10px;padding:2px 0;">
+<div role="img" aria-label="{{lblRailAria}}" style="order:{{railOrder}};flex:none;width:20px;display:flex;flex-direction:column;align-items:center;gap:10px;padding:2px 0;">
 <sc-for list="{{railPhases}}" as="rp">
 <div style="flex-grow:{{rp.grow}};flex-shrink:1;flex-basis:0;min-height:0;width:20px;display:flex;flex-direction:column;gap:2px;">
 <sc-for list="{{rp.segs}}" as="sg">
@@ -2281,17 +2289,17 @@ return inst;
 <div style="order:1;flex:1;min-width:0;display:flex;flex-direction:column;opacity:{{vaOp}};transform:translateY({{vaTy}}px);transition:opacity .24s ease,transform .24s ease;animation:{{vaName}} .55s cubic-bezier(.22,.61,.36,1) backwards;">
 <sc-if value="{{isCardView}}">
 <div style="flex:none;padding:0 2px 24px;font-size:13px;color:#5a4a3a;display:flex;gap:6px;">
-<span style="font-weight:600;">{{crumbPhase}}</span><span>·</span><span>{{crumbGroup}}</span>
+<span dir="auto" style="font-weight:600;text-align:{{tAlign}};">{{crumbPhase}}</span><span>·</span><span dir="auto" style="text-align:{{tAlign}};">{{crumbGroup}}</span>
 </div>
 <div style="position:relative;flex:none;margin-bottom:14px;">
 <sc-if value="{{showUnder}}">
-<div style="position:absolute;z-index:1;top:0;left:0;right:0;box-sizing:border-box;min-height:212px;padding:26px 18px 13px;display:flex;flex-direction:column;background:#fbf6e8;border:2px solid #c8a04a;border-radius:14px;box-shadow:0 5px 0 -1px #e3d4ad,0 10px 0 -3px #c8a04a,0 14px 20px rgba(28,61,110,.14);"><sc-if value="{{underDone}}"><div style="position:absolute;top:-2px;left:-2px;right:-2px;bottom:-2px;z-index:2;box-sizing:border-box;padding:30px 18px 18px;background:#eaf2de;border:2px solid #1f6f3f;border-radius:14px;box-shadow:inset 0 0 0 5px #eaf2de,inset 0 0 0 7px rgba(31,111,63,.4),0 5px 0 -1px #c9dcb8,0 10px 0 -3px #1f6f3f,0 14px 20px rgba(28,61,110,.14);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px;text-align:center;" aria-hidden="true"><div style="width:100%;display:flex;align-items:center;gap:8px;"><span style="flex:1;border-top:3px dashed rgba(31,111,63,.5);"></span><svg width="26" height="26" viewBox="0 0 34 34" style="transform:rotate(-90deg);flex:none;"><path d="M17 2 C18.7 2 19.5 4.2 19.5 7 L19.5 13.2 L31 19 L31 22.2 L19.5 19.8 L19.5 26 L23.4 28.4 L23.4 31 L17 29.6 L10.6 31 L10.6 28.4 L14.5 26 L14.5 19.8 L3 22.2 L3 19 L14.5 13.2 L14.5 7 C14.5 4.2 15.3 2 17 2 Z" fill="#ffffff" stroke="#1a1308" stroke-width="1.5" stroke-linejoin="round"></path></svg><span style="flex:1;border-top:3px dashed rgba(31,111,63,.5);"></span></div><div style="padding:4px 10px;color:#1f6f3f;"><div dir="ltr" style="font-family:'JetBrains Mono',monospace;font-size:14px;font-weight:700;letter-spacing:.14em;">SECTION COMPLETED</div><div style="font-size:30px;line-height:1.2;font-weight:700;">השלב הושלם</div></div><div style="font-size:16px;font-weight:600;color:#1c3d6e;">{{underDonePhase}}</div><sc-if value="{{underHasSkip}}"><div style="display:flex;align-items:center;gap:8px;background:#f1e2bc;border:1px solid #c9a24a;border-radius:8px;padding:6px 10px;font-size:13px;font-weight:600;color:#8a5200;line-height:1.25;text-align:start;"><span style="display:inline-flex;width:20px;height:20px;border-radius:50%;background:#f59e0b;color:#fff;align-items:center;justify-content:center;font-weight:800;font-size:13px;flex:none;" aria-hidden="true">!</span><span>{{underSkipText}}</span></div></sc-if><sc-if value="{{underNoSkip}}"><div style="font-size:14px;line-height:1.4;color:#5a4a3a;">{{underDoneNote}}</div></sc-if></div></sc-if>
+<div style="position:absolute;z-index:1;top:0;left:0;right:0;box-sizing:border-box;min-height:212px;padding:26px 18px 13px;display:flex;flex-direction:column;background:#fbf6e8;border:2px solid #c8a04a;border-radius:14px;box-shadow:0 5px 0 -1px #e3d4ad,0 10px 0 -3px #c8a04a,0 14px 20px rgba(28,61,110,.14);"><sc-if value="{{underDone}}"><div style="position:absolute;top:-2px;left:-2px;right:-2px;bottom:-2px;z-index:2;box-sizing:border-box;padding:30px 18px 18px;background:#eaf2de;border:2px solid #1f6f3f;border-radius:14px;box-shadow:inset 0 0 0 5px #eaf2de,inset 0 0 0 7px rgba(31,111,63,.4),0 5px 0 -1px #c9dcb8,0 10px 0 -3px #1f6f3f,0 14px 20px rgba(28,61,110,.14);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px;text-align:center;" aria-hidden="true"><div style="width:100%;display:flex;align-items:center;gap:8px;"><span style="flex:1;border-top:3px dashed rgba(31,111,63,.5);"></span><svg width="26" height="26" viewBox="0 0 34 34" style="transform:rotate({{planeRot}});flex:none;"><path d="M17 2 C18.7 2 19.5 4.2 19.5 7 L19.5 13.2 L31 19 L31 22.2 L19.5 19.8 L19.5 26 L23.4 28.4 L23.4 31 L17 29.6 L10.6 31 L10.6 28.4 L14.5 26 L14.5 19.8 L3 22.2 L3 19 L14.5 13.2 L14.5 7 C14.5 4.2 15.3 2 17 2 Z" fill="#ffffff" stroke="#1a1308" stroke-width="1.5" stroke-linejoin="round"></path></svg><span style="flex:1;border-top:3px dashed rgba(31,111,63,.5);"></span></div><div style="padding:4px 10px;color:#1f6f3f;"><div dir="auto" style="font-family:{{enFont}};font-size:14px;font-weight:700;letter-spacing:{{enLs}};">{{doneEn}}</div><div dir="auto" style="font-size:30px;line-height:1.2;font-weight:700;">{{lblPhDone}}</div></div><div dir="auto" style="font-size:16px;font-weight:600;color:#1c3d6e;text-align:{{tAlign}};">{{underDonePhase}}</div><sc-if value="{{underHasSkip}}"><div style="display:flex;align-items:center;gap:8px;background:#f1e2bc;border:1px solid #c9a24a;border-radius:8px;padding:6px 10px;font-size:13px;font-weight:600;color:#8a5200;line-height:1.25;text-align:start;"><span style="display:inline-flex;width:20px;height:20px;border-radius:50%;background:#f59e0b;color:#fff;align-items:center;justify-content:center;font-weight:800;font-size:13px;flex:none;" aria-hidden="true">!</span><span>{{underSkipText}}</span></div></sc-if><sc-if value="{{underNoSkip}}"><div style="font-size:14px;line-height:1.4;color:#5a4a3a;">{{underDoneNote}}</div></sc-if></div></sc-if>
 <div style="display:flex;align-items:center;justify-content:space-between;">
 <span dir="ltr" style="font-family:'JetBrains Mono',monospace;font-size:12px;font-weight:700;color:#5a4a3a;letter-spacing:.06em;">{{underNum}}</span>
-<span style="display:flex;gap:6px;align-items:center;"><sc-if value="{{underIsSub}}"><span style="font-size:12px;font-weight:700;background:#1c3d6e;color:#f4ecdc;padding:3px 9px;border-radius:8px;">תת-רשימה</span></sc-if><sc-if value="{{underGrpOn}}"><span style="font-size:12px;font-weight:600;background:#f1e2bc;color:#6f531d;padding:3px 9px;border-radius:8px;">{{underGrp}} בקבוצה</span></sc-if></span>
+<span style="display:flex;gap:6px;align-items:center;"><sc-if value="{{underIsSub}}"><span style="font-size:12px;font-weight:700;background:#1c3d6e;color:#f4ecdc;padding:3px 9px;border-radius:8px;">{{lblSubList}}</span></sc-if><sc-if value="{{underGrpOn}}"><span style="font-size:12px;font-weight:600;background:#f1e2bc;color:#6f531d;padding:3px 9px;border-radius:8px;">{{underGrp}} {{lblInGroup}}</span></sc-if></span>
 </div>
-<div style="margin:10px 0 4px;font-size:26px;line-height:1.3;font-weight:700;color:#1c3d6e;">{{underMain}}</div>
-<div style="font-size:16px;line-height:1.4;color:#5a4a3a;">{{underSub}}</div>
+<div dir="auto" style="margin:10px 0 4px;font-size:26px;line-height:1.3;font-weight:700;color:#1c3d6e;text-align:{{tAlign}};">{{underMain}}</div>
+<div dir="auto" style="font-size:16px;line-height:1.4;color:#5a4a3a;text-align:{{tAlign}};">{{underSub}}</div>
 <sc-if value="{{underIsSub}}">
 <div style="margin:auto 0 0;border:1.5px solid #a9b98c;background:#e3ead6;border-radius:12px;box-shadow:inset 0 3px 6px rgba(60,90,50,.14);min-height:48px;box-sizing:border-box;padding:4px 16px;display:flex;align-items:center;gap:12px;">
 <span style="flex:none;width:30px;height:30px;border-radius:50%;box-sizing:border-box;border:2px solid #8a7a5a;"></span>
@@ -2302,11 +2310,11 @@ return inst;
 </sc-if>
 <sc-if value="{{underIsLink}}">
 <div style="position:relative;margin-top:auto;border-top:10px solid transparent;">
-<sc-if value="{{underIsOwn}}"><span dir="ltr" style="position:absolute;top:-9px;left:12px;height:18px;box-sizing:border-box;padding:0 8px;border-radius:9px;background:#1c3d6e;color:#f4ecdc;font-family:'JetBrains Mono',monospace;font-size:9.5px;font-weight:700;letter-spacing:.14em;line-height:18px;">AIRCHECK</span></sc-if>
+<sc-if value="{{underIsOwn}}"><span dir="ltr" style="position:absolute;top:-9px;{{endSide}}:12px;height:18px;box-sizing:border-box;padding:0 8px;border-radius:9px;background:#1c3d6e;color:#f4ecdc;font-family:'JetBrains Mono',monospace;font-size:9.5px;font-weight:700;letter-spacing:.14em;line-height:18px;">AIRCHECK</span></sc-if>
 <div style="min-height:48px;box-sizing:border-box;padding:4px 14px;border:1.5px solid #d6c48e;background:#f1e6c6;border-radius:12px;display:flex;align-items:center;gap:12px;">
-<span style="font-size:15px;font-weight:700;color:#1c3d6e;">{{underLinkLabel}}</span>
+<span dir="auto" style="font-size:15px;font-weight:700;color:#1c3d6e;text-align:{{tAlign}};">{{underLinkLabel}}</span>
 <span style="flex:1;"></span>
-<sc-if value="{{underIsOwn}}"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#8a6a2a" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="flex:none;"><path d="M15 6l-6 6l6 6"></path></svg></sc-if>
+<sc-if value="{{underIsOwn}}"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#8a6a2a" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="flex:none;"><path d="{{ownArrow}}"></path></svg></sc-if>
 <sc-if value="{{underIsExt}}"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#8a6a2a" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="flex:none;"><path d="M12 6h-6a2 2 0 0 0 -2 2v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-6"></path><path d="M11 13l9 -9"></path><path d="M15 4h5v5"></path></svg></sc-if>
 </div>
 </div>
@@ -2320,19 +2328,19 @@ return inst;
 <div style="position:relative;z-index:2;transform-origin:top center;transform-style:preserve-3d;animation:{{cardAnim}};"><div style="position:absolute;top:0;left:0;right:0;bottom:0;border-radius:14px;border:2px solid #c8a04a;background:repeating-linear-gradient(#ebdfba,#ebdfba 27px,#ddcc98 28px);transform:rotateX(180deg);backface-visibility:hidden;-webkit-backface-visibility:hidden;animation:{{backAnim}};" aria-hidden="true"></div><div style="position:relative;box-sizing:border-box;min-height:212px;padding:26px 18px 13px;display:flex;flex-direction:column;background:#fbf6e8;border:2px solid #c8a04a;border-radius:14px;box-shadow:0 5px 0 -1px #e3d4ad,0 10px 0 -3px #c8a04a,0 14px 20px rgba(28,61,110,.14);animation:{{frontAnim}};backface-visibility:hidden;-webkit-backface-visibility:hidden;">
 <div style="display:flex;align-items:center;justify-content:space-between;">
 <span dir="ltr" style="font-family:'JetBrains Mono',monospace;font-size:12px;font-weight:700;color:#5a4a3a;letter-spacing:.06em;">ITEM {{itemNum}} / {{itemTotal}}</span>
-<span style="display:flex;gap:6px;align-items:center;"><sc-if value="{{item.isCurtainLink}}"><span style="font-size:12px;font-weight:700;background:#1c3d6e;color:#f4ecdc;padding:3px 9px;border-radius:8px;">תת-רשימה</span></sc-if><span style="font-size:12px;font-weight:600;background:#f1e2bc;color:#6f531d;padding:3px 9px;border-radius:8px;">{{groupPos}} בקבוצה</span></span>
+<span style="display:flex;gap:6px;align-items:center;"><sc-if value="{{item.isCurtainLink}}"><span style="font-size:12px;font-weight:700;background:#1c3d6e;color:#f4ecdc;padding:3px 9px;border-radius:8px;">{{lblSubList}}</span></sc-if><span style="font-size:12px;font-weight:600;background:#f1e2bc;color:#6f531d;padding:3px 9px;border-radius:8px;">{{groupPos}} {{lblInGroup}}</span></span>
 </div>
-<div style="margin:10px 0 4px;font-size:26px;line-height:1.3;font-weight:700;color:#1c3d6e;">{{item.main}}</div>
+<div dir="auto" style="margin:10px 0 4px;font-size:26px;line-height:1.3;font-weight:700;color:#1c3d6e;text-align:{{tAlign}};">{{item.main}}</div>
 <sc-if value="{{item.hasSub}}">
-<div style="font-size:16px;line-height:1.4;color:#5a4a3a;">{{item.sub}}</div>
+<div dir="auto" style="font-size:16px;line-height:1.4;color:#5a4a3a;text-align:{{tAlign}};">{{item.sub}}</div>
 </sc-if>
 <sc-if value="{{item.hasLink}}">
 <div style="position:relative;margin-top:auto;border-top:10px solid transparent;">
-<sc-if value="{{item.isOwnLink}}"><span dir="ltr" style="position:absolute;z-index:1;top:-9px;left:12px;height:18px;box-sizing:border-box;padding:0 8px;border-radius:9px;background:#1c3d6e;color:#f4ecdc;font-family:'JetBrains Mono',monospace;font-size:9.5px;font-weight:700;letter-spacing:.14em;line-height:18px;pointer-events:none;">AIRCHECK</span></sc-if>
+<sc-if value="{{item.isOwnLink}}"><span dir="ltr" style="position:absolute;z-index:1;top:-9px;{{endSide}}:12px;height:18px;box-sizing:border-box;padding:0 8px;border-radius:9px;background:#1c3d6e;color:#f4ecdc;font-family:'JetBrains Mono',monospace;font-size:9.5px;font-weight:700;letter-spacing:.14em;line-height:18px;pointer-events:none;">AIRCHECK</span></sc-if>
 <button type="button" onClick="{{item.open}}" style="width:100%;min-height:48px;box-sizing:border-box;padding:4px 14px;border:1.5px solid #d6c48e;background:#f1e6c6;border-radius:12px;display:flex;align-items:center;gap:12px;text-align:start;cursor:pointer;">
-<span style="font-size:15px;font-weight:700;line-height:1.2;color:#1c3d6e;">{{item.linkLabel}}</span>
+<span dir="auto" style="font-size:15px;font-weight:700;line-height:1.2;color:#1c3d6e;text-align:{{tAlign}};">{{item.linkLabel}}</span>
 <span style="flex:1;"></span>
-<sc-if value="{{item.isOwnLink}}"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#8a6a2a" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="flex:none;"><path d="M15 6l-6 6l6 6"></path></svg></sc-if>
+<sc-if value="{{item.isOwnLink}}"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#8a6a2a" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="flex:none;"><path d="{{ownArrow}}"></path></svg></sc-if>
 <sc-if value="{{item.isExtLink}}"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#8a6a2a" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="flex:none;"><path d="M12 6h-6a2 2 0 0 0 -2 2v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-6"></path><path d="M11 13l9 -9"></path><path d="M15 4h5v5"></path></svg></sc-if>
 </button>
 </div>
@@ -2354,11 +2362,11 @@ return inst;
 <div style="position:relative;height:172px;">
 <div id="curtainScroll" class="lscroll" onScroll="{{onSubScroll}}" style="position:absolute;top:0;left:0;right:0;bottom:0;overflow-y:auto;padding:6px 18px 0;">
 <sc-for list="{{points}}" as="pt">
-<sc-if value="{{pt.hasHead}}"><div style="margin:10px 0 2px;display:flex;align-items:center;gap:8px;padding:5px 10px;border-radius:8px;background:{{pt.headBg}};color:#fbf6e8;"><span style="font-size:15px;line-height:1;" aria-hidden="true">{{pt.headIcon}}</span><span style="flex:1;font-size:14px;font-weight:700;">{{pt.head}}</span></div></sc-if><button type="button" id="pt-{{pt.j}}" onClick="{{pt.toggle}}" style="position:relative;width:100%;padding:0;border:0;border-top:1px solid {{pt.lineC}};background:{{pt.rowBg}};border-radius:{{pt.rowRad}};margin:0;width:100% !important;padding:0 8px !important;text-align:start;cursor:pointer;display:flex;align-items:center;gap:10px;min-height:40px;box-sizing:border-box;">
+<sc-if value="{{pt.hasHead}}"><div style="margin:10px 0 2px;display:flex;align-items:center;gap:8px;padding:5px 10px;border-radius:8px;background:{{pt.headBg}};color:#fbf6e8;"><span style="font-size:15px;line-height:1;" aria-hidden="true">{{pt.headIcon}}</span><span dir="auto" style="flex:1;font-size:14px;font-weight:700;text-align:{{tAlign}};">{{pt.head}}</span></div></sc-if><button type="button" id="pt-{{pt.j}}" onClick="{{pt.toggle}}" style="position:relative;width:100%;padding:0;border:0;border-top:1px solid {{pt.lineC}};background:{{pt.rowBg}};border-radius:{{pt.rowRad}};margin:0;width:100% !important;padding:0 8px !important;text-align:start;cursor:pointer;display:flex;align-items:center;gap:10px;min-height:40px;box-sizing:border-box;">
 <span style="flex:none;width:22px;height:22px;border-radius:50%;box-sizing:border-box;display:flex;align-items:center;justify-content:center;background:{{pt.markBg}};border:{{pt.markBorder}};">
 <sc-if value="{{pt.isDone}}"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="{{pt.checkStroke}}" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12l5 5l10 -10"></path></svg></sc-if>
 </span>
-<span style="font-size:15px;line-height:1.3;font-weight:{{pt.w}};color:{{pt.fg}};text-decoration:{{pt.deco}};">{{pt.t}}</span>
+<span dir="auto" style="font-size:15px;line-height:1.3;font-weight:{{pt.w}};color:{{pt.fg}};text-decoration:{{pt.deco}};text-align:{{tAlign}};">{{pt.t}}</span>
 </button>
 </sc-for>
 <div style="height:34px;"></div>
@@ -2374,7 +2382,7 @@ return inst;
 </div>
 </div></sc-if>
 <sc-if value="{{showStamp}}">
-<div style="position:absolute;left:54px;bottom:{{stampBot}};z-index:3;pointer-events:none;border:3px solid #1f6f3f;border-radius:6px;padding:2px 9px;color:#1f6f3f;background:rgba(251,246,232,.85);transform:rotate(-7deg) scale(1.2);animation:stampBump {{stampDur}} cubic-bezier(.2,.7,.3,1) both;text-align:center;">
+<div style="position:absolute;{{stampSide}}:54px;bottom:{{stampBot}};z-index:3;pointer-events:none;border:3px solid #1f6f3f;border-radius:6px;padding:2px 9px;color:#1f6f3f;background:rgba(251,246,232,.85);transform:rotate({{stampRot}}) scale(1.2);animation:{{stampAnim}} {{stampDur}} cubic-bezier(.2,.7,.3,1) both;text-align:center;">
 <div dir="ltr" style="font-family:'JetBrains Mono',monospace;font-size:13px;font-weight:700;letter-spacing:.12em;">CHECKED</div>
 <div dir="ltr" style="font-family:'JetBrains Mono',monospace;font-size:11px;font-weight:700;">{{stampTime}} UTC</div>
 </div>
@@ -2392,28 +2400,28 @@ return inst;
 <span style="position:absolute;left:16px;bottom:96px;animation:ceremonyFly 2.8s cubic-bezier(.3,.6,.4,1) .3s both;" aria-hidden="true">
 <svg width="34" height="34" viewBox="0 0 34 34" style="transform:rotate(52deg);display:block;"><path d="M17 2 C18.7 2 19.5 4.2 19.5 7 L19.5 13.2 L31 19 L31 22.2 L19.5 19.8 L19.5 26 L23.4 28.4 L23.4 31 L17 29.6 L10.6 31 L10.6 28.4 L14.5 26 L14.5 19.8 L3 22.2 L3 19 L14.5 13.2 L14.5 7 C14.5 4.2 15.3 2 17 2 Z" fill="#ffffff" stroke="#1a1308" stroke-width="1.5" stroke-linejoin="round"></path><circle cx="4.2" cy="20.6" r="4.6" fill="#ef4444" opacity=".5"></circle><circle cx="29.8" cy="20.6" r="4.6" fill="#39ff8a" opacity=".5"></circle><circle cx="4.2" cy="20.6" r="2.9" fill="#ef4444" stroke="#1a1308" stroke-width=".7"></circle><circle cx="29.8" cy="20.6" r="2.9" fill="#39ff8a" stroke="#1a1308" stroke-width=".7"></circle></svg>
 </span>
-<div dir="ltr" style="font-family:'JetBrains Mono',monospace;font-size:11px;font-weight:700;letter-spacing:.2em;color:#6f531d;">CHECKLIST COMPLETE &#183; {{finUtc}} UTC</div>
-<div style="border:4px solid #1f6f3f;border-radius:10px;padding:8px 24px;color:#1f6f3f;transform:rotate(-5deg);animation:stampIn .5s ease-out .15s both;">
-<div dir="ltr" style="font-family:'JetBrains Mono',monospace;font-size:13px;font-weight:700;letter-spacing:.06em;">CHECKLIST COMPLETED</div>
-<div style="font-size:32px;line-height:1.2;font-weight:700;">הצ'קליסט הושלם</div>
+<div dir="ltr" style="font-family:'JetBrains Mono',monospace;font-size:11px;font-weight:700;letter-spacing:.2em;color:#6f531d;">{{finUtc}} UTC</div>
+<div style="border:4px solid #1f6f3f;border-radius:10px;padding:8px 24px;color:#1f6f3f;transform:rotate({{finRot}});animation:{{finAnim}} .5s ease-out .15s both;">
+<div dir="auto" style="font-family:{{enFont}};font-size:13px;font-weight:700;letter-spacing:{{enLs}};">{{finAllPh}}</div>
+<div dir="auto" style="font-size:{{finFs}};line-height:1.2;font-weight:700;white-space:nowrap;">{{lblClDone}}</div>
 </div>
-<div style="font-size:19px;font-weight:700;color:#1c3d6e;margin-top:4px;">כל הכבוד!</div>
-<sc-if value="{{finNoSkip}}"><div style="font-size:14px;line-height:1.4;color:#5a4a3a;">כל שלבי הצ'קליסט נסגרו. נתראה בטיסה הבאה.</div></sc-if><sc-if value="{{finHasSkip}}"><div style="display:flex;align-items:center;gap:8px;background:#f1e2bc;border:1px solid #c9a24a;border-radius:8px;padding:6px 10px;font-size:13px;font-weight:600;color:#8a5200;line-height:1.25;text-align:start;"><span style="display:inline-flex;width:20px;height:20px;border-radius:50%;background:#f59e0b;color:#fff;align-items:center;justify-content:center;font-weight:800;font-size:13px;flex:none;" aria-hidden="true">!</span><span>{{finSkipText}}</span></div></sc-if>
+<div style="font-size:19px;font-weight:700;color:#1c3d6e;margin-top:4px;">{{lblWellDone}}</div>
+<sc-if value="{{finNoSkip}}"><div style="font-size:14px;line-height:1.4;color:#5a4a3a;">{{lblAllClosed}}</div></sc-if><sc-if value="{{finHasSkip}}"><div style="display:flex;align-items:center;gap:8px;background:#f1e2bc;border:1px solid #c9a24a;border-radius:8px;padding:6px 10px;font-size:13px;font-weight:600;color:#8a5200;line-height:1.25;text-align:start;"><span style="display:inline-flex;width:20px;height:20px;border-radius:50%;background:#f59e0b;color:#fff;align-items:center;justify-content:center;font-weight:800;font-size:13px;flex:none;" aria-hidden="true">!</span><span>{{finSkipText}}</span></div></sc-if>
 <div style="display:flex;gap:8px;width:100%;margin-top:auto;">
-<div style="flex:1;background:#f1e2bc;border-radius:10px;padding:8px 4px;"><div dir="ltr" style="font-family:'JetBrains Mono',monospace;font-size:20px;font-weight:700;color:#1f6f3f;">{{finDone}}</div><div style="font-size:12px;color:#5a4a3a;">סומנו</div></div>
-<div style="flex:1;background:#f1e2bc;border-radius:10px;padding:8px 4px;"><div dir="ltr" style="font-family:'JetBrains Mono',monospace;font-size:20px;font-weight:700;color:#8a5200;">{{finSkipped}}</div><div style="font-size:12px;color:#5a4a3a;">ללא סימון</div></div>
-<div style="flex:1;background:#f1e2bc;border-radius:10px;padding:8px 4px;"><div dir="ltr" style="font-family:'JetBrains Mono',monospace;font-size:20px;font-weight:700;color:#1c3d6e;">{{finTime}}</div><div style="font-size:12px;color:#5a4a3a;">משך הצ'קליסט</div></div>
+<div style="flex:1;background:#f1e2bc;border-radius:10px;padding:8px 4px;"><div dir="ltr" style="font-family:'JetBrains Mono',monospace;font-size:20px;font-weight:700;color:#1f6f3f;">{{finDone}}</div><div style="font-size:12px;color:#5a4a3a;">{{lblTicked}}</div></div>
+<div style="flex:1;background:#f1e2bc;border-radius:10px;padding:8px 4px;"><div dir="ltr" style="font-family:'JetBrains Mono',monospace;font-size:20px;font-weight:700;color:#8a5200;">{{finSkipped}}</div><div style="font-size:12px;color:#5a4a3a;">{{lblSkippedL}}</div></div>
+<div style="flex:1;background:#f1e2bc;border-radius:10px;padding:8px 4px;"><div dir="ltr" style="font-family:'JetBrains Mono',monospace;font-size:20px;font-weight:700;color:#1c3d6e;">{{finTime}}</div><div style="font-size:12px;color:#5a4a3a;">{{lblClTime}}</div></div>
 </div>
 </div>
 </sc-if>
 <sc-if value="{{showDoneCard}}">
 <div style="position:relative;z-index:2;transform-origin:top center;transform-style:preserve-3d;animation:{{cardAnim}};"><div style="position:absolute;top:0;left:0;right:0;bottom:0;border-radius:14px;border:2px solid #c8a04a;background:repeating-linear-gradient(#ebdfba,#ebdfba 27px,#ddcc98 28px);transform:rotateX(180deg);backface-visibility:hidden;-webkit-backface-visibility:hidden;animation:{{backAnim}};" aria-hidden="true"></div><div style="position:relative;box-sizing:border-box;min-height:212px;padding:30px 18px 18px;background:#eaf2de;animation:{{frontAnim}};border:2px solid #1f6f3f;border-radius:14px;box-shadow:inset 0 0 0 5px #eaf2de,inset 0 0 0 7px rgba(31,111,63,.4),0 5px 0 -1px #c9dcb8,0 10px 0 -3px #1f6f3f,0 14px 20px rgba(28,61,110,.14);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px;text-align:center;backface-visibility:hidden;-webkit-backface-visibility:hidden;">
-<div style="width:100%;display:flex;align-items:center;gap:8px;"><span style="flex:1;border-top:3px dashed rgba(31,111,63,.5);"></span><svg width="26" height="26" viewBox="0 0 34 34" style="transform:rotate(-90deg);flex:none;" aria-hidden="true"><path d="M17 2 C18.7 2 19.5 4.2 19.5 7 L19.5 13.2 L31 19 L31 22.2 L19.5 19.8 L19.5 26 L23.4 28.4 L23.4 31 L17 29.6 L10.6 31 L10.6 28.4 L14.5 26 L14.5 19.8 L3 22.2 L3 19 L14.5 13.2 L14.5 7 C14.5 4.2 15.3 2 17 2 Z" fill="#ffffff" stroke="#1a1308" stroke-width="1.5" stroke-linejoin="round"></path></svg><span style="flex:1;border-top:3px dashed rgba(31,111,63,.5);"></span></div>
+<div style="width:100%;display:flex;align-items:center;gap:8px;"><span style="flex:1;border-top:3px dashed rgba(31,111,63,.5);"></span><svg width="26" height="26" viewBox="0 0 34 34" style="transform:rotate({{planeRot}});flex:none;" aria-hidden="true"><path d="M17 2 C18.7 2 19.5 4.2 19.5 7 L19.5 13.2 L31 19 L31 22.2 L19.5 19.8 L19.5 26 L23.4 28.4 L23.4 31 L17 29.6 L10.6 31 L10.6 28.4 L14.5 26 L14.5 19.8 L3 22.2 L3 19 L14.5 13.2 L14.5 7 C14.5 4.2 15.3 2 17 2 Z" fill="#ffffff" stroke="#1a1308" stroke-width="1.5" stroke-linejoin="round"></path></svg><span style="flex:1;border-top:3px dashed rgba(31,111,63,.5);"></span></div>
 <div style="padding:4px 10px;color:#1f6f3f;">
-<div dir="ltr" style="font-family:'JetBrains Mono',monospace;font-size:14px;font-weight:700;letter-spacing:.14em;">{{doneEn}}</div>
-<div style="font-size:30px;line-height:1.2;font-weight:700;">{{doneHe}}</div>
+<div dir="auto" style="font-family:{{enFont}};font-size:14px;font-weight:700;letter-spacing:{{enLs}};">{{doneEn}}</div>
+<div dir="auto" style="font-size:30px;line-height:1.2;font-weight:700;">{{doneHe}}</div>
 </div>
-<div style="font-size:16px;font-weight:600;color:#1c3d6e;">{{donePhase}}</div>
+<div dir="auto" style="font-size:16px;font-weight:600;color:#1c3d6e;text-align:{{tAlign}};">{{donePhase}}</div>
 <sc-if value="{{doneHasSkip}}"><div style="display:flex;align-items:center;gap:8px;background:#f1e2bc;border:1px solid #c9a24a;border-radius:8px;padding:6px 10px;font-size:13px;font-weight:600;color:#8a5200;line-height:1.25;text-align:start;"><span style="display:inline-flex;width:20px;height:20px;border-radius:50%;background:#f59e0b;color:#fff;align-items:center;justify-content:center;font-weight:800;font-size:13px;flex:none;" aria-hidden="true">!</span><span>{{doneSkipText}}</span></div></sc-if><sc-if value="{{doneNoSkip}}"><div style="font-size:14px;line-height:1.4;color:#5a4a3a;">{{doneNote}}</div></sc-if>
 </div>
 </div>
@@ -2422,11 +2430,11 @@ return inst;
 <div style="flex:1;min-height:0;display:flex;flex-direction:column;overflow:hidden;">
 <sc-if value="{{showNext}}">
 <div style="flex:1;min-height:0;margin-top:14px;overflow:hidden;">
-<div style="font-size:12.5px;font-weight:700;letter-spacing:.04em;color:#6f531d;padding:0 2px 2px;">בהמשך</div>
+<div style="font-size:12.5px;font-weight:700;letter-spacing:.04em;color:#6f531d;padding:0 2px 2px;">{{lblNextUp}}</div>
 <sc-for list="{{nextItems}}" as="nx">
 <div style="display:flex;align-items:center;gap:12px;min-height:40px;border-top:1px dashed #d9c79a;opacity:{{nx.op}};">
 <span dir="ltr" style="flex:none;width:24px;font-family:'JetBrains Mono',monospace;font-size:12px;font-weight:700;color:#5a4a3a;">{{nx.num}}</span>
-<span style="font-size:16px;line-height:1.3;color:#1c3d6e;">{{nx.main}}</span>
+<span dir="auto" style="font-size:16px;line-height:1.3;color:#1c3d6e;text-align:{{tAlign}};">{{nx.main}}</span>
 </div>
 </sc-for>
 </div>
@@ -2441,13 +2449,13 @@ return inst;
 <sc-if value="{{row.isPhase}}">
 <button type="button" onClick="{{row.toggle}}" aria-expanded="{{row.expanded}}" style="position:sticky;top:0;z-index:2;width:100%;height:32px;margin-bottom:{{row.mb}}px;box-shadow:{{row.sh}};box-sizing:border-box;padding:0 12px;border:0;background:#1c3d6e;color:#f4ecdc;display:flex;align-items:center;gap:8px;font-size:13px;font-weight:700;cursor:pointer;text-align:start;">
 <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#d4b878" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" style="flex:none;transform:rotate({{row.rot}}deg);" aria-hidden="true"><path d="M6 9l6 6l6 -6"></path></svg>
-<span>{{row.name}}</span>
+<span dir="auto" style="text-align:{{tAlign}};">{{row.name}}</span>
 <span style="flex:1;"></span>
 <span dir="ltr" style="font-family:'JetBrains Mono',monospace;font-size:11px;color:#d4b878;">{{row.count}}</span>
 </button>
 </sc-if>
 <sc-if value="{{row.isGroup}}">
-<div style="height:26px;box-sizing:border-box;padding:0 12px;display:flex;align-items:center;font-size:11.5px;font-weight:700;letter-spacing:.02em;color:#6f531d;background:rgba(200,160,74,.14);border-bottom:1px solid #e3d4ad;">{{row.name}}</div>
+<div dir="auto" style="height:26px;box-sizing:border-box;padding:0 12px;display:flex;align-items:center;font-size:11.5px;font-weight:700;letter-spacing:.02em;color:#6f531d;background:rgba(200,160,74,.14);border-bottom:1px solid #e3d4ad;text-align:{{tAlign}};">{{row.name}}</div>
 </sc-if>
 <sc-if value="{{row.isItem}}">
 <div id="row-{{row.idx}}" style="border-bottom:1px solid #e3d4ad;background:{{row.bg}};padding:0 4px;">
@@ -2458,11 +2466,11 @@ return inst;
 <sc-if value="{{row.isSkipped}}"><span style="width:8px;height:2.5px;border-radius:2px;background:{{row.skipStroke}};"></span></sc-if>
 </span>
 <span style="display:flex;flex-direction:column;min-width:0;flex:1;">
-<span style="font-size:14.5px;line-height:1.3;font-weight:{{row.w}};color:{{row.fg}};text-decoration:{{row.deco}};white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">{{row.main}}</span>
-<sc-if value="{{row.hasSub}}"><span style="font-size:12px;line-height:1.3;color:#5a4a3a;text-decoration:{{row.deco}};white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">{{row.sub}}</span></sc-if>
+<span dir="auto" style="font-size:14.5px;line-height:1.3;font-weight:{{row.w}};color:{{row.fg}};text-decoration:{{row.deco}};white-space:nowrap;overflow:hidden;text-overflow:ellipsis;text-align:{{tAlign}};">{{row.main}}</span>
+<sc-if value="{{row.hasSub}}"><span dir="auto" style="font-size:12px;line-height:1.3;color:#5a4a3a;text-decoration:{{row.deco}};white-space:nowrap;overflow:hidden;text-overflow:ellipsis;text-align:{{tAlign}};">{{row.sub}}</span></sc-if>
 </span>
 </button>
-<sc-if value="{{row.showUntick}}"><button type="button" onClick="{{row.untick}}" style="flex:none;height:34px;padding:0 12px;margin-inline-end:4px;border:2px solid #e3d4ad;background:#fbf6e8;color:#1c3d6e;border-radius:9px;font-size:13px;font-weight:700;cursor:pointer;">בטל סימון</button></sc-if>
+<sc-if value="{{row.showUntick}}"><button type="button" onClick="{{row.untick}}" style="flex:none;height:34px;padding:0 12px;margin-inline-end:4px;border:2px solid #e3d4ad;background:#fbf6e8;color:#1c3d6e;border-radius:9px;font-size:13px;font-weight:700;cursor:pointer;">{{lblUntRow}}</button></sc-if>
 <sc-if value="{{row.hasLink}}">
 <button type="button" onClick="{{row.open}}" aria-label="{{row.linkLabel}}" style="flex:none;width:44px;height:44px;border:0;background:transparent;display:flex;align-items:center;justify-content:center;cursor:pointer;">
 <sc-if value="{{row.isCurtainLink}}"><span style="width:24px;height:24px;border-radius:50%;background:{{row.chipCircle}};display:flex;align-items:center;justify-content:center;animation:{{row.chipAnim}};"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#f4ecdc" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" style="transform:rotate({{row.chipRot}}deg);transition:transform .35s ease;" aria-hidden="true"><path d="M6 9l6 6l6 -6"></path></svg></span></sc-if>
@@ -2474,11 +2482,11 @@ return inst;
 <sc-if value="{{row.showCurtain}}">
 <div style="display:grid;grid-template-rows:{{listRows}};visibility:{{listVis}};transition:grid-template-rows .42s cubic-bezier(.4,0,.2,1),visibility 0s linear {{listVisDelay}};"><div style="min-height:0;overflow:hidden;"><div style="margin:0 8px 6px;background:{{subBoxBg}};border:1.5px solid {{subBoxBd}};border-radius:10px;padding:0 10px;transition:background .5s ease,border-color .5s ease;">
 <sc-for list="{{points}}" as="pt">
-<sc-if value="{{pt.hasHead}}"><div style="margin:8px 0 2px;display:flex;align-items:center;gap:8px;padding:4px 9px;border-radius:7px;background:{{pt.headBg}};color:#fbf6e8;"><span style="font-size:13px;line-height:1;" aria-hidden="true">{{pt.headIcon}}</span><span style="flex:1;font-size:13px;font-weight:700;">{{pt.head}}</span></div></sc-if><button type="button" onClick="{{pt.toggle}}" style="width:100%;padding:0;border:0;border-top:1px solid {{pt.lineC}};background:{{pt.rowBg}};border-radius:{{pt.rowRad}};margin:0;width:100% !important;padding:0 8px !important;text-align:start;cursor:pointer;display:flex;align-items:center;gap:10px;height:44px;box-sizing:border-box;">
+<sc-if value="{{pt.hasHead}}"><div style="margin:8px 0 2px;display:flex;align-items:center;gap:8px;padding:4px 9px;border-radius:7px;background:{{pt.headBg}};color:#fbf6e8;"><span style="font-size:13px;line-height:1;" aria-hidden="true">{{pt.headIcon}}</span><span dir="auto" style="flex:1;font-size:13px;font-weight:700;text-align:{{tAlign}};">{{pt.head}}</span></div></sc-if><button type="button" onClick="{{pt.toggle}}" style="width:100%;padding:0;border:0;border-top:1px solid {{pt.lineC}};background:{{pt.rowBg}};border-radius:{{pt.rowRad}};margin:0;width:100% !important;padding:0 8px !important;text-align:start;cursor:pointer;display:flex;align-items:center;gap:10px;height:44px;box-sizing:border-box;">
 <span style="flex:none;width:20px;height:20px;border-radius:50%;box-sizing:border-box;display:flex;align-items:center;justify-content:center;background:{{pt.markBg}};border:{{pt.markBorder}};">
 <sc-if value="{{pt.isDone}}"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="{{pt.checkStroke}}" stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12l5 5l10 -10"></path></svg></sc-if>
 </span>
-<span style="font-size:13.5px;line-height:1.3;font-weight:{{pt.w}};color:{{pt.fg}};text-decoration:{{pt.deco}};">{{pt.t}}</span>
+<span dir="auto" style="font-size:13.5px;line-height:1.3;font-weight:{{pt.w}};color:{{pt.fg}};text-decoration:{{pt.deco}};text-align:{{tAlign}};">{{pt.t}}</span>
 </button>
 </sc-for>
 </div></div></div>
@@ -2513,10 +2521,10 @@ return inst;
 <span style="position:absolute;top:11px;bottom:11px;left:8px;display:flex;flex-direction:column;justify-content:space-between;" aria-hidden="true">
 <span style="width:16px;height:3px;background:#f4ecdc;opacity:.8;"></span><span style="width:16px;height:3px;background:#f4ecdc;opacity:.8;"></span><span style="width:16px;height:3px;background:#f4ecdc;opacity:.8;"></span><span style="width:16px;height:3px;background:#f4ecdc;opacity:.8;"></span><span style="width:16px;height:3px;background:#f4ecdc;opacity:.8;"></span><span style="width:16px;height:3px;background:#f4ecdc;opacity:.8;"></span><span style="width:16px;height:3px;background:#f4ecdc;opacity:.8;"></span>
 </span>
-<span dir="ltr" style="position:absolute;right:30px;top:50%;margin-top:-10px;font-family:'JetBrains Mono',monospace;font-size:16px;line-height:20px;font-weight:700;color:rgba(244,236,220,.85);transform:rotate(-90deg);" aria-hidden="true">18</span>
-<span dir="ltr" style="position:absolute;left:30px;top:50%;margin-top:-10px;font-family:'JetBrains Mono',monospace;font-size:16px;line-height:20px;font-weight:700;color:rgba(244,236,220,.85);transform:rotate(90deg);" aria-hidden="true">36</span>
+<span dir="ltr" style="position:absolute;right:30px;top:50%;margin-top:-10px;font-family:'JetBrains Mono',monospace;font-size:16px;line-height:20px;font-weight:700;color:rgba(244,236,220,.85);transform:rotate({{rwRrot}});" aria-hidden="true">{{rwR}}</span>
+<span dir="ltr" style="position:absolute;left:30px;top:50%;margin-top:-10px;font-family:'JetBrains Mono',monospace;font-size:16px;line-height:20px;font-weight:700;color:rgba(244,236,220,.85);transform:rotate({{rwLrot}});" aria-hidden="true">{{rwL}}</span>
 <sc-if value="{{btn.holding}}">
-<span style="position:absolute;top:0;bottom:0;right:0;border-radius:10px;background:rgba(31,111,63,.55);animation:fillRun {{btn.holdMs}}ms linear forwards;" aria-hidden="true"></span>
+<span style="position:absolute;top:0;bottom:0;{{runSide}}:0;border-radius:10px;background:rgba(31,111,63,.55);animation:fillRun {{btn.holdMs}}ms linear forwards;" aria-hidden="true"></span>
 </sc-if>
 <span style="position:relative;flex:1;border-top:3px dashed rgba(244,236,220,.42);" aria-hidden="true"></span>
 <span style="position:relative;z-index:1;display:flex;flex-direction:column;align-items:center;gap:1px;">
@@ -2525,20 +2533,20 @@ return inst;
 </span>
 <span style="position:relative;flex:1;border-top:3px dashed rgba(244,236,220,.42);" aria-hidden="true"></span>
 <sc-if value="{{btn.showPlane}}">
-<span style="position:absolute;z-index:2;top:50%;right:58px;margin-top:-18px;animation:{{btn.planeAnim}};" aria-hidden="true">
-<svg width="36" height="36" viewBox="0 0 34 34" style="transform:rotate(-90deg);display:block;"><path d="M17 2 C18.7 2 19.5 4.2 19.5 7 L19.5 13.2 L31 19 L31 22.2 L19.5 19.8 L19.5 26 L23.4 28.4 L23.4 31 L17 29.6 L10.6 31 L10.6 28.4 L14.5 26 L14.5 19.8 L3 22.2 L3 19 L14.5 13.2 L14.5 7 C14.5 4.2 15.3 2 17 2 Z" fill="#ffffff" stroke="#1a1308" stroke-width="1.5" stroke-linejoin="round"></path><circle cx="4.2" cy="20.6" r="4.6" fill="#ef4444" opacity=".5"></circle><circle cx="29.8" cy="20.6" r="4.6" fill="#39ff8a" opacity=".5"></circle><circle cx="4.2" cy="20.6" r="2.9" fill="#ef4444" stroke="#1a1308" stroke-width=".7"></circle><circle cx="29.8" cy="20.6" r="2.9" fill="#39ff8a" stroke="#1a1308" stroke-width=".7"></circle></svg>
+<span style="position:absolute;z-index:2;top:50%;{{runSide}}:58px;margin-top:-18px;animation:{{btn.planeAnim}};" aria-hidden="true">
+<svg width="36" height="36" viewBox="0 0 34 34" style="transform:rotate({{planeRot}});display:block;"><path d="M17 2 C18.7 2 19.5 4.2 19.5 7 L19.5 13.2 L31 19 L31 22.2 L19.5 19.8 L19.5 26 L23.4 28.4 L23.4 31 L17 29.6 L10.6 31 L10.6 28.4 L14.5 26 L14.5 19.8 L3 22.2 L3 19 L14.5 13.2 L14.5 7 C14.5 4.2 15.3 2 17 2 Z" fill="#ffffff" stroke="#1a1308" stroke-width="1.5" stroke-linejoin="round"></path><circle cx="4.2" cy="20.6" r="4.6" fill="#ef4444" opacity=".5"></circle><circle cx="29.8" cy="20.6" r="4.6" fill="#39ff8a" opacity=".5"></circle><circle cx="4.2" cy="20.6" r="2.9" fill="#ef4444" stroke="#1a1308" stroke-width=".7"></circle><circle cx="29.8" cy="20.6" r="2.9" fill="#39ff8a" stroke="#1a1308" stroke-width=".7"></circle></svg>
 </span>
 </sc-if>
 </button>
 </div>
 <div style="flex:none;overflow:hidden;max-height:{{nvH}}px;opacity:{{pbO}};transition:max-height .6s cubic-bezier(.22,.61,.36,1),opacity .45s ease;">
 <div style="flex:none;padding:10px 14px 4px;display:flex;gap:8px;">
-<button type="button" disabled="{{nav.prevDis}}" onClick="{{prev}}" style="flex:1.1;min-width:0;height:48px;padding:0 4px;border:2px solid {{nav.prevBd}};background:{{nav.prevBg}};color:{{nav.prevFg}};border-radius:10px;font-size:14px;font-weight:600;line-height:1.15;cursor:pointer;">&#8249; קודם</button>
-<button type="button" disabled="{{nav.unmDis}}" onClick="{{jumpSkipped}}" style="position:relative;flex:1;min-width:0;height:48px;padding:0 4px;border:2px solid {{nav.unmBd}};background:{{nav.unmBg}};color:{{nav.unmFg}};border-radius:10px;font-size:12.5px;font-weight:700;line-height:1.15;cursor:pointer;">חזור ללא<br>מסומן
-<sc-if value="{{hasSkipped}}"><span dir="ltr" style="position:absolute;top:-8px;right:-5px;min-width:20px;height:20px;box-sizing:border-box;padding:0 5px;border-radius:10px;background:#f59e0b;color:#1a1308;font-family:'JetBrains Mono',monospace;font-size:12px;font-weight:700;line-height:20px;text-align:center;">{{skippedCount}}</span></sc-if>
+<button type="button" disabled="{{nav.prevDis}}" onClick="{{prev}}" style="flex:1.1;min-width:0;height:48px;padding:0 4px;border:2px solid {{nav.prevBd}};background:{{nav.prevBg}};color:{{nav.prevFg}};border-radius:10px;font-size:14px;font-weight:600;line-height:1.15;cursor:pointer;">&#8249; {{lblPrev}}</button>
+<button type="button" disabled="{{nav.unmDis}}" onClick="{{jumpSkipped}}" style="position:relative;flex:1;min-width:0;height:48px;padding:0 4px;border:2px solid {{nav.unmBd}};background:{{nav.unmBg}};color:{{nav.unmFg}};border-radius:10px;font-size:12.5px;font-weight:700;line-height:1.15;cursor:pointer;"><span style="display:block;">{{lblBack1}}</span><span style="display:block;">{{lblBack2}}</span>
+<sc-if value="{{hasSkipped}}"><span dir="ltr" style="position:absolute;top:-8px;{{badgeSide}}:-5px;min-width:20px;height:20px;box-sizing:border-box;padding:0 5px;border-radius:10px;background:#f59e0b;color:#1a1308;font-family:'JetBrains Mono',monospace;font-size:12px;font-weight:700;line-height:20px;text-align:center;">{{skippedCount}}</span></sc-if>
 </button>
-<button type="button" disabled="{{nav.uncDis}}" onClick="{{uncheck}}" style="flex:1;min-width:0;height:48px;padding:0 4px;border:2px solid {{nav.uncBd}};background:{{nav.uncBg}};color:{{nav.uncFg}};border-radius:10px;font-size:12.5px;font-weight:600;line-height:1.15;cursor:pointer;">בטל<br>סימון</button>
-<button type="button" disabled="{{nav.skipDis}}" onClick="{{skip}}" style="flex:1.1;min-width:0;height:48px;padding:0 4px;border:2px solid {{nav.skipBd}};background:{{nav.skipBg}};color:{{nav.skipFg}};border-radius:10px;font-size:14px;font-weight:600;line-height:1.15;cursor:pointer;">הבא &#8250;</button>
+<button type="button" disabled="{{nav.uncDis}}" onClick="{{uncheck}}" style="flex:1;min-width:0;height:48px;padding:0 4px;border:2px solid {{nav.uncBd}};background:{{nav.uncBg}};color:{{nav.uncFg}};border-radius:10px;font-size:12.5px;font-weight:600;line-height:1.15;cursor:pointer;"><span style="display:block;">{{lblUnt1}}</span><span style="display:block;">{{lblUnt2}}</span></button>
+<button type="button" disabled="{{nav.skipDis}}" onClick="{{skip}}" style="flex:1.1;min-width:0;height:48px;padding:0 4px;border:2px solid {{nav.skipBd}};background:{{nav.skipBg}};color:{{nav.skipFg}};border-radius:10px;font-size:14px;font-weight:600;line-height:1.15;cursor:pointer;">{{lblNext}} &#8250;</button>
 </div>
 </div>
 <div class="lsa-foot" dir="ltr"><span class="lsa-foot-slot">PREPROD</span><span class="lsa-foot-ver">{{appStamp}}</span><button type="button" class="lsa-foot-reload" onClick="{{reloadDemo}}">{{lblReload}}</button></div>
@@ -2555,30 +2563,30 @@ return inst;
 <sc-if value="{{spFresh}}"><div style="flex:none;height:128px;" aria-hidden="true"></div></sc-if>
 <sc-if value="{{spInProgress}}">
 <div style="background:#fbf6e8;border:2px solid #c8a04a;border-radius:12px;padding:12px 14px;">
-<div dir="rtl" style="font-size:10.5px;font-weight:700;color:#6f531d;display:flex;align-items:baseline;gap:6px;"><span style="font-family:'IBM Plex Sans Hebrew',sans-serif;font-size:12px;">{{spPhaseName}}</span><span>&middot;</span><span dir="ltr" style="font-family:'JetBrains Mono',monospace;letter-spacing:.1em;">CURRENT PHASE</span></div>
-<div style="margin-top:3px;font-size:19px;line-height:1.3;font-weight:700;color:#1c3d6e;">{{spItem}}</div>
+<div dir="{{uiDir}}" style="font-size:10.5px;font-weight:700;color:#6f531d;display:flex;flex-direction:{{spLblDir}};justify-content:{{spLblJ}};align-items:baseline;gap:6px;"><span dir="auto" style="font-family:'IBM Plex Sans Hebrew',sans-serif;font-size:12px;">{{spPhaseName}}</span><span>&middot;</span><span dir="ltr" style="font-family:'JetBrains Mono',monospace;letter-spacing:.1em;">CURRENT PHASE</span></div>
+<div dir="auto" style="margin-top:3px;font-size:19px;line-height:1.3;font-weight:700;color:#1c3d6e;text-align:start;">{{spItem}}</div>
 <div style="position:relative;margin-top:12px;height:24px;border-radius:6px;background:#2a2218;overflow:hidden;">
-<span style="position:absolute;top:0;bottom:0;right:0;width:{{spPct}}%;background:#1f6f3f;" aria-hidden="true"></span>
+<span style="position:absolute;top:0;bottom:0;{{spSide}}:0;width:{{spPct}}%;background:#1f6f3f;" aria-hidden="true"></span>
 <span style="position:absolute;top:50%;left:4px;right:4px;border-top:2px dashed rgba(244,236,220,.4);" aria-hidden="true"></span>
 <sc-for list="{{spDivs}}" as="dv">
-<span style="position:absolute;top:0;bottom:0;right:{{dv.r}}%;border-right:2px solid #f4ecdc;" aria-hidden="true"></span>
+<span style="position:absolute;top:0;bottom:0;{{spSide}}:{{dv.r}}%;border-{{spSide}}:2px solid #f4ecdc;" aria-hidden="true"></span>
 </sc-for>
 <sc-for list="{{spMarks}}" as="mk">
-<span style="position:absolute;top:50%;right:{{mk.r}}%;width:7px;height:7px;margin:-3.5px -3.5px 0 0;border-radius:50%;background:#f59e0b;border:1.5px solid #f4ecdc;box-sizing:border-box;z-index:1;" aria-hidden="true"></span>
+<span style="position:absolute;top:50%;{{spSide}}:{{mk.r}}%;width:7px;height:7px;margin:{{spMarkM}};border-radius:50%;background:#f59e0b;border:1.5px solid #f4ecdc;box-sizing:border-box;z-index:1;" aria-hidden="true"></span>
 </sc-for>
-<svg width="22" height="22" viewBox="0 0 34 34" style="position:absolute;top:1px;right:{{spPlaneRight}};transform:rotate(-90deg);" aria-hidden="true"><path d="M17 2 C18.7 2 19.5 4.2 19.5 7 L19.5 13.2 L31 19 L31 22.2 L19.5 19.8 L19.5 26 L23.4 28.4 L23.4 31 L17 29.6 L10.6 31 L10.6 28.4 L14.5 26 L14.5 19.8 L3 22.2 L3 19 L14.5 13.2 L14.5 7 C14.5 4.2 15.3 2 17 2 Z" fill="#f4ecdc" stroke="#1a1308" stroke-width="1.2" stroke-linejoin="round"></path></svg>
+<svg width="22" height="22" viewBox="0 0 34 34" style="position:absolute;top:1px;{{spSide}}:{{spPlaneRight}};transform:rotate({{spRot}});" aria-hidden="true"><path d="M17 2 C18.7 2 19.5 4.2 19.5 7 L19.5 13.2 L31 19 L31 22.2 L19.5 19.8 L19.5 26 L23.4 28.4 L23.4 31 L17 29.6 L10.6 31 L10.6 28.4 L14.5 26 L14.5 19.8 L3 22.2 L3 19 L14.5 13.2 L14.5 7 C14.5 4.2 15.3 2 17 2 Z" fill="#f4ecdc" stroke="#1a1308" stroke-width="1.2" stroke-linejoin="round"></path></svg>
 </div>
-<div style="margin-top:7px;display:flex;justify-content:space-between;font-size:13px;color:#5a4a3a;">
-<span>{{spCount}} הושלמו · {{spPctLabel}}</span>
+<div dir="{{uiDir}}" style="margin-top:7px;display:flex;justify-content:space-between;font-size:13px;color:#5a4a3a;">
+<span>{{spCount}} {{lblDone}} · {{spPctLabel}}</span>
 </div>
-<sc-if value="{{spHasSkipped}}"><div style="margin-top:9px;display:flex;align-items:center;gap:8px;background:#f1e2bc;border:1px solid #c9a24a;border-radius:8px;padding:6px 10px;font-size:13px;font-weight:600;color:#8a5200;line-height:1.25;"><span style="display:inline-flex;width:20px;height:20px;border-radius:50%;background:#f59e0b;color:#fff;align-items:center;justify-content:center;font-weight:800;font-size:13px;flex:none;" aria-hidden="true">!</span><span>{{spSkipped}} פריטים דולגו - כדאי לחזור אליהם</span></div></sc-if>
+<sc-if value="{{spHasSkipped}}"><div dir="{{uiDir}}" style="margin-top:9px;display:flex;align-items:center;gap:8px;background:#f1e2bc;border:1px solid #c9a24a;border-radius:8px;padding:6px 10px;font-size:13px;font-weight:600;color:#8a5200;line-height:1.25;"><span style="display:inline-flex;width:20px;height:20px;border-radius:50%;background:#f59e0b;color:#fff;align-items:center;justify-content:center;font-weight:800;font-size:13px;flex:none;" aria-hidden="true">!</span><span>{{spSkText}}</span></div></sc-if>
 </div>
 </sc-if>
 <sc-if value="{{spShowLists}}"><div style="display:flex;gap:8px;">
 <sc-for list="{{spLists}}" as="ls">
 <button type="button" onClick="{{ls.pick}}" style="flex:1;min-width:0;min-height:44px;padding:0 8px;border-radius:999px;border:1.5px solid {{ls.pillBd}};background:{{ls.pillBg}};color:{{ls.pillFg}};font-size:14px;font-weight:700;cursor:pointer;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">{{ls.name}}</button>
 </sc-for>
-<button type="button" onClick="{{spAddList}}" style="flex:1;min-width:0;min-height:44px;padding:0 8px;border-radius:999px;border:1.5px dashed rgba(244,236,220,.38);background:transparent;color:rgba(244,236,220,.6);font-size:13px;font-weight:500;cursor:pointer;white-space:nowrap;">{{lblAddList}}</button>
+<sc-if value="{{spCanAdd}}"><button type="button" onClick="{{spAddList}}" style="flex:1;min-width:0;min-height:44px;padding:0 8px;border-radius:999px;border:1.5px dashed rgba(244,236,220,.38);background:transparent;color:rgba(244,236,220,.6);font-size:13px;font-weight:500;cursor:pointer;white-space:nowrap;">{{lblAddList}}</button></sc-if>
 </div></sc-if>
 <div style="flex:1;"></div>
 </div>
@@ -2598,11 +2606,11 @@ return inst;
 <sc-if value="{{spConfirm}}">
 <div style="position:absolute;top:0;left:0;right:0;bottom:0;z-index:5;background:rgba(26,19,8,.6);display:flex;align-items:center;justify-content:center;padding:24px;">
 <div style="width:100%;box-sizing:border-box;background:#fbf6e8;border:2px solid #c8a04a;border-radius:16px;padding:22px 20px 18px;">
-<div style="font-size:20px;font-weight:700;color:#1c3d6e;">להתחיל טיסה חדשה?</div>
-<div style="margin-top:8px;font-size:16px;line-height:1.45;color:#5a4a3a;">הסימונים של הטיסה הנוכחית יימחקו. הרשימה עצמה לא תשתנה.</div>
+<div style="font-size:20px;font-weight:700;color:#1c3d6e;">{{lblNfQ}}</div>
+<div style="margin-top:8px;font-size:16px;line-height:1.45;color:#5a4a3a;">{{lblNfMsg}}</div>
 <div style="margin-top:18px;display:flex;gap:10px;">
-<button type="button" onClick="{{spNewYes}}" style="flex:1;height:50px;border:0;border-radius:10px;background:#1c3d6e;color:#f4ecdc;font-size:16px;font-weight:700;cursor:pointer;">כן, התחל מחדש</button>
-<button type="button" onClick="{{spNewNo}}" style="flex:1;height:50px;border:2px solid #c8a04a;border-radius:10px;background:transparent;color:#1c3d6e;font-size:16px;font-weight:700;cursor:pointer;">ביטול</button>
+<button type="button" onClick="{{spNewYes}}" style="flex:1;height:50px;border:0;border-radius:10px;background:#1c3d6e;color:#f4ecdc;font-size:16px;font-weight:700;cursor:pointer;">{{lblNfYes}}</button>
+<button type="button" onClick="{{spNewNo}}" style="flex:1;height:50px;border:2px solid #c8a04a;border-radius:10px;background:transparent;color:#1c3d6e;font-size:16px;font-weight:700;cursor:pointer;">{{lblCancel}}</button>
 </div>
 </div>
 </div>
@@ -2700,9 +2708,9 @@ return inst;
 <sc-if value="{{bkOpen}}">
 <div onClick="{{bkClose}}" style="position:absolute;top:0;left:0;right:0;bottom:0;z-index:20;"></div>
 <div style="position:absolute;z-index:21;top:{{bkTop}}px;left:{{bkLeft}}px;width:208px;box-sizing:border-box;background:#fbf6e8;border:2px solid #c8a04a;border-radius:12px;padding:12px;box-shadow:0 10px 28px rgba(26,19,8,.35);">
-<div style="font-size:12.5px;font-weight:700;color:#6f531d;margin-bottom:10px;text-align:center;">{{bkName}}</div>
+<div dir="auto" style="font-size:12.5px;font-weight:700;color:#6f531d;margin-bottom:10px;text-align:center;">{{bkName}}</div>
 <button type="button" onClick="{{bkConfirm}}" style="width:100%;height:46px;border-radius:10px;font-size:16px;font-weight:700;cursor:pointer;border:{{bkBd}};background:{{bkBg}};color:{{bkFg}};">{{bkLabel}}</button>
-<button type="button" onClick="{{bkClose}}" style="width:100%;height:42px;margin-top:8px;border:2px solid #e3d4ad;border-radius:10px;background:transparent;color:#5a4a3a;font-size:15px;font-weight:600;cursor:pointer;">ביטול</button>
+<button type="button" onClick="{{bkClose}}" style="width:100%;height:42px;margin-top:8px;border:2px solid #e3d4ad;border-radius:10px;background:transparent;color:#5a4a3a;font-size:15px;font-weight:600;cursor:pointer;">{{lblCancel}}</button>
 </div>
 </sc-if>
 </div>
@@ -2729,7 +2737,7 @@ gs.forEach(function(g){gm[g].forEach(function(i){order.push(i);});});
 });
 ITEMS=order.map(function(ci){
 var it=CL[ci],k,l;
-if(it.subList&&it.subList.length){k='curtain';l=it.subTitle||'תת-רשימה';}
+if(it.subList&&it.subList.length){k='curtain';l=it.subTitle||'';}
 else if(it.url){k=isAirCheckFamilyUrl(it.url)?'own':'ext';l=it.urlLabel||it.url.replace(/^https?:\/\//,'').split('/')[0];}
 return {id:String(ci),ci:ci,ph:PH.indexOf(it.phase),g:it.group,m:it.main,s:it.sub||'',k:k,l:l,url:it.url||'',subList:(it.subList&&it.subList.length)?it.subList:null,subHeads:it.subHeads||null};
 });
@@ -2886,7 +2894,7 @@ if (c && r) { const hh = r.previousElementSibling && r.previousElementSibling.fi
 }
 this._ck = this.curPt(s.pts); this._co = true;
 } else { this._co = false; }
-['curtainScroll', 'listScroll'].forEach(id => { const el = document.getElementById(id); if (el && !el._hs) { el._hs = true; el.addEventListener('scroll', () => this.hintSync(), { passive: true }); } });
+['curtainScroll', 'listScroll'].forEach(id => { const el = document.getElementById(id); if (el && !el._hs) { el._hs = true; el.addEventListener('scroll', () => this.hintSync(), { passive: true }); el.addEventListener('wheel', (e) => { if (e.ctrlKey || e.deltaY === 0 || el.scrollHeight <= el.clientHeight) return; let dy = e.deltaY; if (e.deltaMode === 1) dy *= 40; else if (e.deltaMode === 2) dy *= el.clientHeight; const mx = el.scrollHeight - el.clientHeight; if (el._wt === undefined || Math.abs(el.scrollTop - (el._wl === undefined ? el.scrollTop : el._wl)) > 3) el._wt = el.scrollTop; el._wt = Math.max(0, Math.min(mx, el._wt + dy)); if (!el._wr) { const step = () => { const d = el._wt - el.scrollTop; if (Math.abs(d) < 0.6) { el.scrollTop = el._wt; el._wl = el.scrollTop; el._wr = 0; return; } let mv = d * 0.22; if (Math.abs(mv) < 1) mv = d > 0 ? Math.min(1, d) : Math.max(-1, d); el.scrollTop = el.scrollTop + mv; el._wl = el.scrollTop; el._wr = requestAnimationFrame(step); }; el._wr = requestAnimationFrame(step); } e.preventDefault(); }, { passive: false }); } });
 this.hintSync();
 if (!this._hsT) { this._hsT = setTimeout(() => { this._hsT = null; this.hintSync(); }, 500); }
 } catch (e) {}
@@ -2922,7 +2930,7 @@ if (p < PH.length - 1) { this.setState({ ...base, done, skipped, times, cur: las
 this.setState({ ...base, done, skipped, times, cur: last, sectionDone: false, finished: false });
 }
 syncView(t) { try { const tr = t.getBoundingClientRect(); const mx = t.scrollHeight - t.clientHeight; const f = mx > 0 ? Math.max(0, Math.min(1, t.scrollTop / mx)) : 0; const top = tr.top + 36 + f * (tr.height - 40); let vi = null; for (let i = 0; i < ITEMS.length; i++) { const el = document.getElementById('row-' + i); if (!el) continue; if (el.getBoundingClientRect().bottom > top) { vi = i; break; } vi = i; } const th = document.getElementById('lsThumb'); if (th) { if (mx > 0) { const hh = Math.max(36, (t.clientHeight / t.scrollHeight) * (tr.height - 8)); th.style.height = hh + 'px'; th.style.top = (4 + f * (tr.height - 8 - hh)) + 'px'; th.style.opacity = '1'; } else th.style.opacity = '0'; }
-if (vi !== null && vi !== this.state.viewIdx) this.setState({ viewIdx: vi }); } catch (e) {} }
+} catch (e) {} }
 hintSync() {
 try {
 const c = document.getElementById('curtainScroll');
@@ -3126,7 +3134,7 @@ return {
 grow: idx.length,
 segs: idx.map(i => ({
 bg: isDoneP(ITEMS[i]) ? '#1f6f3f' : (isSkip(ITEMS[i]) ? '#f59e0b' : (i === curP && !st.finished ? '#c8a04a' : '#dccda4')),
-isCur: i === curP && !st.finished, label: 'פריט ' + (i + 1)
+isCur: i === curP && !st.finished, label: acT('itemN').replace('{n}', i + 1)
 }))
 };
 });
@@ -3134,15 +3142,15 @@ const chipFor = x => {
 if (!x.k) return { hasLink: false, isCurtainLink: false, isExtLink: false, isOwnLink: false, chipBorder: '', chipBg: '', chipTx: '#1c3d6e', chipHtx: '#5a4a3a', chipIbg: '', chipIfg: '', linkLabel: '', linkHint: '' };
 const c0 = CHIP[x.k]; const subOk = x.k === 'curtain' && this.subDone(x);
 const c = subOk ? { b: '1.5px solid #8fc29a', bg: '#dcefd6', tx: '#1f6f3f', htx: '#2f6f43', ibg: '#1f6f3f', ifg: '#fff' } : c0;
-const label = x.k === 'own' ? 'פתח את ' + x.l : x.l;
-const hint = x.k === 'own' ? 'כלי AirCheck · אפליקציה נפרדת' : (x.k === 'ext' ? 'אתר חיצוני · יוצא מהאפליקציה' : (subOk ? 'תת-רשימה הושלמה' : 'תת-רשימה · ' + (x.subList ? x.subList.length : 0) + ' נקודות'));
+const label = x.k === 'own' ? acT('openOwn') + x.l : (x.l || (x.k === 'curtain' ? acT('subList') : ''));
+const hint = x.k === 'own' ? acT('hintOwn') : (x.k === 'ext' ? acT('hintExt') : (subOk ? acT('subDoneT') : acT('hintSub').replace('{n}', x.subList ? x.subList.length : 0)));
 return { hasLink: true, isCurtainLink: x.k === 'curtain', isExtLink: x.k === 'ext', isOwnLink: x.k === 'own', chipBorder: c.b, chipBg: c.bg, chipTx: c.tx, chipHtx: c.htx, chipIbg: c.ibg, chipIfg: c.ifg, linkLabel: label, linkHint: hint };
 };
 const grp = ITEMS.filter(x => x.ph === it.ph && x.g === it.g);
 const gpos = grp.indexOf(it) + 1;
 const cardChip = chipFor(it);
 if (it.k === 'curtain') cardChip.hasLink = false;
-const item = { main: it.m, sub: it.s, hasSub: !!it.s, ...cardChip, linkKind: it.k === 'own' ? 'כלי AirCheck · נפתח באפליקציה נפרדת' : 'אתר חיצוני · יוצא מהאפליקציה', open: () => this.openLink(st.cur) };
+const item = { main: it.m, sub: it.s, hasSub: !!it.s, ...cardChip, linkKind: it.k === 'own' ? acT('kindOwn') : acT('hintExt'), open: () => this.openLink(st.cur) };
 const curPt = this.curPt(st.pts); const ptsN = Object.keys(st.pts).length; const briefDone = ptsN >= BRIEF.length;
 const SHD = (ITEMS[st.cur] && ITEMS[st.cur].subHeads) || null;
 const points = BRIEF.map((t, j) => {
@@ -3187,21 +3195,21 @@ if (this.isOpen(i, st.done, st.skipped)) nextItems.push({ num: pad(i + 1), main:
 }
 const holdMode = tickMode === 'hold' || (tickMode === 'byView' && st.view === 'card');
 const lastPhase = it.ph >= PH.length - 1;
-const normal = { label: 'סמן והמשך', sub: '', body: '#2a2218', fg: '#f4ecdc' };
+const normal = { label: acT('btnMark'), sub: '', body: '#2a2218', fg: '#f4ecdc' };
 const green = { body: '#1e4a31', fg: '#ffffff' };
 let btn = { ...normal };
-let hintText = holdMode ? 'לחץ והחזק את המסלול לאישור' : 'הקש על המסלול לאישור';
-if (st.finished) { btn = { ...green, label: 'סיום', sub: '' }; hintText = 'כל הפריטים טופלו. אפשר לחזור למסך הפתיחה'; }
+let hintText = holdMode ? acT('holdHint') : acT('tapHint');
+if (st.finished) { btn = { ...green, label: acT('finish'), sub: '' }; hintText = acT('finHint'); }
 else if (st.sectionDone) {
-btn = lastPhase ? { ...green, label: 'סיום טיסה', sub: '' } : { ...green, label: 'לשלב הבא', sub: PH[it.ph + 1] };
-hintText = 'השלב הושלם. אפשר להמשיך';
-} else if (isDone(it)) { btn = { ...green, label: 'המשך', sub: '' }; hintText = holdMode ? 'הפריט כבר סומן. החזק את המסלול להמשיך' : 'הפריט כבר סומן. הקש על המסלול להמשיך';
-} else if (it.k === 'curtain' && briefDone) { btn = { ...green, label: 'אשר כרטיס', sub: 'תת-רשימה הושלמה' }; hintText = 'תת-רשימה הושלמה. החזק את המסלול לאישור הכרטיס'; }
-else if (it.k === 'curtain' && !st.curtainOpen) { hintText = 'יש תת-רשימה - פתח, או המשך'; }
-else if (it.k === 'curtain' && st.curtainOpen && !briefDone) { btn = { ...normal, label: 'סמן נקודה ' + (curPt + 1) + '/' + BRIEF.length }; hintText = 'אותו מסלול מסמן כל נקודה'; }
-else if (it.k === 'curtain' && briefDone) { btn = { ...green, label: 'המשך', sub: 'תת-רשימה הושלמה' }; hintText = 'תת-רשימה הושלמה. אפשר להמשיך'; }
+btn = lastPhase ? { ...green, label: acT('finFlight'), sub: '' } : { ...green, label: acT('toNext'), sub: PH[it.ph + 1] };
+hintText = acT('phDoneHint');
+} else if (isDone(it)) { btn = { ...green, label: acT('cont'), sub: '' }; hintText = holdMode ? acT('markedHold') : acT('markedTap');
+} else if (it.k === 'curtain' && briefDone) { btn = { ...green, label: acT('confirmCard'), sub: acT('subDoneT') }; hintText = acT('subDoneHint'); }
+else if (it.k === 'curtain' && !st.curtainOpen) { hintText = acT('subExists'); }
+else if (it.k === 'curtain' && st.curtainOpen && !briefDone) { btn = { ...normal, label: acT('markPt') + (curPt + 1) + '/' + BRIEF.length }; hintText = acT('samePath'); }
+else if (it.k === 'curtain' && briefDone) { btn = { ...green, label: acT('cont'), sub: acT('subDoneT') }; hintText = acT('subDoneCont'); }
 btn.hasSub = !!btn.sub; btn.dis = !!btn.dis;
-btn.holding = st.holding; btn.holdMs = holdMs; btn.showPlane = true; btn.planeAnim = st.fly ? 'takeoffRun ' + ac3Ms(850) + 'ms ease-out forwards' : (st.holding ? 'planeRun ' + holdMs + 'ms linear forwards' : 'planeIn ' + ac3Ms(500) + 'ms ease-out both');
+btn.holding = st.holding; btn.holdMs = holdMs; btn.showPlane = true; btn.planeAnim = st.fly ? (AC_LANG === 'en' ? 'takeoffRunE ' : 'takeoffRun ') + ac3Ms(850) + 'ms ease-out forwards' : (st.holding ? (AC_LANG === 'en' ? 'planeRunE ' : 'planeRun ') + holdMs + 'ms linear forwards' : 'planeIn ' + ac3Ms(500) + 'ms ease-out both');
 btn.down = () => {
 if (btn.dis) return;
 this._down = true;
@@ -3234,11 +3242,11 @@ skipDis: nSkip.dis, skipBd: nSkip.bd, skipBg: nSkip.bg, skipFg: nSkip.fg,
 unmDis: nUnm.dis, unmBd: nUnm.bd, unmBg: nUnm.bg, unmFg: nUnm.fg
 };
 const phSkipped = this.phaseIdx(it.ph).filter(i => isSkip(ITEMS[i])).length;
-const doneEn = st.finished ? 'CHECKLIST COMPLETED' : 'SECTION COMPLETED';
-const skTxt = n => n === 1 ? 'פריט אחד דולג - כדאי לחזור אליו' : n + ' פריטים דולגו - כדאי לחזור אליהם';
+const doneEn = st.finished ? acT('allPh').replace('{b}', PH.length) : acT('phOf').replace('{a}', it.ph + 1).replace('{b}', PH.length);
+const skTxt = n => n === 1 ? acT('skOne') : acT('skMany').replace('{n}', n);
 const underSk = (st.flipOut && st.flipKind === 'next') ? phSkipped + (isSkip(it) ? 0 : 1) : phSkipped - (isSkip(it) ? 1 : 0);
-const doneHe = st.finished ? "הצ'קליסט הושלם" : 'השלב הושלם';
-const doneNote = st.finished ? (skippedN ? 'דילגת על ' + skippedN + ' פריטים. אפשר לחזור אליהם מהרשימה' : 'כל הפריטים סומנו') : (phSkipped ? 'דילגת על ' + phSkipped + ' פריטים. אפשר לחזור אליהם' : 'כל פריטי השלב סומנו');
+const doneHe = st.finished ? acT('clDone') : acT('phDone');
+const doneNote = st.finished ? (skippedN ? acT('noteFinSk').replace('{n}', skippedN) : acT('noteFinAll')) : (phSkipped ? acT('notePhSk').replace('{n}', phSkipped) : acT('notePhAll'));
 const isCardView = st.view === 'card';
 const tCard = (st.viewT || st.view) === 'card';
 const showDoneCard = st.sectionDone && !st.finished;
@@ -3250,8 +3258,8 @@ const finTime = pad(Math.floor(secs / 60)) + ':' + pad(secs % 60);
 const hasFlap = isCardView && showItemCard && it.k === 'curtain';
 const showCurtain = hasFlap && st.curtainOpen;
 let uCnt = 0; let underNum = '', underMain = '', underSub = '', uK = '', uLbl = '', uGrp = '';
-if (st.sectionDone) { if (it.ph < PH.length - 1) { underNum = 'NEXT SECTION'; underMain = PH[it.ph + 1]; } else { underNum = 'END'; underMain = 'סיום טיסה'; } }
-else if (!st.finished) { const nI = (st.flipOut && st.flipKind === 'next') ? (st.cur + 1 < N && ITEMS[st.cur + 1].ph === it.ph ? st.cur + 1 : -1) : (st.amber ? this.amberNext(st) : this.nextOpen(st.cur, st.done, st.skipped)); if (nI >= 0 && nI !== st.cur) { underNum = 'ITEM ' + pad(nI + 1) + ' / ' + pad(N); underMain = ITEMS[nI].m; underSub = ITEMS[nI].s; uK = ITEMS[nI].k || ''; uLbl = ITEMS[nI].k === 'own' ? 'פתח את ' + ITEMS[nI].l : (ITEMS[nI].l || ''); const gg = ITEMS.filter(z => z.ph === ITEMS[nI].ph && z.g === ITEMS[nI].g); uCnt = (ITEMS[nI].subList || []).length; uGrp = (gg.indexOf(ITEMS[nI]) + 1) + '/' + gg.length; } else { underNum = 'END OF SECTION'; underMain = 'השלב הושלם'; } }
+if (st.sectionDone) { if (it.ph < PH.length - 1) { underNum = 'NEXT SECTION'; underMain = PH[it.ph + 1]; } else { underNum = 'END'; underMain = acT('finFlight'); } }
+else if (!st.finished) { const nI = (st.flipOut && st.flipKind === 'next') ? (st.cur + 1 < N && ITEMS[st.cur + 1].ph === it.ph ? st.cur + 1 : -1) : (st.amber ? this.amberNext(st) : this.nextOpen(st.cur, st.done, st.skipped)); if (nI >= 0 && nI !== st.cur) { underNum = 'ITEM ' + pad(nI + 1) + ' / ' + pad(N); underMain = ITEMS[nI].m; underSub = ITEMS[nI].s; uK = ITEMS[nI].k || ''; uLbl = ITEMS[nI].k === 'own' ? 'פתח את ' + ITEMS[nI].l : (ITEMS[nI].l || ''); const gg = ITEMS.filter(z => z.ph === ITEMS[nI].ph && z.g === ITEMS[nI].g); uCnt = (ITEMS[nI].subList || []).length; uGrp = (gg.indexOf(ITEMS[nI]) + 1) + '/' + gg.length; } else { underNum = 'END OF SECTION'; underMain = acT('phDone'); } }
 const real = doneN + skippedN > 0; const forceP = (this.props.splashDemo ?? 'auto') === 'inProgress';
 const spInProgress = real || forceP;
 const spSk = real ? skippedN : 1; const spDn = real ? doneN : 6;
@@ -3262,19 +3270,19 @@ const IC = { runway: ['#2a2218', '#c8a04a', 'rgba(244,236,220,.55)', '#ffffff', 
 const spMarks = real ? ITEMS.map((x, i) => isSkip(x) ? { r: ((i + 0.5) / N) * 100 } : null).filter(Boolean) : [{ r: 22 }, { r: 31 }];
 const spDivs = PH.slice(0, -1).map((_, p) => ({ r: (ITEMS.filter(x => x.ph <= p).length / N) * 100 }));
 const spPctNum = real ? ((spFur + 1) / N) * 100 : 40;
-if (st.amber && !st.sectionDone && !st.finished) hintText = 'ללא מסומן: פריט אחר פריט. בסוף חוזרים למקום שהיית בו';
+if (st.amber && !st.sectionDone && !st.finished) hintText = acT('amberHint');
 return {
-showSubTab: false, subTabLabel: st.curtainOpen ? 'תת-רשימה פתוחה בכרטיס' : 'תת-רשימה בכרטיס', subTabRot: 0,
-hintPadR: 14,
+showSubTab: false, subTabLabel: acT('subList'), subTabRot: 0,
+hintPadR: 14, tAlign: AC_LANG === 'en' ? 'left' : 'right', finFs: AC_LANG === 'en' ? '27px' : '32px', lblHome: acT('home'), lblHomeAria: acT('homeAria'), lblView: acT('viewLbl'), lblTabCards: acT('tabCards'), lblTabList: acT('tabList'), lblRailAria: acT('railAria'), lblSubList: acT('subList'), lblInGroup: acT('inGroup'), lblNextUp: acT('nextUp'), lblUntRow: acT('untRow'), lblPrev: acT('prev'), lblBack1: acT('back1'), lblBack2: acT('back2'), lblUnt1: acT('unt1'), lblUnt2: acT('unt2'), lblNext: acT('next'), lblCancel: acT('cancel'), lblClDone: acT('clDone'), lblPhDone: acT('phDone'), lblWellDone: acT('wellDone'), lblAllClosed: acT('allClosed'), lblTicked: acT('ticked'), lblSkippedL: acT('skippedL'), lblClTime: acT('clTime'), finAllPh: acT('allPh').replace('{b}', PH.length), enFont: AC_LANG === 'en' ? "'JetBrains Mono',monospace" : "'IBM Plex Sans Hebrew',sans-serif", enLs: AC_LANG === 'en' ? '.14em' : '.02em', pipRot: AC_LANG === 'en' ? '90deg' : '-90deg', planeRot: AC_LANG === 'en' ? '90deg' : '-90deg', endSide: AC_LANG === 'en' ? 'right' : 'left', ownArrow: AC_LANG === 'en' ? 'M9 6l6 6l-6 6' : 'M15 6l-6 6l6 6', stampSide: AC_LANG === 'en' ? 'right' : 'left', stampRot: AC_LANG === 'en' ? '7deg' : '-7deg', stampAnim: AC_LANG === 'en' ? 'stampBumpE' : 'stampBump', finRot: AC_LANG === 'en' ? '5deg' : '-5deg', finAnim: AC_LANG === 'en' ? 'stampInE' : 'stampIn', runSide: AC_LANG === 'en' ? 'left' : 'right', rwR: AC_LANG === 'en' ? '36' : '18', rwL: AC_LANG === 'en' ? '18' : '36', rwRrot: AC_LANG === 'en' ? '90deg' : '-90deg', rwLrot: AC_LANG === 'en' ? '-90deg' : '90deg', badgeSide: AC_LANG === 'en' ? 'left' : 'right',
 backAnim: st.flipOut ? 'backIn ' + ac3Ms(950) + 'ms linear both' : 'none', frontAnim: st.flipOut ? 'frontOut ' + ac3Ms(950) + 'ms linear both' : (st.stampOn ? 'cardThump ' + (0.5 * Math.min(1, ac3Scale())).toFixed(2) + 's ease-out both' : 'none'), cardAnim: st.flipOut ? 'pageFlip ' + ac3Ms(950) + 'ms cubic-bezier(.5,0,.3,1) forwards' : 'none',
-doneHasSkip: !st.finished && phSkipped > 0, doneNoSkip: st.finished || phSkipped === 0, doneSkipText: skTxt(phSkipped), underHasSkip: underSk > 0, underNoSkip: underSk <= 0, underSkipText: skTxt(underSk), showUnder: isCardView && !st.finished, underDone: !st.sectionDone && !st.finished && underNum === 'END OF SECTION', underDonePhase: PH[it.ph], underDoneNote: (phSkipped - (isSkip(it) ? 1 : 0)) > 0 ? 'דילגת על ' + (phSkipped - (isSkip(it) ? 1 : 0)) + ' פריטים. אפשר לחזור אליהם' : 'כל פריטי השלב סומנו', underNum, underMain, underSub, underIsSub: uK === 'curtain', underIsLink: uK === 'ext' || uK === 'own', underIsOwn: uK === 'own', underIsExt: uK === 'ext', underLinkLabel: uLbl, underGrp: uGrp, underGrpOn: !!uGrp, underSubLine: uCnt + ' נקודות · הקש לפתיחה',
+doneHasSkip: !st.finished && phSkipped > 0, doneNoSkip: st.finished || phSkipped === 0, doneSkipText: skTxt(phSkipped), underHasSkip: underSk > 0, underNoSkip: underSk <= 0, underSkipText: skTxt(underSk), showUnder: isCardView && !st.finished, underDone: !st.sectionDone && !st.finished && underNum === 'END OF SECTION', underDonePhase: PH[it.ph], underDoneNote: (phSkipped - (isSkip(it) ? 1 : 0)) > 0 ? acT('notePhSk').replace('{n}', phSkipped - (isSkip(it) ? 1 : 0)) : acT('notePhAll'), underNum, underMain, underSub, underIsSub: uK === 'curtain', underIsLink: uK === 'ext' || uK === 'own', underIsOwn: uK === 'own', underIsExt: uK === 'ext', underLinkLabel: uLbl, underGrp: uGrp, underGrpOn: !!uGrp, underSubLine: acT('ptsTap').replace('{n}', uCnt),
 showSplash: st.screen === 'splash' || st.screen === 'settings', showSettings: st.screen === 'settings', showEditor: false, spInProgress, spFresh: !spInProgress,
-spMarks, spDivs, spPlaneRight: 'calc(' + spPctNum + '% - 12px)', iconBg: IC[0], iconRim: IC[1], iconLine: IC[2], iconPlane: IC[3], iconPlaneStroke: IC[4],
+spMarks, spDivs, spPlaneRight: 'calc(' + spPctNum + '% - 12px)', spSide: AC_LANG === 'en' ? 'left' : 'right', spRot: AC_LANG === 'en' ? '90deg' : '-90deg', spMarkM: AC_LANG === 'en' ? '-3.5px 0 0 -3.5px' : '-3.5px -3.5px 0 0', lblDone: acT('spDone'), spLblDir: AC_LANG === 'en' ? 'row-reverse' : 'row', spLblJ: AC_LANG === 'en' ? 'flex-end' : 'flex-start', spSkText: spSk === 1 ? acT('spSk1') : acT('spSkN').replace('{n}', spSk), iconBg: IC[0], iconRim: IC[1], iconLine: IC[2], iconPlane: IC[3], iconPlaneStroke: IC[4],
 spOpenSettings: () => this.setState({ screen: 'settings' }),
 setBack: () => this.setState({ screen: 'splash' }),
 openEditor: () => openEditor(true),
 stTail: st.tail, stAirfield: st.airfield, stTailLabel: '4X-' + (st.tail.replace(/^4X-?/i, '') || '???'),
-uiDir: acDir(), lblAddList: acT('addList'), lblNewFlight: acT('newFlight'), lblSettingsEdit: acT('settingsEdit'), lblReload: acT('reload'), lblBack: acT('back'), lblLang: acT('setLang'), lblLangNote: acT('setLangNote'), lblInter: acT('setInter'), lblSpeed: acT('setSpeed'), lblData: acT('setData'), lblEdit: acT('setEdit'), lblContact: acT('setContact'),
+uiDir: acDir(), lblNfQ: acT('nfQ'), lblNfMsg: acT('nfMsg'), lblNfYes: acT('nfYes'), lblCancel: acT('cancel'), lblAddList: acT('addList'), lblNewFlight: acT('newFlight'), lblSettingsEdit: acT('settingsEdit'), lblReload: acT('reload'), lblBack: acT('back'), lblLang: acT('setLang'), lblLangNote: acT('setLangNote'), lblInter: acT('setInter'), lblSpeed: acT('setSpeed'), lblData: acT('setData'), lblEdit: acT('setEdit'), lblContact: acT('setContact'),
 chevPath: AC_LANG === 'en' ? 'M9 6l6 6l-6 6' : 'M15 6l-6 6l6 6', backPath: AC_LANG === 'en' ? 'M15 6l-6 6l6 6' : 'M9 6l6 6l-6 6',
 langFlip: () => acFlipLang(), togLeft: (AC_TOG || AC_LANG || 'he') === 'en' ? '50px' : '3px', spNoConf: !st.spConfirm, togHeFg: (AC_TOG || AC_LANG || 'he') === 'he' ? '#f4ecdc' : '#5a4a3a', togEnFg: (AC_TOG || AC_LANG || 'he') === 'en' ? '#f4ecdc' : '#5a4a3a',
 langIdx: (AC_TOG || AC_LANG || 'he') === 'en' ? 0 : 1, langSel: [['en', 'English'], ['he', 'עברית']].map(([c, label]) => { const on = (AC_TOG || AC_LANG || 'he') === c; return { label, fg: on ? '#f4ecdc' : '#1c3d6e', pick: () => { if ((AC_LANG || 'he') !== c) acSetLang(c, true); } }; }),
@@ -3296,12 +3304,16 @@ showCard: () => this.switchView('card'),
 showList: () => this.switchView('list'),
 onListScroll: (e) => {
 const t = e && e.target; if (!t) return;
+if (this._sraf) return;
+this._sraf = requestAnimationFrame(() => {
+this._sraf = 0;
 this.syncView(t);
 const more = t.scrollHeight - t.scrollTop - t.clientHeight > 24;
 if (more !== this.state.listMore) this.setState({ listMore: more });
+});
 },
 listMore: st.listMore,
-cardTabFg: tCard ? '#1c3d6e' : 'rgba(244,236,220,.85)', listTabFg: !tCard ? '#1c3d6e' : 'rgba(244,236,220,.85)', thumbX: tCard ? 0 : -102,
+cardTabFg: tCard ? '#1c3d6e' : 'rgba(244,236,220,.85)', listTabFg: !tCard ? '#1c3d6e' : 'rgba(244,236,220,.85)', thumbX: tCard ? 0 : (AC_LANG === 'en' ? 102 : -102),
 countLabel: pad(Object.keys(pDone).length) + '/' + pad(N), pctLabel: Math.round((Object.keys(pDone).length / N) * 100) + '%',
 phases, railPhases, railOrder: railSide === 'right' ? 0 : 2,
 crumbPhase: PH[it.ph], crumbGroup: it.g,
@@ -3310,8 +3322,8 @@ showItemCard, showDoneCard, showFinishCard: st.finished && isCardView, finHasSki
 itemNum: pad(st.cur + 1), itemTotal: pad(N), groupPos: gpos + '/' + grp.length,
 item, showStamp: isDone(it) || st.stampOn, stampTime: st.times[it.id] || this.hhmm(), thumpAnim: (st.stampOn && !st.flipOut) ? 'cardThump ' + (0.5 * Math.min(1, ac3Scale())).toFixed(2) + 's ease-out both' : 'none', stampDur: (0.6 * Math.min(1, ac3Scale())).toFixed(2) + 's',
 doneEn, doneHe, donePhase: st.finished ? 'AirCheck' : PH[it.ph], doneNote,
-hasSubCard: hasFlap, curtainOpenB: st.curtainOpen, subRows: st.curtainOpen ? '1fr' : '0fr', subRot: st.curtainOpen ? 180 : 0, subBounce: st.curtainOpen ? 'none' : 'chevNudge 1.3s ease-in-out infinite', subPopAnim: briefDone ? 'subPop .7s cubic-bezier(.3,1.6,.5,1) both' : 'none', subStripBg: st.subCeleb ? '#c3e4bd' : 'transparent', subTickBg: briefDone ? '#1f6f3f' : 'transparent', subTickBd: briefDone ? '2px solid #1f6f3f' : '2px solid #8a7a5a', briefDoneB: briefDone, subRowLine: briefDone ? '#a9d3a4' : '#c2cfa9', subCeleb: st.subCeleb, listRows: st.curtainOpen ? '1fr' : '0fr', listVis: st.curtainOpen ? 'visible' : 'hidden', listVisDelay: st.curtainOpen ? '0s' : '.42s', subDrain: st.subWait ? 'none' : 'subDrain 1500ms linear forwards', subBoxBg: briefDone ? '#cdebc6' : '#e3ead6', subBoxBd: briefDone ? '#7fbb8c' : '#a9b98c', subLine: briefDone ? 'תת-רשימה הושלמה' : (st.curtainOpen ? ptsN + '/' + BRIEF.length + ' נקודות' : BRIEF.length + ' נקודות · הקש לפתיחה'), subLineColor: briefDone ? '#1f6f3f' : '#1c3d6e', stampBot: '57px', subMoreOn: st.subMore && st.curtainOpen && !briefDone, onSubScroll: (e) => { const t = e && e.target; if (!t) return; const more = t.scrollHeight - t.scrollTop - t.clientHeight > 14; if (more !== this.state.subMore) this.setState({ subMore: more }); },
-flapTitle: it.l || 'תת-רשימה', underFlapTitle: uLbl || 'תת-רשימה', flapCount: BRIEF.length,
+hasSubCard: hasFlap, curtainOpenB: st.curtainOpen, subRows: st.curtainOpen ? '1fr' : '0fr', subRot: st.curtainOpen ? 180 : 0, subBounce: st.curtainOpen ? 'none' : 'chevNudge 1.3s ease-in-out infinite', subPopAnim: briefDone ? 'subPop .7s cubic-bezier(.3,1.6,.5,1) both' : 'none', subStripBg: st.subCeleb ? '#c3e4bd' : 'transparent', subTickBg: briefDone ? '#1f6f3f' : 'transparent', subTickBd: briefDone ? '2px solid #1f6f3f' : '2px solid #8a7a5a', briefDoneB: briefDone, subRowLine: briefDone ? '#a9d3a4' : '#c2cfa9', subCeleb: st.subCeleb, listRows: st.curtainOpen ? '1fr' : '0fr', listVis: st.curtainOpen ? 'visible' : 'hidden', listVisDelay: st.curtainOpen ? '0s' : '.42s', subDrain: st.subWait ? 'none' : 'subDrain 1500ms linear forwards', subBoxBg: briefDone ? '#cdebc6' : '#e3ead6', subBoxBd: briefDone ? '#7fbb8c' : '#a9b98c', subLine: briefDone ? acT('subDoneT') : (st.curtainOpen ? acT('ptsOf').replace('{a}', ptsN).replace('{b}', BRIEF.length) : acT('ptsTap').replace('{n}', BRIEF.length)), subLineColor: briefDone ? '#1f6f3f' : '#1c3d6e', stampBot: '57px', subMoreOn: st.subMore && st.curtainOpen && !briefDone, onSubScroll: (e) => { const t = e && e.target; if (!t) return; const more = t.scrollHeight - t.scrollTop - t.clientHeight > 14; if (more !== this.state.subMore) this.setState({ subMore: more }); },
+flapTitle: it.l || acT('subList'), underFlapTitle: uLbl || acT('subList'), flapCount: BRIEF.length,
 points, briefDone, briefCount: ptsN + '/' + BRIEF.length,
 toggleCurtain: () => this.setState({ curtainOpen: !this.state.curtainOpen, subMore: true, subCeleb: false, subWait: false }),
 showNext: isCardView && showItemCard && !showCurtain && nextItems.length > 0, nextItems,
@@ -3319,7 +3331,7 @@ rows, hintText, btn, nav,
 hasSkipped: skippedN > 0, skippedCount: skippedN,
 bkOpen: !!st.bulk, bkName: st.bulk ? PH[st.bulk.p] : '',
 bkAll: !!st.bulk && this.phaseIdx(st.bulk.p).every(i => isDone(ITEMS[i])),
-bkLabel: (st.bulk && this.phaseIdx(st.bulk.p).every(i => isDone(ITEMS[i]))) ? 'בטל סימון הכל' : 'סמן הכל',
+bkLabel: (st.bulk && this.phaseIdx(st.bulk.p).every(i => isDone(ITEMS[i]))) ? acT('bkUn') : acT('bkMark'),
 bkBg: (st.bulk && this.phaseIdx(st.bulk.p).every(i => isDone(ITEMS[i]))) ? 'transparent' : '#1c3d6e',
 bkFg: (st.bulk && this.phaseIdx(st.bulk.p).every(i => isDone(ITEMS[i]))) ? '#b94a3a' : '#f4ecdc',
 bkBd: (st.bulk && this.phaseIdx(st.bulk.p).every(i => isDone(ITEMS[i]))) ? '2px solid #b94a3a' : '2px solid #1c3d6e',
