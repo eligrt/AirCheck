@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <!-- ═══════════════════════════════════════
-     AirCheck · v3.01.015 · built by eligrt
+     AirCheck · v3.01.017 · built by eligrt
      ═══════════════════════════════════════ -->
 <html lang="he" dir="rtl">
 <head>
@@ -35,12 +35,12 @@ if(force){['aircheck_rd_v1'].forEach(function(n){r.call(localStorage,P+n);});try
 <script>
 /* Single source of truth for app identity. Footers, share texts, exports and Firebase appVersion all read these. */
 const APP_NAME='AirCheck';
-const APP_VERSION='v3.01.015';
+const APP_VERSION='v3.01.017';
 const APP_STAMP=APP_NAME+' · '+APP_VERSION+' · built by eligrt';
 document.addEventListener('DOMContentLoaded',function(){document.querySelectorAll('.app-stamp').forEach(function(e){e.textContent=APP_STAMP;});});
 </script>
 <script>
-/* v3.01.015: language layer. UI only: lists are the pilot's own data and are never translated. */
+/* v3.01.017: language layer. UI only: lists are the pilot's own data and are never translated. */
 var AC_LANG=null;
 try{var _l=localStorage.getItem('aircheck_lang');if(_l==='he'||_l==='en')AC_LANG=_l;}catch(e){}
 if(!AC_LANG)document.documentElement.className+=' ac-needlang';
@@ -63,12 +63,23 @@ document.documentElement.setAttribute('lang',AC_LANG||'he');document.documentEle
 document.querySelectorAll('.lsa-foot-reload').forEach(function(b){b.textContent=acT('reload');});
 }
 document.addEventListener('DOMContentLoaded',function(){try{acApplyLang();}catch(x){}});
+function acSeedFirstList(lang){
+var p=getProfiles();
+if(p.profiles.length!==1)return;
+var pr=p.profiles[0],L=pr.list||[];
+if(pr.type!=='default'||acListLang(L)!=='he'||L.length!==CL_DEFAULT_HE.length)return;
+if(L.some(function(it){return it.touched||it.deleted;}))return;
+pr.list=acDefaultCopy(lang);pr.name='Default (English)';
+saveProfiles();loadList();
+}
 function acFlipLang(){if(AC_BUSY)return;acSetLang(((AC_TOG||AC_LANG||'he')==='he')?'en':'he',true);}
 function acSetLang(l,smooth){
 if(l!=='he'&&l!=='en')return;
 function commit(){
+var first=/ac-needlang/.test(document.documentElement.className);
 AC_LANG=l;AC_TOG=l;
 try{localStorage.setItem('aircheck_lang',l);}catch(e){}
+if(first&&l==='en'){try{acSeedFirstList('en');}catch(e){}}
 document.documentElement.className=document.documentElement.className.replace(/\s*ac-needlang/,'');
 acApplyLang();
 try{if(AC3)AC3.setState({_t:Date.now()});}catch(e){}
@@ -392,8 +403,13 @@ html:has(.ac3-splash-top),body:has(.ac3-splash-top){background:#f7f0e0;}
 #newProfileModal .np-sheet{width:100%;max-width:420px;background:#fbf6e8;border:2px solid #1c3d6e;border-radius:16px;padding:16px;display:flex;flex-direction:column;gap:12px;box-sizing:border-box;box-shadow:0 12px 32px rgba(26,19,8,.35);color:#1a1308;}
 #newProfileModal .np-t{font-size:19px;font-weight:700;}
 #newProfileModal .np-q{font-size:16px;}
-#newProfileModal .np-opts{display:flex;gap:8px;}
-#newProfileModal .np-opt{flex:1;min-height:64px;padding:8px;border:2px solid #c8a04a;border-radius:10px;background:#fff;color:#1a1308;font-family:inherit;font-size:17px;font-weight:700;line-height:1.25;cursor:pointer;}
+#newProfileModal .np-opts{display:flex;flex-direction:column;gap:8px;}
+#newProfileModal .np-grp{border:2px dashed #c8a04a;border-radius:12px;padding:8px;display:flex;flex-direction:column;gap:8px;}
+#newProfileModal .np-grp.on{border:2px solid #1c3d6e;background:#eef3fb;}
+#newProfileModal .np-l.off{color:#b3a584;}
+#newProfileModal .np-in:disabled{background:#ece4d2;border-color:#d9cdb0;color:#b3a584;}
+#newProfileModal .np-sheet{max-height:100%;overflow-y:auto;}
+#newProfileModal .np-opt{flex:none;min-height:52px;padding:8px;border:2px solid #c8a04a;border-radius:10px;background:#fff;color:#1a1308;font-family:inherit;font-size:17px;font-weight:700;line-height:1.25;cursor:pointer;}
 #newProfileModal .np-opt.selected{border-color:#1c3d6e;background:#dde7f7;color:#1c3d6e;}
 #newProfileModal .np-l{font-size:15px;font-weight:600;}
 #newProfileModal .np-in{min-height:54px;box-sizing:border-box;border:1.5px solid #c8a04a;border-radius:10px;background:#fff;padding:0 12px;font-family:inherit;font-size:18px;color:#1a1308;width:100%;user-select:text;-webkit-user-select:text;}
@@ -402,7 +418,7 @@ html:has(.ac3-splash-top),body:has(.ac3-splash-top){background:#f7f0e0;}
 #newProfileModal .np-b.p:disabled{opacity:.4;cursor:default;}
 #newProfileModal .np-b.n{border:1.5px solid #8a6a2a;background:#fff;color:#6b4f12;}
 
-/* v3.01.015: first-launch language choice */
+/* v3.01.017: first-launch language choice */
 #langPick{display:none;position:fixed;inset:0;z-index:900;flex-direction:column;background:linear-gradient(#1c3d6e 0%,#1c3d6e 55%,#14284f 100%);}
 .ac-needlang #langPick{display:flex;}
 #langPick .lp-top{flex:none;padding:calc(34px + var(--sat,env(safe-area-inset-top,0px))) 18px 250px;background:linear-gradient(#f7f0e0 0%,#efe3c2 48%,rgb(233,223,193) 52%,rgb(210,206,189) 59%,rgb(150,160,180) 75%,#1c3d6e 100%);display:flex;flex-direction:column;align-items:center;gap:4px;text-align:center;}
@@ -597,58 +613,120 @@ MULTI_PROFILE: true,
 PWA_POPUP: false,
 EXTERNAL_LINK: true
 };
-const CL=[
-{defId:"d001",phase:"יום לפני",group:"כשירות טיס ותעודות",main:"ודא שברשותך רישיון טיס ורישיון רדיו",sub:""},
-{defId:"d002",phase:"יום לפני",group:"כשירות טיס ותעודות",main:"ודא מבחן רמה",sub:"בתוקף עד [טרם הוזן - ניתן לעריכה בתפריט \"הגדרות\" > \"עריכת הצ'קליסט\"]"},
-{defId:"d003",phase:"יום לפני",group:"כשירות טיס ותעודות",main:"ודא תעודה רפואית",sub:"בתוקף עד [טרם הוזן - ניתן לעריכה בתפריט \"הגדרות\" > \"עריכת הצ'קליסט\"]"},
-{defId:"d004",phase:"יום לפני",group:"כשירות מטוס",main:"ודא יתרת שעות לטיפול קרוב",sub:"טיפול קרוב ב: HOBS #### או ב: [טרם הוזן - ניתן לעריכה בתפריט \"הגדרות\" > \"עריכת הצ'קליסט\"]"},
-{defId:"d005",phase:"יום לפני",group:"כשירות מטוס",main:"ודא CofA",sub:"בתוקף עד [טרם הוזן - ניתן לעריכה בתפריט \"הגדרות\" > \"עריכת הצ'קליסט\"]"},
-{defId:"d006",phase:"יום לפני",group:"כשירות מטוס",main:"ודא תעודת רדיו",sub:"בתוקף עד [טרם הוזן - ניתן לעריכה בתפריט \"הגדרות\" > \"עריכת הצ'קליסט\"]"},
-{defId:"d007",phase:"יום לפני",group:"תכנון (ניווט ודלק)",main:"הכנת מפות וציר ניווט",sub:""},
-{defId:"d008",phase:"יום לפני",group:"תכנון (ניווט ודלק)",main:"רישום כל תדרי הרדיו הנדרשים לנתיב",sub:""},
-{defId:"d009",phase:"יום לפני",group:"תכנון (ניווט ודלק)",main:"חשב כמות דלק נדרשת לטיסה",sub:"בתוספת '45 (הסעה '15 + ספייר '30)"},
-{defId:"d010",phase:"יום לפני",group:"מנהלות",main:"ודא מטוס משוריין / מוזמן לטיסה",sub:""},
-{defId:"d011",phase:"יום לפני",group:"מנהלות",main:"תאום נחיתה בשדה יעד / עצירה (אם נדרש)",sub:""},
-{defId:"d012",phase:"יום לפני",group:"בדיקת מז\"א",main:"בדוק TAF בשדה המראה ושדה נחיתה",sub:"",url:"https://eligrt.github.io/AirCheck/AirCheck_METAR.html",urlLabel:"AirCheck METAR / TAF"},
-{defId:"d013",phase:"יום לפני",group:"בדיקת מז\"א",main:"בדוק מפות רוח בנתיב",sub:"",url:"https://ims.gov.il/he/aviation",urlLabel:"IMS.GOV.IL"},
-{defId:"d014",phase:"יום לפני",group:"בדיקת מז\"א",main:"בדוק מפות SIG",sub:"",url:"https://ims.gov.il/he/aviation",urlLabel:"IMS.GOV.IL"},
-{defId:"d015",phase:"יום לפני",group:"בדיקת מז\"א",main:"אמת נתונים באפליקציית מז\"א",sub:""},
-{defId:"d016",phase:"יום לפני",group:"מודיעין טיס",main:"בדוק NOTAM",sub:"",url:"https://notam.liorbenhorin.xyz/",urlLabel:"NOTAM LL"},
-{defId:"d017",phase:"יום לפני",group:"מודיעין טיס",main:"הגשת תוכנית טיסה",sub:"",url:"https://fpl.co.il/",urlLabel:"FPL.CO.IL"},
-{defId:"d019",phase:"הגעה למנחת ולמטוס",group:"רישומים וניירת",main:"פתיחת טיסה במחשב המנחת (עודד)",sub:""},
-{defId:"d018",phase:"הגעה למנחת ולמטוס",group:"רישומים וניירת",main:"קבלת מרשה טיסה",sub:""},
-{defId:"d020",phase:"הגעה למנחת ולמטוס",group:"רישומים וניירת",main:"ודא המצאות תעודות המטוס בקוקפיט",sub:"בעלות, כושר טיסה (ודא תוקף) ורדיו (ודא תוקף)"},
-{defId:"d021",phase:"הגעה למנחת ולמטוס",group:"רישומים וניירת",main:"ודא אי חריגה מטיפול קרוב",sub:"טיפול קרוב ב: HOBS #### או ב: [טרם הוזן - ניתן לעריכה בתפריט \"הגדרות\" > \"עריכת הצ'קליסט\"]"},
-{defId:"d022",phase:"הגעה למנחת ולמטוס",group:"רישומים וניירת",main:"משקל ואיזון - ודא",sub:"",url:"https://eligrt.github.io/AirBalance/AirBalance.html",urlLabel:"AirBalance"},
-{defId:"d023",phase:"הגעה למנחת ולמטוס",group:"רישומים וניירת",main:"בדיקת תקלות (אדומים)",sub:""},
-{defId:"d024",phase:"הגעה למנחת ולמטוס",group:"רישומים וניירת",main:"פתיחת שורה בספר",sub:""},
-{defId:"d025",phase:"הגעה למנחת ולמטוס",group:"הכנת קוקפיט",main:"בדיקות חיצוניות - הושלם",sub:""},
-{defId:"d026",phase:"הגעה למנחת ולמטוס",group:"הכנת קוקפיט",main:"דפיות ומפות",sub:""},
-{defId:"d027",phase:"הגעה למנחת ולמטוס",group:"הכנת קוקפיט",main:"מצלמות: מקם והפעל",sub:""},
-{defId:"d028",phase:"הגעה למנחת ולמטוס",group:"הכנת קוקפיט",main:"GPS - מקם והפעל",sub:""},
-{defId:"d029",phase:"הגעה למנחת ולמטוס",group:"הכנת קוקפיט",main:"אוזניות - בדוק סוללות",sub:""},
-{defId:"d030",phase:"הגעה למנחת ולמטוס",group:"הכנת קוקפיט",main:"תדרוך נוסע (אם נדרש)",sub:"",url:"",subTitle:"תדרוך נוסע",subList:["לא נוגעים בכלום ללא אישור טייס", "חגורות בטיחות לאורך כל הטיסה", "תרגול פתיחת חגורות", "תרגול פתיחת חופה", "מיקום מטף כיבוי אש", "קוקפיט שקט בהמראה ונחיתה", "אל תניח - דבר! (שקט הפיל מטוסים)", "כששומעים משהו בקשר - שותקים", "מרגישים לא טוב / לא נעים - מיד לומר", "מיקום פתחי אוורור", "תפעול שקית הקאה", "שאלות? חששות?"],subHeads:{"0": {"t": "בטיחות", "i": "⚠️", "tone": "red"}, "5": {"t": "תקשורת", "i": "📻", "tone": "amber"}, "8": {"t": "נוחות", "i": "😊", "tone": "green"}}},
-{defId:"d044",phase:"הגעה למנחת ולמטוס",group:"הכנת קוקפיט",main:"מכשיר קשר נייד טעון ובתיק",sub:""},
-{defId:"d031",phase:"הגעה למנחת ולמטוס",group:"כללי",main:"עדכון בקרה בהמראה (אם נדרש)",sub:""},
-{defId:"d032",phase:"הגעה למנחת ולמטוס",group:"כללי",main:"דאבל צ'ק מז\"א",sub:"METAR בשדה המראה ובשדה נחיתה",url:"https://eligrt.github.io/AirCheck/AirCheck_METAR.html",urlLabel:"AirCheck METAR / TAF"},
-{defId:"d033",phase:"הגעה למנחת ולמטוס",group:"כללי",main:"בדיקה חוזרת ל NOTAM בשדות ובנתיבים",sub:"",url:"https://notam.liorbenhorin.xyz/",urlLabel:"NOTAM LL"},
-{defId:"d034",lean:true,phase:"סגירת טיסה",group:"ניירת",main:"ספר מטוס: סגירת שורה",sub:""},
-{defId:"d035",phase:"סגירת טיסה",group:"קיפול ציוד אישי",main:"מצלמות, IPAD, טלפון",sub:""},
-{defId:"d036",phase:"סגירת טיסה",group:"קיפול ציוד אישי",main:"אוזניות אישיות ואוזניות נוסע",sub:""},
-{defId:"d045",phase:"סגירת טיסה",group:"קיפול ציוד אישי",main:"קשר ניד",sub:""},
-{defId:"d037",phase:"סגירת טיסה",group:"קיפול ציוד אישי",main:"HardCopy",sub:""},
-{defId:"d046",lean:true,phase:"סגירת טיסה",group:"מטוס האנגר ומנחת",main:"תדלוק - מלא",sub:""},
-{defId:"d038",lean:true,phase:"סגירת טיסה",group:"מטוס האנגר ומנחת",main:"קוקפיט Cold & Dark",sub:""},
-{defId:"d039",lean:true,phase:"סגירת טיסה",group:"מטוס האנגר ומנחת",main:"חניה וכיסוי",sub:""},
-{defId:"d040",lean:true,phase:"סגירת טיסה",group:"מטוס האנגר ומנחת",main:"כיסוי פיטו: במקום",sub:""},
-{defId:"d041",phase:"סגירת טיסה",group:"מטוס האנגר ומנחת",main:"סגירת טיסה במחשב המנחת (עודד)",sub:""},
-{defId:"d042",phase:"סגירת טיסה",group:"רישום ותשלום",main:"רישום בלוגבוק (רגיל)",sub:""},
-{defId:"d043",phase:"סגירת טיסה",group:"רישום ותשלום",main:"רישום בלוגבוק דיגיטלי",sub:""},
+const CL_DEFAULT_HE=[
+{"defId": "HE-001", "phase": "יום לפני", "group": "כשירות טיס ותעודות", "main": "ודא שברשותך רישיון טיס ורישיון רדיו", "sub": ""},
+{"defId": "HE-002", "phase": "יום לפני", "group": "כשירות טיס ותעודות", "main": "ודא מבחן רמה", "sub": "בתוקף עד DD/MM/YYYY [טרם הוזן - ניתן לעריכה בתפריט \"הגדרות\" > \"עריכת הצ'קליסט\"]"},
+{"defId": "HE-003", "phase": "יום לפני", "group": "כשירות טיס ותעודות", "main": "ודא תעודה רפואית", "sub": "בתוקף עד DD/MM/YYYY [טרם הוזן - ניתן לעריכה בתפריט \"הגדרות\" > \"עריכת הצ'קליסט\"]"},
+{"defId": "HE-004", "phase": "יום לפני", "group": "כשירות מטוס", "main": "ודא יתרת שעות לטיפול קרוב", "sub": "טיפול קרוב ב: HOBBS #### או ב: DD/MM/YYYY [טרם הוזן - ניתן לעריכה בתפריט \"הגדרות\" > \"עריכת הצ'קליסט\"]"},
+{"defId": "HE-005", "phase": "יום לפני", "group": "כשירות מטוס", "main": "ודא CofA", "sub": "בתוקף עד DD/MM/YYYY [טרם הוזן - ניתן לעריכה בתפריט \"הגדרות\" > \"עריכת הצ'קליסט\"]"},
+{"defId": "HE-006", "phase": "יום לפני", "group": "כשירות מטוס", "main": "ודא תעודת רדיו", "sub": "בתוקף עד DD/MM/YYYY [טרם הוזן - ניתן לעריכה בתפריט \"הגדרות\" > \"עריכת הצ'קליסט\"]"},
+{"defId": "HE-007", "phase": "יום לפני", "group": "תכנון (ניווט ודלק)", "main": "הכנת מפות וציר ניווט", "sub": ""},
+{"defId": "HE-008", "phase": "יום לפני", "group": "תכנון (ניווט ודלק)", "main": "רישום כל תדרי הרדיו הנדרשים לנתיב", "sub": ""},
+{"defId": "HE-009", "phase": "יום לפני", "group": "תכנון (ניווט ודלק)", "main": "חשב כמות דלק נדרשת לטיסה", "sub": "בתוספת '45 (הסעה '15 + ספייר '30)"},
+{"defId": "HE-010", "phase": "יום לפני", "group": "מנהלות", "main": "ודא מטוס משוריין / מוזמן לטיסה", "sub": "", "url": "https://calendar.google.com/calendar", "urlLabel": "Google Calendar"},
+{"defId": "HE-011", "phase": "יום לפני", "group": "מנהלות", "main": "תאום נחיתה בשדה יעד / עצירה (אם נדרש)", "sub": ""},
+{"defId": "HE-012", "phase": "יום לפני", "group": "בדיקת מז\"א", "main": "בדוק TAF בשדה המראה ושדה נחיתה", "sub": "", "url": "https://ims.gov.il/he/aviation", "urlLabel": "IMS.GOV.IL"},
+{"defId": "HE-013", "phase": "יום לפני", "group": "בדיקת מז\"א", "main": "בדוק מפות רוח בנתיב", "sub": "", "url": "https://ims.gov.il/he/aviation", "urlLabel": "IMS.GOV.IL"},
+{"defId": "HE-014", "phase": "יום לפני", "group": "בדיקת מז\"א", "main": "בדוק מפות SIG", "sub": "", "url": "https://ims.gov.il/he/aviation", "urlLabel": "IMS.GOV.IL"},
+{"defId": "HE-015", "phase": "יום לפני", "group": "בדיקת מז\"א", "main": "אמת נתונים באפליקציית מז\"א", "sub": ""},
+{"defId": "HE-016", "phase": "יום לפני", "group": "מודיעין טיס", "main": "בדוק NOTAM", "sub": "", "url": "https://notam.liorbenhorin.xyz/", "urlLabel": "NOTAM LL"},
+{"defId": "HE-017", "phase": "יום לפני", "group": "מודיעין טיס", "main": "הגשת תוכנית טיסה", "sub": "", "url": "https://fpl.co.il/", "urlLabel": "FPL.CO.IL"},
+{"defId": "HE-018", "phase": "הגעה למנחת ולמטוס", "group": "רישומים וניירת", "main": "IMSAFE & PAVE", "sub": "Pilot first: Illness, Medication, Stress, Alcohol, Fatigue, Emotion. Then Aircraft, enVironment, External pressures."},
+{"defId": "HE-019", "phase": "הגעה למנחת ולמטוס", "group": "רישומים וניירת", "main": "פתיחת טיסה במחשב המנחת / מבצעים", "sub": ""},
+{"defId": "HE-020", "phase": "הגעה למנחת ולמטוס", "group": "רישומים וניירת", "main": "קבלת מרשה טיסה", "sub": ""},
+{"defId": "HE-021", "phase": "הגעה למנחת ולמטוס", "group": "רישומים וניירת", "main": "ודא המצאות תעודות המטוס בקוקפיט", "sub": "בעלות, כושר טיסה (ודא תוקף) ורדיו (ודא תוקף)"},
+{"defId": "HE-022", "phase": "הגעה למנחת ולמטוס", "group": "רישומים וניירת", "main": "ודא אי חריגה מטיפול קרוב", "sub": "טיפול קרוב ב: HOBBS #### או ב: DD/MM/YYYY [טרם הוזן - ניתן לעריכה בתפריט \"הגדרות\" > \"עריכת הצ'קליסט\"]"},
+{"defId": "HE-023", "phase": "הגעה למנחת ולמטוס", "group": "רישומים וניירת", "main": "משקל ואיזון - ודא", "sub": "", "url": "https://eligrt.github.io/AirBalance/AirBalance.html", "urlLabel": "AirBalance"},
+{"defId": "HE-024", "phase": "הגעה למנחת ולמטוס", "group": "רישומים וניירת", "main": "בדיקת תקלות (אדומים)", "sub": ""},
+{"defId": "HE-025", "phase": "הגעה למנחת ולמטוס", "group": "רישומים וניירת", "main": "פתיחת שורה בספר", "sub": ""},
+{"defId": "HE-026", "phase": "הגעה למנחת ולמטוס", "group": "הכנת קוקפיט", "main": "בדיקות חיצוניות - הושלם", "sub": "", "url": "https://eligrt.github.io/AirCheck-POH/AirCheck_POH_TEST.html", "urlLabel": "AirCheck_POH"},
+{"defId": "HE-027", "phase": "הגעה למנחת ולמטוס", "group": "הכנת קוקפיט", "main": "דפיות ומפות", "sub": ""},
+{"defId": "HE-028", "phase": "הגעה למנחת ולמטוס", "group": "הכנת קוקפיט", "main": "אוזניות - בדוק סוללות", "sub": ""},
+{"defId": "HE-029", "phase": "הגעה למנחת ולמטוס", "group": "הכנת קוקפיט", "main": "מכשיר קשר נייד טעון ובתיק", "sub": ""},
+{"defId": "HE-030", "phase": "הגעה למנחת ולמטוס", "group": "הכנת קוקפיט", "main": "מצלמות: מקם והפעל", "sub": ""},
+{"defId": "HE-031", "phase": "הגעה למנחת ולמטוס", "group": "הכנת קוקפיט", "main": "GPS: מקם והפעל", "sub": ""},
+{"defId": "HE-032", "phase": "הגעה למנחת ולמטוס", "group": "הכנת קוקפיט", "main": "תדרוך נוסע (אם נדרש)", "sub": "", "url": "", "subTitle": "תדרוך נוסע", "subList": ["לא נוגעים בכלום ללא אישור טייס", "חגורות בטיחות לאורך כל הטיסה", "תרגול פתיחת חגורות", "תרגול פתיחת חופה", "מיקום מטף כיבוי אש", "קוקפיט שקט בהמראה ונחיתה", "אל תניח - דבר! (שקט הפיל מטוסים)", "כששומעים משהו בקשר - שותקים", "מרגישים לא טוב / לא נעים - מיד לומר", "מיקום פתחי אוורור", "תפעול שקית הקאה", "שאלות? חששות?"], "subHeads": {"0": {"t": "בטיחות", "i": "⚠️", "tone": "red"}, "5": {"t": "תקשורת", "i": "📻", "tone": "amber"}, "8": {"t": "נוחות", "i": "😊", "tone": "green"}}},
+{"defId": "HE-033", "phase": "הגעה למנחת ולמטוס", "group": "כללי", "main": "עדכון בקרה בהמראה (אם נדרש)", "sub": ""},
+{"defId": "HE-034", "phase": "הגעה למנחת ולמטוס", "group": "כללי", "main": "דאבל צ'ק מז\"א", "sub": "METAR בשדה המראה ובשדה נחיתה", "url": "https://ims.gov.il/he/aviation", "urlLabel": "IMS.GOV.IL"},
+{"defId": "HE-035", "phase": "הגעה למנחת ולמטוס", "group": "כללי", "main": "בדיקה חוזרת ל NOTAM בשדות ובנתיבים", "sub": "", "url": "https://notam.liorbenhorin.xyz/", "urlLabel": "NOTAM LL"},
+{"defId": "HE-036", "phase": "הגעה למנחת ולמטוס", "group": "כללי", "main": "האזן ורשום נתוני ATIS (אם נדרש)", "sub": "", "url": "https://eligrt.github.io/AirATIS/AirATIS.html", "urlLabel": "AirATIS"},
+{"defId": "HE-037", "phase": "סגירת טיסה", "group": "ניירת", "main": "ספר מטוס: סגירת שורה", "sub": ""},
+{"defId": "HE-038", "phase": "סגירת טיסה", "group": "קיפול ציוד אישי", "main": "מצלמות, IPAD, טלפון", "sub": ""},
+{"defId": "HE-039", "phase": "סגירת טיסה", "group": "קיפול ציוד אישי", "main": "אוזניות אישיות ואוזניות נוסע", "sub": ""},
+{"defId": "HE-040", "phase": "סגירת טיסה", "group": "קיפול ציוד אישי", "main": "קשר ניד", "sub": ""},
+{"defId": "HE-041", "phase": "סגירת טיסה", "group": "קיפול ציוד אישי", "main": "HardCopy", "sub": ""},
+{"defId": "HE-042", "phase": "סגירת טיסה", "group": "קיפול ציוד אישי", "main": "יצא נתוני ממחשב טיסה", "sub": ""},
+{"defId": "HE-043", "phase": "סגירת טיסה", "group": "מטוס האנגר ומנחת", "main": "תדלוק - מלא", "sub": ""},
+{"defId": "HE-044", "phase": "סגירת טיסה", "group": "מטוס האנגר ומנחת", "main": "קוקפיט Cold & Dark", "sub": ""},
+{"defId": "HE-045", "phase": "סגירת טיסה", "group": "מטוס האנגר ומנחת", "main": "חניה וכיסוי", "sub": ""},
+{"defId": "HE-046", "phase": "סגירת טיסה", "group": "מטוס האנגר ומנחת", "main": "כיסוי פיטו: במקום", "sub": ""},
+{"defId": "HE-047", "phase": "סגירת טיסה", "group": "מטוס האנגר ומנחת", "main": "סגירת טיסה במחשב המנחת / מבצעים", "sub": ""},
+{"defId": "HE-048", "phase": "סגירת טיסה", "group": "רישום ותשלום", "main": "תשלום לשותפות", "sub": ""},
+{"defId": "HE-049", "phase": "סגירת טיסה", "group": "רישום ותשלום", "main": "רישום בלוגבוק (רגיל)", "sub": ""},
+{"defId": "HE-050", "phase": "סגירת טיסה", "group": "רישום ותשלום", "main": "רישום בלוגבוק דיגיטלי", "sub": "", "url": "https://eligrt.github.io/AirLog/AirLog.html", "urlLabel": "AirLog"},
 ];
-const CL_DEFAULT=CL.map(it=>({...it}));
+const CL_DEFAULT_EN=[
+{"defId": "EN-001", "phase": "Day before", "group": "Pilot currency and documents", "main": "Confirm you hold your pilot license and radio license", "sub": ""},
+{"defId": "EN-002", "phase": "Day before", "group": "Pilot currency and documents", "main": "Confirm periodic flight review is current", "sub": "Valid until DD/MM/YYYY [not entered yet - editable in \"Settings\" > \"Edit checklist\"]"},
+{"defId": "EN-003", "phase": "Day before", "group": "Pilot currency and documents", "main": "Confirm medical certificate", "sub": "Valid until DD/MM/YYYY [not entered yet - editable in \"Settings\" > \"Edit checklist\"]"},
+{"defId": "EN-004", "phase": "Day before", "group": "Aircraft airworthiness", "main": "Confirm hours remaining to next maintenance", "sub": "Next maintenance at: Hobbs #### or on: DD/MM/YYYY [not entered yet - editable in \"Settings\" > \"Edit checklist\"]"},
+{"defId": "EN-005", "phase": "Day before", "group": "Aircraft airworthiness", "main": "Confirm CofA", "sub": "Valid until DD/MM/YYYY [not entered yet - editable in \"Settings\" > \"Edit checklist\"]"},
+{"defId": "EN-006", "phase": "Day before", "group": "Aircraft airworthiness", "main": "Confirm aircraft radio certificate", "sub": "Valid until DD/MM/YYYY [not entered yet - editable in \"Settings\" > \"Edit checklist\"]"},
+{"defId": "EN-007", "phase": "Day before", "group": "Planning (navigation and fuel)", "main": "Prepare navigation charts and route", "sub": ""},
+{"defId": "EN-008", "phase": "Day before", "group": "Planning (navigation and fuel)", "main": "Write down all radio frequencies needed for the route", "sub": ""},
+{"defId": "EN-009", "phase": "Day before", "group": "Planning (navigation and fuel)", "main": "Calculate required fuel for the flight", "sub": "Plus 45 min (taxi 15 + reserve 30)"},
+{"defId": "EN-010", "phase": "Day before", "group": "Administration", "main": "Confirm aircraft is booked for the flight", "sub": "", "url": "https://calendar.google.com/calendar", "urlLabel": "Google Calendar"},
+{"defId": "EN-011", "phase": "Day before", "group": "Administration", "main": "Coordinate landing at destination / stopover airfield (if required)", "sub": ""},
+{"defId": "EN-012", "phase": "Day before", "group": "Weather check", "main": "Check TAF for departure and landing airfields", "sub": "", "url": "https://ims.gov.il/en/aviation", "urlLabel": "IMS.GOV.IL"},
+{"defId": "EN-013", "phase": "Day before", "group": "Weather check", "main": "Check wind charts along the route", "sub": "", "url": "https://ims.gov.il/en/aviation", "urlLabel": "IMS.GOV.IL"},
+{"defId": "EN-014", "phase": "Day before", "group": "Weather check", "main": "Check SIGWX charts", "sub": "", "url": "https://ims.gov.il/en/aviation", "urlLabel": "IMS.GOV.IL"},
+{"defId": "EN-015", "phase": "Day before", "group": "Weather check", "main": "Cross-check data in the weather app", "sub": ""},
+{"defId": "EN-016", "phase": "Day before", "group": "Flight information", "main": "Check NOTAMs", "sub": "", "url": "https://notam.liorbenhorin.xyz/", "urlLabel": "NOTAM LL"},
+{"defId": "EN-017", "phase": "Day before", "group": "Flight information", "main": "File flight plan", "sub": "", "url": "https://fpl.co.il/", "urlLabel": "FPL.CO.IL"},
+{"defId": "EN-018", "phase": "Airfield and aircraft", "group": "Paperwork", "main": "IMSAFE & PAVE", "sub": "Pilot first: Illness, Medication, Stress, Alcohol, Fatigue, Emotion. Then Aircraft, enVironment, External pressures."},
+{"defId": "EN-019", "phase": "Airfield and aircraft", "group": "Paperwork", "main": "Open the flight in the airfield computer / Operations", "sub": ""},
+{"defId": "EN-020", "phase": "Airfield and aircraft", "group": "Paperwork", "main": "Get flight authorization", "sub": ""},
+{"defId": "EN-021", "phase": "Airfield and aircraft", "group": "Paperwork", "main": "Confirm aircraft documents are in the cockpit", "sub": "Ownership, airworthiness (check validity) and radio (check validity)"},
+{"defId": "EN-022", "phase": "Airfield and aircraft", "group": "Paperwork", "main": "Confirm next maintenance is not exceeded", "sub": "Next maintenance at: Hobbs #### or on: DD/MM/YYYY [not entered yet - editable in \"Settings\" > \"Edit checklist\"]"},
+{"defId": "EN-023", "phase": "Airfield and aircraft", "group": "Paperwork", "main": "Weight and balance - confirm", "sub": "", "url": "https://eligrt.github.io/AirBalance/AirBalance.html", "urlLabel": "AirBalance"},
+{"defId": "EN-024", "phase": "Airfield and aircraft", "group": "Paperwork", "main": "Check for defects (\"red\" items)", "sub": ""},
+{"defId": "EN-025", "phase": "Airfield and aircraft", "group": "Paperwork", "main": "Aircraft binder - open line", "sub": ""},
+{"defId": "EN-026", "phase": "Airfield and aircraft", "group": "Cockpit setup", "main": "Exterior checks - completed", "sub": "", "url": "https://eligrt.github.io/AirCheck-POH/AirCheck_POH_TEST.html", "urlLabel": "AirCheck_POH"},
+{"defId": "EN-027", "phase": "Airfield and aircraft", "group": "Cockpit setup", "main": "Plates, airfield diagrams & hard copy charts", "sub": ""},
+{"defId": "EN-028", "phase": "Airfield and aircraft", "group": "Cockpit setup", "main": "Headsets - check batteries", "sub": ""},
+{"defId": "EN-029", "phase": "Airfield and aircraft", "group": "Cockpit setup", "main": "Handheld radio charged and in the bag", "sub": ""},
+{"defId": "EN-030", "phase": "Airfield and aircraft", "group": "Cockpit setup", "main": "Cameras: mount and start", "sub": ""},
+{"defId": "EN-031", "phase": "Airfield and aircraft", "group": "Cockpit setup", "main": "GPS: mount and start", "sub": ""},
+{"defId": "EN-032", "phase": "Airfield and aircraft", "group": "Cockpit setup", "main": "Passenger briefing (if required)", "sub": "", "url": "", "subTitle": "Passenger briefing", "subList": ["Touch nothing without pilot approval", "Seat belts fastened for the whole flight", "Practice opening the belts", "Practice opening the canopy", "Fire extinguisher location", "Quiet cockpit during takeoff and landing", "Don't assume - speak up! (silence has caused crashes)", "When something is on the radio - stay silent", "Feeling unwell or uncomfortable - say so right away", "Vent locations", "How to use the sick bag", "Questions? Concerns?"], "subHeads": {"0": {"t": "Safety", "i": "⚠️", "tone": "red"}, "5": {"t": "Communication", "i": "📻", "tone": "amber"}, "8": {"t": "Comfort", "i": "😊", "tone": "green"}}},
+{"defId": "EN-033", "phase": "Airfield and aircraft", "group": "General", "main": "Update ATC on takeoff (if required)", "sub": ""},
+{"defId": "EN-034", "phase": "Airfield and aircraft", "group": "General", "main": "Double-check weather", "sub": "METAR at departure and landing airfields", "url": "https://ims.gov.il/en/aviation", "urlLabel": "IMS.GOV.IL"},
+{"defId": "EN-035", "phase": "Airfield and aircraft", "group": "General", "main": "Re-check NOTAMs for airfields and routes", "sub": "", "url": "https://notam.liorbenhorin.xyz/", "urlLabel": "NOTAM LL"},
+{"defId": "EN-036", "phase": "Airfield and aircraft", "group": "General", "main": "Listen to and record ATIS (if required)", "sub": "", "url": "https://eligrt.github.io/AirATIS/AirATIS.html", "urlLabel": "AirATIS"},
+{"defId": "EN-037", "phase": "Wrap-up", "group": "Paperwork", "main": "Aircraft binder - close line", "sub": ""},
+{"defId": "EN-038", "phase": "Wrap-up", "group": "Packing personal gear", "main": "Cameras, iPad, phone", "sub": ""},
+{"defId": "EN-039", "phase": "Wrap-up", "group": "Packing personal gear", "main": "Personal headset and passenger headset", "sub": ""},
+{"defId": "EN-040", "phase": "Wrap-up", "group": "Packing personal gear", "main": "Handheld radio", "sub": ""},
+{"defId": "EN-041", "phase": "Wrap-up", "group": "Packing personal gear", "main": "Hard copies", "sub": ""},
+{"defId": "EN-042", "phase": "Wrap-up", "group": "Packing personal gear", "main": "Export data from the flight computer", "sub": ""},
+{"defId": "EN-043", "phase": "Wrap-up", "group": "Aircraft, hangar and airfield", "main": "Refuel - full", "sub": ""},
+{"defId": "EN-044", "phase": "Wrap-up", "group": "Aircraft, hangar and airfield", "main": "Cockpit Cold & Dark", "sub": ""},
+{"defId": "EN-045", "phase": "Wrap-up", "group": "Aircraft, hangar and airfield", "main": "Parking and covers", "sub": ""},
+{"defId": "EN-046", "phase": "Wrap-up", "group": "Aircraft, hangar and airfield", "main": "Pitot cover: in place", "sub": ""},
+{"defId": "EN-047", "phase": "Wrap-up", "group": "Aircraft, hangar and airfield", "main": "Close the flight in the airfield computer / Operations", "sub": ""},
+{"defId": "EN-048", "phase": "Wrap-up", "group": "Logging and payment", "main": "Payment to the partnership", "sub": ""},
+{"defId": "EN-049", "phase": "Wrap-up", "group": "Logging and payment", "main": "Logbook entry (paper)", "sub": ""},
+{"defId": "EN-050", "phase": "Wrap-up", "group": "Logging and payment", "main": "Digital logbook entry", "sub": "", "url": "https://eligrt.github.io/AirLog/AirLog.html", "urlLabel": "AirLog"},
+];
+const CL_DEFAULTS={he:CL_DEFAULT_HE,en:CL_DEFAULT_EN};
+const CL_DEFAULT_ALL=CL_DEFAULT_HE.concat(CL_DEFAULT_EN);
+const CL_DEFAULT=CL_DEFAULT_HE;
+const CL=CL_DEFAULT_HE.map(it=>({...it}));
 window.CL_DEFAULT_LIST=CL_DEFAULT;
 function norm(s){return(s||'').trim().toLowerCase().replace(/[׳״"'“”‘’״׳"""'']/g,'').replace(/[ךכ]/g,'כ').replace(/[םמ]/g,'מ').replace(/[ןנ]/g,'נ').replace(/[ףפ]/g,'פ').replace(/[ץצ]/g,'צ').replace(/\s+/g,' ');}
 const _defaultItemKeys=new Set(CL_DEFAULT.map(d=>`${norm(d.main)}|${norm(d.group)}|${norm(d.phase)}|${norm(d.sub||'')}`));
+/* v3.01.017: two default lists (Hebrew HE-001.., English EN-001..). A list follows the default its items came from, found by the ID prefix. */
+function acListLang(list){for(const it of (list||[])){if(it&&it.defId){if(/^EN-/.test(it.defId))return'en';if(/^HE-/.test(it.defId))return'he';}}return null;}
+function acDefaultCopy(lang){return JSON.parse(JSON.stringify(CL_DEFAULTS[lang]||CL_DEFAULT_HE));}
 const PHASES=[];const PHASE_IDX={};
 function buildIndex(){PHASES.length=0;Object.keys(PHASE_IDX).forEach(k=>delete PHASE_IDX[k]);CL.forEach((item,i)=>{if(!PHASE_IDX[item.phase]){const p={name:item.phase,start:i,end:i,groups:[],gIdx:{}};PHASE_IDX[item.phase]=p;PHASES.push(p);}const p=PHASE_IDX[item.phase];p.end=i;if(!p.gIdx[item.group]){const g={name:item.group,start:i,end:i,items:[]};p.gIdx[item.group]=g;p.groups.push(g);}const g=p.gIdx[item.group];g.end=i;g.items.push(i);});}
 buildIndex();
@@ -818,7 +896,7 @@ const p=getProfiles();
 p.profiles.forEach(prof=>{
 const list=prof.list||[];
 if(!list.length)return;
-const isUntouched=list.every(it=>{
+const isUntouched=list.every(it=>!it.defId)&&list.every(it=>{
 const key=`${norm(it.main)}|${norm(it.group)}|${norm(it.phase)}|${norm(it.sub||'')}`;
 return _defaultItemKeys.has(key);
 })&&list.length===CL_DEFAULT.length;
@@ -861,7 +939,7 @@ changed=true;
 });
 if(changed)saveProfiles();
 }
-const AC_LEGACY={d030:[{main:'תדרוך נוסע (אם נדרש)',sub:'',url:'https://eligrt.github.io/AirCheck/passenger-briefing.html'}]};
+const AC_LEGACY={};
 /* an item that still has the old built-in link (whatever its label) is treated as unchanged, so it becomes the new sub-list. A pilot who changed the link keeps it. */
 function acIsLegacy(it,def){const L=AC_LEGACY[def.defId];if(!L)return false;if(it.subList&&it.subList.length)return false;return L.some(l=>norm(it.main)===norm(l.main)&&norm(it.sub||'')===norm(l.sub)&&norm(it.url||'')===norm(l.url));}
 function backfillDefIds(){
@@ -888,11 +966,12 @@ const defByKey={};
 CL_DEFAULT.forEach(d=>{defByKey[`${norm(d.main)}|${norm(d.group)}|${norm(d.phase)}`]=d;});
 let changed=false;
 const defMap={};
-CL_DEFAULT.forEach(d=>{defMap[d.defId]=d;});
+CL_DEFAULT_ALL.forEach(d=>{defMap[d.defId]=d;});
 const p=getProfiles();
 p.profiles.forEach(prof=>{
 const list=prof.list;
 if(!list)return;
+if(acListLang(list)!=='en'){
 list.forEach(it=>{
 if(it.defId)return;
 const key=`${norm(it.main)}|${norm(it.group)}|${norm(it.phase)}`;
@@ -901,6 +980,10 @@ if(!def)return;
 const identical=norm(it.sub||'')===norm(def.sub||'')&&norm(it.url||'')===norm(def.url||'')&&norm(it.urlLabel||'')===norm(def.urlLabel||'');
 it.defId=def.defId;it.touched=!identical;changed=true;
 });
+}
+const lang=acListLang(list);
+if(!lang)return; /* a list with no default items follows no default */
+const defs=CL_DEFAULTS[lang];
 const seenDefIds=new Set();
 for(let i=list.length-1;i>=0;i--){
 const it=list[i];
@@ -918,7 +1001,7 @@ seenMains.add(norm(it.main));
 });
 for(let i=list.length-1;i>=0;i--){
 const it=list[i];
-if(!it.defId)continue; // pilot-created custom item — never touched by sync
+if(!it.defId)continue; // pilot-created custom item - never touched by sync
 const def=defMap[it.defId];
 if(!def){
 if(!it.touched){list.splice(i,1);changed=true;}
@@ -926,14 +1009,14 @@ continue; // touched orphan: keep as-is
 }
 if(it.touched&&acIsLegacy(it,def)){it.touched=false;}
 if(!it.touched){
-list[i]={...def,touched:false,_isNew:it._isNew};
+list[i]=JSON.parse(JSON.stringify({...def,touched:false,_isNew:it._isNew}));
 changed=true;
 }
 }
-CL_DEFAULT.forEach(def=>{
+defs.forEach(def=>{
 const key=`${norm(def.main)}|${norm(def.group)}|${norm(def.phase)}`;
 if(!seenIds.has(def.defId)&&!seenKeys.has(key)&&!seenMains.has(norm(def.main))){
-list.push({...def,touched:false,_isNew:true});
+list.push(JSON.parse(JSON.stringify({...def,touched:false,_isNew:true})));
 changed=true;
 }
 });
@@ -941,7 +1024,7 @@ changed=true;
 if(changed){
 saveProfiles();
 const prof=getActiveProfile();
-if(prof&&prof.list){CL.length=0;prof.list.forEach(it=>CL.push(it));buildIndex();}
+if(prof&&prof.list){CL.length=0;prof.list.filter(it=>!it.deleted).forEach(it=>CL.push(it));buildIndex();}
 }
 }
 function updateRunwayProfileLabel(){
@@ -956,14 +1039,11 @@ badgeEl.style.display='none';
 }
 }
 let _editorActiveProfileId=null;
-let _npFromType='default';
+let _npFromType='he';
 function openNewProfileModal(){
 npRender();
-_npFromType='default';
-document.getElementById('startFromDefault').classList.add('selected');
-document.getElementById('startFromScratch').classList.remove('selected');
 document.getElementById('newProfileNameInput').value='';
-document.getElementById('newProfileConfirmBtn').disabled=true;
+npSelectFrom('he');
 document.getElementById('newProfileModal').style.display='flex';
 const inp=document.getElementById('newProfileNameInput');
 const overlay=document.getElementById('newProfileModal');
@@ -980,25 +1060,33 @@ inp._npFit=fit;
 if(vv){vv.addEventListener('resize',fit);vv.addEventListener('scroll',fit);}
 }
 if(inp._npFit)inp._npFit();
-setTimeout(()=>{inp.focus();if(inp._npFit)setTimeout(inp._npFit,300);},100);
+setTimeout(()=>{if(inp._npFit)setTimeout(inp._npFit,300);},100);
 }
 function npClose(){const o=document.getElementById('newProfileModal');o.style.alignItems='center';o.style.paddingTop='';o.style.height='';o.style.top='';o.style.display='none';}
 function handleNewProfileClick(e){if(e.target===document.getElementById('newProfileModal'))npClose();}
 function npSelectFrom(type){
 _npFromType=type;
-document.getElementById('startFromDefault').classList.toggle('selected',type==='default');
-document.getElementById('startFromScratch').classList.toggle('selected',type==='scratch');
+const sc=type==='scratch';
+document.getElementById('startFromHe').classList.toggle('selected',type==='he');
+document.getElementById('startFromEn').classList.toggle('selected',type==='en');
+document.getElementById('startFromScratch').classList.toggle('selected',sc);
+document.getElementById('npGrp').classList.toggle('on',sc);
+document.getElementById('npNameLbl').classList.toggle('off',!sc);
+const inp=document.getElementById('newProfileNameInput');inp.disabled=!sc;
+if(sc){setTimeout(()=>{try{inp.focus();}catch(e){}},50);}else{inp.blur();}
+npUpdateConfirm();
 }
 function npUpdateConfirm(){
 const val=document.getElementById('newProfileNameInput').value.trim();
-document.getElementById('newProfileConfirmBtn').disabled=val.length<1;
+document.getElementById('newProfileConfirmBtn').disabled=_npFromType==='scratch'&&val.length<1;
 }
 function npConfirm(){
-const name=document.getElementById('newProfileNameInput').value.trim();
+const dl=_npFromType==='he'||_npFromType==='en'?_npFromType:null;
+const name=dl?eT(dl==='he'?'npDefHe':'npDefEn'):document.getElementById('newProfileNameInput').value.trim();
 if(!name)return;
 const id=generateProfileId();
-const list=_npFromType==='default'?CL_DEFAULT.map(it=>({...it})):[];
-const type=_npFromType==='default'?'default':'modified';
+const list=dl?acDefaultCopy(dl):[];
+const type=dl?'default':'modified';
 npClose();
 if(ED.active){
 ED.lists.push(eBuildList({id,name,type,list}));
@@ -1019,7 +1107,7 @@ const hasOverflow=list.scrollHeight>list.clientHeight+2;
 const atBottom=list.scrollTop+list.clientHeight>=list.scrollHeight-2;
 fade.classList.toggle('show',hasOverflow&&!atBottom);
 }
-/* ============ AirCheck list editor (v3.01.015) ============
+/* ============ AirCheck list editor (v3.01.017) ============
    All screen text is in E_LANG. English is added later as E_LANG.en. */
 const E_LANG={he:{
 back:'חזרה',cancel:'ביטול',ok:'אישור',save:'שמור שינויים',saved:'נשמר',
@@ -1064,10 +1152,10 @@ xiReplaceBtn:'החלף את הרשימה',xiReplaceBtnMany:'החלף את הרש
 xiBadTitle:'הקובץ לא מתאים',xiBadMsg:'לא נמצאה בו רשימה של AirCheck. אפשר לבחור קובץ שיוצא מהאפליקציה.',
 xiReadErr:'אי אפשר היה לקרוא את הקובץ. אפשר לבחור קובץ אחר.',xiPickOther:'בחירת קובץ אחר',xiLoading:'הספרייה עדיין נטענת, נסה שוב בעוד רגע.',
 xiDoneOne:'✓ הרשימה נטענה',xiDoneMany:'✓ הרשימות נטענו',xlsExportDone:'✓ הקובץ מוכן - {n} רשימות',xlsExportErr:'שגיאה בייצוא',
-npTitle:'רשימה חדשה',npAsk:'במה להתחיל?',npDefault:'רשימת ברירת המחדל',npEmpty:'רשימה ריקה',npName:'שם הרשימה',npHint:'לדוגמה: בדיקת כשירות',npCreate:'צור רשימה'
+npTitle:'רשימה חדשה',npAsk:'במה להתחיל?',npDefHe:'ברירת מחדל (עברית)',npDefEn:'ברירת מחדל (אנגלית)',npEmpty:'רשימה ריקה',npName:'שם הרשימה',npHint:'לדוגמה: בדיקת כשירות',npCreate:'צור רשימה'
 }};
 let E_LNG='he';
-E_LANG.en={loadingLib:'Loading library...',back:'Back',cancel:'Cancel',ok:'OK',save:'Save changes',saved:'Saved',exitTitle:'Save your changes?',exitMsg:'',exitSave:'Save and exit',exitDiscard:'Exit without saving',exitStay:'Keep editing',modeTitle:'What happens when the row is tapped in flight?',modeLink:'Link',modeSubs:'Sub-list',warnDropSubs:'Pressing OK will delete the existing sub-list ({n} points)',warnDropLink:'Pressing OK will delete the existing link',title:'Edit list',barHint:'Tap a row or the list name to edit',barHintSub:'Tap a row to edit it',edit:'Edit',rename:'Rename',up:'Up',down:'Down',del:'Delete',earlier:'Earlier',later:'Later',dragAria:'Drag to change position',nItems:'items',nGroups:'groups',nPoints:'points',subList:'Sub-list',addItem:'+ Add item',addGroup:'+ Add group',addPhase:'+ Add phase',addListAria:'Add list',addPoint:'+ Add point',addHeading:'+ Add colored heading',foldAria:'Open or close the phase',foldGroupAria:'Open or close the group',tagChanged:'Changed by you',tagOwn:'Your item',tagNew:'New',renameListTitle:'Rename the list',newListHint:'List name',delListTitle:'Delete the list?',delListMsg:'The list "{n}" and everything in it will be deleted.',newItemTitle:'New item',newItemHint:'What to check?',newGroupTitle:'New group',newGroupHint:'Group name',newPhaseTitle:'New phase',newPhaseHint:'Phase name',renamePhaseTitle:'Rename the phase',renameGroupTitle:'Rename the group',delPhaseTitle:'Delete the phase?',delPhaseMsg:'The phase "{n}" and everything in it will be deleted.',delGroupTitle:'Delete the group?',delGroupMsg:'The group "{n}" and all its items will be deleted.',delItemTitle:'Delete this item?',delItemMsg:'The item "{n}" will be deleted from your list.',itemTitle:'Edit item',fMain:'What to check',fSub:'Explanation (optional)',fUrl:'Link address (optional)',fUrlLabel:'Link name (optional)',linkPre:'Link ·',subAdd:'+ Add sub-list',subEdit:'Edit sub-list',subRemove:'Remove',subRemoveTitle:'Remove the sub-list?',subRemoveMsg:'All its points and headings will be deleted.',resetBtn:'Restore default',subsTitle:'Edit sub-list',subsName:'Sub-list title (optional)',newPointTitle:'New point',newPointHint:'What to check in this point?',editPointTitle:'Edit point',newHeadingTitle:'New heading',editHeadingTitle:'Edit heading',headingHint:'Heading name, for example Safety',pickColor:'Heading color',pickIcon:'Icon',colRed:'Red',colAmber:'Amber',colGreen:'Green',colBlue:'Blue',icoWarn:'Warning',icoRadio:'Radio',icoSmile:'Comfort',icoInfo:'Info',delPointTitle:'Delete the point?',delHeadingTitle:'Delete the heading?',delRowMsg:'"{n}" will be deleted.',xlsHead:'Backup and transfer',xlsImport:'Import from Excel file',xlsImportSub:'Load a list from your phone',xlsExport:'Export to Excel',xlsExportSub:'Save your lists to a file',xiTitle:'Import from Excel file',xiFoundItems:'Found {n} items',xiFoundLists:'Found {n} lists',xiItemsN:'{n} items',xiReplaceOne:'Your list will be replaced with the file content.',xiReplaceAllOne:'All your lists ({n}) will be replaced with the list from the file.',xiReplaceMany:'Your lists will be replaced with the file content.',xiMax3:'You can keep up to 3 lists. The first three will be imported.',xiSkipped:'{n} rows in the file were skipped.',xiReplaceBtn:'Replace the list',xiReplaceBtnMany:'Replace the lists',xiCancel:'Cancel',xiBadTitle:'The file does not fit',xiBadMsg:'No AirCheck list was found in it. You can choose a file exported from the app.',xiReadErr:'The file could not be read. You can choose another file.',xiPickOther:'Choose another file',xiLoading:'The library is still loading, try again in a moment.',xiDoneOne:'✓ List loaded',xiDoneMany:'✓ Lists loaded',xlsExportDone:'✓ File ready - {n} lists',xlsExportErr:'Export error',npTitle:'New list',npAsk:'What to start with?',npDefault:'Default list',npEmpty:'Empty list',npName:'List name',npHint:'For example: Currency check',npCreate:'Create list'};
+E_LANG.en={loadingLib:'Loading library...',back:'Back',cancel:'Cancel',ok:'OK',save:'Save changes',saved:'Saved',exitTitle:'Save your changes?',exitMsg:'',exitSave:'Save and exit',exitDiscard:'Exit without saving',exitStay:'Keep editing',modeTitle:'What happens when the row is tapped in flight?',modeLink:'Link',modeSubs:'Sub-list',warnDropSubs:'Pressing OK will delete the existing sub-list ({n} points)',warnDropLink:'Pressing OK will delete the existing link',title:'Edit list',barHint:'Tap a row or the list name to edit',barHintSub:'Tap a row to edit it',edit:'Edit',rename:'Rename',up:'Up',down:'Down',del:'Delete',earlier:'Earlier',later:'Later',dragAria:'Drag to change position',nItems:'items',nGroups:'groups',nPoints:'points',subList:'Sub-list',addItem:'+ Add item',addGroup:'+ Add group',addPhase:'+ Add phase',addListAria:'Add list',addPoint:'+ Add point',addHeading:'+ Add colored heading',foldAria:'Open or close the phase',foldGroupAria:'Open or close the group',tagChanged:'Changed by you',tagOwn:'Your item',tagNew:'New',renameListTitle:'Rename the list',newListHint:'List name',delListTitle:'Delete the list?',delListMsg:'The list "{n}" and everything in it will be deleted.',newItemTitle:'New item',newItemHint:'What to check?',newGroupTitle:'New group',newGroupHint:'Group name',newPhaseTitle:'New phase',newPhaseHint:'Phase name',renamePhaseTitle:'Rename the phase',renameGroupTitle:'Rename the group',delPhaseTitle:'Delete the phase?',delPhaseMsg:'The phase "{n}" and everything in it will be deleted.',delGroupTitle:'Delete the group?',delGroupMsg:'The group "{n}" and all its items will be deleted.',delItemTitle:'Delete this item?',delItemMsg:'The item "{n}" will be deleted from your list.',itemTitle:'Edit item',fMain:'What to check',fSub:'Explanation (optional)',fUrl:'Link address (optional)',fUrlLabel:'Link name (optional)',linkPre:'Link ·',subAdd:'+ Add sub-list',subEdit:'Edit sub-list',subRemove:'Remove',subRemoveTitle:'Remove the sub-list?',subRemoveMsg:'All its points and headings will be deleted.',resetBtn:'Restore default',subsTitle:'Edit sub-list',subsName:'Sub-list title (optional)',newPointTitle:'New point',newPointHint:'What to check in this point?',editPointTitle:'Edit point',newHeadingTitle:'New heading',editHeadingTitle:'Edit heading',headingHint:'Heading name, for example Safety',pickColor:'Heading color',pickIcon:'Icon',colRed:'Red',colAmber:'Amber',colGreen:'Green',colBlue:'Blue',icoWarn:'Warning',icoRadio:'Radio',icoSmile:'Comfort',icoInfo:'Info',delPointTitle:'Delete the point?',delHeadingTitle:'Delete the heading?',delRowMsg:'"{n}" will be deleted.',xlsHead:'Backup and transfer',xlsImport:'Import from Excel file',xlsImportSub:'Load a list from your phone',xlsExport:'Export to Excel',xlsExportSub:'Save your lists to a file',xiTitle:'Import from Excel file',xiFoundItems:'Found {n} items',xiFoundLists:'Found {n} lists',xiItemsN:'{n} items',xiReplaceOne:'Your list will be replaced with the file content.',xiReplaceAllOne:'All your lists ({n}) will be replaced with the list from the file.',xiReplaceMany:'Your lists will be replaced with the file content.',xiMax3:'You can keep up to 3 lists. The first three will be imported.',xiSkipped:'{n} rows in the file were skipped.',xiReplaceBtn:'Replace the list',xiReplaceBtnMany:'Replace the lists',xiCancel:'Cancel',xiBadTitle:'The file does not fit',xiBadMsg:'No AirCheck list was found in it. You can choose a file exported from the app.',xiReadErr:'The file could not be read. You can choose another file.',xiPickOther:'Choose another file',xiLoading:'The library is still loading, try again in a moment.',xiDoneOne:'✓ List loaded',xiDoneMany:'✓ Lists loaded',xlsExportDone:'✓ File ready - {n} lists',xlsExportErr:'Export error',npTitle:'New list',npAsk:'What to start with?',npDefHe:'Default (Hebrew)',npDefEn:'Default (English)',npEmpty:'Empty list',npName:'List name',npHint:'For example: Currency check',npCreate:'Create list'};
 
 function eT(k,n){const LG=(typeof AC_LANG!=='undefined'&&AC_LANG==='en')?'en':E_LNG;let s=E_LANG[LG]&&E_LANG[LG][k];if(s===undefined)s=E_LANG.he[k];if(s===undefined)return k;return n===undefined?s:s.replace('{n}',n);}
 const E_HEX={red:'#a32d24',amber:'#96590a',green:'#1f6f3f',blue:'#1c3d6e'};
@@ -1091,7 +1179,7 @@ const ED={active:false,lists:[],listId:null,screen:'list',sel:null,folded:{},edi
 let _editorFromSettings=false;
 
 function eNewId(){ED.nid+=1;return 'e'+ED.nid;}
-function eDef(defId){return defId?CL_DEFAULT.find(d=>d.defId===defId)||null:null;}
+function eDef(defId){return defId?CL_DEFAULT_ALL.find(d=>d.defId===defId)||null:null;}
 
 /* ---------- list data <-> editor model ---------- */
 function eSubsFromReal(raw){
@@ -1224,7 +1312,8 @@ const beforeStr=before?JSON.stringify(before.list||[]):'';
 const out=ED.lists.map(L=>{
 const prev=p.profiles.find(x=>x.id===L.id)||{};
 const f=eFinalizeList(L);
-const isDefault=f.list.length===CL_DEFAULT.length&&f.list.every((it,i)=>CL_DEFAULT[i]&&it.defId===CL_DEFAULT[i].defId&&!it.touched&&!it.deleted);
+const dl=CL_DEFAULTS[acListLang(f.list)]||CL_DEFAULT_HE;
+const isDefault=f.list.length===dl.length&&f.list.every((it,i)=>dl[i]&&it.defId===dl[i].defId&&!it.touched&&!it.deleted);
 const prof=Object.assign({},prev,{id:L.id,name:L.name,list:f.list,type:isDefault?'default':'modified'});
 if(f.empties.length)prof.empties=f.empties;else delete prof.empties;
 L.type=prof.type;
@@ -1791,11 +1880,12 @@ eFoldAll();eRender();
 function npRender(){
 const b=document.getElementById('npBox');if(!b)return;b.setAttribute('dir',acDir());
 b.innerHTML='<div class="np-t">'+eT('npTitle')+'</div><div class="np-q">'+eT('npAsk')+'</div>'
-+'<div class="np-opts"><button type="button" class="np-opt selected" id="startFromDefault" onmousedown="event.preventDefault()" onclick="npSelectFrom(\'default\')">'+eT('npDefault')+'</button>'
-+'<button type="button" class="np-opt" id="startFromScratch" onmousedown="event.preventDefault()" onclick="npSelectFrom(\'scratch\')">'+eT('npEmpty')+'</button></div>'
-+'<label class="np-l" for="newProfileNameInput">'+eT('npName')+'</label>'
-+'<input id="newProfileNameInput" class="np-in" type="text" placeholder="'+eEsc(eT('npHint'))+'" oninput="npUpdateConfirm()">'
-+'<button type="button" class="np-b p" id="newProfileConfirmBtn" onclick="npConfirm()" disabled>'+eT('npCreate')+'</button>'
++'<div class="np-opts"><button type="button" class="np-opt selected" id="startFromHe" onmousedown="event.preventDefault()" onclick="npSelectFrom(\'he\')">'+eT('npDefHe')+'</button>'
++'<button type="button" class="np-opt" id="startFromEn" onmousedown="event.preventDefault()" onclick="npSelectFrom(\'en\')">'+eT('npDefEn')+'</button>'
++'<div class="np-grp" id="npGrp"><button type="button" class="np-opt" id="startFromScratch" onmousedown="event.preventDefault()" onclick="npSelectFrom(\'scratch\')">'+eT('npEmpty')+'</button>'
++'<label class="np-l off" id="npNameLbl" for="newProfileNameInput">'+eT('npName')+'</label>'
++'<input id="newProfileNameInput" class="np-in" type="text" disabled placeholder="'+eEsc(eT('npHint'))+'" oninput="npUpdateConfirm()"></div></div>'
++'<button type="button" class="np-b p" id="newProfileConfirmBtn" onclick="npConfirm()">'+eT('npCreate')+'</button>'
 +'<button type="button" class="np-b n" onclick="npClose()">'+eT('xiCancel')+'</button>';
 }
 function xlsHeadCols(row){
@@ -1875,20 +1965,22 @@ reader.readAsArrayBuffer(file);
 /* Turns the rows of one sheet into a stored list. A default item is recognised by its ID, or (old files) by name, group and phase.
    Anything that differs from the default is marked as the pilot's own change, so an update never overwrites it. */
 function xlsToStoredList(rows){
-const byId={};CL_DEFAULT.forEach(d=>{byId[d.defId]=d;});
-const byKey={};CL_DEFAULT.forEach(d=>{byKey[`${norm(d.main)}|${norm(d.group)}|${norm(d.phase)}`]=d;});
+const byId={};CL_DEFAULT_ALL.forEach(d=>{byId[d.defId]=d;});
+const byKey={};CL_DEFAULT_ALL.forEach(d=>{byKey[`${norm(d.main)}|${norm(d.group)}|${norm(d.phase)}`]=d;});
 const used=new Set();
 return rows.map(raw=>{
 const it=Object.assign({},raw);const ed=!!it._ed;const edc=!!it._edc;
 delete it._id;delete it._ed;delete it._edc;
 let def=null;
+const LEG_RENAMED={d019:'HE-019',d028:'HE-031',d041:'HE-047'};
 if(raw._id&&byId[raw._id]&&!used.has(raw._id))def=byId[raw._id];
+if(!def&&LEG_RENAMED[raw._id]&&byId[LEG_RENAMED[raw._id]]&&!used.has(LEG_RENAMED[raw._id]))def=byId[LEG_RENAMED[raw._id]];
 if(!def){const k=byKey[`${norm(it.main)}|${norm(it.group)}|${norm(it.phase)}`];if(k&&!used.has(k.defId))def=k;}
 if(!def)return it;
 used.add(def.defId);
 if(acIsLegacy(it,def))return Object.assign({},def,{touched:false});
 /* the file says this item was not changed by the pilot, so it follows the current default (updates keep flowing) */
-if(edc&&!ed&&raw._id===def.defId)return Object.assign({},def,{touched:false});
+if(edc&&!ed&&(raw._id===def.defId||/^d\d{3}$/.test(raw._id||'')))return Object.assign({},def,{touched:false});
 it.defId=def.defId;
 it.touched=ed||!eSameAsDef(it,def);
 return it;
@@ -2482,7 +2574,7 @@ return inst;
 <sc-if value="{{row.showCurtain}}">
 <div style="display:grid;grid-template-rows:{{listRows}};visibility:{{listVis}};transition:grid-template-rows .42s cubic-bezier(.4,0,.2,1),visibility 0s linear {{listVisDelay}};"><div style="min-height:0;overflow:hidden;"><div style="margin:0 8px 6px;background:{{subBoxBg}};border:1.5px solid {{subBoxBd}};border-radius:10px;padding:0 10px;transition:background .5s ease,border-color .5s ease;">
 <sc-for list="{{points}}" as="pt">
-<sc-if value="{{pt.hasHead}}"><div style="margin:8px 0 2px;display:flex;align-items:center;gap:8px;padding:4px 9px;border-radius:7px;background:{{pt.headBg}};color:#fbf6e8;"><span style="font-size:13px;line-height:1;" aria-hidden="true">{{pt.headIcon}}</span><span dir="auto" style="flex:1;font-size:13px;font-weight:700;text-align:{{tAlign}};">{{pt.head}}</span></div></sc-if><button type="button" onClick="{{pt.toggle}}" style="width:100%;padding:0;border:0;border-top:1px solid {{pt.lineC}};background:{{pt.rowBg}};border-radius:{{pt.rowRad}};margin:0;width:100% !important;padding:0 8px !important;text-align:start;cursor:pointer;display:flex;align-items:center;gap:10px;height:44px;box-sizing:border-box;">
+<sc-if value="{{pt.hasHead}}"><div style="margin:8px 0 2px;display:flex;align-items:center;gap:8px;padding:4px 9px;border-radius:7px;background:{{pt.headBg}};color:#fbf6e8;"><span style="font-size:13px;line-height:1;" aria-hidden="true">{{pt.headIcon}}</span><span dir="auto" style="flex:1;font-size:13px;font-weight:700;text-align:{{tAlign}};">{{pt.head}}</span></div></sc-if><button type="button" id="lpt-{{pt.j}}" onClick="{{pt.toggle}}" style="width:100%;padding:0;border:0;border-top:1px solid {{pt.lineC}};background:{{pt.rowBg}};border-radius:{{pt.rowRad}};margin:0;width:100% !important;padding:0 8px !important;text-align:start;cursor:pointer;display:flex;align-items:center;gap:10px;height:44px;box-sizing:border-box;">
 <span style="flex:none;width:20px;height:20px;border-radius:50%;box-sizing:border-box;display:flex;align-items:center;justify-content:center;background:{{pt.markBg}};border:{{pt.markBorder}};">
 <sc-if value="{{pt.isDone}}"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="{{pt.checkStroke}}" stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12l5 5l10 -10"></path></svg></sc-if>
 </span>
@@ -2881,6 +2973,23 @@ else c.scrollBy({ top: delta, behavior: 'smooth' });
 setTimeout(go, 30);
 }
 }
+if (lv && s.curtainOpen) {
+const kp = this.curPt(s.pts); const wasOpen = this._lo === true;
+if (!wasOpen || this._lk !== kp) {
+const recentU = Date.now() - (this._us || 0) < 700;
+if (!wasOpen || !recentU) {
+setTimeout(() => {
+const c = document.getElementById('listScroll');
+const r = document.getElementById('lpt-' + Math.min(kp, BRIEF.length - 1));
+if (!c || !r) return;
+const hh = r.previousElementSibling; const tg = (hh && hh.tagName === 'DIV' && hh.parentNode === r.parentNode) ? hh : r;
+const delta = tg.getBoundingClientRect().top - c.getBoundingClientRect().top - c.clientHeight * 0.3;
+c.scrollBy({ top: delta, behavior: 'smooth' });
+}, wasOpen ? 30 : 480);
+}
+}
+this._lo = true; this._lk = kp;
+} else { this._lo = false; }
 const cp = ITEMS[s.cur].ph;
 if (this._cp !== cp) { this._cp = cp; if (s.collapsed[cp]) this.setState({ collapsed: { ...s.collapsed, [cp]: false } }); }
 this._lv = lv; this._lc = s.cur;
