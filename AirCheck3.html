@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <!-- ═══════════════════════════════════════
-     AirCheck · v3.01.017 · built by eligrt
+     AirCheck · v3.01.018 · built by eligrt
      ═══════════════════════════════════════ -->
 <html lang="he" dir="rtl">
 <head>
@@ -35,12 +35,12 @@ if(force){['aircheck_rd_v1'].forEach(function(n){r.call(localStorage,P+n);});try
 <script>
 /* Single source of truth for app identity. Footers, share texts, exports and Firebase appVersion all read these. */
 const APP_NAME='AirCheck';
-const APP_VERSION='v3.01.017';
+const APP_VERSION='v3.01.018';
 const APP_STAMP=APP_NAME+' · '+APP_VERSION+' · built by eligrt';
 document.addEventListener('DOMContentLoaded',function(){document.querySelectorAll('.app-stamp').forEach(function(e){e.textContent=APP_STAMP;});});
 </script>
 <script>
-/* v3.01.017: language layer. UI only: lists are the pilot's own data and are never translated. */
+/* v3.01.018: language layer. UI only: lists are the pilot's own data and are never translated. */
 var AC_LANG=null;
 try{var _l=localStorage.getItem('aircheck_lang');if(_l==='he'||_l==='en')AC_LANG=_l;}catch(e){}
 if(!AC_LANG)document.documentElement.className+=' ac-needlang';
@@ -418,7 +418,7 @@ html:has(.ac3-splash-top),body:has(.ac3-splash-top){background:#f7f0e0;}
 #newProfileModal .np-b.p:disabled{opacity:.4;cursor:default;}
 #newProfileModal .np-b.n{border:1.5px solid #8a6a2a;background:#fff;color:#6b4f12;}
 
-/* v3.01.017: first-launch language choice */
+/* v3.01.018: first-launch language choice */
 #langPick{display:none;position:fixed;inset:0;z-index:900;flex-direction:column;background:linear-gradient(#1c3d6e 0%,#1c3d6e 55%,#14284f 100%);}
 .ac-needlang #langPick{display:flex;}
 #langPick .lp-top{flex:none;padding:calc(34px + var(--sat,env(safe-area-inset-top,0px))) 18px 250px;background:linear-gradient(#f7f0e0 0%,#efe3c2 48%,rgb(233,223,193) 52%,rgb(210,206,189) 59%,rgb(150,160,180) 75%,#1c3d6e 100%);display:flex;flex-direction:column;align-items:center;gap:4px;text-align:center;}
@@ -655,7 +655,7 @@ const CL_DEFAULT_HE=[
 {"defId": "HE-039", "phase": "סגירת טיסה", "group": "קיפול ציוד אישי", "main": "אוזניות אישיות ואוזניות נוסע", "sub": ""},
 {"defId": "HE-040", "phase": "סגירת טיסה", "group": "קיפול ציוד אישי", "main": "קשר ניד", "sub": ""},
 {"defId": "HE-041", "phase": "סגירת טיסה", "group": "קיפול ציוד אישי", "main": "HardCopy", "sub": ""},
-{"defId": "HE-042", "phase": "סגירת טיסה", "group": "קיפול ציוד אישי", "main": "יצא נתוני ממחשב טיסה", "sub": ""},
+{"defId": "HE-042", "phase": "סגירת טיסה", "group": "קיפול ציוד אישי", "main": "יצא נתוני מחשב טיסה", "sub": ""},
 {"defId": "HE-043", "phase": "סגירת טיסה", "group": "מטוס האנגר ומנחת", "main": "תדלוק - מלא", "sub": ""},
 {"defId": "HE-044", "phase": "סגירת טיסה", "group": "מטוס האנגר ומנחת", "main": "קוקפיט Cold & Dark", "sub": ""},
 {"defId": "HE-045", "phase": "סגירת טיסה", "group": "מטוס האנגר ומנחת", "main": "חניה וכיסוי", "sub": ""},
@@ -724,7 +724,7 @@ const CL=CL_DEFAULT_HE.map(it=>({...it}));
 window.CL_DEFAULT_LIST=CL_DEFAULT;
 function norm(s){return(s||'').trim().toLowerCase().replace(/[׳״"'“”‘’״׳"""'']/g,'').replace(/[ךכ]/g,'כ').replace(/[םמ]/g,'מ').replace(/[ןנ]/g,'נ').replace(/[ףפ]/g,'פ').replace(/[ץצ]/g,'צ').replace(/\s+/g,' ');}
 const _defaultItemKeys=new Set(CL_DEFAULT.map(d=>`${norm(d.main)}|${norm(d.group)}|${norm(d.phase)}|${norm(d.sub||'')}`));
-/* v3.01.017: two default lists (Hebrew HE-001.., English EN-001..). A list follows the default its items came from, found by the ID prefix. */
+/* v3.01.018: two default lists (Hebrew HE-001.., English EN-001..). A list follows the default its items came from, found by the ID prefix. */
 function acListLang(list){for(const it of (list||[])){if(it&&it.defId){if(/^EN-/.test(it.defId))return'en';if(/^HE-/.test(it.defId))return'he';}}return null;}
 function acDefaultCopy(lang){return JSON.parse(JSON.stringify(CL_DEFAULTS[lang]||CL_DEFAULT_HE));}
 const PHASES=[];const PHASE_IDX={};
@@ -1107,7 +1107,7 @@ const hasOverflow=list.scrollHeight>list.clientHeight+2;
 const atBottom=list.scrollTop+list.clientHeight>=list.scrollHeight-2;
 fade.classList.toggle('show',hasOverflow&&!atBottom);
 }
-/* ============ AirCheck list editor (v3.01.017) ============
+/* ============ AirCheck list editor (v3.01.018) ============
    All screen text is in E_LANG. English is added later as E_LANG.en. */
 const E_LANG={he:{
 back:'חזרה',cancel:'ביטול',ok:'אישור',save:'שמור שינויים',saved:'נשמר',
@@ -1464,6 +1464,22 @@ ED.dragY=eRelY(d.y);
 const gh=document.getElementById('e3Ghost');
 if(gh){const H=document.getElementById('e3').clientHeight;gh.style.top=Math.max(4,Math.min(H-64,Math.round(ED.dragY-64)))+'px';}
 if(slot&&slot!==ED.slot){ED.slot=slot;eRender();}
+eHoverOpen(tg?tg.getAttribute('data-rk'):null);
+}
+function eHoverOpen(key){
+const d=ED.drag;if(!d)return;
+let fid=null;
+if(key&&key.indexOf('g:')===0&&d.kind==='i')fid=key.slice(2);
+else if(key&&key.indexOf('p:')===0&&(d.kind==='i'||d.kind==='g'))fid=key.slice(2);
+if(fid&&!ED.folded[fid])fid=null;
+if(d.hoverId===fid)return;
+d.hoverId=fid;clearTimeout(d.hoverT);
+if(!fid)return;
+d.hoverT=setTimeout(()=>{
+if(!ED.drag||ED.drag!==d||d.hoverId!==fid)return;
+ED.folded[fid]=false;d.hoverId=null;
+eRender();eDragMove({clientX:d.x,clientY:d.y});
+},400);
 }
 function eAutoScroll(){
 const d=ED.drag;if(!d)return;
@@ -1474,7 +1490,7 @@ if(d.y<r.top+60)sc.scrollTop-=14;else if(d.y>r.bottom-60)sc.scrollTop+=14;
 function eDragEnd(){
 const d=ED.drag;if(!d)return;
 window.removeEventListener('pointermove',d.mv);window.removeEventListener('pointerup',d.up);window.removeEventListener('pointercancel',d.up);
-clearInterval(d.timer);
+clearInterval(d.timer);clearTimeout(d.hoverT);
 ED.drag=null;
 const slot=ED.slot;
 if(slot)ePerformDrop(d.kind,d.id,slot);
@@ -1610,12 +1626,12 @@ if(s.screen==='list'){
 const renamePhase=p=>(e,el)=>eOpenSheet({type:'text',title:t('renamePhaseTitle'),hint:t('newPhaseHint'),text:p.name,okLabel:t('ok'),onOk:v=>{if(v.trim())p.name=v.trim();}},el);
 const deletePhase=p=>(e,el)=>eConfirmDelete(t('delPhaseTitle'),t('delPhaseMsg',p.name),()=>{p.groups.forEach(g=>g.items.forEach(it=>eTomb(L,it,p.name,g.name)));phases.splice(phases.indexOf(p),1);ED.sel=null;},el);
 phases.forEach((p,pi)=>{
-const pk='p:'+p.id;const fold=!!s.folded[p.id]&&!dk;const pSel=s.sel===pk;
+const pk='p:'+p.id;const fold=!!s.folded[p.id];const pSel=s.sel===pk;
 rows.push({key:pk,isPhase:true,label:p.name,count:eCountText(p),bg:pSel?'#2a5594':'#1c3d6e',ring:pSel?'3px solid #ffd76a':'none',dim:dim(pk),foldOpen:!fold,onTap:tog(pk),onDrag:e=>eStartDrag(e,'p',p.id,pk),onFold:()=>{ED.folded[p.id]=!ED.folded[p.id];eRender();}});
 pick(pk,t('rename'),renamePhase(p),phases,pi,deletePhase(p));
 if(fold)return;
 p.groups.forEach((g,gi)=>{
-const gk='g:'+g.id;const gSel=s.sel===gk;const gFold=!!s.folded[g.id]&&!(dk&&dkind==='i');
+const gk='g:'+g.id;const gSel=s.sel===gk;const gFold=!!s.folded[g.id];
 rows.push({key:gk,isGroup:true,label:g.name,bg:gSel?'#bfdcc8':'#d5e8da',radius:gSel?'12px':'0',z:gSel?2:0,drop:gSel?'0 0 0 2.5px #c8a04a, 0 6px 16px rgba(110,80,20,.28)':'none',dim:dim(gk),onTap:tog(gk),onDrag:e=>eStartDrag(e,'g',g.id,gk),foldOpen:!gFold,showCount:gFold,count:g.items.length+' '+t('nItems'),onFold:()=>{ED.folded[g.id]=!ED.folded[g.id];eRender();}});
 pick(gk,t('rename'),(e,el)=>eOpenSheet({type:'text',title:t('renameGroupTitle'),hint:t('newGroupHint'),text:g.name,okLabel:t('ok'),onOk:v=>{if(v.trim())g.name=v.trim();}},el),p.groups,gi,(e,el)=>eConfirmDelete(t('delGroupTitle'),t('delGroupMsg',g.name),()=>{g.items.forEach(it=>eTomb(L,it,p.name,g.name));p.groups.splice(p.groups.indexOf(g),1);ED.sel=null;},el));
 if(gFold)return;
