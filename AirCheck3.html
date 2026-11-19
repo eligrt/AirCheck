@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <!-- ═══════════════════════════════════════
-     AirCheck · v3.01.018 · built by eligrt
+     AirCheck · v3.01.019 · built by eligrt
      ═══════════════════════════════════════ -->
 <html lang="he" dir="rtl">
 <head>
@@ -35,12 +35,12 @@ if(force){['aircheck_rd_v1'].forEach(function(n){r.call(localStorage,P+n);});try
 <script>
 /* Single source of truth for app identity. Footers, share texts, exports and Firebase appVersion all read these. */
 const APP_NAME='AirCheck';
-const APP_VERSION='v3.01.018';
+const APP_VERSION='v3.01.019';
 const APP_STAMP=APP_NAME+' · '+APP_VERSION+' · built by eligrt';
 document.addEventListener('DOMContentLoaded',function(){document.querySelectorAll('.app-stamp').forEach(function(e){e.textContent=APP_STAMP;});});
 </script>
 <script>
-/* v3.01.018: language layer. UI only: lists are the pilot's own data and are never translated. */
+/* v3.01.019: language layer. UI only: lists are the pilot's own data and are never translated. */
 var AC_LANG=null;
 try{var _l=localStorage.getItem('aircheck_lang');if(_l==='he'||_l==='en')AC_LANG=_l;}catch(e){}
 if(!AC_LANG)document.documentElement.className+=' ac-needlang';
@@ -418,7 +418,7 @@ html:has(.ac3-splash-top),body:has(.ac3-splash-top){background:#f7f0e0;}
 #newProfileModal .np-b.p:disabled{opacity:.4;cursor:default;}
 #newProfileModal .np-b.n{border:1.5px solid #8a6a2a;background:#fff;color:#6b4f12;}
 
-/* v3.01.018: first-launch language choice */
+/* v3.01.019: first-launch language choice */
 #langPick{display:none;position:fixed;inset:0;z-index:900;flex-direction:column;background:linear-gradient(#1c3d6e 0%,#1c3d6e 55%,#14284f 100%);}
 .ac-needlang #langPick{display:flex;}
 #langPick .lp-top{flex:none;padding:calc(34px + var(--sat,env(safe-area-inset-top,0px))) 18px 250px;background:linear-gradient(#f7f0e0 0%,#efe3c2 48%,rgb(233,223,193) 52%,rgb(210,206,189) 59%,rgb(150,160,180) 75%,#1c3d6e 100%);display:flex;flex-direction:column;align-items:center;gap:4px;text-align:center;}
@@ -499,50 +499,21 @@ document.addEventListener('visibilitychange',function(){if(!document.hidden)back
 })();
 </script>
 <script>
-/* v3.00.043 TEMPORARY DEBUG: scroll reset on return + on-device event log (Settings > Debug). Remove the log before public release. */
+/* v3.01.019: keeps the page from staying scrolled after returning to the app (the on-device log was removed) */
 (function(){
-var KEY='ac3_dbglog',MAX=200,buf=[],tmr=null,T0=Date.now();
-try{buf=JSON.parse(localStorage.getItem(KEY)||'[]');if(!Array.isArray(buf))buf=[];}catch(e){buf=[];}
-function r(n){return Math.round(n*10)/10;}
-function top(el){try{return el?r(el.getBoundingClientRect().top):'-';}catch(e){return '-';}}
-function snap(){
+function resetScroll(){
  try{
-  var de=document.documentElement,vv=window.visualViewport,ft='-',f=document.querySelectorAll('.lsa-foot');
-  for(var i=0;i<f.length;i++){var b=f[i].getBoundingClientRect();if(b.width>0&&b.height>0){ft=r(b.bottom);break;}}
-  var root=document.getElementById('ac3root');
-  var hd=root&&root.querySelector('div[dir="ltr"]'),lg=root&&root.querySelector('img'),rw=root&&root.querySelector('button.rw');
-  return 'sy='+r(window.scrollY)+' dt='+r(de.scrollTop)+' bt='+r(document.body.scrollTop)+' app='+top(document.getElementById('app'))+' hdr='+top(hd)+' logo='+top(lg)+' runway='+top(rw)+' sat='+(window.__satEnv||'-')+'>'+(de.style.getPropertyValue('--sat')||'none')+'/'+(de.style.getPropertyValue('--sab')||'none')+' footBottom='+ft+' ih='+window.innerHeight+' sh='+screen.height+' appH='+(de.style.getPropertyValue('--app-h')||'-')+' vv='+(vv?r(vv.height)+'/'+r(vv.offsetTop)+'/'+r(vv.pageTop):'-');
- }catch(e){return 'snap error';}
-}
-function save(){if(tmr)return;tmr=setTimeout(function(){tmr=null;try{localStorage.setItem(KEY,JSON.stringify(buf));}catch(e){}},400);}
-function log(ev){buf.push({t:Date.now(),e:ev,s:snap()});if(buf.length>MAX)buf.splice(0,buf.length-MAX);save();}
-function resetScroll(why){
- try{
-  var de=document.documentElement,sy=window.scrollY,dt=de.scrollTop,bt=document.body.scrollTop;
-  if(sy||dt||bt){window.scrollTo(0,0);de.scrollTop=0;document.body.scrollTop=0;log('RESET page scroll was '+r(sy)+'/'+r(dt)+'/'+r(bt)+' ('+why+')');}
+  var de=document.documentElement;
+  if(window.scrollY||de.scrollTop||document.body.scrollTop){window.scrollTo(0,0);de.scrollTop=0;document.body.scrollTop=0;}
  }catch(e){}
 }
-function back(why){log(why);resetScroll(why);[120,400,900,1600].forEach(function(ms){setTimeout(function(){resetScroll(why+' +'+ms);},ms);});}
-window.ac3Dbg=log;
-window.ac3DbgCopy=function(){
- var head='AirCheck debug log '+(typeof APP_VERSION!=='undefined'?APP_VERSION:'')+'\nnow='+new Date().toISOString()+'\nstandalone='+(navigator.standalone===true)+' dpr='+window.devicePixelRatio+'\nua='+navigator.userAgent+'\nlegend: sy/dt/bt=page scroll, app/hdr/logo/runway=top px, footBottom, ih=inner height, sh=screen height, appH=layout height, vv=visual viewport height/offsetTop/pageTop\n';
- var lines=buf.map(function(x){var d=new Date(x.t);return d.toISOString().slice(11,23)+'  '+x.e+'  |  '+x.s;});
- var txt=head+'\n'+lines.join('\n');
- var done=function(ok){var l=document.getElementById('dbgCopyLbl');if(l){l.textContent=ok?('הועתק - '+buf.length+' אירועים'):'ההעתקה נכשלה';setTimeout(function(){l.textContent='העתק יומן';},2500);}};
- var fb=function(){try{var ta=document.createElement('textarea');ta.value=txt;ta.style.cssText='position:fixed;top:0;left:0;opacity:0;';document.body.appendChild(ta);ta.focus();ta.select();var ok=document.execCommand('copy');document.body.removeChild(ta);done(ok);}catch(e){done(false);}};
- try{if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(txt).then(function(){done(true);},fb);}else fb();}catch(e){fb();}
-};
-log('START');
-window.addEventListener('pageshow',function(e){back('pageshow'+(e.persisted?' (from cache)':''));});
-window.addEventListener('pagehide',function(){log('pagehide');});
-window.addEventListener('focus',function(){back('focus');});
-window.addEventListener('blur',function(){log('blur');});
-window.addEventListener('resize',function(){log('resize');resetScroll('resize');});
-window.addEventListener('orientationchange',function(){log('orientationchange');});
-document.addEventListener('visibilitychange',function(){if(document.hidden)log('hidden');else back('visible');});
-window.addEventListener('scroll',function(){resetScroll('scroll event');},{passive:true});
-if(window.visualViewport){var vt=null;var vh=function(){if(vt)return;vt=setTimeout(function(){vt=null;var v=window.visualViewport;if(v.offsetTop||v.pageTop){log('viewport moved');resetScroll('viewport');}},150);};window.visualViewport.addEventListener('resize',vh);window.visualViewport.addEventListener('scroll',vh);}
-document.addEventListener('click',function(e){try{var el=e.target.closest('a,button,[onclick]')||e.target;var a=e.target.closest('a');var tx=(el.getAttribute('aria-label')||el.textContent||el.tagName||'').replace(/\s+/g,' ').trim().slice(0,28);log('tap: '+tx+(a&&a.href?' -> '+a.href.slice(0,60):''));}catch(x){}},true);
+function back(){resetScroll();[120,400,900,1600].forEach(function(ms){setTimeout(resetScroll,ms);});}
+window.addEventListener('pageshow',back);
+window.addEventListener('focus',back);
+window.addEventListener('resize',resetScroll);
+document.addEventListener('visibilitychange',function(){if(!document.hidden)back();});
+window.addEventListener('scroll',resetScroll,{passive:true});
+if(window.visualViewport){var vt=null;var vh=function(){if(vt)return;vt=setTimeout(function(){vt=null;var v=window.visualViewport;if(v.offsetTop||v.pageTop)resetScroll();},150);};window.visualViewport.addEventListener('resize',vh);window.visualViewport.addEventListener('scroll',vh);}
 })();
 </script>
 <div id="app">
@@ -600,7 +571,7 @@ document.addEventListener('click',function(e){try{var el=e.target.closest('a,but
       <div dir="rtl">אפשר לשנות בכל עת בהגדרות</div>
     </div>
   </div>
-  <div class="lsa-foot" dir="ltr"><span class="lsa-foot-slot">PREPROD</span><span class="lsa-foot-ver app-stamp"></span><span></span></div>
+  <div class="lsa-foot" dir="ltr"><span class="lsa-foot-slot"></span><span class="lsa-foot-ver app-stamp"></span><span></span></div>
 </div>
 
   <div id="xiOv"></div>
@@ -610,7 +581,6 @@ document.addEventListener('click',function(e){try{var el=e.target.closest('a,but
 <script>
 const FEATURES={
 MULTI_PROFILE: true,
-PWA_POPUP: false,
 EXTERNAL_LINK: true
 };
 const CL_DEFAULT_HE=[
@@ -724,7 +694,7 @@ const CL=CL_DEFAULT_HE.map(it=>({...it}));
 window.CL_DEFAULT_LIST=CL_DEFAULT;
 function norm(s){return(s||'').trim().toLowerCase().replace(/[׳״"'“”‘’״׳"""'']/g,'').replace(/[ךכ]/g,'כ').replace(/[םמ]/g,'מ').replace(/[ןנ]/g,'נ').replace(/[ףפ]/g,'פ').replace(/[ץצ]/g,'צ').replace(/\s+/g,' ');}
 const _defaultItemKeys=new Set(CL_DEFAULT.map(d=>`${norm(d.main)}|${norm(d.group)}|${norm(d.phase)}|${norm(d.sub||'')}`));
-/* v3.01.018: two default lists (Hebrew HE-001.., English EN-001..). A list follows the default its items came from, found by the ID prefix. */
+/* v3.01.019: two default lists (Hebrew HE-001.., English EN-001..). A list follows the default its items came from, found by the ID prefix. */
 function acListLang(list){for(const it of (list||[])){if(it&&it.defId){if(/^EN-/.test(it.defId))return'en';if(/^HE-/.test(it.defId))return'he';}}return null;}
 function acDefaultCopy(lang){return JSON.parse(JSON.stringify(CL_DEFAULTS[lang]||CL_DEFAULT_HE));}
 const PHASES=[];const PHASE_IDX={};
@@ -1107,7 +1077,7 @@ const hasOverflow=list.scrollHeight>list.clientHeight+2;
 const atBottom=list.scrollTop+list.clientHeight>=list.scrollHeight-2;
 fade.classList.toggle('show',hasOverflow&&!atBottom);
 }
-/* ============ AirCheck list editor (v3.01.018) ============
+/* ============ AirCheck list editor (v3.01.019) ============
    All screen text is in E_LANG. English is added later as E_LANG.en. */
 const E_LANG={he:{
 back:'חזרה',cancel:'ביטול',ok:'אישור',save:'שמור שינויים',saved:'נשמר',
@@ -2088,98 +2058,18 @@ return;
 }catch(e){}
 download();
 }
-function handleManyListsClick(e){if(e.target===document.getElementById('manyListsModal'))manyListsDecline();}
-function manyListsConfirm(){
-document.getElementById('manyListsModal').style.display='none';
-openNewProfileModal();
-}
-function manyListsDecline(){
-document.getElementById('manyListsModal').style.display='none';
-}
 function reloadApp(){
-localStorage.removeItem('aircheck_whats_new_seen');
-localStorage.removeItem('aircheck_pwa_never');
-localStorage.removeItem('aircheck_pwa_later');
-localStorage.removeItem('aircheck_pwa_shown');
 localStorage.removeItem('aircheck_donated');
 localStorage.removeItem('aircheck_donate_later');
 localStorage.removeItem('aircheck_donate_snoozes');
 localStorage.removeItem('aircheck_sync_toast_v1');
 lsaReload();
 }
-let _whatsNewShownThisSession=false;
-function checkPwaPopup(){
-if(!FEATURES.PWA_POPUP)return;
-if(getPwaPlatform()==='desktop')return;
-if(window.matchMedia('(display-mode: standalone)').matches)return;
-if(localStorage.getItem('aircheck_pwa_never')==='1')return;
-const later=parseInt(localStorage.getItem('aircheck_pwa_later')||'0');
-if(later&&Date.now()-later<7*24*60*60*1000)return;
-if(_whatsNewShownThisSession)return;
-setTimeout(()=>{
-const el=document.getElementById('pwaOverlay');
-if(!el)return;
-const cta=document.getElementById('pwaCta');
-if(cta){
-const platform=getPwaPlatform();
-if(platform==='android'){
-cta.innerHTML=`<button onclick="triggerPwaInstall()" style="width:100%;padding:13px;background:var(--ink);border:none;border-radius:6px;color:var(--paper);font-family:var(--font-ui);font-size:14px;font-weight:700;cursor:pointer;direction:rtl;margin-bottom:8px;">התקן עכשיו ›</button>`;
-} else if(platform==='ios'){
-cta.innerHTML=`<button id="pwaIosBtn" onclick="pwaIosToggle()" style="width:100%;padding:10px;background:transparent;border:1.5px solid var(--paper-edge);border-radius:6px;color:var(--ink-muted);font-family:var(--font-ui);font-size:13px;font-weight:600;cursor:pointer;direction:rtl;margin-bottom:8px;">איך עושים את זה? ▾</button>`;
-}
-}
-el.style.display='flex';
-if(!localStorage.getItem('aircheck_pwa_shown')){
-localStorage.setItem('aircheck_pwa_shown',Date.now());
-if(window.syncPwaStats)window.syncPwaStats();
-}
-},2500);
-}
-function closePwaLater(){
-localStorage.setItem('aircheck_pwa_later',Date.now());
-const el=document.getElementById('pwaOverlay');
-if(el)el.style.display='none';
-}
-function closePwaNever(){
-localStorage.setItem('aircheck_pwa_never','1');
-const el=document.getElementById('pwaOverlay');
-if(el)el.style.display='none';
-}
-function pwaIosToggle(){
-const steps=document.getElementById('pwaIosSteps');
-const btn=document.getElementById('pwaIosBtn');
-if(!steps||!btn)return;
-const open=steps.style.display==='block';
-steps.style.display=open?'none':'block';
-btn.textContent=open?'איך עושים את זה? ▾':'סגור הוראות ▲';
-}
-function getPwaPlatform(){
-const ua=navigator.userAgent||'';
-if(/iPad|iPhone|iPod/.test(ua)&&!window.MSStream)return'ios';
-if(/android/i.test(ua))return'android';
-return'desktop';
-}
 function onPwaInstalled(){
 localStorage.setItem('aircheck_pwa_installed','1');
-const el=document.getElementById('pwaOverlay');
-if(el)el.style.display='none';
 if(window.syncPwaStats)window.syncPwaStats();
 }
-let _deferredInstallPrompt=null;
-window.addEventListener('beforeinstallprompt',e=>{
-e.preventDefault();
-_deferredInstallPrompt=e;
-});
 window.addEventListener('appinstalled',()=>onPwaInstalled());
-function triggerPwaInstall(){
-if(_deferredInstallPrompt){
-_deferredInstallPrompt.prompt();
-_deferredInstallPrompt.userChoice.then(result=>{
-if(result.outcome==='accepted')onPwaInstalled();
-_deferredInstallPrompt=null;
-});
-}
-}
 let toastTimer=null;
 function showToast(msg,duration=2800){
 let t=document.getElementById('appToast');
@@ -2223,7 +2113,6 @@ localStorage.setItem('aircheck_pwa_installed','1');
 if(window.syncPwaStats)window.syncPwaStats();
 }
 }
-checkPwaPopup();
 try{acResumeEditor();}catch(e){console.error(e);}
 });
 </script>
@@ -2657,7 +2546,7 @@ return inst;
 <button type="button" disabled="{{nav.skipDis}}" onClick="{{skip}}" style="flex:1.1;min-width:0;height:48px;padding:0 4px;border:2px solid {{nav.skipBd}};background:{{nav.skipBg}};color:{{nav.skipFg}};border-radius:10px;font-size:14px;font-weight:600;line-height:1.15;cursor:pointer;">{{lblNext}} &#8250;</button>
 </div>
 </div>
-<div class="lsa-foot" dir="ltr"><span class="lsa-foot-slot">PREPROD</span><span class="lsa-foot-ver">{{appStamp}}</span><button type="button" class="lsa-foot-reload" onClick="{{reloadDemo}}">{{lblReload}}</button></div>
+<div class="lsa-foot" dir="ltr"><span class="lsa-foot-slot"></span><span class="lsa-foot-ver">{{appStamp}}</span><button type="button" class="lsa-foot-reload" onClick="{{reloadDemo}}">{{lblReload}}</button></div>
 <!-- START SCREEN (overlay) -->
 <sc-if value="{{showSplash}}">
 <div id="acSplash" dir="{{uiDir}}" style="position:absolute;top:0;left:0;right:0;bottom:0;z-index:40;background:linear-gradient(#1c3d6e 0%,#1c3d6e 55%,#14284f 100%);display:flex;flex-direction:column;">
@@ -2710,7 +2599,7 @@ return inst;
 <span>{{lblSettingsEdit}}</span>
 </button>
 </div>
-<div class="lsa-foot" dir="ltr"><span class="lsa-foot-slot">PREPROD</span><span class="lsa-foot-ver">{{appStamp}}</span><button type="button" class="lsa-foot-reload" onClick="{{reloadDemo}}">{{lblReload}}</button></div>
+<div class="lsa-foot" dir="ltr"><span class="lsa-foot-slot"></span><span class="lsa-foot-ver">{{appStamp}}</span><button type="button" class="lsa-foot-reload" onClick="{{reloadDemo}}">{{lblReload}}</button></div>
 <sc-if value="{{spConfirm}}">
 <div style="position:absolute;top:0;left:0;right:0;bottom:0;z-index:5;background:rgba(26,19,8,.6);display:flex;align-items:center;justify-content:center;padding:24px;">
 <div style="width:100%;box-sizing:border-box;background:#fbf6e8;border:2px solid #c8a04a;border-radius:16px;padding:22px 20px 18px;">
@@ -2800,17 +2689,8 @@ return inst;
 </button>
 </div>
 </div>
-<div>
-<div dir="rtl" style="font-size:12.5px;font-weight:700;letter-spacing:.04em;color:#b3261e;padding:0 2px 6px;">אבחון - זמני, למפתח בלבד</div>
-<div style="background:#fdecea;border:2px solid #b3261e;border-radius:12px;overflow:hidden;">
-<button type="button" onClick="{{dbgCopy}}" style="width:100%;min-height:56px;padding:0 14px;border:0;background:#b3261e;display:flex;align-items:center;justify-content:center;gap:12px;cursor:pointer;">
-<span id="dbgCopyLbl" style="font-size:16px;color:#fff;font-weight:700;">העתק יומן</span>
-</button>
-<div style="padding:8px 14px 10px;font-size:12.5px;line-height:1.4;color:#7a1a14;">יומן של 200 הפעולות האחרונות. מעתיקים ושולחים לאבחון. יוסר לפני השקה.</div>
 </div>
-</div>
-</div>
-<div id="acSetFoot" class="lsa-foot" dir="ltr"><span class="lsa-foot-slot">PREPROD</span><span class="lsa-foot-ver">{{appStamp}}</span><button type="button" class="lsa-foot-reload" onClick="{{reloadDemo}}">{{lblReload}}</button></div>
+<div id="acSetFoot" class="lsa-foot" dir="ltr"><span class="lsa-foot-slot"></span><span class="lsa-foot-ver">{{appStamp}}</span><button type="button" class="lsa-foot-reload" onClick="{{reloadDemo}}">{{lblReload}}</button></div>
 </div>
 </sc-if>
 <sc-if value="{{bkOpen}}">
@@ -3413,7 +3293,7 @@ langFlip: () => acFlipLang(), togLeft: (AC_TOG || AC_LANG || 'he') === 'en' ? '5
 langIdx: (AC_TOG || AC_LANG || 'he') === 'en' ? 0 : 1, langSel: [['en', 'English'], ['he', 'עברית']].map(([c, label]) => { const on = (AC_TOG || AC_LANG || 'he') === c; return { label, fg: on ? '#f4ecdc' : '#1c3d6e', pick: () => { if ((AC_LANG || 'he') !== c) acSetLang(c, true); } }; }),
 stToggles: [{ label: acT('setSound'), on: settings.sounds !== false, bg: settings.sounds !== false ? '#1f6f3f' : '#b9ad92', knob: AC_LANG === 'en' ? (settings.sounds !== false ? 21 : 3) : (settings.sounds !== false ? 3 : 21), flip: () => { settings.sounds = !(settings.sounds !== false); saveSettings(); this.setState({ _t: Date.now() }); } }, { label: acT('setVibe'), on: settings.haptics !== false, bg: settings.haptics !== false ? '#1f6f3f' : '#b9ad92', knob: AC_LANG === 'en' ? (settings.haptics !== false ? 21 : 3) : (settings.haptics !== false ? 3 : 21), flip: () => { settings.haptics = !(settings.haptics !== false); saveSettings(); this.setState({ _t: Date.now() }); } }],
 holdIdx: [200, 400, 600].indexOf(ac3Hold()), stHold: [[acT('spShort'), 200], [acT('spNormal'), 400], [acT('spLong'), 600]].map(([label, ms]) => { const on = ac3Hold() === ms; return { label, bg: on ? '#1c3d6e' : 'transparent', fg: on ? '#f4ecdc' : '#1c3d6e', pick: () => { settings.holdMs = ms; saveSettings(); this.setState({ _t: Date.now() }); } }; }),
-reloadDemo: () => reloadApp(), dbgCopy: () => { if (window.ac3DbgCopy) window.ac3DbgCopy(); }, icoSrc: AC3_ICON, contact: () => window.open('mailto:eligrt@gmail.com', '_blank'), utcNow: this.hhmm(), appStamp: APP_STAMP, spCanAdd: getProfiles().profiles.length < 3, spShowLists: FEATURES.MULTI_PROFILE, spAddList: () => openEditorForNewList(),
+reloadDemo: () => reloadApp(), icoSrc: AC3_ICON, contact: () => window.open('mailto:eligrt@gmail.com', '_blank'), utcNow: this.hhmm(), appStamp: APP_STAMP, spCanAdd: getProfiles().profiles.length < 3, spShowLists: FEATURES.MULTI_PROFILE, spAddList: () => openEditorForNewList(),
 spPhaseName: PH[cur0.ph], spItem: cur0.m,
 spPct: spPctNum, spCount: spDn + ' / ' + N, spPctLabel: Math.round((spDn / N) * 100) + '%',
 spHasSkipped: spSk > 0, spSkipped: spSk, spListName: '',
@@ -3621,68 +3501,6 @@ syncToFirebase('open');
   <div id="newProfileModal" onclick="handleNewProfileClick(event)" style="display:none;position:absolute;inset:0;z-index:520;"><div class="np-sheet" id="npBox" dir="rtl"></div></div>
 
   <!-- ══ RENAME PROFILE MODAL ══ -->
-  <div id="manyListsModal" onclick="handleManyListsClick(event)" style="display:none;position:absolute;inset:0;background:rgba(26,19,8,.8);z-index:520;align-items:center;justify-content:center;padding:24px;backdrop-filter:blur(3px);">
-    <div class="modal-box" style="text-align:center;padding-top:0;overflow:hidden;">
-      <div style="background:var(--ink);margin:0 -20px 16px;padding:14px 18px;text-align:center;">
-        <div style="font-size:20px;margin-bottom:4px;">🗂️</div>
-        <div style="font-size:16px;font-weight:700;color:var(--paper);direction:rtl;" id="manyListsTitle">רשימה מספר 8, כבוד!</div>
-        <div style="font-family:var(--font-mono);font-size:10px;color:rgba(244,236,220,.5);letter-spacing:.1em;margin-top:3px;" id="manyListsNum">LIST #08</div>
-      </div>
-      <div style="font-size:13px;color:var(--ink-body);line-height:1.7;margin-bottom:14px;direction:rtl;text-align:right;">
-        כל כך הרבה רשימות, אתה בטח טייס רציני 😄<br>
-        ממליץ לך לעשות דאבל צ׳ק ולראות שכולן באמת בשימוש.<br>
-        רשימות שלא בשימוש ניתן למחוק או לערוך בדף העריכה.
-      </div>
-      <div style="height:1px;background:var(--gold-lite);margin:0 0 14px;opacity:.7;"></div>
-      <div style="font-size:13px;font-weight:700;color:var(--ink);text-align:center;margin-bottom:14px;">האם להוסיף את הרשימה החדשה?</div>
-      <button class="btn btn-ink" onclick="manyListsConfirm()" style="margin-bottom:8px;">כן, הוסף רשימה חדשה ›</button>
-      <button class="btn btn-ghost" onclick="manyListsDecline()">במחשבה שניה אין צורך.</button>
-    </div>
-  </div>
-
-  <!-- PWA Install Overlay -->
-  <div id="pwaOverlay" style="display:none;position:absolute;inset:0;background:rgba(26,19,8,.82);z-index:690;align-items:center;justify-content:center;padding:24px;backdrop-filter:blur(3px);">
-    <div style="background:var(--paper-hi);background-image:repeating-linear-gradient(0deg,transparent 0,transparent 27px,var(--paper-line) 27px,var(--paper-line) 28px);border:2px solid var(--gold);border-radius:8px;width:100%;max-width:340px;overflow:hidden;box-shadow:0 20px 60px rgba(0,0,0,.4);animation:popupFadeIn .25s cubic-bezier(.34,1.2,.64,1);">
-      <!-- Header -->
-      <div style="background:var(--ink);padding:14px 18px 13px;display:flex;align-items:center;gap:12px;direction:rtl;">
-        <div style="flex-shrink:0;width:38px;height:38px;background:rgba(244,236,220,.07);border:1px solid rgba(200,160,74,.25);border-radius:7px;display:flex;align-items:center;justify-content:center;font-size:20px;">✈</div>
-        <div style="flex:1;">
-          <div style="font-family:var(--font-mono);font-size:8px;color:rgba(244,236,220,.4);letter-spacing:.18em;text-transform:uppercase;margin-bottom:3px;direction:ltr;unicode-bidi:bidi-override;">AirCheck · INSTALL</div>
-          <div style="font-size:14px;font-weight:700;color:var(--paper);direction:rtl;line-height:1.35;">ידעת שאפשר להתקין את AirCheck?</div>
-        </div>
-      </div>
-      <!-- Body -->
-      <div style="padding:13px 16px 10px;direction:rtl;">
-        <div style="font-size:13px;color:var(--ink-muted);line-height:1.65;">גישה ישירה מהמסך הבית <strong style="color:var(--ink);">בלי לפתוח דפדפן בכל פעם.</strong></div>
-        <!-- iOS steps (hidden by default) -->
-        <div id="pwaIosSteps" style="display:none;margin-top:10px;background:var(--paper);border:1px solid var(--paper-edge);border-radius:6px;overflow:hidden;">
-          <div style="display:flex;align-items:flex-start;gap:10px;padding:7px 12px;direction:rtl;font-size:12px;color:var(--ink-muted);line-height:1.5;border-bottom:1px dashed rgba(200,160,74,.3);">
-            <div style="flex-shrink:0;margin-top:1px;width:16px;height:16px;background:var(--ink);border-radius:50%;font-family:var(--font-mono);font-size:8px;font-weight:700;color:var(--paper);display:flex;align-items:flex-start;justify-content:center;">1</div>
-            <span>לחץ על כפתור השיתוף <strong>⬆</strong> בתחתית המסך</span>
-          </div>
-          <div style="display:flex;align-items:flex-start;gap:10px;padding:7px 12px;direction:rtl;font-size:12px;color:var(--ink-muted);line-height:1.5;border-bottom:1px dashed rgba(200,160,74,.3);">
-            <div style="flex-shrink:0;margin-top:1px;width:16px;height:16px;background:var(--ink);border-radius:50%;font-family:var(--font-mono);font-size:8px;font-weight:700;color:var(--paper);display:flex;align-items:flex-start;justify-content:center;">2</div>
-            <span>לחץ על <strong>Add to Home Screen</strong></span>
-          </div>
-          <div style="display:flex;align-items:flex-start;gap:10px;padding:7px 12px;direction:rtl;font-size:12px;color:var(--ink-muted);line-height:1.5;">
-            <div style="flex-shrink:0;margin-top:1px;width:16px;height:16px;background:var(--ink);border-radius:50%;font-family:var(--font-mono);font-size:8px;font-weight:700;color:var(--paper);display:flex;align-items:flex-start;justify-content:center;">3</div>
-            <span>לחץ על <strong>Add</strong> בפינה הימנית עליונה</span>
-          </div>
-        </div>
-      </div>
-      <!-- CTA -->
-      <div style="padding:0 16px;" id="pwaCta"></div>
-      <!-- Dismiss -->
-      <div style="padding:10px 16px 14px;display:flex;align-items:center;justify-content:space-between;direction:rtl;">
-        <button onclick="closePwaLater()" style="background:transparent;border:none;font-family:var(--font-ui);font-size:12px;color:var(--ink-muted);cursor:pointer;padding:4px 0;display:flex;align-items:center;gap:5px;">
-          לא עכשיו
-          <span style="font-family:var(--font-mono);font-size:8px;background:rgba(200,160,74,.12);color:var(--gold-deep);padding:1px 5px;border-radius:3px;">+7 ימים</span>
-        </button>
-        <button onclick="closePwaNever()" style="background:transparent;border:none;font-family:var(--font-ui);font-size:11px;color:var(--ink-faint);cursor:pointer;padding:4px 0;text-decoration:underline;text-underline-offset:3px;text-decoration-color:rgba(138,122,90,.35);">אל תזכיר שוב</button>
-      </div>
-    </div>
-  </div>
-
   <!-- Donation Overlay -->
   
 
