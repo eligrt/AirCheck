@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <!-- ═══════════════════════════════════════
-     AirCheck · v3.01.019 · built by eligrt
+     AirCheck · v3.01.021 · built by eligrt
      ═══════════════════════════════════════ -->
 <html lang="he" dir="rtl">
 <head>
@@ -35,12 +35,12 @@ if(force){['aircheck_rd_v1'].forEach(function(n){r.call(localStorage,P+n);});try
 <script>
 /* Single source of truth for app identity. Footers, share texts, exports and Firebase appVersion all read these. */
 const APP_NAME='AirCheck';
-const APP_VERSION='v3.01.019';
+const APP_VERSION='v3.01.021';
 const APP_STAMP=APP_NAME+' · '+APP_VERSION+' · built by eligrt';
 document.addEventListener('DOMContentLoaded',function(){document.querySelectorAll('.app-stamp').forEach(function(e){e.textContent=APP_STAMP;});});
 </script>
 <script>
-/* v3.01.019: language layer. UI only: lists are the pilot's own data and are never translated. */
+/* v3.01.021: language layer. UI only: lists are the pilot's own data and are never translated. */
 var AC_LANG=null;
 try{var _l=localStorage.getItem('aircheck_lang');if(_l==='he'||_l==='en')AC_LANG=_l;}catch(e){}
 if(!AC_LANG)document.documentElement.className+=' ac-needlang';
@@ -105,8 +105,8 @@ acApplyLang();
 </script>
 <meta property="og:title" content="AirCheck | Personal flight checklist" />
 <meta property="og:description" content="&quot;The checklist on top of the checklist&quot;" />
-<meta property="og:image" content="https://eligrt.github.io/AirCheck/AirCheck_og_RD.png" />
-<meta property="og:url" content="https://eligrt.github.io/AirCheck/AirCheck_RD.html" />
+<meta property="og:image" content="https://eligrt.github.io/AirCheck/AirCheck3_og.png" />
+<meta property="og:url" content="https://eligrt.github.io/AirCheck/AirCheck3.html" />
 <meta property="og:type" content="website" />
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Hebrew:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet" media="print" onload="this.media='all'">
@@ -418,7 +418,7 @@ html:has(.ac3-splash-top),body:has(.ac3-splash-top){background:#f7f0e0;}
 #newProfileModal .np-b.p:disabled{opacity:.4;cursor:default;}
 #newProfileModal .np-b.n{border:1.5px solid #8a6a2a;background:#fff;color:#6b4f12;}
 
-/* v3.01.019: first-launch language choice */
+/* v3.01.021: first-launch language choice */
 #langPick{display:none;position:fixed;inset:0;z-index:900;flex-direction:column;background:linear-gradient(#1c3d6e 0%,#1c3d6e 55%,#14284f 100%);}
 .ac-needlang #langPick{display:flex;}
 #langPick .lp-top{flex:none;padding:calc(34px + var(--sat,env(safe-area-inset-top,0px))) 18px 250px;background:linear-gradient(#f7f0e0 0%,#efe3c2 48%,rgb(233,223,193) 52%,rgb(210,206,189) 59%,rgb(150,160,180) 75%,#1c3d6e 100%);display:flex;flex-direction:column;align-items:center;gap:4px;text-align:center;}
@@ -499,7 +499,7 @@ document.addEventListener('visibilitychange',function(){if(!document.hidden)back
 })();
 </script>
 <script>
-/* v3.01.019: keeps the page from staying scrolled after returning to the app (the on-device log was removed) */
+/* v3.01.021: keeps the page from staying scrolled after returning to the app (the on-device log was removed) */
 (function(){
 function resetScroll(){
  try{
@@ -609,7 +609,7 @@ const CL_DEFAULT_HE=[
 {"defId": "HE-023", "phase": "הגעה למנחת ולמטוס", "group": "רישומים וניירת", "main": "משקל ואיזון - ודא", "sub": "", "url": "https://eligrt.github.io/AirBalance/AirBalance.html", "urlLabel": "AirBalance"},
 {"defId": "HE-024", "phase": "הגעה למנחת ולמטוס", "group": "רישומים וניירת", "main": "בדיקת תקלות (אדומים)", "sub": ""},
 {"defId": "HE-025", "phase": "הגעה למנחת ולמטוס", "group": "רישומים וניירת", "main": "פתיחת שורה בספר", "sub": ""},
-{"defId": "HE-026", "phase": "הגעה למנחת ולמטוס", "group": "הכנת קוקפיט", "main": "בדיקות חיצוניות - הושלם", "sub": "", "url": "https://eligrt.github.io/AirCheck-POH/AirCheck_POH_TEST.html", "urlLabel": "AirCheck_POH"},
+{"defId": "HE-026", "phase": "הגעה למנחת ולמטוס", "group": "הכנת קוקפיט", "main": "בדיקות חיצוניות - הושלם", "sub": "", "url": "https://eligrt.github.io/AirCheck-POH/AirCheck_POH.html", "urlLabel": "AirCheck_POH"},
 {"defId": "HE-027", "phase": "הגעה למנחת ולמטוס", "group": "הכנת קוקפיט", "main": "דפיות ומפות", "sub": ""},
 {"defId": "HE-028", "phase": "הגעה למנחת ולמטוס", "group": "הכנת קוקפיט", "main": "אוזניות - בדוק סוללות", "sub": ""},
 {"defId": "HE-029", "phase": "הגעה למנחת ולמטוס", "group": "הכנת קוקפיט", "main": "מכשיר קשר נייד טעון ובתיק", "sub": ""},
@@ -661,7 +661,7 @@ const CL_DEFAULT_EN=[
 {"defId": "EN-023", "phase": "Airfield and aircraft", "group": "Paperwork", "main": "Weight and balance - confirm", "sub": "", "url": "https://eligrt.github.io/AirBalance/AirBalance.html", "urlLabel": "AirBalance"},
 {"defId": "EN-024", "phase": "Airfield and aircraft", "group": "Paperwork", "main": "Check for defects (\"red\" items)", "sub": ""},
 {"defId": "EN-025", "phase": "Airfield and aircraft", "group": "Paperwork", "main": "Aircraft binder - open line", "sub": ""},
-{"defId": "EN-026", "phase": "Airfield and aircraft", "group": "Cockpit setup", "main": "Exterior checks - completed", "sub": "", "url": "https://eligrt.github.io/AirCheck-POH/AirCheck_POH_TEST.html", "urlLabel": "AirCheck_POH"},
+{"defId": "EN-026", "phase": "Airfield and aircraft", "group": "Cockpit setup", "main": "Exterior checks - completed", "sub": "", "url": "https://eligrt.github.io/AirCheck-POH/AirCheck_POH.html", "urlLabel": "AirCheck_POH"},
 {"defId": "EN-027", "phase": "Airfield and aircraft", "group": "Cockpit setup", "main": "Plates, airfield diagrams & hard copy charts", "sub": ""},
 {"defId": "EN-028", "phase": "Airfield and aircraft", "group": "Cockpit setup", "main": "Headsets - check batteries", "sub": ""},
 {"defId": "EN-029", "phase": "Airfield and aircraft", "group": "Cockpit setup", "main": "Handheld radio charged and in the bag", "sub": ""},
@@ -694,7 +694,7 @@ const CL=CL_DEFAULT_HE.map(it=>({...it}));
 window.CL_DEFAULT_LIST=CL_DEFAULT;
 function norm(s){return(s||'').trim().toLowerCase().replace(/[׳״"'“”‘’״׳"""'']/g,'').replace(/[ךכ]/g,'כ').replace(/[םמ]/g,'מ').replace(/[ןנ]/g,'נ').replace(/[ףפ]/g,'פ').replace(/[ץצ]/g,'צ').replace(/\s+/g,' ');}
 const _defaultItemKeys=new Set(CL_DEFAULT.map(d=>`${norm(d.main)}|${norm(d.group)}|${norm(d.phase)}|${norm(d.sub||'')}`));
-/* v3.01.019: two default lists (Hebrew HE-001.., English EN-001..). A list follows the default its items came from, found by the ID prefix. */
+/* v3.01.021: two default lists (Hebrew HE-001.., English EN-001..). A list follows the default its items came from, found by the ID prefix. */
 function acListLang(list){for(const it of (list||[])){if(it&&it.defId){if(/^EN-/.test(it.defId))return'en';if(/^HE-/.test(it.defId))return'he';}}return null;}
 function acDefaultCopy(lang){return JSON.parse(JSON.stringify(CL_DEFAULTS[lang]||CL_DEFAULT_HE));}
 const PHASES=[];const PHASE_IDX={};
@@ -758,7 +758,7 @@ if(inSheet)return;
 try{sessionStorage.setItem('aircheck_pending_resume','1');}catch(e){}
 let dest=url;
 if(isOwnPage){
-const from=window.location.pathname.split('/').pop()||'AirCheck_RD.html';
+const from=window.location.pathname.split('/').pop()||'AirCheck3.html';
 dest=url+(url.includes('?')?'&':'?')+'from='+encodeURIComponent(from);
 }
 window.location.href=dest;
@@ -1077,7 +1077,7 @@ const hasOverflow=list.scrollHeight>list.clientHeight+2;
 const atBottom=list.scrollTop+list.clientHeight>=list.scrollHeight-2;
 fade.classList.toggle('show',hasOverflow&&!atBottom);
 }
-/* ============ AirCheck list editor (v3.01.019) ============
+/* ============ AirCheck list editor (v3.01.021) ============
    All screen text is in E_LANG. English is added later as E_LANG.en. */
 const E_LANG={he:{
 back:'חזרה',cancel:'ביטול',ok:'אישור',save:'שמור שינויים',saved:'נשמר',
