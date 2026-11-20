@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <!-- ═══════════════════════════════════════
-     AirCheck · v3.01.021 · built by eligrt
+     AirCheck · v3.01.022 · built by eligrt
      ═══════════════════════════════════════ -->
 <html lang="he" dir="rtl">
 <head>
@@ -35,7 +35,8 @@ if(force){['aircheck_rd_v1'].forEach(function(n){r.call(localStorage,P+n);});try
 <script>
 /* Single source of truth for app identity. Footers, share texts, exports and Firebase appVersion all read these. */
 const APP_NAME='AirCheck';
-const APP_VERSION='v3.01.021';
+const APP_VERSION='v3.01.022';
+/* v3.01.022: card view, the Next up list glides up one row after each confirmed item instead of blinking */
 const APP_STAMP=APP_NAME+' · '+APP_VERSION+' · built by eligrt';
 document.addEventListener('DOMContentLoaded',function(){document.querySelectorAll('.app-stamp').forEach(function(e){e.textContent=APP_STAMP;});});
 </script>
@@ -248,6 +249,8 @@ html:has(.ac3-splash-top),body:has(.ac3-splash-top){background:#f7f0e0;}
 .lscroll::-webkit-scrollbar{width:7px}
 .lscroll::-webkit-scrollbar-thumb{background:#c8a04a;border-radius:4px}
 .lscroll::-webkit-scrollbar-track{background:#efe3c2}
+@keyframes nxSlideA{from{transform:translateY(40px);opacity:var(--of)}}
+@keyframes nxSlideB{from{transform:translateY(40px);opacity:var(--of)}}
 @keyframes viewInA{0%{opacity:0;transform:translateY(16px)}100%{opacity:1;transform:translateY(0)}}
 @keyframes viewInB{0%{opacity:0;transform:translateY(16px)}100%{opacity:1;transform:translateY(0)}}
 @keyframes flipA{0%{transform:perspective(900px) rotateX(-75deg);opacity:.3}100%{transform:perspective(900px) rotateX(0);opacity:1}}
@@ -2429,7 +2432,7 @@ return inst;
 <div style="flex:1;min-height:0;margin-top:14px;overflow:hidden;">
 <div style="font-size:12.5px;font-weight:700;letter-spacing:.04em;color:#6f531d;padding:0 2px 2px;">{{lblNextUp}}</div>
 <sc-for list="{{nextItems}}" as="nx">
-<div style="display:flex;align-items:center;gap:12px;min-height:40px;border-top:1px dashed #d9c79a;opacity:{{nx.op}};">
+<div style="display:flex;align-items:center;gap:12px;min-height:40px;border-top:1px dashed #d9c79a;opacity:{{nx.op}};--of:{{nx.of}};animation:{{nxAnim}};">
 <span dir="ltr" style="flex:none;width:24px;font-family:'JetBrains Mono',monospace;font-size:12px;font-weight:700;color:#5a4a3a;">{{nx.num}}</span>
 <span dir="auto" style="font-size:16px;line-height:1.3;color:#1c3d6e;text-align:{{tAlign}};">{{nx.main}}</span>
 </div>
@@ -2781,7 +2784,7 @@ function ac3Reload(screen){
 if(!AC3)return;
 var s=ac3Init();
 s.screen=screen||AC3.state.screen;
-s.sectionDone=false;s.finished=false;s.curtainOpen=false;s.amber=false;s.amberBack=null;s.stampOn=false;s.flipOut=false;s.holding=false;s.fly=false;s.spConfirm=false;
+s.nxGo=false;s.sectionDone=false;s.finished=false;s.curtainOpen=false;s.amber=false;s.amberBack=null;s.stampOn=false;s.flipOut=false;s.holding=false;s.fly=false;s.spConfirm=false;
 AC3.setState(s);
 }
 function ac3ShowEngine(screen){
@@ -2956,7 +2959,7 @@ if (this._down) this._pend = go; else setTimeout(go, ac3Ms(620));
 flipThen(fn, kind) {
 if (this.state.view !== 'card' || this.state.flipOut || this.state.screen !== 'checklist') { fn(); return; }
 this.setState({ flipOut: true, flipKind: kind || 'tick' });
-setTimeout(() => { fn(); this.setState({ flipOut: false }); }, ac3Ms(960));
+setTimeout(() => { fn(); this.setState({ flipOut: false, nxGo: true, nxTog: !this.state.nxTog }); }, ac3Ms(960));
 }
 phaseIdx(p) { const a = []; ITEMS.forEach((x, i) => { if (x.ph === p) a.push(i); }); return a; }
 isOpen(i, done, skipped) { const id = ITEMS[i].id; return !done[id] && !skipped[id]; }
@@ -3037,7 +3040,7 @@ switchView(v) {
 const st = this.state;
 if (st.viewT || st.view === v) return;
 this.setState({ viewT: v, vaOut: true });
-setTimeout(() => this.setState(v === 'list' ? { view: 'list', listMore: true, viewT: null, vaOut: false, vaTog: !this.state.vaTog } : { view: 'card', viewT: null, vaOut: false, vaTog: !this.state.vaTog }), 260);
+setTimeout(() => this.setState(v === 'list' ? { view: 'list', listMore: true, viewT: null, vaOut: false, nxGo: false, vaTog: !this.state.vaTog } : { view: 'card', viewT: null, vaOut: false, nxGo: false, vaTog: !this.state.vaTog }), 260);
 }
 togglePt(j) {
 const st = this.state; const pts = { ...st.pts };
@@ -3196,7 +3199,7 @@ open: () => this.openLink(i)
 const nextItems = [];
 const nextMax = (it.k === 'curtain' && !st.curtainOpen) ? 2 : 3;
 for (let i = st.cur + 1; i < N && nextItems.length < nextMax; i++) {
-if (this.isOpen(i, st.done, st.skipped)) nextItems.push({ num: pad(i + 1), main: ITEMS[i].m, op: nextItems.length === 0 ? 1 : (nextItems.length === 1 ? 0.8 : 0.6) });
+if (this.isOpen(i, st.done, st.skipped)) nextItems.push({ num: pad(i + 1), main: ITEMS[i].m, op: nextItems.length === 0 ? 1 : (nextItems.length === 1 ? 0.8 : 0.6), of: nextItems.length === 0 ? 0.8 : (nextItems.length === 1 ? 0.6 : 0) });
 }
 const holdMode = tickMode === 'hold' || (tickMode === 'byView' && st.view === 'card');
 const lastPhase = it.ph >= PH.length - 1;
@@ -3331,7 +3334,7 @@ hasSubCard: hasFlap, curtainOpenB: st.curtainOpen, subRows: st.curtainOpen ? '1f
 flapTitle: it.l || acT('subList'), underFlapTitle: uLbl || acT('subList'), flapCount: BRIEF.length,
 points, briefDone, briefCount: ptsN + '/' + BRIEF.length,
 toggleCurtain: () => this.setState({ curtainOpen: !this.state.curtainOpen, subMore: true, subCeleb: false, subWait: false }),
-showNext: isCardView && showItemCard && !showCurtain && nextItems.length > 0, nextItems,
+showNext: isCardView && showItemCard && !showCurtain && nextItems.length > 0, nextItems, nxAnim: st.nxGo ? ((st.nxTog ? 'nxSlideA ' : 'nxSlideB ') + ac3Ms(380) + 'ms ease-out both') : 'none',
 rows, hintText, btn, nav,
 hasSkipped: skippedN > 0, skippedCount: skippedN,
 bkOpen: !!st.bulk, bkName: st.bulk ? PH[st.bulk.p] : '',
